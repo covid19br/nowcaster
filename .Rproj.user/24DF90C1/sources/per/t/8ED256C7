@@ -1,0 +1,26 @@
+{
+    "id": "8ED256C7",
+    "path": "G:/CCD/CVE/RESPIRATORIAS/COVID_R/Nowcasting/Scripts/Nowcasting_DRS_workflow_PBI.R",
+    "project_path": "Scripts/Nowcasting_DRS_workflow_PBI.R",
+    "type": "r_source",
+    "hash": "1522535434",
+    "contents": "",
+    "dirty": false,
+    "created": 1644427523913.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "33,0",
+        "scrollLine": "26"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1644436423,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1644436426932,
+    "read_only": false,
+    "read_only_alternatives": []
+}

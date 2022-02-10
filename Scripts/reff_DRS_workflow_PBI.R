@@ -7,6 +7,7 @@ if(!require ('readr')) {install.packages('readr')};library('readr')
 if(!require ('vroom')) {install.packages('vroom')};library('vroom')
 if(!require ('EpiEstim')) {install.packages('EpiEstim')};library('EpiEstim')
 if(!require ('bimets')) {install.packages('bimets')};library('bimets')
+if(!require ('reshape2')) {install.packages('reshape2')};library('reshape2')
 
 # Fixando o diretório de trabalho
 
@@ -40,10 +41,25 @@ dados <- boletim %>%
 agregado <- unique(dados$DRS)
 
 ## Objeto de armazenamento
-res_list<-vector("list", length(ids_agregados))
+res_list<-vector("list", length(agregado))
+names(res_list)<-agregado
+
+f <- paste0('DT_SIN_PRI + DRS ~ classi')
+dados_an <- do.call("dcast", list(as.formula(f), data=as.name("dados")))
+dados_an$COVID_PREV <- round(dados_an$`COVID-19` + 
+                               dados_an$`Em investigacao`*(dados_an$`COVID-19`/(dados_an$`COVID-19`+ 
+                                                                                  dados_an$Influenza +
+                                                                                  dados_an$`Outros agentes` +
+                                                                                  dados_an$`Outros virus` +
+                                                                                  dados_an$`SRAG nao especificado`)))
+dados_an$COVID_PREV[is.na(dados_an$COVID_PREV)] <- 0
+dados_covid <- dados_an %>%
+  select(DRS, DT_SIN_PRI, COVID_PREV, `COVID-19`, `Em investigacao`) %>%
+  rename(dates = DT_SIN_PRI, I = COVID_PREV, COVID_NOT = `COVID-19`, INVESTIG = `Em investigacao`) %>%
+  mutate(dates = as.Date(dates))
 
 ## Looping para Reff por nível agregado
-for (j in seq(1:lengths(agregado))) {
+for (j in seq(1:length(agregado))) {
   
   ## Filtro nos dados conforme parametros
   nivel_agregado <- dados_covid %>%
@@ -55,7 +71,8 @@ for (j in seq(1:lengths(agregado))) {
   nivel_agregado1 <- nivel_agregado %>%
     select(dates,I)
   
-  if (count(nivel_agregado1 %>% filter(nivel_agregado1$I>0))>minimo_dias) {
+  if (count(nivel_agregado1 %>% 
+            filter(nivel_agregado1$I>0))>minimo_dias) {
     
     ## Estimativa de Reff
     res <- estimate_R(incid = nivel_agregado1,
@@ -71,13 +88,15 @@ for (j in seq(1:lengths(agregado))) {
     ## Salvando reff para a DRS
     vroom_write(res$R, 
                 file = paste0("Nowcasting/Outputs/Tables/", 
-                              Sys.Date,
-                              "reff_estimates_DRS_", 
+                              Sys.Date(), 
+                              "/reff_estimates_DRS_", 
                               agregado[j], 
+                              "_",
+                              Sys.Date(), 
                               ".csv.xz"))
     
-    res_list[[i]]<-res$R
-    res_list[[i]]$DRS<-agregado[j]
+    res_list[[j]]<-res$R
+    res_list[[j]]$DRS<-agregado[j]
   }
 }
 
