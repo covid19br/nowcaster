@@ -10,7 +10,7 @@ output: github_document
 `nowcastr` is build for epidemiological emergency use, it was constructed for the Brazilian Severe Acute Respiratory Illness (SARI) surveillance database (SIVEP-Gripe). 
 
 ## Installing
-```{r install, include=TRUE, warning=FALSE, message=FALSE, echo=FALSE}
 
-```
+remotes::install_github("covid19br/nowcastr")
+
 

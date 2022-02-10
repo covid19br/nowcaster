@@ -25,3 +25,5 @@ constructed for the Brazilian Severe Acute Respiratory Illness (SARI)
 surveillance database (SIVEP-Gripe).
 
 ## Installing
+
+remotes::install\_github(“covid19br/nowcastr”)
