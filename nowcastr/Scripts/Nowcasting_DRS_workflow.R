@@ -1,0 +1,133 @@
+#!/usr/bin/env Rscript
+if(!require ('tidyverse')) {install.packages('tidyverse')};library('tidyverse')
+if(!require ('data.table')) {install.packages('data.table')};library('data.table')
+# if(!require ('NobBS')) {install.packages('NobBS')};library('NobBS')
+if(!require ('scales')) {install.packages('scales')};library('scales')
+# if(!require ('forecast')) {install.packages('forecast')};library('forecast')
+if(!require ('purrr')) {install.packages('purrr')};library('purrr')
+if(!require ('readr')) {install.packages('readr')};library('readr')
+if(!require ('vroom')) {install.packages('vroom')};library('vroom')
+if(!require ('INLA')) {install.packages('INLA')};library('INLA')
+
+# Fixando o diretório de trabalho
+
+setwd(gsub("RESPIRATORIAS.*","RESPIRATORIAS/COVID_R/",getwd()))
+getwd()
+
+source("Nowcasting/nowcasting_INLA_secretarias-main/nowcasting_fun.r")
+source("Nowcasting/Scripts/nowcasting_inla.R")
+source("Nowcasting/Scripts/dados_w.R")
+
+## Loading a base do dia
+load("boletim.rData")
+
+## Nivel de agregação, padrão usado de GVEs
+agregado <- unique(boletim$`17DRS`)
+agregado<-sort(agregado)
+
+## Objetos de armazenamento de plots e a estimativa de nowcasting
+# plot_now<-vector("list", length(agregado))
+# names(plot_now)<-agregado
+nowcast_list<-vector("list", length(agregado))
+# names(nowcast_list)<-agregado
+
+## Looping para rodar o nowcasting para cada nível
+for (i in seq(1:length(agregado))) {
+  print(paste0("Started Nowcasting for ", agregado[i], sep = " "))
+  
+  ## Filtrando no nível de agregação
+  dados_covid <- boletim %>% 
+    filter(classi == 'COVID-19')  %>% 
+    filter(`17DRS` == agregado[i])
+  
+  ## Come?ar workflow SRAG
+  # dados_srag<- boletim %>% 
+  #   filter(`17DRS` == agregado[i])
+  
+  dados_w<-dados.w(dados_covid)
+  dados_w.plot_total<-dados_w %>% group_by(DT_SIN_PRI) %>% tally()
+  dados_w.plot_age<-dados_w %>% group_by(DT_SIN_PRI, fx_etaria) %>% tally()
+  
+  vroom_write(dados_w.plot_total, 
+              file = paste0("Nowcasting/Outputs/Tables/dados_w_plot_total_", Sys.Date(), agregado[i], ".csv.xz", sep = "_"))
+  vroom_write(dados_w.plot_age, 
+              file = paste0("Nowcasting/Outputs/Tables/dados_w_plot_age_", Sys.Date(), agregado[i], ".csv.xz", sep = "_"))
+  
+  ## Função de Nowcasting
+  nowcast_list[[i]] <- nowcasting_inla(boletim = dados_covid)
+  
+  vroom_write(nowcast_list[[i]]$total, 
+              file = paste0("Nowcasting/Outputs/Tables/nowcasting_total_", Sys.Date(), agregado[i], ".csv.xz", sep = "_"))
+  
+  vroom_write(nowcast_list[[i]]$age, 
+              file = paste0("Nowcasting/Outputs/Tables/nowcasting_age_", Sys.Date(), agregado[i], ".csv.xz", sep = "_"))
+  
+  # ## Objetos de plots 
+  # plot_now[[i]]$total<- dados_w.plot %>% 
+  #   ggplot(aes(x = DT_SIN_PRI, y = n)) +
+  #   geom_line(aes()) + 
+  #   geom_line(data = nowcast_list[[i]]$total, 
+  #             mapping = aes(x = dt_event, y = Median),
+  #             color = "red") +
+  #   geom_ribbon(data = nowcast_list[[i]]$total, 
+  #               mapping = aes(x = dt_event, y = Median,
+  #                             ymin = LI, ymax = LS), 
+  #               fill = "red", alpha = 0.3) +
+  #   theme_bw(base_size = 14)
+  # 
+  # plot_now[[i]]$age <- dados_w %>% 
+  #   group_by(DT_SIN_PRI,fx_etaria) %>% 
+  #   tally() %>% 
+  #   mutate(`faixa etaria` = factor(x = fx_etaria, 
+  #                                  levels = as.character(1:9), 
+  #                                  labels = fx.txt)
+  #   ) %>%
+  #   ggplot(aes(x = DT_SIN_PRI, y = n)) + 
+  #   geom_line(show.legend = F) +
+  #   geom_ribbon(data = nowcast_list[[i]]$age %>% 
+  #                 mutate(
+  #                   `faixa etaria` = factor(x = fx_etaria, 
+  #                                           levels = as.character(1:9), 
+  #                                           labels = fx.txt)
+  #                 ),
+  #               mapping = aes(x = dt_event, y = Median, ymin = LI, ymax = LS), fill = "red", 
+  #               color = NA, alpha = 0.2, show.legend = F) +
+  #   geom_line(data = nowcast_list[[i]]$age %>%   
+  #               mutate(`faixa etaria` = factor(x = fx_etaria, 
+  #                                              levels = as.character(1:9), 
+  #                                              labels = fx.txt),
+  #               ),
+  #             aes(y = Median, x = dt_event), color = "red", show.legend = F) +
+  #   theme_bw(base_size = 14) +
+  #   facet_wrap(~`faixa etaria`, nrow = 3, scales = "free_y")
+  # 
+  # p1 <-
+  #   gridExtra::grid.arrange(
+  #     plot_now[[i]]$total +
+  #       labs(
+  #         x = "Semana de primeiros sintomas",
+  #         y = "Hospitaliza??es por SRAG-COVID",
+  #         title = paste0("DRS ", agregado[i]),
+  #         subtitle = paste0("casos notificados at? ",
+  #                           format(DT_max, "%d/%m/%Y"))) + 
+  #       scale_x_date(date_breaks = "5 weeks",date_labels = "%V"),
+  #     plot_now[[i]]$age +
+  #       labs(
+  #         x = "Semana de primeiros sintomas",
+  #         y = "Hospitaliza??es por SRAG-COVID",
+  #         title = paste0("DRS ", agregado[i]),
+  #         subtitle = paste0("casos notificados at? ",
+  #                           format(DT_max, "%d/%m/%Y"))) +
+  #       scale_x_date(date_breaks = "10 weeks", date_labels = "%V"),
+  #     nrow = 1) 
+  # 
+  # 
+  # ## Salvando o plot
+  # ggsave(plot = p1, filename = paste0('Nowcasting/Outputs/Plots/NC-', 
+  #                          Sys.Date(), 
+  #                          agregado[i], 
+  #                          '.png', sep = "_"),
+  #        width = 9, height = 7, dpi = 300)
+  
+  print(paste0("Finished Nowcasting for ", agregado[i], sep = " "))
+}

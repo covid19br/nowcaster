@@ -1,0 +1,7 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$
+^data-raw$
+R/read.esus.R
+R/R.cori.R
+test.R
