@@ -1,7 +1,7 @@
-nowcastr
+nowcaster
 ================
 
-`nowcastr` is a R package for “nowcasting” epidemiological time-series.
+`nowcaster` is a R package for “nowcasting” epidemiological time-series.
 Every single system of notification has a intrinsic delay, `nowcastr`
 can estimate how many counts of any epidemiological data of interest
 (*i.e.*, daily cases and deaths counts) by fitting a binomial negative
