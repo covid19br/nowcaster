@@ -1,8 +1,8 @@
-nowcaster
-================
+
+# nowcaster <a href='https://github.com/covid19br/nowcaster'><img src='man/figures/nowcaster.png' align="right" height="139" /></a>
 
 `nowcaster` is a R package for “nowcasting” epidemiological time-series.
-Every single system of notification has a intrinsic delay, `nowcastr`
+Every single system of notification has a intrinsic delay, `nowcaster`
 can estimate how many counts of any epidemiological data of interest
 (*i.e.*, daily cases and deaths counts) by fitting a binomial negative
 model to the time steps of delay between onset date of the event,
@@ -10,7 +10,7 @@ model to the time steps of delay between onset date of the event,
 death) and the date of report (*i.e.*, date of notification of the case
 or death)
 
-`nowcastr` is based on the
+`nowcaster` is based on the
 [`R-INLA`](https://becarioprecario.bitbucket.io/inla-gitbook/index.html)
 and
 [`INLA`](https://inla.r-inla-download.org/r-inla.org/doc/inla-manual/inla-manual.pdf)
@@ -20,10 +20,10 @@ methods for Bayesian inference like **MCMC**, An introduction to `INLA`
 can be found
 [here](https://becarioprecario.bitbucket.io/inla-gitbook/index.html).
 
-`nowcastr` is build for epidemiological emergency use, it was
+`nowcaster` is build for epidemiological emergency use, it was
 constructed for the Brazilian Severe Acute Respiratory Illness (SARI)
 surveillance database (SIVEP-Gripe).
 
 ## Installing
 
-remotes::install\_github(“covid19br/nowcastr”)
+remotes::install_github(“covid19br/nowcaster”)
