@@ -1,5 +1,5 @@
 
-# nowcaster <a href='https://github.com/covid19br/nowcaster'><img src='man/figures/nowcaster.png' align="right" height="139" /></a>
+# nowcaster <a href='https://github.com/covid19br/nowcaster'><img src='man/figures/nowcaster.png' align="right" width="140" /></a> <a href='https://github.com/covid19br/nowcaster'><img src='man/figures/nowcaster_rev.png' align="right" width="140" /></a>
 
 `nowcaster` is a R package for “nowcasting” epidemiological time-series.
 Every single system of notification has a intrinsic delay, `nowcaster`
@@ -26,4 +26,4 @@ surveillance database (SIVEP-Gripe).
 
 ## Installing
 
-`r remotes::install_github(“covid19br/nowcaster”)`
+remotes::install_github(“covid19br/nowcaster”)
