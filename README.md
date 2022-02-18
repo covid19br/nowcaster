@@ -1,14 +1,14 @@
 
 # nowcaster <a href='https://github.com/covid19br/nowcaster'><img src='man/figures/nowcaster.png' align="right" width="140" /></a> <a href='https://github.com/covid19br/nowcaster'><img src='man/figures/nowcaster_rev.png' align="right" width="140" /></a>
 
-<p align="justify">`nowcaster` is a R package for “nowcasting” epidemiological time-series.
+<p align="justify"> nowcaster is a R package for “nowcasting” epidemiological time-series.
 Every single system of notification has a intrinsic delay, `nowcaster`
 can estimate how many counts of any epidemiological data of interest
 (*i.e.*, daily cases and deaths counts) by fitting a binomial negative
 model to the time steps of delay between onset date of the event,
 (*i.e.*, date of first symptoms for cases or date of occurrence of
 death) and the date of report (*i.e.*, date of notification of the case
-or death)</>
+or death) </p>
 
 `nowcaster` is based on the
 [`R-INLA`](https://becarioprecario.bitbucket.io/inla-gitbook/index.html)
