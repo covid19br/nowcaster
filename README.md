@@ -26,4 +26,4 @@ surveillance database (SIVEP-Gripe).
 
 ## Installing
 
-remotes::install_github(“covid19br/nowcaster”)
+`remotes::install_github(“covid19br/nowcaster”)`
