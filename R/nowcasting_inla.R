@@ -25,7 +25,8 @@ nowcasting_inla <- function(boletim,
                             Dmax = 15, 
                             wdw = 30, 
                             data.by.week = FALSE, 
-                            return.age = T){
+                            return.age = T, 
+                            ...){
   
   ## Loading required packages
   require(tidyverse)
@@ -33,11 +34,9 @@ nowcasting_inla <- function(boletim,
   require(vroom)
   require(INLA)
   
-  # fx_etaria<-{{fx_etaria}}
-  
   ## Auxiliary functions
-  source("Nowcasting/Scripts/nowcasting_fun.r")
-  source("Nowcasting/Scripts/dados_w.R")
+  # source("R/nowcasting_fun.r")
+  # source("R/dados_w.R")
   
   ## Objects for keep the nowcasting
   
@@ -76,7 +75,7 @@ nowcasting_inla <- function(boletim,
     ## Filter for dates
     filter(DT_SIN_PRI >= Tmax - 7 * wdw, Delay <= Dmax) %>% 
     ## Group by on Onset dates, Amounts of delays and Stratum
-    group_by(DT_SIN_PRI, delay = Delay, {{fx_etaria}}) %>% 
+    group_by(DT_SIN_PRI, delay = Delay, fx_etaria) %>% 
     ## Counting
     tally(name = "Y") 
   
@@ -95,7 +94,7 @@ nowcasting_inla <- function(boletim,
   # Auxiliary date table on each stratum, By age
   tbl.NA <- expand.grid(Time = 1:Tmax.id,
                         delay = 0:Dmax,
-                        fx_etaria = unique(dados.inla${{fx_etaria}})
+                        fx_etaria = unique(dados.inla$fx_etaria)
   ) %>% left_join(tbl.date.aux, by = "Time")
   
   ## Joining the auxiliary date table by Stratum
@@ -103,7 +102,7 @@ nowcasting_inla <- function(boletim,
     mutate(
       Y = ifelse(Time + delay > Tmax.id, as.numeric(NA), Y),
       Y = ifelse(is.na(Y) & Time + delay <= Tmax.id, 0, Y ),
-    ) %>% arrange(Time, delay, {{fx_etaria}})
+    ) %>% arrange(Time, delay, fx_etaria)
   
   
   ## Nowcasting estimate
