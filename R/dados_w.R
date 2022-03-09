@@ -1,18 +1,18 @@
 dados.w<-function(dados){
-  ## Data da ultima digitacao
-  trim.data <-  2 ## finais da sÃ©rie para descartar. Por algumas
-  ## tentativas com o dado do muncÃ­pio sugerimos no
-  ## mÃ­nimo trÃªs dias. Caso o resultado pareÃ§a estranho,
+  ## Data da ultima digitacão
+  trim.data <-  2 ## finais da série para descartar. Por algumas
+  ## tentativas com o dado do muncípio sugerimos no
+  ## mínimo três dias. Caso o resultado pareça estranho,
   ## verifique se muda muito se aumentar mais 1-2 dias.
   
-  ## Data mÃ¡xima de digitaÃ§Ã£o a considerar
+  ## Data máxima de digitação a considerar
   DT_max <- max(dados$DT_DIGITA  - trim.data, na.rm = T)
   
-  # Dia da semana da ultima digitacao
+  # Dia da semana da ultima digitação
   DT_max_diadasemana <- as.integer(format(DT_max, "%w"))
   weekdays(DT_max)
   
-  # # Ultima digitacao no sÃ¡bado?
+  # # Ultima digitação no sábado?
   # DT_max <- DT_max - ifelse( DT_max_diadasemana < 6, 
   #                            DT_max_diadasemana + 1,
   #                            0)

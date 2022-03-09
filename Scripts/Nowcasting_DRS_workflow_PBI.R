@@ -1,4 +1,7 @@
 #!/usr/bin/env Rscript
+rm(list = ls())
+gc()
+
 if(!require ('tidyverse')) {install.packages('tidyverse')};library('tidyverse')
 if(!require ('data.table')) {install.packages('data.table')};library('data.table')
 if(!require ('scales')) {install.packages('scales')};library('scales')
@@ -12,9 +15,8 @@ if(!require ('INLA')) {install.packages('INLA')};library('INLA')
 setwd(gsub("RESPIRATORIAS.*","RESPIRATORIAS/COVID_R/",getwd()))
 getwd()
 
-source("Nowcasting/nowcasting_INLA_secretarias-main/nowcasting_fun.r")
-source("Nowcasting/Scripts/nowcasting_inla.R")
-source("Nowcasting/Scripts/dados_w.R")
+source("nowcastr/R/nowcasting_inla.R")
+source("nowcastr/R/dados_w.R")
 
 ## Loading a base do dia
 load("boletim.rData")

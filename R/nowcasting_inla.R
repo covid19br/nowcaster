@@ -2,7 +2,30 @@
 # Leo Bastos
 
 
-nowcasting_inla <- function(boletim, trim.data = 2, Dmax = 15, wdw = 30, data.by.week = FALSE){
+#' nowcasting_inla, function to estimate amount of events already started by not yet notified. 
+#' The main use is to estimate how many cases in a outbreak has already started their onset date of symptons but has not yet notified.
+#' nowcasting_inla, fits a statistical distribution to the empirical distribution of time of delay between onset date and report date.
+#'
+#' @param boletim # Data base to be used. [example] SIVEP-Gripe.
+#' @param trim.data # (in weeks) Date to be trimmed out from the data base, in weeks. [Default] 2 weeks.
+#' @param Dmax (in weeks) Until which maximum amount of weeks the Nowcasting will use for the estimation. [Default] 15 weeks.
+#' @param wdw (in weeks) Window of dates the estimation will act, i.e., how many past weeks the nowcasting will estimates.[Default] 30 weeks. 
+#' @param data.by.week [Optinal] If it has to be returned the whole time-series data. [Default] FALSE.
+#' @param return.age [Optinal] If the estimate by Age should be returned. [Default] TRUE. 
+#' The estimation for the total is done by taking the age estimation all together.
+#'
+#' @return a list of 2 elements, each element with a data.frame with nowcasting estimation, $[1] 'Total', $[2] by 'Age'. 
+#' If data.by.week = TRUE, add a $[3] 'dados' with the time-series out of wdw.
+#' @export 'tidyverse'; 'lubridate'; 'vroom'; 'INLA'
+#'
+#' @examples 
+nowcasting_inla <- function(boletim, 
+                            # fx_etaria, 
+                            trim.data = 2, 
+                            Dmax = 15, 
+                            wdw = 30, 
+                            data.by.week = FALSE, 
+                            return.age = T){
   
   ## Loading required packages
   require(tidyverse)
@@ -10,27 +33,23 @@ nowcasting_inla <- function(boletim, trim.data = 2, Dmax = 15, wdw = 30, data.by
   require(vroom)
   require(INLA)
   
+  # fx_etaria<-{{fx_etaria}}
+  
   ## Auxiliary functions
   source("Nowcasting/Scripts/nowcasting_fun.r")
   source("Nowcasting/Scripts/dados_w.R")
   
   ## Objects for keep the nowcasting
-  # if(missing(stratum)){
-  #   strata.list <- vector(mode = "list", length = 2)
-  #   names(strata.list) <- c("total", "idade")
-  # }else{
-  #   strata.list<-vector("list", 1)
-  #   names(strata.list)<-"total"
-  # }
   
-  ## 
+  ## Filtering out cases without report date
   dados <- boletim %>% 
     mutate(IDADE = NU_IDADE_N) %>% 
     select(DT_DIGITA, DT_SIN_PRI, IDADE) %>% 
     drop_na(DT_DIGITA) 
   
   ## Last reporting date
-  trim.data <-  2 ## Discarding last 2 weeks
+  # trim.data <-  2 ## Discarding last 2 weeks
+  
   ## Maximum report date o consider
   DT_max <- max(dados$DT_DIGITA  - trim.data, na.rm = T)
   
@@ -42,8 +61,8 @@ nowcasting_inla <- function(boletim, trim.data = 2, Dmax = 15, wdw = 30, data.by
   dados_w<-dados.w(boletim)
   
   ## Parameters of Nowcasting estimate
-  Dmax <- 15
-  wdw <- 30
+  # Dmax <- 15
+  # wdw <- 30
   Tmax <- max(dados_w$DT_SIN_PRI)
   
   ## Parameter of stratum
@@ -57,7 +76,7 @@ nowcasting_inla <- function(boletim, trim.data = 2, Dmax = 15, wdw = 30, data.by
     ## Filter for dates
     filter(DT_SIN_PRI >= Tmax - 7 * wdw, Delay <= Dmax) %>% 
     ## Group by on Onset dates, Amounts of delays and Stratum
-    group_by(DT_SIN_PRI, delay = Delay, fx_etaria) %>% 
+    group_by(DT_SIN_PRI, delay = Delay, {{fx_etaria}}) %>% 
     ## Counting
     tally(name = "Y") 
   
@@ -76,7 +95,7 @@ nowcasting_inla <- function(boletim, trim.data = 2, Dmax = 15, wdw = 30, data.by
   # Auxiliary date table on each stratum, By age
   tbl.NA <- expand.grid(Time = 1:Tmax.id,
                         delay = 0:Dmax,
-                        fx_etaria = unique(dados.inla$fx_etaria)
+                        fx_etaria = unique(dados.inla${{fx_etaria}})
   ) %>% left_join(tbl.date.aux, by = "Time")
   
   ## Joining the auxiliary date table by Stratum
@@ -84,7 +103,7 @@ nowcasting_inla <- function(boletim, trim.data = 2, Dmax = 15, wdw = 30, data.by
     mutate(
       Y = ifelse(Time + delay > Tmax.id, as.numeric(NA), Y),
       Y = ifelse(is.na(Y) & Time + delay <= Tmax.id, 0, Y ),
-    ) %>% arrange(Time, delay, fx_etaria)
+    ) %>% arrange(Time, delay, {{fx_etaria}})
   
   
   ## Nowcasting estimate
@@ -93,12 +112,19 @@ nowcasting_inla <- function(boletim, trim.data = 2, Dmax = 15, wdw = 30, data.by
   )
   
   ## Summary on the posteriors of nowcasting
-  now_summary<-nowcasting.summary(sample.now, age = T)
+  now_summary<-nowcasting.summary(sample.now, 
+                                  age = T)
   
   ## Objects to be returned
   if(data.by.week){
     now_summary[[3]]<-dados_w
     names(now_summary)[3]<-"dados"
+    return(now_summary)
+  }
+  
+  ## Returning Age
+  if(!return.age){
+    now_summary<-now_summary$total
     return(now_summary)
   }
   
