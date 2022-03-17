@@ -20,7 +20,7 @@
 #'
 #' @examples 
 nowcasting_inla <- function(boletim, 
-                            # fx_etaria, 
+                            bins_age="SI-PNI", 
                             trim.data = 2, 
                             Dmax = 15, 
                             wdw = 30, 
@@ -34,30 +34,19 @@ nowcasting_inla <- function(boletim,
   require(vroom)
   require(INLA)
   
-  ## Auxiliary functions
-  # source("R/nowcasting_fun.r")
-  # source("R/dados_w.R")
+  source("dados_w.R")
   
   ## Objects for keep the nowcasting
-  
   ## Filtering out cases without report date
-  dados <- boletim %>% 
+  dados <- dados_covid %>% 
     mutate(IDADE = NU_IDADE_N) %>% 
     select(DT_DIGITA, DT_SIN_PRI, IDADE) %>% 
-    drop_na(DT_DIGITA) 
-  
-  ## Last reporting date
-  # trim.data <-  2 ## Discarding last 2 weeks
-  
-  ## Maximum report date o consider
-  DT_max <- max(dados$DT_DIGITA  - trim.data, na.rm = T)
-  
-  ## Weekday of last reporting date
-  DT_max_diadasemana <- as.integer(format(DT_max, "%w"))
-  weekdays(DT_max)
+    drop_na(DT_DIGITA)
   
   ## Filtering data to the parameters setted above
-  dados_w<-dados.w(boletim)
+  dados_w<-dados.w(dados, 
+                   bins_age = bins_age, 
+                   trim.data = trim.data)
   
   ## Parameters of Nowcasting estimate
   # Dmax <- 15
@@ -86,7 +75,8 @@ nowcasting_inla <- function(boletim,
     rowid_to_column(var = "Time")
   
   ## Joining auxiliary date tables
-  dados.inla <- dados.inla %>% left_join(tbl.date.aux) 
+  dados.inla <- dados.inla %>% 
+    left_join(tbl.date.aux) 
   
   ## Time maximum to be considered
   Tmax.id <- max(dados.inla$Time)
@@ -95,20 +85,21 @@ nowcasting_inla <- function(boletim,
   tbl.NA <- expand.grid(Time = 1:Tmax.id,
                         delay = 0:Dmax,
                         fx_etaria = unique(dados.inla$fx_etaria)
-  ) %>% left_join(tbl.date.aux, by = "Time")
+  ) %>% 
+    left_join(tbl.date.aux, by = "Time")
   
   ## Joining the auxiliary date table by Stratum
-  dados.inla <- dados.inla %>% full_join(tbl.NA) %>%  #View()
+  dados.inla <- dados.inla %>% 
+    full_join(tbl.NA) %>%  #View()
     mutate(
       Y = ifelse(Time + delay > Tmax.id, as.numeric(NA), Y),
       Y = ifelse(is.na(Y) & Time + delay <= Tmax.id, 0, Y ),
-    ) %>% arrange(Time, delay, fx_etaria)
-  
+    ) %>% 
+    arrange(Time, delay, fx_etaria) %>% 
+    rename(dt_event = DT_SIN_PRI)
   
   ## Nowcasting estimate
-  sample.now <- nowcasting_age(dados.age = dados.inla %>% 
-                                 rename(dt_event = DT_SIN_PRI)
-  )
+  sample.now <- nowcasting_age(dados.age = dados.inla)
   
   ## Summary on the posteriors of nowcasting
   now_summary<-nowcasting.summary(sample.now, 
