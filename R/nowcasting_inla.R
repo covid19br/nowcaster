@@ -12,7 +12,9 @@
 #' @param wdw (in weeks) Window of dates the estimation will act, i.e., how many past weeks the nowcasting will estimates.[Default] 30 weeks. 
 #' @param data.by.week [Optinal] If it has to be returned the whole time-series data. [Default] FALSE.
 #' @param return.age [Optinal] If the estimate by Age should be returned. [Default] TRUE. 
-#' The estimation for the total is done by taking the age estimation all together.
+#' @param bins_age [Optinal] Age bins to do the nowcasting, it receive a vector of age bins, or options between, "SI-PNI", "10 years", "5 years". [Default] "SI-PNI".
+#' @param ... 
+#' #' The estimation for the total is done by taking the age estimation all together.
 #'
 #' @return a list of 2 elements, each element with a data.frame with nowcasting estimation, $[1] 'Total', $[2] by 'Age'. 
 #' If data.by.week = TRUE, add a $[3] 'dados' with the time-series out of wdw.
@@ -34,8 +36,6 @@ nowcasting_inla <- function(boletim,
   require(vroom)
   require(INLA)
   
-  source("dados_w.R")
-  
   ## Objects for keep the nowcasting
   ## Filtering out cases without report date
   dados <- dados_covid %>% 
@@ -54,9 +54,9 @@ nowcasting_inla <- function(boletim,
   Tmax <- max(dados_w$DT_SIN_PRI)
   
   ## Parameter of stratum
-  fx.txt <- c("0 - 4", "5 - 11", "12 - 17", "18 - 29",
-              "30 - 49", "50 - 59", "60 - 69", 
-              "70 - 79", "80 +")
+  # fx.txt <- c("0 - 4", "5 - 11", "12 - 17", "18 - 29",
+  #             "30 - 49", "50 - 59", "60 - 69", 
+  #             "70 - 79", "80 +")
   
   ## Data to be entered in Nowcasting function
   ## 

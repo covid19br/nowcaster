@@ -10,7 +10,7 @@
 #' @examples
 dados.w<-function(dados, 
                   trim.data=2, 
-                  bins_age = c("SI-PNI", "10 years", "5 years")){
+                  bins_age = c("SI-PNI", "10 years", "5 years", bins_age)){
   ## Data da ultima digitacão
   if(missing(trim.data)){
     trim.data <-  2
@@ -24,40 +24,45 @@ dados.w<-function(dados,
   DT_max_diadasemana <- as.integer(format(DT_max, "%w"))
   weekdays(DT_max)
   
-  ## Test for age bins
-  if(missing(bins_age) | is.null(bins_age) | bins_age == "SI-PNI"){
-    bins_age<-c(0,4,11,18,30,seq(50,80,by=10),200)
-    labels_age<-1:9
-    warning("Bins age as in SI-PNI: ", 
-            bins_age[bins_age <= 80], 
-            call. = T)
-  }else{
-    if(bins_age == "10 years"){
-      bins_age<-seq(0,200, by = 10)
-      labels_age<-1:20
-      warning("Bins age in 10 years: ", 
-              bins_age[bins_age <= 80], 
-              call. = T)
-    }else if(bins_age){
-      bins_age<-seq(0,200, by = 5)
-      labels_age<-1:40
-      warning("Bins age in 5 years: ", 
-              bins_age[bins_age <= 80], 
-              call. = T)
-    } else {
-      if(is.numeric(bins_age)){
-        bins_age<-bins_age
-        labels_age<-1:length(bins_age)-1
-        warning("Using bins ages given: ", 
-                bins_age, 
+  # ## Test for age bins
+  if(!is.numeric(bins_age)){
+    if(missing(bins_age) | is.null(bins_age)){
+      bins_age<-"SI-PNI"
+      warning("Using SI-PNI age bins")
+    } else if(bins_age == "SI-PNI"){
+        bins_age<-c(0,4,11,18,30,seq(40,110,by=10),130)
+        labels_age<-1:9
+        warning("Bins age as in SI-PNI: ",
+                str_c(bins_age[bins_age <= 110], " "),
+                call. = T)
+      }else if(bins_age == "10 years"){
+        bins_age<-c(seq(0,110, by = 10),130)
+        labels_age<-1:(length(bins_age)-1)
+        warning("Bins age in 10 years: ",
+                str_c(bins_age[bins_age <= 110], " "),
+                call. = T)
+      } else if(bins_age == "5 years"){
+        bins_age<-c(seq(0,110, by = 5),130)
+        labels_age<-1:(length(bins_age)-1)
+        warning("Bins age in 5 years: ",
+                str_c(bins_age[bins_age <= 110], " "),
                 call. = T)
       }
+    else {
+      stop("Age bins are not options of 'SI-PNI', '10 years', '5 years' or numeric vector!")
     }
+  } else {
+    bins_age<-bins_age
+    labels_age<-1:(length(bins_age)-1)
+    warning("Using bins ages given: ",
+            str_c(bins_age[bins_age <= 110], " "),
+            call. = T)
   }
   
   
-  dados.w <- dados %>% 
-    filter(DT_DIGITA <= DT_max, epiyear(DT_SIN_PRI) >= 2021) %>%
+  dados_w <- dados %>% 
+    filter(DT_DIGITA <= DT_max, epiyear(DT_SIN_PRI) >= 2021 &
+             IDADE <= max(bins_age)) %>%
     drop_na(IDADE) %>% 
     mutate(
       # Alterando a data para o primeiro dia da semana 
@@ -79,5 +84,5 @@ dados.w<-function(dados,
     filter(Delay >= 0)
   
   # Returning
-  return(dados.w)
+  return(dados_w)
 }
