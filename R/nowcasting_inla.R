@@ -21,13 +21,14 @@
 #' @export 'tidyverse'; 'lubridate'; 'vroom'; 'INLA'
 #'
 #' @examples 
-nowcasting_inla <- function(boletim, 
+nowcasting_inla <- function(dataset, 
                             bins_age="SI-PNI", 
                             trim.data = 2, 
                             Dmax = 15, 
                             wdw = 30, 
                             data.by.week = FALSE, 
                             return.age = T, 
+                            silent = T,
                             ...){
   
   ## Loading required packages
@@ -36,9 +37,42 @@ nowcasting_inla <- function(boletim,
   require(vroom)
   require(INLA)
   
+  ## Safe tests
+  if(missing(dataset)){
+    stop("Data base is missing!")
+  }
+  
+  if(!silent){
+    if(missing(bins_age)){
+      warning("Using 'SI-PNI' age bins!")
+    }
+    
+    if(missing(trim.data)){
+      warning("Using default to trim dates, trim.data = 2")
+    }
+    
+    if(missing(Dmax)){
+      warning("Using default to maximum delay, Dmax = 15")
+    }
+    
+    if(missing(wdw)){
+      warning("Using default to window of action, wdw = 30")
+    }
+    
+    if(missing(data.by.week)){
+      warning("Using default to returning option for the data, data.by.week = FALSE")
+    }
+    
+    if(missing(return.age)){
+      warning("Using default to returning estimate by age, return.age = T")
+    }
+  }
+  
+
+  
   ## Objects for keep the nowcasting
   ## Filtering out cases without report date
-  dados <- dados_covid %>% 
+  dados <- dataset %>% 
     mutate(IDADE = NU_IDADE_N) %>% 
     select(DT_DIGITA, DT_SIN_PRI, IDADE) %>% 
     drop_na(DT_DIGITA)

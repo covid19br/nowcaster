@@ -31,7 +31,7 @@ dados.w<-function(dados,
       warning("Using SI-PNI age bins")
     } else if(bins_age == "SI-PNI"){
         bins_age<-c(0,4,11,18,30,seq(40,110,by=10),130)
-        labels_age<-1:9
+        labels_age<-1:(length(bins_age)-1)
         warning("Bins age as in SI-PNI: ",
                 str_c(bins_age[bins_age <= 110], " "),
                 call. = T)
