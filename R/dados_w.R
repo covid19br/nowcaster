@@ -11,10 +11,14 @@
 dados.w<-function(dados, 
                   trim.data=2, 
                   bins_age = c("SI-PNI", "10 years", "5 years", bins_age)){
+  require(tidyr)
+  require(lubridate)
+  
+  
   ## Data da ultima digitacão
   if(missing(trim.data)){
     trim.data <-  2
-    warning("Using default, trimming 2 days of the data")
+    warning("Using default, trimming out 2 weeks of the data")
   }
   
   ## Data máxima de digitação a considerar

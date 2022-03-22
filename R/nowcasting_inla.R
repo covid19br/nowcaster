@@ -44,31 +44,35 @@ nowcasting_inla <- function(dataset,
   
   if(!silent){
     if(missing(bins_age)){
+      bins_age<-"SI-PNI"
       warning("Using 'SI-PNI' age bins!")
     }
     
     if(missing(trim.data)){
+      trim.data<-2
       warning("Using default to trim dates, trim.data = 2")
     }
     
     if(missing(Dmax)){
+      Dmax<-15
       warning("Using default to maximum delay, Dmax = 15")
     }
     
     if(missing(wdw)){
+      wdw<-30
       warning("Using default to window of action, wdw = 30")
     }
     
     if(missing(data.by.week)){
+      data.by.week<-FALSE
       warning("Using default to returning option for the data, data.by.week = FALSE")
     }
     
     if(missing(return.age)){
-      warning("Using default to returning estimate by age, return.age = T")
+      return.age<-TRUE
+      warning("Using default to returning estimate by age, return.age = TRUE")
     }
   }
-  
-
   
   ## Objects for keep the nowcasting
   ## Filtering out cases without report date
@@ -83,14 +87,9 @@ nowcasting_inla <- function(dataset,
                    trim.data = trim.data)
   
   ## Parameters of Nowcasting estimate
-  # Dmax <- 15
-  # wdw <- 30
   Tmax <- max(dados_w$DT_SIN_PRI)
   
   ## Parameter of stratum
-  # fx.txt <- c("0 - 4", "5 - 11", "12 - 17", "18 - 29",
-  #             "30 - 49", "50 - 59", "60 - 69", 
-  #             "70 - 79", "80 +")
   
   ## Data to be entered in Nowcasting function
   ## 

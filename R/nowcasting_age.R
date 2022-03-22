@@ -7,7 +7,11 @@
 #' @export
 #'
 #' @examples
-nowcasting_age <- function(dados.age, zeroinflated = F){
+nowcasting_age <- function(dados.age, 
+                           zeroinflated = F){
+  
+  require(INLA)
+  require(tidyr)
   
   index.missing <- which(is.na(dados.age$Y))
   
@@ -62,16 +66,6 @@ nowcasting_age <- function(dados.age, zeroinflated = F){
     
   }
   
-  ##plot(output0)
-  
-  #### Fixed effects 
-  ##output0$summary.fixed
-  
-  #### Hyperparameters (negative binomial parameter, random effects precisions)
-  ## output0$summary.hyperpar
-  
-  
-  
   ## Algorithm to get samples for the predictive distribution for the number of cases
   
   ## Step 1: Sampling from the approximate posterior distribution using INLA
@@ -79,7 +73,6 @@ nowcasting_age <- function(dados.age, zeroinflated = F){
   
   
   ## Step 2: Sampling the missing triangle from the likelihood using INLA estimates
-  
   vector.samples0 <- lapply(X = srag.samples0.list, 
                             FUN = function(x, idx = index.missing){
                               if(zeroinflated){
@@ -93,24 +86,19 @@ nowcasting_age <- function(dados.age, zeroinflated = F){
                               ) * unif.log
                             } ) 
   
-  
-  
-  
-  
-  ##########
   ## Step 3: Calculate N_{a,t} for each triangle sample {N_{t,a} : t=Tactual-Dmax+1,...Tactual}
   
   ## Auxiliar function selecionando um pedaco do dataset
-#' Title
-#'
-#' @param x 
-#' @param dados.gg 
-#' @param idx 
-#'
-#' @return
-#' @export
-#'
-#' @examples
+  #' Title
+  #'
+  #' @param x 
+  #' @param dados.gg 
+  #' @param idx 
+  #'
+  #' @return
+  #' @export
+  #'
+  #' @examples
   gg.age <- function(x, dados.gg, idx){
     data.aux <- dados.gg
     Tmin <- min(dados.gg$Time[idx])
@@ -127,6 +115,7 @@ nowcasting_age <- function(dados.age, zeroinflated = F){
     data.aggregated
   }
   
+  ## Step 4: Applying the age aggregation on each posterior
   tibble.samples.0 <- lapply( X = vector.samples0,
                               FUN = gg.age,
                               dados = dados.age, 
@@ -134,6 +123,6 @@ nowcasting_age <- function(dados.age, zeroinflated = F){
   
   srag.pred.0 <- bind_rows(tibble.samples.0, .id = "sample")
   
-  srag.pred.0
+  return(srag.pred.0)
   
 }
