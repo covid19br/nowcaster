@@ -40,3 +40,6 @@ vignettes/*.pdf
 
 # Specific files
 test.R
+
+# Specific dirs
+*Outputs
