@@ -7,7 +7,7 @@
 #' nowcasting_inla, fits a statistical distribution to the empirical distribution of time of delay between onset date and report date.
 #'
 #' @param dataset Dataset with at least 3 columns, date of onset, date of report and stratum.
-#' @param trim.data # (in days) Date to be trimmed out from the data base, in days. [Default] 2 days.
+#' @param trim.data # (in days) Date to be trimmed out from the data base, in days. [Default] 0 days.
 #' @param Dmax (in weeks) Until which maximum amount of weeks the Nowcasting will use for the estimation. [Default] 15 weeks.
 #' @param wdw (in weeks) Window of dates the estimation will act, i.e., how many past weeks the nowcasting will estimates.[Default] 30 weeks. 
 #' @param data.by.week [Optinal] If it has to be returned the whole time-series data. [Default] FALSE.
@@ -32,7 +32,7 @@ nowcasting_inla <- function(dataset,
                             wdw = 30, 
                             data.by.week = FALSE, 
                             return.age = T, 
-                            silent = T,
+                            silent = F,
                             K = 0,
                             ...){
   
@@ -58,8 +58,8 @@ nowcasting_inla <- function(dataset,
     }
     
     if(missing(trim.data)){
-      trim.data<-2
-      warning("Using default to trim dates, trim.data = 2")
+      trim.data<-0
+      warning("Using default to trim dates, trim.data = 0")
     }
     
     if(missing(Dmax)){
@@ -91,7 +91,7 @@ nowcasting_inla <- function(dataset,
     drop_na(DT_DIGITA)
   
   ## Filtering data to the parameters setted above
-  dados_w<-dados.w(dados, 
+  dados_w<-dados.w(dados = dados, 
                    bins_age = bins_age, 
                    trim.data = trim.data)
   
@@ -112,8 +112,15 @@ nowcasting_inla <- function(dataset,
     ungroup()
   
   ## Auxiliary date table
+  if(K==0){
+    dates<-unique(dados.inla$DT_SIN_PRI)
+  } else {
+    dates<-c(unique(dados.inla$DT_SIN_PRI),(max(dados.inla$DT_SIN_PRI) + 7*K)) 
+  }
+  ## Talvez isso não precise se a gente voltar as datas de primeiros sintomas para a data dela correspondente
+  ## To make an auxiliary date table with each date plus an amount of dates  to forecast
   tbl.date.aux <- tibble(
-    DT_SIN_PRI = unique(dados.inla$DT_SIN_PRI)
+    DT_SIN_PRI = dates
   ) %>% 
     rowid_to_column(var = "Time")
   
@@ -142,6 +149,9 @@ nowcasting_inla <- function(dataset,
     ) %>% 
     arrange(Time, delay, fx_etaria) %>% 
     rename(dt_event = DT_SIN_PRI)
+  ## Precisamos transformar essa datas de volta no valor que é correspondente delas, 
+  ## a ultima data de primeiro sintomas foi jogada pra até uma semana atrás
+  
   
   ## Nowcasting estimate
   sample.now <- nowcasting_age(dados.age = dados.inla)
