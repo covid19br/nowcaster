@@ -9,7 +9,7 @@
 #' @examples
 nowcasting.summary <- function(trajetoria, age = F){
   ## Trajetoria tem as colunas: sample, Time, dt_event, Y
-  ## Se age = T tb terÃ¡ as colunas fx_etaria e fx_etaria.num
+  ## Se age = T tb tera¡ as colunas fx_etaria e fx_etaria.num
   
   total.summy <- trajetoria %>% 
     group_by(Time, dt_event, sample) %>%

@@ -10,8 +10,10 @@
 nowcasting_age <- function(dados.age, 
                            zeroinflated = F){
   
+  ## Loading packages
   require(INLA)
   require(tidyr)
+  
   
   index.missing <- which(is.na(dados.age$Y))
   
@@ -21,7 +23,9 @@ nowcasting_age <- function(dados.age,
       delay.grp = inla.group(delay, n = 20)
     )
   
-  ## Model equation: intercept + age + (time random effect | age) + f(Delay random effect | age)
+  ## Model equation: intercept + age + f(time random effect | age) + f(Delay random effect | age)
+  ## Y(t,Age) ~ 1 + Age + rw2(t,Age) + rw1(delay, Age), 
+  ## prec(rw2) ~ logGamma(10e-3, 10e-3), prec(rw1) ~ logGamma(10e-3, 10e-3)
   model <- Y ~ 1 + fx_etaria +  
     f(Time, 
       model = "rw2", 
@@ -29,15 +33,16 @@ nowcasting_age <- function(dados.age,
                                  param = c(0.001, 0.001))
       ),
       group = fx_etaria.num, control.group = list(model = "iid")) + 
-    f(delay.grp, model = "rw2", 
+    f(delay, model = "rw1", 
       hyper = list("prec" = list(prior = "loggamma", 
                                  param = c(0.001, 0.001))),
       group = fx_etaria.num, control.group = list(model = "iid")
     )
   
   ## Age-Delay effects
-  ## f(delay, model = "rw1", hyper = list("prec" = list(prior = "loggamma", param = c(0.001, 0.001))),
-  ##   group = fx_etaria.num, control.group = list(model = "iid"))
+  ## f(delay, model = "rw1", 
+  ## hyper = list("prec" = list(prior = "loggamma", param = c(0.001, 0.001))),
+  ## group = fx_etaria.num, control.group = list(model = "iid"))
   
   if(zeroinflated){
     ## Running the Zero inflated Negative Binomial model in INLA
@@ -70,7 +75,7 @@ nowcasting_age <- function(dados.age,
   
   ## Step 1: Sampling from the approximate posterior distribution using INLA
   srag.samples0.list <- inla.posterior.sample(n = 1000, output0)
-  
+  ## Give a parameter to trajectories, TO-DO
   
   ## Step 2: Sampling the missing triangle from the likelihood using INLA estimates
   vector.samples0 <- lapply(X = srag.samples0.list, 

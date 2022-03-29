@@ -9,24 +9,29 @@
 #'
 #' @examples
 dados.w<-function(dados, 
-                  trim.data=2, 
+                  trim.data, 
                   bins_age = c("SI-PNI", "10 years", "5 years", bins_age)){
+  # Loading packages
   require(tidyr)
   require(lubridate)
-  
   
   ## Data da ultima digitacão
   if(missing(trim.data)){
     trim.data <-  2
-    warning("Using default, trimming out 2 weeks of the data")
+    warning("Using default, trimming out 2 days of the data")
+  } else {
+    warning("Using default, trimming out ", 
+                   trim.data ,
+                   " days of data", 
+            call. = T)
   }
   
   ## Data máxima de digitação a considerar
-  DT_max <- max(dados$DT_DIGITA-trim.data, na.rm = T)
+  DT_max <- max(dados$DT_DIGITA, na.rm = T) - trim.data
   
   # Dia da semana da ultima digitação
   DT_max_diadasemana <- as.integer(format(DT_max, "%w"))
-  weekdays(DT_max)
+  # weekdays(DT_max)
   
   # ## Test for age bins
   if(!is.numeric(bins_age)){
@@ -34,22 +39,22 @@ dados.w<-function(dados,
       bins_age<-"SI-PNI"
       warning("Using SI-PNI age bins")
     } else if(bins_age == "SI-PNI"){
-        bins_age<-c(0,4,11,18,30,seq(40,110,by=10),130)
+        bins_age<-c(0,5,12,18,30,seq(40,90,by=10),130)
         labels_age<-1:(length(bins_age)-1)
         warning("Bins age as in SI-PNI: ",
-                str_c(bins_age[bins_age <= 110], " "),
+                str_c(bins_age[bins_age < 90], " "), "90+",
                 call. = T)
-      }else if(bins_age == "10 years"){
-        bins_age<-c(seq(0,110, by = 10),130)
+      } else if(bins_age == "10 years"){
+        bins_age<-c(seq(0,90, by = 10),130)
         labels_age<-1:(length(bins_age)-1)
         warning("Bins age in 10 years: ",
-                str_c(bins_age[bins_age <= 110], " "),
+                str_c(bins_age[bins_age < 90], " "), "90+",
                 call. = T)
       } else if(bins_age == "5 years"){
-        bins_age<-c(seq(0,110, by = 5),130)
+        bins_age<-c(seq(0,90, by = 5),130)
         labels_age<-1:(length(bins_age)-1)
         warning("Bins age in 5 years: ",
-                str_c(bins_age[bins_age <= 110], " "),
+                str_c(bins_age[bins_age < 90], " "), "90+",
                 call. = T)
       }
     else {
@@ -59,7 +64,8 @@ dados.w<-function(dados,
     bins_age<-bins_age
     labels_age<-1:(length(bins_age)-1)
     warning("Using bins ages given: ",
-            str_c(bins_age[bins_age <= 110], " "),
+            str_c(bins_age[bins_age < bins_age[length(bins_age) - 1]], " "), 
+            bins_age[length(bins_age) - 1], "+",
             call. = T)
   }
   

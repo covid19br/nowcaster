@@ -6,29 +6,34 @@
 #' The main use is to estimate how many cases in a outbreak has already started their onset date of symptons but has not yet notified.
 #' nowcasting_inla, fits a statistical distribution to the empirical distribution of time of delay between onset date and report date.
 #'
-#' @param boletim # Data base to be used. [example] SIVEP-Gripe.
-#' @param trim.data # (in weeks) Date to be trimmed out from the data base, in weeks. [Default] 2 weeks.
+#' @param dataset Dataset with at least 3 columns, date of onset, date of report and stratum.
+#' @param trim.data # (in days) Date to be trimmed out from the data base, in days. [Default] 2 days.
 #' @param Dmax (in weeks) Until which maximum amount of weeks the Nowcasting will use for the estimation. [Default] 15 weeks.
 #' @param wdw (in weeks) Window of dates the estimation will act, i.e., how many past weeks the nowcasting will estimates.[Default] 30 weeks. 
 #' @param data.by.week [Optinal] If it has to be returned the whole time-series data. [Default] FALSE.
 #' @param return.age [Optinal] If the estimate by Age should be returned. [Default] TRUE. 
-#' @param bins_age [Optinal] Age bins to do the nowcasting, it receive a vector of age bins, or options between, "SI-PNI", "10 years", "5 years". [Default] "SI-PNI".
+#' @param bins_age [Optinal] Age bins to do the nowcasting, it receive a vector of age bins, 
+#' or options between, "SI-PNI", "10 years", "5 years". [Default] "SI-PNI".
+#' @param silent [Optinal] Should be the warnings turned off? [Default] is TRUE.
+#' @param K [Optinal] How much weeks to forecast ahead? [Default] K is 0, no forecasting ahead
 #' @param ... 
 #' #' The estimation for the total is done by taking the age estimation all together.
 #'
 #' @return a list of 2 elements, each element with a data.frame with nowcasting estimation, $[1] 'Total', $[2] by 'Age'. 
 #' If data.by.week = TRUE, add a $[3] 'dados' with the time-series out of wdw.
 #' @export 'tidyverse'; 'lubridate'; 'vroom'; 'INLA'
+#' @import 'tidyverse','lubridate','vroom','INLA'
 #'
 #' @examples 
 nowcasting_inla <- function(dataset, 
                             bins_age="SI-PNI", 
-                            trim.data = 2, 
+                            trim.data, 
                             Dmax = 15, 
                             wdw = 30, 
                             data.by.week = FALSE, 
                             return.age = T, 
                             silent = T,
+                            K = 0,
                             ...){
   
   ## Loading required packages
@@ -39,9 +44,13 @@ nowcasting_inla <- function(dataset,
   
   ## Safe tests
   if(missing(dataset)){
-    stop("Data base is missing!")
+    stop("Dataset is missing!")
+  }
+  if(ncol(dataset) < 3){
+    stop("Dataset does not have 3 columns!")
   }
   
+  ## Warnings
   if(!silent){
     if(missing(bins_age)){
       bins_age<-"SI-PNI"
@@ -99,7 +108,8 @@ nowcasting_inla <- function(dataset,
     ## Group by on Onset dates, Amounts of delays and Stratum
     group_by(DT_SIN_PRI, delay = Delay, fx_etaria) %>% 
     ## Counting
-    tally(name = "Y") 
+    tally(name = "Y") %>% 
+    ungroup()
   
   ## Auxiliary date table
   tbl.date.aux <- tibble(
@@ -115,7 +125,7 @@ nowcasting_inla <- function(dataset,
   Tmax.id <- max(dados.inla$Time)
   
   # Auxiliary date table on each stratum, By age
-  tbl.NA <- expand.grid(Time = 1:Tmax.id,
+  tbl.NA <- expand.grid(Time = 1:(Tmax.id+K),
                         delay = 0:Dmax,
                         fx_etaria = unique(dados.inla$fx_etaria)
   ) %>% 
@@ -125,8 +135,10 @@ nowcasting_inla <- function(dataset,
   dados.inla <- dados.inla %>% 
     full_join(tbl.NA) %>%  #View()
     mutate(
-      Y = ifelse(Time + delay > Tmax.id, as.numeric(NA), Y),
-      Y = ifelse(is.na(Y) & Time + delay <= Tmax.id, 0, Y ),
+      Y = ifelse(Time + delay > Tmax.id, as.numeric(NA), Y), 
+      ## If Time + Delay is greater than Tmax, fill with NA
+      Y = ifelse(is.na(Y) & Time + delay <= Tmax.id, 0, Y ), 
+      ## If Time + Delay is smaller than Tmax AND Y is NA, fill 0
     ) %>% 
     arrange(Time, delay, fx_etaria) %>% 
     rename(dt_event = DT_SIN_PRI)
