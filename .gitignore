@@ -44,3 +44,5 @@ test.R
 # Specific dirs
 *Outputs
 .Rproj.user
+.Rdata
+.DS_Store
