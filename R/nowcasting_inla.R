@@ -8,19 +8,18 @@
 #' @param trim.data # (in days) Date to be trimmed out from the data base, in days. [Default] 0 days.
 #' @param Dmax (in weeks) Until which maximum amount of weeks the Nowcasting will use for the estimation. [Default] 15 weeks.
 #' @param wdw (in weeks) Window of dates the estimation will act, i.e., how many past weeks the nowcasting will estimates.[Default] 30 weeks.
-#' @param data.by.week [Optinal] If it has to be returned the whole time-series data. [Default] FALSE.
-#' @param return.age [Optinal] If the estimate by Age should be returned. [Default] TRUE.
-#' @param bins_age [Optinal] Age bins to do the nowcasting, it receive a vector of age bins,
+#' @param data.by.week [Optional] If it has to be returned the whole time-series data. [Default] FALSE.
+#' @param return.age [Optional] If the estimate by Age should be returned. [Default] TRUE.
+#' @param bins_age [Optional] Age bins to do the nowcasting, it receive a vector of age bins,
 #' or options between, "SI-PNI", "10 years", "5 years". [Default] "SI-PNI".
-#' @param silent [Optinal] Should be the warnings turned off? [Default] is TRUE.
-#' @param K [Optinal] How much weeks to forecast ahead? [Default] K is 0, no forecasting ahead
+#' @param silent [Optional] Should be the warnings turned off? [Default] is TRUE.
+#' @param K [Optional] How much weeks to forecast ahead? [Default] K is 0, no forecasting ahead
 #' @param ...
 #' #' The estimation for the total is done by taking the age estimation all together.
 #'
 #' @return a list of 2 elements, each element with a data.frame with nowcasting estimation, $[1] 'Total', $[2] by 'Age'.
 #' If data.by.week = TRUE, add a $[3] 'dados' with the time-series out of wdw.
-#' @export 'tidyverse'; 'lubridate'; 'vroom'; 'INLA'
-#' @import 'tidyverse','lubridate','vroom','INLA'
+#' @export
 #'
 #' @examples
 nowcasting_inla <- function(dataset,

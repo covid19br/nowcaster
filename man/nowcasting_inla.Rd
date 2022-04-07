@@ -22,7 +22,7 @@ nowcasting_inla(
 \arguments{
 \item{dataset}{Dataset with at least 3 columns, date of onset, date of report and stratum.}
 
-\item{bins_age}{\link{Optinal} Age bins to do the nowcasting, it receive a vector of age bins,
+\item{bins_age}{\link{Optional} Age bins to do the nowcasting, it receive a vector of age bins,
 or options between, "SI-PNI", "10 years", "5 years". \link{Default} "SI-PNI".}
 
 \item{trim.data}{(in days) Date to be trimmed out from the data base, in days. Default 0 days.}
@@ -31,13 +31,13 @@ or options between, "SI-PNI", "10 years", "5 years". \link{Default} "SI-PNI".}
 
 \item{wdw}{(in weeks) Window of dates the estimation will act, i.e., how many past weeks the nowcasting will estimates.\link{Default} 30 weeks.}
 
-\item{data.by.week}{\link{Optinal} If it has to be returned the whole time-series data. \link{Default} FALSE.}
+\item{data.by.week}{\link{Optional} If it has to be returned the whole time-series data. \link{Default} FALSE.}
 
-\item{return.age}{\link{Optinal} If the estimate by Age should be returned. \link{Default} TRUE.}
+\item{return.age}{\link{Optional} If the estimate by Age should be returned. \link{Default} TRUE.}
 
-\item{silent}{\link{Optinal} Should be the warnings turned off? \link{Default} is TRUE.}
+\item{silent}{\link{Optional} Should be the warnings turned off? \link{Default} is TRUE.}
 
-\item{K}{\link{Optinal} How much weeks to forecast ahead? \link{Default} K is 0, no forecasting ahead}
+\item{K}{\link{Optional} How much weeks to forecast ahead? \link{Default} K is 0, no forecasting ahead}
 
 \item{...}{#' The estimation for the total is done by taking the age estimation all together.}
 }

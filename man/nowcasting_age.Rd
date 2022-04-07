@@ -4,28 +4,14 @@
 \alias{nowcasting_age}
 \title{Title}
 \usage{
-nowcasting_age(dados.age, zeroinflated = F)
+nowcasting_age(dados.age)
 }
 \arguments{
 \item{dados.age}{}
-
-\item{zeroinflated}{}
-
-\item{x}{}
-
-\item{dados.gg}{}
-
-\item{idx}{}
 }
 \value{
-
-
 
 }
 \description{
 Title
-}
-\examples{
-Title
-
 }
