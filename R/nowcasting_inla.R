@@ -112,11 +112,11 @@ nowcasting_inla <- function(dataset,
     ungroup()
   
   ## Auxiliary date table
-  if(K==0){
+  #if(K==0){
     dates<-unique(dados.inla$DT_SIN_PRI)
-  } else {
-    dates<-c(unique(dados.inla$DT_SIN_PRI),(max(dados.inla$DT_SIN_PRI) + 7*K)) 
-  }
+  #} else {
+   # dates<-c(unique(dados.inla$DT_SIN_PRI),(max(dados.inla$DT_SIN_PRI) + 7*K)) 
+  #}
   ## Talvez isso não precise se a gente voltar as datas de primeiros sintomas para a data dela correspondente
   ## To make an auxiliary date table with each date plus an amount of dates  to forecast
   tbl.date.aux <- tibble(
