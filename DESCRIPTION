@@ -16,3 +16,6 @@ Imports:
     tidyr
 URL: https://github.com/covid19br/nowcaster
 BugReports: https://github.com/covid19br/nowcaster/issues
+Suggests: 
+    ggplot2,
+    vroom
