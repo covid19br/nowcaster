@@ -113,7 +113,7 @@ nowcasting_inla <- function(dataset,
   
   ## Auxiliary date table
   #if(K==0){
-    dates<-unique(dados.inla$DT_SIN_PRI)
+   dates<-unique(dados.inla$DT_SIN_PRI)
   #} else {
    # dates<-c(unique(dados.inla$DT_SIN_PRI),(max(dados.inla$DT_SIN_PRI) + 7*K)) 
   #}
