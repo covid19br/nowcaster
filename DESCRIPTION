@@ -1,5 +1,5 @@
 Package: nowcaster
-Title: What the Package Does (One Line, Title Case)
+Title: Nowcaster is a package to estimate from delay distribution started onset data but not yet reported.
 Version: 0.0.0.9000
 Authors@R: 
     person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
