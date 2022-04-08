@@ -1,5 +1,5 @@
 # Nowcasting SRAG by age group
-
+#'
 #' nowcasting_inla, function to estimate amount of events already started by not yet notified.
 #' The main use is to estimate how many cases in a outbreak has already started their onset date of symptons but has not yet notified.
 #' nowcasting_inla, fits a statistical distribution to the empirical distribution of time of delay between onset date and report date.
