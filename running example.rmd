@@ -21,7 +21,7 @@ library(roxygen2)
 Loading the nowcaster R package:
 
 ```{r load-all}
-load_all()
+library(nowcaster)
 ```
 
 Loading the data from Belo Horizonte city:
@@ -30,5 +30,19 @@ Loading the data from Belo Horizonte city:
 data<-sragBH
 ```
 
+And we take a look on the data:
 
+```{r lookup}
+head(data)
+```
+
+It is a data.frame with 7 variables and 65,404 observations. We will make use of only the first two columns, "DT_SIN_PRI" and "DT_DIGITA" as well the column "Idade" to make age structured nowcasting.
+
+```{r nowcasting}
+nowcasting_bh<-nowcasting_inla(dataset = data, 
+                               bins_age = "10 years", 
+                               data.by.week = T, 
+                               return.age = T, 
+                               age_col = Idade)
+```
 

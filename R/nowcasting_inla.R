@@ -27,6 +27,7 @@ nowcasting_inla <- function(dataset,
                             trim.data,
                             Dmax = 15,
                             wdw = 30,
+                            age_col,
                             data.by.week = FALSE,
                             return.age = T,
                             silent = F,
@@ -78,14 +79,25 @@ nowcasting_inla <- function(dataset,
       return.age <- TRUE
       warning("Using default to returning estimate by age, return.age = TRUE")
     }
+    if(missing(age_col)){
+      warning("Age_col missing, nowcasting with unstructured data")
+    }
   }
 
   ## Objects for keep the nowcasting
   ## Filtering out cases without report date
-  dados <- dataset %>%
-    dplyr::mutate(IDADE = NU_IDADE_N) %>%
-    dplyr::select(DT_DIGITA, DT_SIN_PRI, IDADE) %>%
-    dplyr::drop_na(DT_DIGITA)
+  if(missing(age_col)){
+    dados<-dataset %>%
+      dplyr::select(DT_DIGITA, DT_SIN_PRI) %>%
+      tidyr::drop_na(DT_DIGITA)
+  } else {
+    dados <- dataset %>%
+      # dplyr::mutate(IDADE = NU_IDADE_N) %>%
+      dplyr::select(DT_DIGITA, DT_SIN_PRI, {{age_col}}) %>%
+      tidyr::drop_na(DT_DIGITA)
+  }
+
+
 
   ## Filtering data to the parameters setted above
   dados_w <- dados.w(dados = dados,
