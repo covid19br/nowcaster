@@ -97,12 +97,15 @@ nowcasting_inla <- function(dataset,
       tidyr::drop_na(DT_DIGITA)
   }
 
-
-
   ## Filtering data to the parameters setted above
-  dados_w <- dados.w(dados = dados,
-                   bins_age = bins_age,
-                   trim.data = trim.data)
+  if(missing(age_col)){
+    dados_w<-dados.w_no_age(dados = dados,
+                            trim.data = trim.data)
+  }else {
+    dados_w <- dados.w(dados = dados,
+                       bins_age = bins_age,
+                       trim.data = trim.data, age_col = {{age_col}})
+  }
 
   ## Parameters of Nowcasting estimate
   Tmax <- max(dados_w$DT_SIN_PRI)
@@ -111,21 +114,34 @@ nowcasting_inla <- function(dataset,
 
   ## Data to be entered in Nowcasting function
   ##
-  dados.inla <- dados_w %>%
-    ## Filter for dates
-    dplyr::filter(DT_SIN_PRI >= Tmax - 7 * wdw,
-                  Delay <= Dmax) %>%
-    ## Group by on Onset dates, Amounts of delays and Stratum
-    dplyr::group_by(DT_SIN_PRI, delay = Delay, fx_etaria) %>%
-    ## Counting
-    dplyr::tally(name = "Y") %>%
-    dplyr::ungroup()
+  if(missing(age_col)){
+    dados.inla <- dados_w %>%
+      ## Filter for dates
+      dplyr::filter(DT_SIN_PRI >= Tmax - 7 * wdw,
+                    Delay <= Dmax) %>%
+      ## Group by on Onset dates, Amounts of delays and Stratum
+      group_by(DT_SIN_PRI, delay = Delay) %>%
+      ## Counting
+      dplyr::tally(name = "Y") %>%
+      dplyr::ungroup()
+  } else {
+    dados.inla <- dados_w %>%
+      ## Filter for dates
+      dplyr::filter(DT_SIN_PRI >= Tmax - 7 * wdw,
+                    Delay <= Dmax) %>%
+      ## Group by on Onset dates, Amounts of delays and Stratum
+      dplyr::group_by(DT_SIN_PRI, delay = Delay, fx_etaria) %>%
+      ## Counting
+      dplyr::tally(name = "Y") %>%
+      dplyr::ungroup()
+  }
+
 
   ## Auxiliary date table
   #if(K==0){
-   dates<-unique(dados.inla$DT_SIN_PRI)
+  dates<-unique(dados.inla$DT_SIN_PRI)
   #} else {
-   # dates<-c(unique(dados.inla$DT_SIN_PRI),(max(dados.inla$DT_SIN_PRI) + 7*K))
+  # dates<-c(unique(dados.inla$DT_SIN_PRI),(max(dados.inla$DT_SIN_PRI) + 7*K))
   #}
   ## Talvez isso não precise se a gente voltar as datas de primeiros sintomas para a data dela correspondente
   ## To make an auxiliary date table with each date plus an amount of dates  to forecast
@@ -142,23 +158,44 @@ nowcasting_inla <- function(dataset,
   Tmax.id <- max(dados.inla$Time)
 
   # Auxiliary date table on each stratum, By age
-  tbl.NA <- expand.grid(Time = 1:(Tmax.id+K),
-                        delay = 0:Dmax,
-                        fx_etaria = unique(dados.inla$fx_etaria)
-  ) %>%
-    dplyr::left_join(tbl.date.aux, by = "Time")
+  if(missing(age_col)){
+    tbl.NA <-
+      expand.grid(Time = 1:(Tmax.id+K),
+                  delay = 0:Dmax) %>%
+      dplyr::left_join(tbl.date.aux, by = "Time")
+  } else{
+    tbl.NA <-
+      expand.grid(Time = 1:(Tmax.id+K),
+                  delay = 0:Dmax,
+                  fx_etaria = unique(dados.inla$fx_etaria)
+      )%>%
+      dplyr::left_join(tbl.date.aux, by = "Time")
+  }
 
   ## Joining the auxiliary date table by Stratum
-  dados.inla <- dados.inla %>%
-    dplyr::full_join(tbl.NA) %>%  #View()
-    dplyr::mutate(
-      Y = ifelse(Time + delay > Tmax.id, as.numeric(NA), Y),
-      ## If Time + Delay is greater than Tmax, fill with NA
-      Y = ifelse(is.na(Y) & Time + delay <= Tmax.id, 0, Y ),
-      ## If Time + Delay is smaller than Tmax AND Y is NA, fill 0
-    ) %>%
-    dplyr::arrange(Time, delay, fx_etaria) %>%
-    dplyr::rename(dt_event = DT_SIN_PRI)
+  if(missing(age_col)){
+    dados.inla <- dados.inla %>%
+      dplyr::full_join(tbl.NA) %>%  #View()
+      dplyr::mutate(
+        Y = ifelse(Time + delay > Tmax.id, as.numeric(NA), Y),
+        ## If Time + Delay is greater than Tmax, fill with NA
+        Y = ifelse(is.na(Y) & Time + delay <= Tmax.id, 0, Y ),
+        ## If Time + Delay is smaller than Tmax AND Y is NA, fill 0
+      ) %>%
+      dplyr::arrange(Time, delay)%>%
+      dplyr::rename(dt_event = DT_SIN_PRI)
+  }else {
+    dados.inla <- dados.inla %>%
+      dplyr::full_join(tbl.NA) %>%  #View()
+      dplyr::mutate(
+        Y = ifelse(Time + delay > Tmax.id, as.numeric(NA), Y),
+        ## If Time + Delay is greater than Tmax, fill with NA
+        Y = ifelse(is.na(Y) & Time + delay <= Tmax.id, 0, Y ),
+        ## If Time + Delay is smaller than Tmax AND Y is NA, fill 0
+      ) %>%
+      dplyr::arrange(Time, delay, fx_etaria)%>%
+      dplyr::rename(dt_event = DT_SIN_PRI)
+  }
   ## Precisamos transformar essa datas de volta no valor que é correspondente delas,
   ## a ultima data de primeiro sintomas foi jogada pra até uma semana atrás
 
