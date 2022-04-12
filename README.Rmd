@@ -21,7 +21,7 @@ knitr::opts_chunk$set(echo = TRUE)
 To install `nowcaster` package simply run the code below in R:
 
 ```{r install}
-remotes::install_github("covid19br/nowcaster/tree/dev")
+devtools::install_github("covid19br/nowcaster/tree/dev")
 ```
 
 After installing you can load the by typical library:
