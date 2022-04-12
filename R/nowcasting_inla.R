@@ -19,7 +19,6 @@
 #'
 #' @return a list of 2 elements, each element with a data.frame with nowcasting estimation, $[1] 'Total', $[2] by 'Age'.
 #' If data.by.week = TRUE, add a $[3] 'dados' with the time-series out of wdw.
-#' @export
 #'
 #' @examples
 nowcasting_inla <- function(dataset,
@@ -35,7 +34,7 @@ nowcasting_inla <- function(dataset,
                             ...){
 
   # ## Loading required packages
-  # require(tidyverse)
+  require(tidyverse)
   # require(lubridate)
   # require(vroom)
   # require(INLA)

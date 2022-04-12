@@ -12,6 +12,7 @@ nowcasting_inla(
   trim.data,
   Dmax = 15,
   wdw = 30,
+  age_col,
   data.by.week = FALSE,
   return.age = T,
   silent = F,

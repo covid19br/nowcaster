@@ -14,6 +14,8 @@ dados.w<-function(dados,
                   age_col){
   # Loading packages
   require(tidyr)
+  require(dplyr)
+  require(stringr)
   require(lubridate)
 
   ## Data da ultima digitacão
@@ -72,10 +74,10 @@ dados.w<-function(dados,
 
 
   dados_w <- dados %>%
-    filter(DT_DIGITA <= DT_max, epiyear(DT_SIN_PRI) >= 2021 &
+    dplyr::filter(DT_DIGITA <= DT_max, epiyear(DT_SIN_PRI) >= 2021 &
              {{age_col}} <= max(bins_age)) %>%
-    drop_na({{age_col}}) %>%
-    mutate(
+    tidyr::drop_na({{age_col}}) %>%
+    dplyr::mutate(
       # Alterando a data para o primeiro dia da semana
       # Ex. se ultimo dado for de um domingo, entao a semana
       # comeca na 2a anterior, se termina 5a, entao começará 6a
@@ -91,8 +93,8 @@ dados.w<-function(dados,
                       labels = labels_age,
                       right = F)
     ) %>%
-    drop_na(fx_etaria) %>%
-    filter(Delay >= 0)
+    tidyr::drop_na(fx_etaria) %>%
+    dplyr::filter(Delay >= 0)
 
   # Returning
   return(dados_w)

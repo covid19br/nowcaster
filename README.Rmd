@@ -17,6 +17,45 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Installing
 
-remotes::install_github("covid19br/nowcaster")
+
+To install `nowcaster` package simply run the code below in R:
+
+```{r install}
+devtools::install_github("covid19br/nowcaster")
+```
+
+After installing you can load the by typical library:
+
+```{r library}
+library(nowcaster)
+```
+
+## First example on LazyData
+
+When the package is loaded it disponibilize a LazyData file, `sariBH`, it is a annonymized records of Severe Acute Respiratory Illness notified in the city of Belo Horizonte, since March 2020. To load it basically write:
+
+```{r data-bh}
+data<-sragBH
+```
+
+And we take a look on the data:
+
+```{r lookup}
+head(data)
+```
+
+It is a data.frame with 7 variables and 65,404 observations. We will make use of only the first two columns, "DT_SIN_PRI" and "DT_DIGITA" as well the column "Idade" to make age structured nowcasting.
+
+Now we call the nowcasting function, it has by default the parametrization of take the data and estimating a structured age nowcasting, by fitting to each of age bins given to the function a $NegBinom$ function for the delay in days between the date of onset of symptoms and date of report. The mandatory parameter its `dataset`, to inform the dataset which will be used and `age_col`, to inform which is the age column. We pass three additional parameters, `data.by.week` to return the epidemiological curve out of window of act of nowcasting estimate and `return.age` to inform we desire a nowcasting result in two ways, the total aggregation estimate and the age-stratified estimate. The last parameter that we inform is in which bins of age will the estimate be stratified.
+
+```{r nowcasting}
+nowcasting_bh<-nowcasting_inla(dataset = data, 
+                               bins_age = "10 years", 
+                               data.by.week = T, 
+                               return.age = T, 
+                               age_col = Idade)
+```
+
+
 
 
