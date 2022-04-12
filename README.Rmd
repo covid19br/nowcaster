@@ -56,6 +56,22 @@ nowcasting_bh<-nowcasting_inla(dataset = data,
                                age_col = Idade)
 ```
 
+## Plotting
+
+```{r plot}
+library(ggplot2)
+nowcasting_bh$total %>% 
+  ggplot(aes(x = dt_event, y = Median, col = 'Median'))+
+  geom_line()+
+  geom_ribbon(aes(ymin = LI, ymax = LS, col = 'IC'), alpha = 0.3)+
+  theme_bw()+
+  theme(legend.position = "bottom")+
+  scale_color_manual(values = c('grey80', 'black'), name = '')+
+  scale_x_date(date_breaks = '2 weeks', date_labels = '%V/%y', name = 'Date in Weeks')+
+  labs(x = '', y = 'Nº Cases')
+```
+
+
 
 
 
