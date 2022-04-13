@@ -1,24 +1,35 @@
 # Nowcasting SRAG by age group
 #'
-#' nowcasting_inla, function to estimate amount of events already started by not yet notified.
-#' The main use is to estimate how many cases in a outbreak has already started their onset date of symptons but has not yet notified.
-#' nowcasting_inla, fits a statistical distribution to the empirical distribution of time of delay between onset date and report date.
+#' @description function to estimate amount of events already started by not yet notified.
+#' The main use is to estimate how many cases in a outbreak has already started their onset date of symptons
+#' but has not yet notified.
+#' nowcasting_inla, fits a statistical distribution to the empirical distribution of time of delay between
+#' onset date and report date.
 #'
 #' @param dataset Dataset with at least 3 columns, date of onset, date of report and stratum.
-#' @param trim.data # (in days) Date to be trimmed out from the data base, in days. [Default] 0 days.
-#' @param Dmax (in weeks) Until which maximum amount of weeks the Nowcasting will use for the estimation. [Default] 15 weeks.
-#' @param wdw (in weeks) Window of dates the estimation will act, i.e., how many past weeks the nowcasting will estimates.[Default] 30 weeks.
-#' @param data.by.week [Optional] If it has to be returned the whole time-series data. [Default] FALSE.
-#' @param return.age [Optional] If the estimate by Age should be returned. [Default] TRUE.
-#' @param bins_age [Optional] Age bins to do the nowcasting, it receive a vector of age bins,
-#' or options between, "SI-PNI", "10 years", "5 years". [Default] "SI-PNI".
-#' @param silent [Optional] Should be the warnings turned off? [Default] is TRUE.
-#' @param K [Optional] How much weeks to forecast ahead? [Default] K is 0, no forecasting ahead
+#' @param trim.data # (in days) Date to be trimmed out from the data base, in days.
+#' [Default] 0 days.
+#' @param Dmax (in weeks) Until which maximum amount of weeks the Nowcasting will use for the estimation.
+#' [Default] 15 weeks.
+#' @param wdw (in weeks) Window of dates the estimation will act, i.e., how many past weeks the nowcasting will estimates.
+#' [Default] 30 weeks.
+#' @param data.by.week If it has to be returned the whole time-series data.
+#' [Default] FALSE.
+#' @param return.age If the estimate by Age should be returned.
+#' [Default] TRUE.
+#' @param bins_age Age bins to do the nowcasting, it receive a vector of age bins,
+#' or options between, "SI-PNI", "10 years", "5 years".
+#' [Default] "SI-PNI".
+#' @param silent Should be the warnings turned off?
+#' [Default] is TRUE.
+#' @param K How much weeks to forecast ahead?
+#' [Default] K is 0, no forecasting ahead
+#' #' @param age_col Column for ages
 #' @param ...
-#' #' The estimation for the total is done by taking the age estimation all together.
 #'
 #' @return a list of 2 elements, each element with a data.frame with nowcasting estimation, $[1] 'Total', $[2] by 'Age'.
 #' If data.by.week = TRUE, add a $[3] 'dados' with the time-series out of wdw.
+#' @export
 #'
 #' @examples
 nowcasting_inla <- function(dataset,
