@@ -3,7 +3,7 @@ Title: Estimate not yet reported data from a delay distribution of already onset
 Version: 0.0.0.9000
 Authors@R: 
     person("Leonardo", "Bastos", , "leonardo.bastos@fiocruz.br", role = c("aut"), comment = c(ORCID = "0000-0002-1406-0122"))
-    person("Rafael", "Lopes", , "rafael.lp.silva@unesp.br", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-9416-6145")))
+    person("Rafael", "Lopes", , "rafael.lp.silva@unesp.br", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-9416-6145"))
 Description: Nowcaster is a package wrapping statistical models to estimate not yet reported data from a empirical delay distribution 
   between dates of onset of symptoms and date of digitation.
 License: GPL (>= 3)
