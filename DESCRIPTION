@@ -1,21 +1,23 @@
 Package: nowcaster
-Title: Nowcaster is a package to estimate from delay distribution started onset data but not yet reported.
+Title: Estimate not yet reported data from a delay distribution of already onset data
 Version: 0.0.0.9000
-Authors@R: c(
-  person("Leonardo", "Bastos", , "leonardo.bastos@fiocruz.br", role = c("aut"), comment = c(ORCID = "0000-0002-1406-0122")),
-  person("Rafael", "Lopes", , "rafael.lp.silva@unesp.br", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-9416-6145")))
-Description: What the package does (one paragraph).
+Authors@R: 
+    person("Leonardo", "Bastos", , "leonardo.bastos@fiocruz.br", role = c("aut"), comment = c(ORCID = "0000-0002-1406-0122"))
+    person("Rafael", "Lopes", , "rafael.lp.silva@unesp.br", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-9416-6145"))
+Description: Nowcaster is a package wrapping statistical models to estimate not yet reported data from a empirical delay distribution 
+  between dates of onset of symptoms and date of digitation.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
-Imports: 
-    dplyr,
-    INLA,
-    lubridate,
-    tidyr
 URL: https://github.com/covid19br/nowcaster
 BugReports: https://github.com/covid19br/nowcaster/issues
-Suggests: 
-    ggplot2,
-    vroom
+Suggests: ggplot2, vroom
+Depends: 
+    R (>= 2.10)
+LazyData: true
+Imports: dplyr, 
+         INLA,
+         lubridate,
+         tidyr,
+         tibble
