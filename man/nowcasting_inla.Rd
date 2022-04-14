@@ -35,18 +35,19 @@ or options between, "SI-PNI", "10 years", "5 years".
 \item{wdw}{(in weeks) Window of dates the estimation will act, i.e., how many past weeks the nowcasting will estimates.
 \link{Default} 30 weeks.}
 
+\item{age_col}{Column for ages}
+
 \item{data.by.week}{If it has to be returned the whole time-series data.
 \link{Default} FALSE.}
 
 \item{return.age}{If the estimate by Age should be returned.
 \link{Default} TRUE.}
 
-\item{silent}{Should be the warnings turned off?
+\item{silent}{\link{Depracted} Should be the warnings turned off?
 \link{Default} is TRUE.}
 
 \item{K}{How much weeks to forecast ahead?
-\link{Default} K is 0, no forecasting ahead
-#' @param age_col Column for ages}
+\link{Default} K is 0, no forecasting ahead}
 
 \item{...}{}
 }

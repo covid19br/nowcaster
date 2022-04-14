@@ -20,11 +20,11 @@
 #' @param bins_age Age bins to do the nowcasting, it receive a vector of age bins,
 #' or options between, "SI-PNI", "10 years", "5 years".
 #' [Default] "SI-PNI".
-#' @param silent Should be the warnings turned off?
+#' @param silent [Depracted] Should be the warnings turned off?
 #' [Default] is TRUE.
 #' @param K How much weeks to forecast ahead?
 #' [Default] K is 0, no forecasting ahead
-#' #' @param age_col Column for ages
+#' @param age_col Column for ages
 #' @param ...
 #'
 #' @return a list of 2 elements, each element with a data.frame with nowcasting estimation, $[1] 'Total', $[2] by 'Age'.
