@@ -4,13 +4,15 @@
 \alias{dados.w_no_age}
 \title{Title}
 \usage{
-dados.w_no_age(dados, trim.data)
+dados.w_no_age(dataset, trim.data)
 }
 \arguments{
-\item{bins_age}{}
+\item{dataset}{dataset to be formatted as data by week}
+
+\item{trim.data}{How much to trim of the data?}
 }
 \value{
-
+Data in weeks
 }
 \description{
 Title

@@ -2,16 +2,16 @@
 % Please edit documentation in R/nowcasting_age.R
 \name{nowcasting_age}
 \alias{nowcasting_age}
-\title{Title}
+\title{nowcasting_age}
 \usage{
 nowcasting_age(dados.age)
 }
 \arguments{
-\item{dados.age}{}
+\item{dataset}{data pre formatted in to age classes and delays by week for each cases, delay triangle format}
 }
 \value{
 
 }
 \description{
-Title
+nowcasting_age
 }

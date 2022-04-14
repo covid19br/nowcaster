@@ -2,9 +2,7 @@
 % Please edit documentation in R/nowcasting_inla.R
 \name{nowcasting_inla}
 \alias{nowcasting_inla}
-\title{nowcasting_inla, function to estimate amount of events already started by not yet notified.
-The main use is to estimate how many cases in a outbreak has already started their onset date of symptons but has not yet notified.
-nowcasting_inla, fits a statistical distribution to the empirical distribution of time of delay between onset date and report date.}
+\title{nowcasting_inla}
 \usage{
 nowcasting_inla(
   dataset,
@@ -23,31 +21,43 @@ nowcasting_inla(
 \arguments{
 \item{dataset}{Dataset with at least 3 columns, date of onset, date of report and stratum.}
 
-\item{bins_age}{\link{Optional} Age bins to do the nowcasting, it receive a vector of age bins,
-or options between, "SI-PNI", "10 years", "5 years". \link{Default} "SI-PNI".}
+\item{bins_age}{Age bins to do the nowcasting, it receive a vector of age bins,
+or options between, "SI-PNI", "10 years", "5 years".
+\link{Default} "SI-PNI".}
 
-\item{trim.data}{(in days) Date to be trimmed out from the data base, in days. Default 0 days.}
+\item{trim.data}{(in days) Date to be trimmed out from the data base, in days.
 
-\item{Dmax}{(in weeks) Until which maximum amount of weeks the Nowcasting will use for the estimation. \link{Default} 15 weeks.}
+\link{Default} 0 days.}
 
-\item{wdw}{(in weeks) Window of dates the estimation will act, i.e., how many past weeks the nowcasting will estimates.\link{Default} 30 weeks.}
+\item{Dmax}{(in weeks) Until which maximum amount of weeks the Nowcasting will use for the estimation.
+\link{Default} 15 weeks.}
 
-\item{data.by.week}{\link{Optional} If it has to be returned the whole time-series data. \link{Default} FALSE.}
+\item{wdw}{(in weeks) Window of dates the estimation will act, i.e., how many past weeks the nowcasting will estimates.
+\link{Default} 30 weeks.}
 
-\item{return.age}{\link{Optional} If the estimate by Age should be returned. \link{Default} TRUE.}
+\item{data.by.week}{If it has to be returned the whole time-series data.
+\link{Default} FALSE.}
 
-\item{silent}{\link{Optional} Should be the warnings turned off? \link{Default} is TRUE.}
+\item{return.age}{If the estimate by Age should be returned.
+\link{Default} TRUE.}
 
-\item{K}{\link{Optional} How much weeks to forecast ahead? \link{Default} K is 0, no forecasting ahead}
+\item{silent}{Should be the warnings turned off?
+\link{Default} is TRUE.}
 
-\item{...}{#' The estimation for the total is done by taking the age estimation all together.}
+\item{K}{How much weeks to forecast ahead?
+\link{Default} K is 0, no forecasting ahead
+#' @param age_col Column for ages}
+
+\item{...}{}
 }
 \value{
 a list of 2 elements, each element with a data.frame with nowcasting estimation, $\link{1} 'Total', $\link{2} by 'Age'.
 If data.by.week = TRUE, add a $\link{3} 'dados' with the time-series out of wdw.
 }
 \description{
-nowcasting_inla, function to estimate amount of events already started by not yet notified.
-The main use is to estimate how many cases in a outbreak has already started their onset date of symptons but has not yet notified.
-nowcasting_inla, fits a statistical distribution to the empirical distribution of time of delay between onset date and report date.
+function to estimate amount of events already started by not yet notified.
+The main use is to estimate how many cases in a outbreak has already started their onset date of symptons
+but has not yet notified.
+nowcasting_inla, fits a statistical distribution to the empirical distribution of time of delay between
+onset date and report date.
 }

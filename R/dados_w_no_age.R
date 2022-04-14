@@ -1,18 +1,22 @@
 #' Title
 #'
-#' @param dados
-#' @param trim.data
-#' @param bins_age
+#' @param dataset dataset to be formatted as data by week
+#' @param trim.data How much to trim of the data?
 #'
-#' @return
+#' @return Data in weeks
 #' @export
 #'
 #' @examples
-dados.w_no_age<-function(dados,
-                  trim.data){
-  dados_w <- dados %>%
-    filter(DT_DIGITA <= DT_max, epiyear(DT_SIN_PRI) >= 2021) %>%
-    mutate(
+dados.w_no_age<-function(dataset,
+                         trim.data){
+
+  # Loading packages
+  require(dplyr)
+  require(lubridate)
+
+  dados_w <- dataset %>%
+    dplyr::filter(DT_DIGITA <= DT_max, lubridate::epiyear(DT_SIN_PRI) >= 2021) %>%
+    dplyr::mutate(
       # Alterando a data para o primeiro dia da semana
       # Ex. se ultimo dado for de um domingo, entao a semana
       # comeca na 2a anterior, se termina 5a, entao começará 6a
@@ -23,7 +27,7 @@ dados.w_no_age<-function(dados,
         as.integer(format(DT_DIGITA, "%w")) -
         (6-DT_max_diadasemana),
       Delay = as.numeric(DT_DIGITA - DT_SIN_PRI) / 7) %>%
-    filter(Delay >= 0)
+    dplyr::filter(Delay >= 0)
 
   # Returning
   return(dados_w)

@@ -1,6 +1,6 @@
-#' Title
+#' nowcasting_age
 #'
-#' @param dados.age
+#' @param dataset data pre formatted in to age classes and delays by week for each cases, delay triangle format
 #'
 #' @return
 #' @export
@@ -9,14 +9,14 @@
 nowcasting_age <- function(dados.age){
 
   # ## Loading packages
-  # require(INLA)
-  # require(tidyr)
+  require(INLA)
+  require(tidyr)
 
 
   index.missing <- which(is.na(dados.age$Y))
 
   dados.age <- dados.age %>%
-    mutate(
+    dplyr::mutate(
       fx_etaria.num = as.numeric(fx_etaria),
       # delay.grp = inla.group(delay, n = 20)
     )
@@ -85,7 +85,7 @@ nowcasting_age <- function(dados.age){
                               # }else{
                                 unif.log = 1
                               # }
-                              rnbinom(n = idx,
+                              stats::rnbinom(n = idx,
                                       mu = exp(x$latent[idx]),
                                       size = x$hyperpar[1]
                               ) * unif.log
@@ -101,8 +101,8 @@ nowcasting_age <- function(dados.age){
       ## Selecionando apenas os dias faltantes a partir
       ## do domingo da respectiva ultima epiweek
       ## com dados faltantes
-      filter(Time >= Tmin  ) %>%
-      group_by(Time, dt_event, fx_etaria, fx_etaria.num) %>%
+      dplyr::filter(Time >= Tmin  ) %>%
+      dplyr::group_by(Time, dt_event, fx_etaria, fx_etaria.num) %>%
       dplyr::summarise(
         Y = sum(Y), .groups = "keep"
       )
@@ -115,7 +115,7 @@ nowcasting_age <- function(dados.age){
                               dados = dados.age,
                               idx = index.missing)
 
-  srag.pred.0 <- bind_rows(tibble.samples.0, .id = "sample")
+  srag.pred.0 <- dplyr::bind_rows(tibble.samples.0, .id = "sample")
 
   return(srag.pred.0)
 

@@ -1,21 +1,21 @@
-#' Title
+#' Dados_w
 #'
-#' @param dados
-#' @param trim.data
-#' @param bins_age
+#' @param dataset dataset to be formatted as data by week
+#' @param trim.data How much to trim of the data?
+#' @param bins_age Bins of age to cu the data, parsing from nowcasting_inla
+#' @param age_col Age column to be where to  cut the data into age classes
 #'
-#' @return
+#' @return Data in weeks
 #' @export
 #'
 #' @examples
-dados.w<-function(dados,
+dados.w<-function(dataset,
                   trim.data,
                   bins_age = c("SI-PNI", "10 years", "5 years", bins_age),
                   age_col){
   # Loading packages
   require(tidyr)
   require(dplyr)
-  require(stringr)
   require(lubridate)
 
   ## Data da ultima digitacão
@@ -30,7 +30,7 @@ dados.w<-function(dados,
   }
 
   ## Data máxima de digitação a considerar
-  DT_max <- max(dados$DT_DIGITA, na.rm = T) - trim.data
+  DT_max <- max(dataset$DT_DIGITA, na.rm = T) - trim.data
 
   # Dia da semana da ultima digitação
   DT_max_diadasemana <- as.integer(format(DT_max, "%w"))
@@ -73,8 +73,8 @@ dados.w<-function(dados,
   }
 
 
-  dados_w <- dados %>%
-    dplyr::filter(DT_DIGITA <= DT_max, epiyear(DT_SIN_PRI) >= 2021 &
+  dados_w <- dataset %>%
+    dplyr::filter(DT_DIGITA <= DT_max, lubridate::epiyear(DT_SIN_PRI) >= 2021 &
              {{age_col}} <= max(bins_age)) %>%
     tidyr::drop_na({{age_col}}) %>%
     dplyr::mutate(

@@ -1,4 +1,4 @@
-# Nowcasting SRAG by age group
+#' nowcasting_inla
 #'
 #' @description function to estimate amount of events already started by not yet notified.
 #' The main use is to estimate how many cases in a outbreak has already started their onset date of symptons
