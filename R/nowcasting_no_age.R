@@ -16,7 +16,7 @@ nowcasting_no_age <- function(dados.age){
   index.missing <- which(is.na(dados.age$Y))
 
   ## Model equation: intercept + f(time random effect) + f(Delay random effect)
-  ## Y(t,Age) ~ 1 + rw2(t) + rw1(delay),
+  ## Y(t) ~ 1 + rw2(t) + rw1(delay),
   ## prec(rw2) ~ logGamma(10e-3, 10e-3), prec(rw1) ~ logGamma(10e-3, 10e-3)
   model <- Y ~ 1 +
     f(Time,
