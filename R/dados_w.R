@@ -75,7 +75,7 @@ dados.w<-function(dataset,
 
   dados_w <- dataset %>%
     dplyr::filter(DT_DIGITA <= DT_max, lubridate::epiyear(DT_SIN_PRI) >= 2021 &
-             Idade <= max(bins_age)) %>%
+             {{age_col}} <= max(bins_age)) %>%
     tidyr::drop_na({{age_col}}) %>%
     dplyr::mutate(
       # Alterando a data para o primeiro dia da semana
@@ -88,7 +88,7 @@ dados.w<-function(dataset,
         as.integer(format(DT_DIGITA, "%w")) -
         (6-DT_max_diadasemana),
       Delay = as.numeric(DT_DIGITA - DT_SIN_PRI) / 7,
-      fx_etaria = cut(Idade,
+      fx_etaria = cut({{age_col}},
                       breaks = bins_age,
                       labels = labels_age,
                       right = F)
