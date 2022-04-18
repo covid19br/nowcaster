@@ -34,7 +34,8 @@ nowcasting.summary <- function(trajetory, age = F){
     output$age <- age.summy
 
   }else{
-    output <- total.summy
+    output<- list()
+    output$total <- total.summy
   }
 
 

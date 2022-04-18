@@ -109,12 +109,13 @@ nowcasting_inla <- function(dataset,
 
   ## Filtering data to the parameters setted above
   if(missing(age_col)){
-    dados_w<-dados.w_no_age(dados = dados,
+    dados_w<-dados.w_no_age(dataset = dados,
                             trim.data = trim.data)
   }else {
-    dados_w <- dados.w(dados = dados,
+    dados_w <- dados.w(dataset = dados,
                        bins_age = bins_age,
-                       trim.data = trim.data, age_col = {{age_col}})
+                       trim.data = trim.data,
+                       age_col = {{age_col}})
   }
 
   ## Parameters of Nowcasting estimate
@@ -210,12 +211,23 @@ nowcasting_inla <- function(dataset,
   ## a ultima data de primeiro sintomas foi jogada pra até uma semana atrás
 
 
-  ## Nowcasting estimate
-  sample.now <- nowcasting_age(dados.age = dados.inla)
 
-  ## Summary on the posteriors of nowcasting
-  now_summary<-nowcasting.summary(sample.now,
-                                  age = T)
+  if(missing(age_col)){
+    ## Nowcasting estimate
+    sample.now <- nowcasting_no_age(dados.age = dados.inla)
+
+    ## Summary on the posteriors of nowcasting
+    now_summary<-nowcasting.summary(sample.now,
+                                    age = F)
+  } else {
+    ## Nowcasting estimate
+    sample.now <- nowcasting_age(dados.age = dados.inla)
+
+    ## Summary on the posteriors of nowcasting
+    now_summary<-nowcasting.summary(sample.now,
+                                    age = T)
+  }
+
 
   ## Objects to be returned
   if(data.by.week){

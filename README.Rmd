@@ -50,10 +50,8 @@ Now we call the nowcasting function, it has by default the parametrization of ta
 
 ```{r nowcasting}
 nowcasting_bh<-nowcasting_inla(dataset = data, 
-                               bins_age = "10 years", 
-                               data.by.week = T, 
-                               return.age = T, 
-                               age_col = Idade)
+                               # bins_age = "10 years", 
+                               data.by.week = T)
 ```
 
 ## Plotting
