@@ -13,7 +13,7 @@ nowcasting.summary <- function(trajetory, age = F){
     dplyr::group_by(Time, dt_event, sample) %>%
     dplyr::summarise(Y = sum(Y, na.rm = T)) %>%
     dplyr::group_by(Time, dt_event) %>%
-    dplyr::summarise(Median = median(Y, na.rm = T),
+    dplyr::summarise(Median = stats::median(Y, na.rm = T),
                      LI = stats::quantile(Y, probs = 0.025, na.rm = T),
                      LS = stats::quantile(Y, probs = 0.975, na.rm = T),
                      LIb = stats::quantile(Y, probs = 0.25, na.rm = T),
@@ -22,7 +22,7 @@ nowcasting.summary <- function(trajetory, age = F){
   if(age){
     age.summy <- trajetory %>%
       dplyr::group_by(Time, dt_event, fx_etaria, fx_etaria.num) %>%
-      dplyr::summarise(Median = median(Y, na.rm = T),
+      dplyr::summarise(Median = stats::median(Y, na.rm = T),
                        LI = stats::quantile(Y, probs = 0.025, na.rm = T),
                        LS = stats::quantile(Y, probs = 0.975, na.rm = T),
                        LIb = stats::quantile(Y, probs = 0.25, na.rm = T),
