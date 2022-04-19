@@ -14,6 +14,12 @@ dados.w_no_age<-function(dataset,
   require(dplyr)
   require(lubridate)
 
+  ## Data máxima de digitação a considerar
+  DT_max <- max(dataset$DT_DIGITA, na.rm = T) - trim.data
+
+  # Dia da semana da ultima digitação
+  DT_max_diadasemana <- as.integer(format(DT_max, "%w"))
+
   dados_w <- dataset %>%
     dplyr::filter(DT_DIGITA <= DT_max, lubridate::epiyear(DT_SIN_PRI) >= 2021) %>%
     dplyr::mutate(

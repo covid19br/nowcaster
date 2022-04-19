@@ -63,7 +63,7 @@ This calling will return only the nowcasting estimate and its Confidence Interva
 `nowcasting_inla` has the option to return the curve out of the window of action of the model, if the `data.by.week` is flagged as ``TRUE` it returns on the third element of the output list the summarized data by week. 
 
 ```{r no_age_data}
-nowcasting_bh_no_age<-nowcasting_inla(dataset = data, data.by.week = T)
+nowcasting_bh_no_age <- nowcasting_inla(dataset = data, data.by.week = T)
 head(nowcasting_bh_no_age$dados)
 ```
 
