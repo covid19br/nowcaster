@@ -1,4 +1,4 @@
-#' nowcasting_age
+#' nowcasting_no_age
 #'
 #' @param dataset data pre formatted in to age classes and delays by week for each cases, delay triangle format
 #'
@@ -6,7 +6,7 @@
 #' @export
 #'
 #' @examples
-nowcasting_age <- function(dados.age){
+nowcasting_no_age <- function(dados.age){
 
   # ## Loading packages
   require(INLA)
@@ -15,26 +15,18 @@ nowcasting_age <- function(dados.age){
 
   index.missing <- which(is.na(dados.age$Y))
 
-  dados.age <- dados.age %>%
-    dplyr::mutate(
-      fx_etaria.num = as.numeric(fx_etaria),
-      # delay.grp = inla.group(delay, n = 20)
-    )
-
-  ## Model equation: intercept + age + f(time random effect | age) + f(Delay random effect | age)
-  ## Y(t,Age) ~ 1 + Age + rw2(t,Age) + rw1(delay, Age),
+  ## Model equation: intercept + f(time random effect) + f(Delay random effect)
+  ## Y(t) ~ 1 + rw2(t) + rw1(delay),
   ## prec(rw2) ~ logGamma(10e-3, 10e-3), prec(rw1) ~ logGamma(10e-3, 10e-3)
-  model <- Y ~ 1 + fx_etaria +
+  model <- Y ~ 1 +
     f(Time,
       model = "rw2",
       hyper = list("prec" = list(prior = "loggamma",
                                  param = c(0.001, 0.001))
-      ),
-      group = fx_etaria.num, control.group = list(model = "iid")) +
+      )) +
     f(delay, model = "rw1",
       hyper = list("prec" = list(prior = "loggamma",
-                                 param = c(0.001, 0.001))),
-      group = fx_etaria.num, control.group = list(model = "iid")
+                                 param = c(0.001, 0.001)))
     )
 
   ## Age-Delay effects
@@ -56,16 +48,16 @@ nowcasting_age <- function(dados.age){
   #                   )
   #   )
   # }else{
-    ## Running the Negative Binomial model in INLA
+  ## Running the Negative Binomial model in INLA
   output0 <- INLA::inla(model, family = "nbinomial",
-                  data = dados.age,
-                  control.predictor = list(link = 1, compute = T),
-                  control.compute = list( config = T, waic=F, dic=F),
-                  control.family = list(
-                    hyper = list("theta" = list(prior = "loggamma",
-                                                param = c(0.001, 0.001))
-                    )
-                  )
+                        data = dados.age,
+                        control.predictor = list(link = 1, compute = T),
+                        control.compute = list( config = T, waic=F, dic=F),
+                        control.family = list(
+                          hyper = list("theta" = list(prior = "loggamma",
+                                                      param = c(0.001, 0.001))
+                          )
+                        )
   )
 
   # }
@@ -83,11 +75,11 @@ nowcasting_age <- function(dados.age){
                               # if(zeroinflated){
                               #   unif.log <- as.numeric(runif(idx,0,1) < x$hyperpar[2])
                               # }else{
-                                unif.log = 1
+                              unif.log = 1
                               # }
                               stats::rnbinom(n = idx,
-                                      mu = exp(x$latent[idx]),
-                                      size = x$hyperpar[1]
+                                             mu = exp(x$latent[idx]),
+                                             size = x$hyperpar[1]
                               ) * unif.log
                             } )
 
@@ -102,7 +94,7 @@ nowcasting_age <- function(dados.age){
       ## do domingo da respectiva ultima epiweek
       ## com dados faltantes
       dplyr::filter(Time >= Tmin  ) %>%
-      dplyr::group_by(Time, dt_event, fx_etaria, fx_etaria.num) %>%
+      dplyr::group_by(Time, dt_event) %>%
       dplyr::summarise(
         Y = sum(Y), .groups = "keep"
       )

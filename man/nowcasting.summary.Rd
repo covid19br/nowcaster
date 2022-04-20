@@ -2,18 +2,18 @@
 % Please edit documentation in R/nowcasting.summary.R
 \name{nowcasting.summary}
 \alias{nowcasting.summary}
-\title{Title}
+\title{nowcasting.summary}
 \usage{
-nowcasting.summary(trajetoria, age = F)
+nowcasting.summary(trajetory, age = F)
 }
 \arguments{
-\item{trajetoria}{}
+\item{age}{Is by age data? \link{Default} FALSE, If its TRUE it will have columns  for age class, fx_etaria e fx_etaria.num}
 
-\item{age}{}
+\item{trajectory}{Trajectories to be summarized, trajectory should have sample, Time, dt_event and Y columns.}
 }
 \value{
 
 }
 \description{
-Title
+nowcasting.summary
 }
