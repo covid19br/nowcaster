@@ -32,9 +32,6 @@ To install `nowcaster` package simply run the code below in R:
 devtools::install_github("https://github.com/covid19br/nowcaster")
 ```
 
-    ## Skipping install of 'nowcaster' from a github remote, the SHA1 (06224452) has not changed since last install.
-    ##   Use `force = TRUE` to force installation
-
 After installing you can load the by typical library:
 
 ``` r
@@ -98,84 +95,18 @@ as input, here the `LazyData` loaded in the namespace of the package.
 
 ``` r
 nowcasting_bh_no_age<-nowcasting_inla(dataset = data)
-```
-
-    ## Carregando pacotes exigidos: tidyverse
-
-    ## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
-
-    ## v ggplot2 3.3.5     v purrr   0.3.4
-    ## v tibble  3.1.6     v dplyr   1.0.8
-    ## v tidyr   1.2.0     v stringr 1.4.0
-    ## v readr   2.1.2     v forcats 0.5.1
-
-    ## Warning: package 'dplyr' was built under R version 4.1.3
-
-    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
-    ## x dplyr::filter() masks stats::filter()
-    ## x dplyr::lag()    masks stats::lag()
-
-    ## Warning in nowcasting_inla(dataset = data): Using 'SI-PNI' age bins!
-
-    ## Warning in nowcasting_inla(dataset = data): Using default to trim dates,
-    ## trim.data = 0
-
-    ## Warning in nowcasting_inla(dataset = data): Using default to maximum delay, Dmax
-    ## = 15
-
-    ## Warning in nowcasting_inla(dataset = data): Using default to window of action,
-    ## wdw = 30
-
-    ## Warning in nowcasting_inla(dataset = data): Using default to returning option
-    ## for the data, data.by.week = FALSE
-
-    ## Warning in nowcasting_inla(dataset = data): Using default to returning estimate
-    ## by age, return.age = TRUE
-
-    ## Warning in nowcasting_inla(dataset = data): Age_col missing, nowcasting with
-    ## unstructured data
-
-    ## Carregando pacotes exigidos: lubridate
-
-    ## 
-    ## Attaching package: 'lubridate'
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     date, intersect, setdiff, union
-
-    ## Joining, by = "DT_SIN_PRI"
-    ## Joining, by = c("DT_SIN_PRI", "delay", "Time")
-    ## Carregando pacotes exigidos: INLA
-    ## Carregando pacotes exigidos: Matrix
-    ## Attaching package: 'Matrix'
-    ## The following objects are masked from 'package:tidyr':
-    ## 
-    ## expand, pack, unpack
-    ## Carregando pacotes exigidos: foreach
-    ## Attaching package: 'foreach'
-    ## The following objects are masked from 'package:purrr':
-    ## 
-    ## accumulate, when
-    ## Carregando pacotes exigidos: parallel
-    ## Carregando pacotes exigidos: sp
-    ## This is INLA_21.11.22 built 2021-11-21 16:10:15 UTC. - See
-    ## www.r-inla.org/contact-us for how to get help. - Save 80Mb of storage running
-    ## 'inla.prune()'
-
-``` r
 head(nowcasting_bh_no_age$total)
 ```
 
     ## # A tibble: 6 x 7
     ##    Time dt_event   Median    LI    LS   LIb   LSb
     ##   <int> <date>      <dbl> <dbl> <dbl> <dbl> <dbl>
-    ## 1    17 2021-12-13    625  621   632    623   627
-    ## 2    18 2021-12-20    695  687   707    692   698
-    ## 3    19 2021-12-27    812  800   831    808   817
-    ## 4    20 2022-01-03    886  870   910.   880   893
-    ## 5    21 2022-01-10    818  800.  844    810   826
-    ## 6    22 2022-01-17    631  611.  658.   623   640
+    ## 1    17 2021-12-13    625  621   633    623   627
+    ## 2    18 2021-12-20    695  688.  707    692   699
+    ## 3    19 2021-12-27    812  800   830.   807   817
+    ## 4    20 2022-01-03    886  871   907    880   893
+    ## 5    21 2022-01-10    819  799.  844.   811   826
+    ## 6    22 2022-01-17    631  609   660    622   640
 
 This calling will return only the nowcasting estimate and its Confidence
 Interval (CI) for two different Credible interval, `LIb` and `LSb` are
@@ -189,30 +120,6 @@ week.
 
 ``` r
 nowcasting_bh_no_age <- nowcasting_inla(dataset = data, data.by.week = T)
-```
-
-    ## Warning in nowcasting_inla(dataset = data, data.by.week = T): Using 'SI-PNI' age
-    ## bins!
-
-    ## Warning in nowcasting_inla(dataset = data, data.by.week = T): Using default to
-    ## trim dates, trim.data = 0
-
-    ## Warning in nowcasting_inla(dataset = data, data.by.week = T): Using default to
-    ## maximum delay, Dmax = 15
-
-    ## Warning in nowcasting_inla(dataset = data, data.by.week = T): Using default to
-    ## window of action, wdw = 30
-
-    ## Warning in nowcasting_inla(dataset = data, data.by.week = T): Using default to
-    ## returning estimate by age, return.age = TRUE
-
-    ## Warning in nowcasting_inla(dataset = data, data.by.week = T): Age_col missing,
-    ## nowcasting with unstructured data
-
-    ## Joining, by = "DT_SIN_PRI"
-    ## Joining, by = c("DT_SIN_PRI", "delay", "Time")
-
-``` r
 head(nowcasting_bh_no_age$dados)
 ```
 
@@ -290,27 +197,6 @@ nowcasting_bh_age<-nowcasting_inla(dataset = data,
                                    age_col = Idade)
 ```
 
-    ## Warning in nowcasting_inla(dataset = data, bins_age = "10 years", data.by.week =
-    ## T, : Using default to trim dates, trim.data = 0
-
-    ## Warning in nowcasting_inla(dataset = data, bins_age = "10 years", data.by.week =
-    ## T, : Using default to maximum delay, Dmax = 15
-
-    ## Warning in nowcasting_inla(dataset = data, bins_age = "10 years", data.by.week =
-    ## T, : Using default to window of action, wdw = 30
-
-    ## Warning in nowcasting_inla(dataset = data, bins_age = "10 years", data.by.week =
-    ## T, : Using default to returning estimate by age, return.age = TRUE
-
-    ## Warning in dados.w(dataset = dados, bins_age = bins_age, trim.data =
-    ## trim.data, : Using default, trimming out 0 days of data
-
-    ## Warning in dados.w(dataset = dados, bins_age = bins_age, trim.data =
-    ## trim.data, : Bins age in 10 years: 0 10 20 30 40 50 60 70 80 90+
-
-    ## Joining, by = "DT_SIN_PRI"
-    ## Joining, by = c("DT_SIN_PRI", "delay", "fx_etaria", "Time")
-
 Each of the estimates returned by `nowcasting_inla` has the same form as
 in the non-structured case, on the nowcasting estimates it returns a
 data.frame with the Median and its CI by credibility of 50% (LIb and
@@ -351,11 +237,7 @@ nowcasting_bh_age$total$type<-"Age structured"
 
 nowcasting_bh_total<-nowcasting_bh_age$total %>% 
   full_join(nowcasting_bh_no_age$total)
-```
 
-    ## Joining, by = c("Time", "dt_event", "Median", "LI", "LS", "LIb", "LSb", "type")
-
-``` r
 nowcasting_bh_total %>% 
   ggplot(aes(x = dt_event, y = Median, col = type))+
   geom_line(show.legend = F)+
