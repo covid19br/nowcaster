@@ -15,7 +15,7 @@
 #' [Default] 30 weeks.
 #' @param data.by.week If it has to be returned the whole time-series data.
 #' [Default] FALSE.
-#' @param return.age If the estimate by Age should be returned.
+#' @param return.age [Depracted] If the estimate by Age should be returned.
 #' [Default] TRUE.
 #' @param bins_age Age bins to do the nowcasting, it receive a vector of age bins,
 #' or options between, "SI-PNI", "10 years", "5 years".
@@ -39,9 +39,10 @@ nowcasting_inla <- function(dataset,
                             wdw = 30,
                             age_col,
                             data.by.week = FALSE,
-                            return.age = T,
-                            silent = F,
+                            # return.age = NULL,
+                            # silent = F,
                             K = 0,
+                            trajectories = F,
                             ...){
 
   # ## Loading required packages
@@ -109,10 +110,10 @@ nowcasting_inla <- function(dataset,
 
   ## Filtering data to the parameters setted above
   if(missing(age_col)){
-    dados_w<-dados.w_no_age(dataset = dados,
+    dados_w<-nowcaster::dados.w_no_age(dataset = dados,
                             trim.data = trim.data)
   }else {
-    dados_w <- dados.w(dataset = dados,
+    dados_w <- nowcaster::dados.w(dataset = dados,
                        bins_age = bins_age,
                        trim.data = trim.data,
                        age_col = {{age_col}})
@@ -211,7 +212,6 @@ nowcasting_inla <- function(dataset,
   ## a ultima data de primeiro sintomas foi jogada pra até uma semana atrás
 
 
-
   if(missing(age_col)){
     ## Nowcasting estimate
     sample.now <- nowcasting_no_age(dados.age = dados.inla)
@@ -219,6 +219,7 @@ nowcasting_inla <- function(dataset,
     ## Summary on the posteriors of nowcasting
     now_summary<-nowcasting.summary(sample.now,
                                     age = F)
+    l<-1
   } else {
     ## Nowcasting estimate
     sample.now <- nowcasting_age(dados.age = dados.inla)
@@ -226,21 +227,38 @@ nowcasting_inla <- function(dataset,
     ## Summary on the posteriors of nowcasting
     now_summary<-nowcasting.summary(sample.now,
                                     age = T)
+    l<-0
   }
 
-
   ## Objects to be returned
+
   if(data.by.week){
-    now_summary[[3]]<-dados_w
-    names(now_summary)[3]<-"dados"
-    return(now_summary)
+
+    now_summary[[3-l]]<-dados_w
+    names(now_summary)[3-l]<-"dados"
+
+    if(trajectories){
+      now_summary[[4-l]]<-sample.now
+      names(now_summary)[4-l]<-"trajectories"
+    }
+  } else {
+    if(trajectories){
+      now_summary[[3-l]]<-sample.now
+      names(now_summary)[3-l]<-"trajectories"
+    }
   }
 
   ## Returning Age
-  if(!return.age){
-    now_summary <- now_summary$total
-    return(now_summary)
-  }
+  # if(!return.age){
+  #   if(trajectories){
+  #     now_summary<-now_summary$total
+  #
+  #     now_summary[[4]]<-sample.now
+  #     names(now_summary)[4]<-"trajectories"
+  #   } else {
+  #     now_summary <- now_summary$total
+  #   }
+  # }
 
   return(now_summary)
 
