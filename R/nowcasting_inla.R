@@ -40,7 +40,7 @@ nowcasting_inla <- function(dataset,
                             age_col,
                             data.by.week = FALSE,
                             # return.age = NULL,
-                            # silent = F,
+                            silent = F,
                             K = 0,
                             trajectories = F,
                             ...){
