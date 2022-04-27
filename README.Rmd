@@ -9,9 +9,10 @@ knitr::opts_chunk$set(echo = TRUE)
 # nowcaster <a href='https://github.com/covid19br/nowcaster'><img src='man/figures/nowcaster.png' align="right" width="140" /></a> <a href='https://github.com/covid19br/nowcaster'><img src='man/figures/nowcaster_rev.png' align="right" width="140" /></a>
 
 
-`nowcaster` is a R package for "nowcasting" epidemiological time-series. Every single system of notification has a intrinsic delay, `nowcaster` can estimate how many counts of any epidemiological data of interest (*i.e.*, daily cases and deaths counts) by fitting a binomial negative model to the time steps of delay between onset date of the event, (*i.e.*, date of first symptoms for cases or date of occurrence of death) and the date of report (*i.e.*, date of notification of the case or death)
+`nowcaster` is a R package for "nowcasting" epidemiological time-series. Every single system of notification has an intrinsic delay, `nowcaster` can estimate how many counts of any epidemiological data of interest (*i.e.*, daily cases and deaths counts) by fitting a negative binomial model to the time steps of delay between onset date of the event, (*i.e.*, date of first symptoms for cases or date of occurrence of death) and the date of report (*i.e.*, date of notification of the case or death).
 
-`nowcaster` is based on the [`R-INLA`](https://becarioprecario.bitbucket.io/inla-gitbook/index.html) and [`INLA`](https://inla.r-inla-download.org/r-inla.org/doc/inla-manual/inla-manual.pdf) packages for "**I**ntegrated **N**ested **L**aplace **A**pproximation" algorithm to Bayesian inference. `INLA` is an alternative to others methods for Bayesian inference like **MCMC**, An introduction to `INLA` can be found [here](https://becarioprecario.bitbucket.io/inla-gitbook/index.html).
+`nowcaster` is based on the [`R-INLA`](https://becarioprecario.bitbucket.io/inla-gitbook/index.html) and [`INLA`](https://inla.r-inla-download.org/r-inla.org/doc/inla-manual/inla-manual.pdf) packages for "**I**ntegrated **N**ested **L**aplace **A**pproximation" algorithm to Bayesian inference. `INLA` is a fast alternative to others methods for Bayesian inference like **MCMC**. 
+An introduction to `INLA` can be found [here](https://becarioprecario.bitbucket.io/inla-gitbook/index.html).
 
 `nowcaster` is build for epidemiological emergency use, it was constructed for the Brazilian Severe Acute Respiratory Illness (SARI) surveillance database (SIVEP-Gripe). 
 
@@ -32,7 +33,7 @@ library(nowcaster)
 
 ## First example on LazyData
 
-When the package is loaded it disponibilize a LazyData file, `sariBH`, it is a annonymized records of Severe Acute Respiratory Illness notified in the city of Belo Horizonte, since March 2020. To load it basically write:
+When the package is loaded it disponibilize a LazyData file, `sariBH`, it is a annonymized records of Severe Acute Respiratory Illness notified in the city of Belo Horizonte, since March 2020 to April 2022. To load it basically write:
 
 ```{r data-bh}
 data<-sragBH
@@ -44,17 +45,19 @@ And we take a look on the data:
 head(data)
 ```
 
-It is a data.frame with 7 variables and 65,404 observations. We will make use of only the first two columns, "DT_SIN_PRI" and "DT_DIGITA" as well the column "Idade" to make age structured nowcasting.
+It is a data.frame with 7 variables and 65,404 observations. We will make use of only the first two columns, "DT_SIN_PRI" (date of onset symptoms) and "DT_DIGITA" (recording date) as well the column "Idade" (age in years) to make age structured nowcasting.
 
 ## Non-structured data
 
-Now we call the nowcasting function, it has by default the parametrization to take the data and estimate with a non-structured data form. The estimate fits a $NegBinom(\lambda_{\tau}, t)$ distribution to the cases count at time $t$ with delay $\lambda_\tau$. The distribution is parametrize through assuming a random effect to the delay $\lambda_\tau$ distribution given by a $rw1$ and a random effect to the time $t$ given by a $rw2$. So, the model is:
+Now we call the nowcasting function, it has by default the parametrization to take the data and estimate with a non-structured data form. The estimate fits a negative binomial distribution, $NegBinom(\lambda_{t,d}, \phi)$, to the cases count at time $t$ with delay $d$, $\phi$ is the dispersion parameter. The rate $\lambda_{t,d}$ is then parameterized in a log-linear format by a constant term added by structured delay random effects and structured time random effects. Hence, the model isgiven by the following:
+$$Y_{t,d} \sim  NegBinom(\lambda_{t,d}, \phi), \quad t=1,2,\ldots,T, \quad d=1,2,\ldots,D,$$
+$$\log(\lambda_{t,d}) =  \alpha + \beta_t + \gamma_d.$$
+where the intercep $\alpha$ follows is Gaussian distribution with a very large variance, $\beta_t$ is follows a second order random walk with precision $\tau_\beta$, $\gamma_d$ a first-order random walk with precision $\tau_\gamma$. The model is then completed by INLA default prior distributions for $\phi$, $\tau_\beta$, and $\tau_\gamma$. See nbinom, rw1 and rw2 INLA help pages.
 
-$$Y_t \sim  1 + rw2(t) + rw1(delay)$$
 The call of the function is straightforward, it simply needs a dataset as input, here the `LazyData` loaded in the namespace of the package.
 
 ```{r no_age}
-nowcasting_bh_no_age<-nowcasting_inla(dataset = data)
+nowcasting_bh_no_age <- nowcasting_inla(dataset = data)
 head(nowcasting_bh_no_age$total)
 ```
 
