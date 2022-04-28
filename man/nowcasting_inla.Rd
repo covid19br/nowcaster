@@ -12,9 +12,10 @@ nowcasting_inla(
   wdw = 30,
   age_col,
   data.by.week = FALSE,
-  return.age = T,
+  return.age = NULL,
   silent = F,
   K = 0,
+  trajectories = F,
   ...
 )
 }
@@ -40,7 +41,7 @@ or options between, "SI-PNI", "10 years", "5 years".
 \item{data.by.week}{If it has to be returned the whole time-series data.
 \link{Default} FALSE.}
 
-\item{return.age}{If the estimate by Age should be returned.
+\item{return.age}{\link{Depracted} If the estimate by Age should be returned.
 \link{Default} TRUE.}
 
 \item{silent}{\link{Depracted} Should be the warnings turned off?
