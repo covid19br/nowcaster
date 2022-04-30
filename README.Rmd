@@ -56,7 +56,7 @@ It is a data.frame with 7 variables and 65,404 observations. We will make use of
 Now we call the nowcasting function, it has by default the parametrization to take the data and estimate with a non-structured data form. The estimate fits a negative binomial distribution, $NegBinom(\lambda_{t,d}, \phi)$, to the cases count at time $t$ with delay $d$, $\phi$ is the dispersion parameter. The rate $\lambda_{t,d}$ is then parameterized in a log-linear format by a constant term added by structured delay random effects and structured time random effects. Hence, the model isgiven by the following:
 
 $$Y_{t,d} \sim  NegBinom(\lambda_{t,d}, \phi), \quad t=1,2,\ldots,T, \quad d=1,2,\ldots,D, \\
-\log(\lambda_{t,d}) =  \alpha + \beta_t + \gamma_d.$$
+\log(\lambda_{t,d}) =  \alpha + \beta_t + \gamma_d$$
 
 where the intercept $\alpha$ follows is Gaussian distribution with a very large variance, $\beta_t$ is follows a second order random walk with precision $\tau_\beta$, $\gamma_d$ a first-order random walk with precision $\tau_\gamma$. The model is then completed by INLA default prior distributions for $\phi$, $\tau_\beta$, and $\tau_\gamma$. See nbinom, rw1 and rw2 INLA help pages.
 
@@ -105,7 +105,7 @@ nowcasting_bh_no_age$total %>%
 For the structured data the `nowcasting_inla()` fits again a Negative binomial distribution to the cases count at time $t$ with delay $d$. Differently, from the non-structured case the model now gives random effects to the delay distribution and and time distribution by each of the age-class chosen by the user to break the data. The model has the form now:
 
 $$Y_{t,d,a} \sim  NegBinom(\lambda_{t,d,a}, \phi), \quad t=1,2,\ldots,T, \quad d=1,2,\ldots,D, a=1,2,\ldots,A \\
-\log(\lambda_{t,d,a}) =  \alpha_a + \beta_{t,a} + \gamma_{d,a}.$$
+\log(\lambda_{t,d,a}) =  \alpha_a + \beta_{t,a} + \gamma_{d,a}$$
 
 where each age class, $a$, has an intercept $\alpha_a$ following a Gaussian distribution with a very large variance, the time-age random effects, $\beta_{t,a}$, follow a joint multivariate Gaussian distribution with a separable variance components an independent Gaussian term for the age classes with precision $\tau_{age,\beta}$ and a second order random walk term for the time with precision $\tau_{\beta}$. Analogously, the delay-age random effects, $\gamma_{d,a}$, follow a joint multivariate Gaussian distribution with a separable variance components an independent Gaussian term for the age classes with precision $\tau_{age,\gamma}$ and a first order random walk term for the time with precision $\tau_{\gamma}$. The model is then completed by INLA default prior distributions for $\phi$, $\tau_{age,\beta}$, $\tau_{age,\gamma}$, $\tau_{\beta}$ and $\tau_\gamma$. See nbinom, iid, rw1 and rw2 INLA help pages.
 

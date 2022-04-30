@@ -32,6 +32,14 @@ To install `nowcaster` package simply run the code below in R:
 devtools::install_github("https://github.com/covid19br/nowcaster")
 ```
 
+    ## 
+    ## * checking for file ‘/tmp/Rtmpcj1Nh2/remotes3c44f8230ba406/covid19br-nowcaster-e3ea8bc/DESCRIPTION’ ... OK
+    ## * preparing ‘nowcaster’:
+    ## * checking DESCRIPTION meta-information ... OK
+    ## * checking for LF line-endings in source and make files and shell scripts
+    ## * checking for empty or unneeded directories
+    ## * building ‘nowcaster_0.1.0.tar.gz’
+
 After installing you can load the by typical library:
 
 ``` r
@@ -78,8 +86,10 @@ at time *t* with delay *d*, *ϕ* is the dispersion parameter. The rate
 *λ*<sub>*t*, *d*</sub> is then parameterized in a log-linear format by a
 constant term added by structured delay random effects and structured
 time random effects. Hence, the model isgiven by the following:
-*Y*<sub>*t*, *d*</sub> ∼ *N**e**g**B**i**n**o**m*(*λ*<sub>*t*, *d*</sub>,*ϕ*),  *t* = 1, 2, …, *T*,  *d* = 1, 2, …, *D*,
-log (*λ*<sub>*t*, *d*</sub>) = *α* + *β*<sub>*t*</sub> + *γ*<sub>*d*</sub>.
+
+$$Y\_{t,d} \\sim  NegBinom(\\lambda\_{t,d}, \\phi), \\quad t=1,2,\\ldots,T, \\quad d=1,2,\\ldots,D, \\\\
+\\log(\\lambda\_{t,d}) =  \\alpha + \\beta_t + \\gamma_d$$
+
 where the intercept *α* follows is Gaussian distribution with a very
 large variance, *β*<sub>*t*</sub> is follows a second order random walk
 with precision *τ*<sub>*β*</sub>, *γ*<sub>*d*</sub> a first-order random
@@ -98,12 +108,12 @@ head(nowcasting_bh_no_age$total)
     ## # A tibble: 6 × 7
     ##    Time dt_event   Median    LI    LS   LIb   LSb
     ##   <int> <date>      <dbl> <dbl> <dbl> <dbl> <dbl>
-    ## 1    17 2021-12-13    625   621   632   623   627
-    ## 2    18 2021-12-20    694   688   708   691   698
-    ## 3    19 2021-12-27    811   801   828   807   816
-    ## 4    20 2022-01-03    886   871   908   880   893
-    ## 5    21 2022-01-10    818   800   847   811   827
-    ## 6    22 2022-01-17    631   610   660   623   640
+    ## 1    17 2021-12-13    625  621    632  623    627
+    ## 2    18 2021-12-20    695  688    707  692    699
+    ## 3    19 2021-12-27    812  801.   829  807    817
+    ## 4    20 2022-01-03    886  872    909  881.   893
+    ## 5    21 2022-01-10    817  799    844  811.   826
+    ## 6    22 2022-01-17    631  610    661  623    640
 
 This calling will return only the nowcasting estimate and its Confidence
 Interval (CI) for two different Credible interval, `LIb` and `LSb` are
@@ -167,8 +177,9 @@ effects to the delay distribution and and time distribution by each of
 the age-class chosen by the user to break the data. The model has the
 form now:
 
-$$Y\_{t,d,a} \\sim  NegBinom(\\lambda\_{t,d,a}, \\phi), \\quad t=1,2,\\ldots,T, \\quad d=1,2,\\ldots,D, $a=1,2,\\ldots,A$$
-log (*λ*<sub>*t*, *d*, *a*</sub>) = *α*<sub>*a*</sub> + *β*<sub>*t*, *a*</sub> + *γ*<sub>*d*, *a*</sub>.
+$$Y\_{t,d,a} \\sim  NegBinom(\\lambda\_{t,d,a}, \\phi), \\quad t=1,2,\\ldots,T, \\quad d=1,2,\\ldots,D, a=1,2,\\ldots,A \\\\
+\\log(\\lambda\_{t,d,a}) =  \\alpha_a + \\beta\_{t,a} + \\gamma\_{d,a}$$
+
 where each age class, *a*, has an intercept *α*<sub>*a*</sub> following
 a Gaussian distribution with a very large variance, the time-age random
 effects, *β*<sub>*t*, *a*</sub>, follow a joint multivariate Gaussian
