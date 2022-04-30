@@ -13,9 +13,10 @@ knitr::opts_chunk$set(
 # nowcaster <a href='https://github.com/covid19br/nowcaster'><img src='man/figures/nowcaster.png' align="right" width="140" /></a> <a href='https://github.com/covid19br/nowcaster'><img src='man/figures/nowcaster_rev.png' align="right" width="140" /></a>
 
 
-`nowcaster` is a R package for "nowcasting" epidemiological time-series. Every single system of notification has a intrinsic delay, `nowcaster` can estimate how many counts of any epidemiological data of interest (*i.e.*, daily cases and deaths counts) by fitting a binomial negative model to the time steps of delay between onset date of the event, (*i.e.*, date of first symptoms for cases or date of occurrence of death) and the date of report (*i.e.*, date of notification of the case or death)
+`nowcaster` is a R package for "nowcasting" epidemiological time-series. Every single system of notification has an intrinsic delay, `nowcaster` can estimate how many counts of any epidemiological data of interest (*i.e.*, daily cases and deaths counts) by fitting a negative binomial model to the time steps of delay between onset date of the event, (*i.e.*, date of first symptoms for cases or date of occurrence of death) and the date of report (*i.e.*, date of notification of the case or death).
 
-`nowcaster` is based on the [`R-INLA`](https://becarioprecario.bitbucket.io/inla-gitbook/index.html) and [`INLA`](https://inla.r-inla-download.org/r-inla.org/doc/inla-manual/inla-manual.pdf) packages for "**I**ntegrated **N**ested **L**aplace **A**pproximation" algorithm to Bayesian inference. `INLA` is an alternative to others methods for Bayesian inference like **MCMC**, An introduction to `INLA` can be found [here](https://becarioprecario.bitbucket.io/inla-gitbook/index.html).
+`nowcaster` is based on the [`R-INLA`](https://becarioprecario.bitbucket.io/inla-gitbook/index.html) and [`INLA`](https://inla.r-inla-download.org/r-inla.org/doc/inla-manual/inla-manual.pdf) packages for "**I**ntegrated **N**ested **L**aplace **A**pproximation" algorithm to Bayesian inference. `INLA` is a fast alternative to others methods for Bayesian inference like **MCMC**. 
+An introduction to `INLA` can be found [here](https://becarioprecario.bitbucket.io/inla-gitbook/index.html).
 
 `nowcaster` is build for epidemiological emergency use, it was constructed for the Brazilian Severe Acute Respiratory Illness (SARI) surveillance database (SIVEP-Gripe). 
 
@@ -36,7 +37,7 @@ library(nowcaster)
 
 ## First example on LazyData
 
-When the package is loaded it disponibilize a LazyData file, `sariBH`, it is a annonymized records of Severe Acute Respiratory Illness notified in the city of Belo Horizonte, since March 2020. To load it basically write:
+When the package is loaded it disponibilize a LazyData file, `sariBH`, it is a annonymized records of Severe Acute Respiratory Illness notified in the city of Belo Horizonte, since March 2020 to April 2022. To load it basically write:
 
 ```{r data-bh}
 data<-sragBH
@@ -48,17 +49,19 @@ And we take a look on the data:
 head(data)
 ```
 
-It is a data.frame with 7 variables and 65,404 observations. We will make use of only the first two columns, "DT_SIN_PRI" and "DT_DIGITA" as well the column "Idade" to make age structured nowcasting.
+It is a data.frame with 7 variables and 65,404 observations. We will make use of only the first two columns, "DT_SIN_PRI" (date of onset symptoms) and "DT_DIGITA" (recording date) as well the column "Idade" (age in years) to make age structured nowcasting.
 
 ## Non-structured data
 
-Now we call the nowcasting function, it has by default the parametrization to take the data and estimate with a non-structured data form. The estimate fits a $NegBinom(\lambda_{\tau}, t)$ distribution to the cases count at time $t$ with delay $\lambda_\tau$. The distribution is parametrize through assuming a random effect to the delay $\lambda_\tau$ distribution given by a $rw1$ and a random effect to the time $t$ given by a $rw2$. So, the model is:
+Now we call the nowcasting function, it has by default the parametrization to take the data and estimate with a non-structured data form. The estimate fits a negative binomial distribution, $NegBinom(\lambda_{t,d}, \phi)$, to the cases count at time $t$ with delay $d$, $\phi$ is the dispersion parameter. The rate $\lambda_{t,d}$ is then parameterized in a log-linear format by a constant term added by structured delay random effects and structured time random effects. Hence, the model isgiven by the following:
+$$Y_{t,d} \sim  NegBinom(\lambda_{t,d}, \phi), \quad t=1,2,\ldots,T, \quad d=1,2,\ldots,D,$$
+$$\log(\lambda_{t,d}) =  \alpha + \beta_t + \gamma_d.$$
+where the intercept $\alpha$ follows is Gaussian distribution with a very large variance, $\beta_t$ is follows a second order random walk with precision $\tau_\beta$, $\gamma_d$ a first-order random walk with precision $\tau_\gamma$. The model is then completed by INLA default prior distributions for $\phi$, $\tau_\beta$, and $\tau_\gamma$. See nbinom, rw1 and rw2 INLA help pages.
 
-$$Y_t \sim  1 + rw2(t) + rw1(delay)$$
 The call of the function is straightforward, it simply needs a dataset as input, here the `LazyData` loaded in the namespace of the package.
 
 ```{r no_age}
-nowcasting_bh_no_age<-nowcasting_inla(dataset = data)
+nowcasting_bh_no_age <- nowcasting_inla(dataset = sragBH)
 head(nowcasting_bh_no_age$total)
 ```
 
@@ -67,7 +70,7 @@ This calling will return only the nowcasting estimate and its Confidence Interva
 `nowcasting_inla` has the option to return the curve out of the window of action of the model, if the `data.by.week` is flagged as ``TRUE` it returns on the third element of the output list the summarized data by week. 
 
 ```{r no_age_data}
-nowcasting_bh_no_age <- nowcasting_inla(dataset = data, data.by.week = T)
+nowcasting_bh_no_age <- nowcasting_inla(dataset = sragBH, data.by.week = T)
 head(nowcasting_bh_no_age$dados)
 ```
 
@@ -76,47 +79,48 @@ If this third element is groped by and summarized by the onset of symptoms date,
 ```{r no_age_plot}
 library(ggplot2)
 
-dados_by_week<-nowcasting_bh_no_age$dados %>% 
+dados_by_week <- nowcasting_bh_no_age$dados %>% 
   filter(DT_SIN_PRI >= (Sys.Date()-270)) %>% 
   group_by(DT_SIN_PRI) %>% 
   summarise(n = n())
 
 
 nowcasting_bh_no_age$total %>% 
-  ggplot(aes(x = dt_event, y = Median, col = 'Median'))+
+  ggplot(aes(x = dt_event, y = Median, col = 'Nowcasting')) +
+  geom_line(data = dados_by_week, aes(DT_SIN_PRI, y = n, col = 'Observed'))+
+  geom_ribbon(aes(ymin = LI, ymax = LS, col = NA), alpha = 0.2, show.legend = F)+
   geom_line()+
-  geom_line(data = dados_by_week, aes(DT_SIN_PRI, y = n))+
-  geom_ribbon(aes(ymin = LI, ymax = LS, col = 'IC'), alpha = 0.2)+
   theme_bw()+
-  theme(legend.position = "bottom", axis.text.x = element_text(angle = 90))+
-  scale_color_manual(values = c('grey90', 'black'), name = '')+
+  theme(legend.position = "bottom", axis.text.x = element_text(angle = 90)) +
+  scale_color_manual(values = c('grey50', 'black'), name = '')+
   scale_x_date(date_breaks = '2 weeks', date_labels = '%V/%y', name = 'Date in Weeks')+
   labs(x = '', y = 'Nº Cases')
-
 ```
 
 
 ## Structured data, Age
 
-For the structured data the `nowcasting_inla()` fits again a $NegBinom$ distribution to the cases count at time $t$ with delay $\tau$. Differently, from the non-structured case the model now gives random effects to the delay distribution and and time distribution by each of the age-class choosed by the user to break the data. The model has the form now:
+For the structured data the `nowcasting_inla()` fits again a Negative binomial distribution to the cases count at time $t$ with delay $d$. Differently, from the non-structured case the model now gives random effects to the delay distribution and and time distribution by each of the age-class chosen by the user to break the data. The model has the form now:
 
-$$Y_{t, Age} \sim  1 + Age + rw2(t | Age) + rw1(delay|Age)$$
+$$Y_{t,d,a} \sim  NegBinom(\lambda_{t,d,a}, \phi), \quad t=1,2,\ldots,T, \quad d=1,2,\ldots,D, $a=1,2,\ldots,A$$$
+$$\log(\lambda_{t,d,a}) =  \alpha_a + \beta_{t,a} + \gamma_{d,a}.$$
+where each age class, $a$, has an intercept $\alpha_a$ following a Gaussian distribution with a very large variance, the time-age random effects, $\beta_{t,a}$, follow a joint multivariate Gaussian distribution with a separable variance components an independent Gaussian term for the age classes with precision $\tau_{age,\beta}$ and a second order random walk term for the time with precision $\tau_{\beta}$. Analogously, the delay-age random effects, $\gamma_{d,a}$, follow a joint multivariate Gaussian distribution with a separable variance components an independent Gaussian term for the age classes with precision $\tau_{age,\gamma}$ and a first order random walk term for the time with precision $\tau_{\gamma}$. The model is then completed by INLA default prior distributions for $\phi$, $\tau_{age,\beta}$, $\tau_{age,\gamma}$, $\tau_{\beta}$ and $\tau_\gamma$. See nbinom, iid, rw1 and rw2 INLA help pages.
 
-This new model gives to each of the age classes which the data was divide a model poundering the delay effects and time by each age class at time $t$. Now the model needs a flag indicating which is the column on the dataset which will be used to break the data into age classes and which is the choosed option into which the age classes will be, this is given by the parameters `age_col` and `bins_age`. We pass three additional parameters, `data.by.week` to return the epidemiological curve out of window of action of nowcasting estimate and `return.age` to inform we desire a nowcasting result in two ways, the total aggregation estimate and the age-stratified estimate. The calling of the function has the following form:
+This new model corrects the delay taking into account the effects of age classes and the interactions of each age class between time and also delay. Now the model needs a flag indicating which is the column on the dataset which will be used to break the data into age classes and how the age classes will be split. This is given by the parameters `age_col` and `bins_age`. We pass three additional parameters, `data.by.week` to return the epidemiological curve out of window of action of nowcasting estimate and `return.age` to inform we desire a nowcasting result in two ways, the total aggregation estimate and the age-stratified estimate. The calling of the function has the following form:
 
 ```{r nowcasting}
-nowcasting_bh_age<-nowcasting_inla(dataset = data, 
+nowcasting_bh_age <- nowcasting_inla(dataset = sragBH, 
                                    bins_age = "10 years",
                                    data.by.week = T, 
                                    age_col = Idade)
 ```
 
-Each of the estimates returned by `nowcasting_inla` has the same form as in the non-structured case, on the nowcasting estimates it returns a data.frame with the Median and its CI by credibility of 50% (LIb and LSb) and 95% (LI and LS).
+Each of the estimates returned by `nowcasting_inla` has the same form as in the non-structured case. On the nowcasting estimates, it returns a data.frame with the posterior edian and 50% and 95% credible intervals, (LIb and LSb) and (LI and LS) respectively.
 
 ```{r plot}
 library(ggplot2)
 
-dados_by_week<-nowcasting_bh_age$dados %>% 
+dados_by_week <- nowcasting_bh_age$dados %>% 
   filter(DT_SIN_PRI >= (Sys.Date()-270)) %>% 
   group_by(DT_SIN_PRI) %>% 
   summarise(n = n())
@@ -139,11 +143,11 @@ nowcasting_bh_age$total %>%
 We can compare the estimates by each of the strategies, we plot the two estimates together:
 
 ```{r compare_plot}
-nowcasting_bh_no_age$total$type<-"No Age structured"
-nowcasting_bh_age$total$type<-"Age structured"
+nowcasting_bh_no_age$total$type <- "No Age structured"
+nowcasting_bh_age$total$type <- "Age structured"
 
 
-nowcasting_bh_total<-nowcasting_bh_age$total %>% 
+nowcasting_bh_total <- nowcasting_bh_age$total %>% 
   full_join(nowcasting_bh_no_age$total)
 
 nowcasting_bh_total %>% 
