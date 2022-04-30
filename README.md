@@ -98,12 +98,12 @@ head(nowcasting_bh_no_age$total)
     ## # A tibble: 6 × 7
     ##    Time dt_event   Median    LI    LS   LIb   LSb
     ##   <int> <date>      <dbl> <dbl> <dbl> <dbl> <dbl>
-    ## 1    17 2021-12-13    625   621  633    623   627
-    ## 2    18 2021-12-20    695   687  707    691   698
-    ## 3    19 2021-12-27    812   801  829    808   817
-    ## 4    20 2022-01-03    886   870  908    880   893
-    ## 5    21 2022-01-10    817   800  843.   811   826
-    ## 6    22 2022-01-17    631   609  660.   623   639
+    ## 1    17 2021-12-13    625   621   632   623   627
+    ## 2    18 2021-12-20    694   688   708   691   698
+    ## 3    19 2021-12-27    811   801   828   807   816
+    ## 4    20 2022-01-03    886   871   908   880   893
+    ## 5    21 2022-01-10    818   800   847   811   827
+    ## 6    22 2022-01-17    631   610   660   623   640
 
 This calling will return only the nowcasting estimate and its Confidence
 Interval (CI) for two different Credible interval, `LIb` and `LSb` are
@@ -168,7 +168,6 @@ the age-class chosen by the user to break the data. The model has the
 form now:
 
 $$Y\_{t,d,a} \\sim  NegBinom(\\lambda\_{t,d,a}, \\phi), \\quad t=1,2,\\ldots,T, \\quad d=1,2,\\ldots,D, $a=1,2,\\ldots,A$$
-$
 log (*λ*<sub>*t*, *d*, *a*</sub>) = *α*<sub>*a*</sub> + *β*<sub>*t*, *a*</sub> + *γ*<sub>*d*, *a*</sub>.
 where each age class, *a*, has an intercept *α*<sub>*a*</sub> following
 a Gaussian distribution with a very large variance, the time-age random
