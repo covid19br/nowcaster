@@ -65,7 +65,7 @@ where the intercept $\alpha$ follows is Gaussian distribution with a very large 
 The call of the function is straightforward, it simply needs a dataset as input, here the `LazyData` loaded in the namespace of the package.
 
 ```{r no_age}
-nowcasting_bh_no_age <- nowcasting_inla(dataset = sragBH, date_onset = DT_SIN_PRI, date_report = DT_DIGITA)
+nowcasting_bh_no_age <- nowcasting_inla(dataset = sragBH)
 head(nowcasting_bh_no_age$total)
 ```
 

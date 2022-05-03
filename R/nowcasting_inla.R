@@ -25,10 +25,7 @@
 #' @param K How much weeks to forecast ahead?
 #' [Default] K is 0, no forecasting ahead
 #' @param age_col Column for ages
-#' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases
-#' @param date_report Column of dates of report of the event, normally date of digitation of the notification of cases
 #' @param ...
-#' @param trajectories
 #'
 #' @return a list of 2 elements, each element with a data.frame with nowcasting estimation, $[1] 'Total', $[2] by 'Age'.
 #' If data.by.week = TRUE, add a $[3] 'dados' with the time-series out of wdw.
@@ -41,8 +38,8 @@ nowcasting_inla <- function(dataset,
                             Dmax = 15,
                             wdw = 30,
                             age_col,
-                            date_onset,
-                            date_report,
+                            # date_onset,
+                            # date_report,
                             data.by.week = FALSE,
                             return.age = NULL,
                             silent = F,
@@ -62,9 +59,6 @@ nowcasting_inla <- function(dataset,
   }
   if(ncol(dataset) < 3){
     stop("Dataset does not have 3 columns!")
-  }
-  if(missing(date_onset) | missing(date_report)){
-    stop("date_onset or date_report missing! Please give a column name for each of this parameters")
   }
 
   ## Warnings
@@ -107,32 +101,28 @@ nowcasting_inla <- function(dataset,
   ## Filtering out cases without report date
   if(missing(age_col)){
     dados<-dataset %>%
-      dplyr::select({{date_report}}, {{date_onset}}) %>%
-      tidyr::drop_na({{date_report}})
+      dplyr::select(DT_DIGITA, DT_SIN_PRI) %>%
+      tidyr::drop_na(DT_DIGITA)
   } else {
     dados <- dataset %>%
       # dplyr::mutate(IDADE = NU_IDADE_N) %>%
-      dplyr::select({{date_report}}, {{date_onset}}, {{age_col}}) %>%
-      tidyr::drop_na({{date_report}})
+      dplyr::select(DT_DIGITA, DT_SIN_PRI, {{age_col}}) %>%
+      tidyr::drop_na(DT_DIGITA)
   }
 
   ## Filtering data to the parameters setted above
   if(missing(age_col)){
     dados_w<-nowcaster::dados.w_no_age(dataset = dados,
-                            trim.data = trim.data,
-                            date_onset = {{date_onset}},
-                            date_report = {{date_report}})
+                            trim.data = trim.data)
   }else {
     dados_w <- nowcaster::dados.w(dataset = dados,
                        bins_age = bins_age,
                        trim.data = trim.data,
-                       age_col = {{age_col}},
-                       date_onset = {{date_onset}},
-                       date_report = {{date_report}})
+                       age_col = {{age_col}})
   }
 
   ## Parameters of Nowcasting estimate
-  Tmax <- max(dados_w[,date_onset])
+  Tmax <- max(dados_w$DT_SIN_PRI)
 
   ## Parameter of stratum
 
@@ -141,20 +131,20 @@ nowcasting_inla <- function(dataset,
   if(missing(age_col)){
     dados.inla <- dados_w %>%
       ## Filter for dates
-      dplyr::filter(date_onset >= Tmax - 7 * wdw,
+      dplyr::filter(DT_SIN_PRI >= Tmax - 7 * wdw,
                     Delay <= Dmax) %>%
       ## Group by on Onset dates, Amounts of delays and Stratum
-      group_by(date_onset, delay = Delay) %>%
+      group_by(DT_SIN_PRI, delay = Delay) %>%
       ## Counting
       dplyr::tally(name = "Y") %>%
       dplyr::ungroup()
   } else {
     dados.inla <- dados_w %>%
       ## Filter for dates
-      dplyr::filter(date_onset >= Tmax - 7 * wdw,
+      dplyr::filter(DT_SIN_PRI >= Tmax - 7 * wdw,
                     Delay <= Dmax) %>%
       ## Group by on Onset dates, Amounts of delays and Stratum
-      dplyr::group_by(date_onset, delay = Delay, fx_etaria) %>%
+      dplyr::group_by(DT_SIN_PRI, delay = Delay, fx_etaria) %>%
       ## Counting
       dplyr::tally(name = "Y") %>%
       dplyr::ungroup()
@@ -163,14 +153,14 @@ nowcasting_inla <- function(dataset,
 
   ## Auxiliary date table
   #if(K==0){
-  dates<-unique(dados.inla[,date_onset])
+  dates<-unique(dados.inla$DT_SIN_PRI)
   #} else {
-  # dates<-c(unique(dados.inla${{date_onset}}),(max(dados.inla${{date_onset}}) + 7*K))
+  # dates<-c(unique(dados.inla$DT_SIN_PRI),(max(dados.inla$DT_SIN_PRI) + 7*K))
   #}
   ## Talvez isso não precise se a gente voltar as datas de primeiros sintomas para a data dela correspondente
   ## To make an auxiliary date table with each date plus an amount of dates  to forecast
   tbl.date.aux <- tibble::tibble(
-    date_onset = dates
+    DT_SIN_PRI = dates
   ) %>%
     tibble::rowid_to_column(var = "Time")
 
@@ -207,7 +197,7 @@ nowcasting_inla <- function(dataset,
         ## If Time + Delay is smaller than Tmax AND Y is NA, fill 0
       ) %>%
       dplyr::arrange(Time, delay)%>%
-      dplyr::rename(dt_event = date_onset)
+      dplyr::rename(dt_event = DT_SIN_PRI)
   }else {
     dados.inla <- dados.inla %>%
       dplyr::full_join(tbl.NA) %>%  #View()
@@ -218,7 +208,7 @@ nowcasting_inla <- function(dataset,
         ## If Time + Delay is smaller than Tmax AND Y is NA, fill 0
       ) %>%
       dplyr::arrange(Time, delay, fx_etaria)%>%
-      dplyr::rename(dt_event = date_onset)
+      dplyr::rename(dt_event = DT_SIN_PRI)
   }
   ## Precisamos transformar essa datas de volta no valor que é correspondente delas,
   ## a ultima data de primeiro sintomas foi jogada pra até uma semana atrás
