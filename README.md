@@ -32,8 +32,8 @@ To install `nowcaster` package simply run the code below in R:
 devtools::install_github("https://github.com/covid19br/nowcaster")
 ```
 
-    ## 
-    ## * checking for file ‘/tmp/Rtmpcj1Nh2/remotes3c44f8230ba406/covid19br-nowcaster-e3ea8bc/DESCRIPTION’ ... OK
+    ## tibble (3.1.6 -> 3.1.7) [CRAN]
+    ## * checking for file ‘/tmp/RtmpWoBLdx/remotes88c824b3f5a6/covid19br-nowcaster-f0336bf/DESCRIPTION’ ... OK
     ## * preparing ‘nowcaster’:
     ## * checking DESCRIPTION meta-information ... OK
     ## * checking for LF line-endings in source and make files and shell scripts
@@ -85,7 +85,7 @@ form. The estimate fits a negative binomial distribution,
 at time *t* with delay *d*, *ϕ* is the dispersion parameter. The rate
 *λ*<sub>*t*, *d*</sub> is then parameterized in a log-linear format by a
 constant term added by structured delay random effects and structured
-time random effects. Hence, the model isgiven by the following:
+time random effects. Hence, the model is given by the following:
 
 $$Y\_{t,d} \\sim  NegBinom(\\lambda\_{t,d}, \\phi), \\quad t=1,2,\\ldots,T, \\quad d=1,2,\\ldots,D, \\\\
 \\log(\\lambda\_{t,d}) =  \\alpha + \\beta_t + \\gamma_d$$
@@ -108,12 +108,12 @@ head(nowcasting_bh_no_age$total)
     ## # A tibble: 6 × 7
     ##    Time dt_event   Median    LI    LS   LIb   LSb
     ##   <int> <date>      <dbl> <dbl> <dbl> <dbl> <dbl>
-    ## 1    17 2021-12-13    625  621    632  623    627
-    ## 2    18 2021-12-20    695  688    707  692    699
-    ## 3    19 2021-12-27    812  801.   829  807    817
-    ## 4    20 2022-01-03    886  872    909  881.   893
-    ## 5    21 2022-01-10    817  799    844  811.   826
-    ## 6    22 2022-01-17    631  610    661  623    640
+    ## 1    17 2021-12-13    625   621   633   623   627
+    ## 2    18 2021-12-20    695   687   706   692   699
+    ## 3    19 2021-12-27    812   801   830   807   817
+    ## 4    20 2022-01-03    886   870   908   880   893
+    ## 5    21 2022-01-10    818   798   845   811   826
+    ## 6    22 2022-01-17    631   610   662   623   640
 
 This calling will return only the nowcasting estimate and its Confidence
 Interval (CI) for two different Credible interval, `LIb` and `LSb` are
@@ -303,7 +303,7 @@ sessionInfo()
     ## other attached packages:
     ##  [1] INLA_22.04.06   sp_1.4-6        foreach_1.5.2   Matrix_1.4-0   
     ##  [5] lubridate_1.8.0 forcats_0.5.1   stringr_1.4.0   dplyr_1.0.9    
-    ##  [9] purrr_0.3.4     readr_2.1.2     tidyr_1.2.0     tibble_3.1.6   
+    ##  [9] purrr_0.3.4     readr_2.1.2     tidyr_1.2.0     tibble_3.1.7   
     ## [13] ggplot2_3.3.5   tidyverse_1.3.1 nowcaster_0.1.0
     ## 
     ## loaded via a namespace (and not attached):
