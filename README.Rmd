@@ -65,7 +65,9 @@ where the intercept $\alpha$ follows is Gaussian distribution with a very large 
 The call of the function is straightforward, it simply needs a dataset as input, here the `LazyData` loaded in the namespace of the package.
 
 ```{r no_age}
-nowcasting_bh_no_age <- nowcasting_inla(dataset = sragBH, date_onset = DT_SIN_PRI, date_report = DT_DIGITA)
+nowcasting_bh_no_age <- nowcasting_inla(dataset = sragBH, 
+                                        date_onset = DT_SIN_PRI, 
+                                        date_report = DT_DIGITA)
 head(nowcasting_bh_no_age$total)
 ```
 
@@ -77,7 +79,7 @@ This calling will return only the nowcasting estimate and its Confidence Interva
 nowcasting_bh_no_age <- nowcasting_inla(dataset = sragBH, 
                                         date_onset = DT_SIN_PRI, 
                                         date_report = DT_DIGITA, 
-                                        date,data.by.week = T)
+                                        data.by.week = T)
 head(nowcasting_bh_no_age$dados)
 ```
 
