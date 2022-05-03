@@ -11,6 +11,8 @@ nowcasting_inla(
   Dmax = 15,
   wdw = 30,
   age_col,
+  date_onset,
+  date_report,
   data.by.week = FALSE,
   return.age = NULL,
   silent = F,
@@ -38,6 +40,10 @@ or options between, "SI-PNI", "10 years", "5 years".
 
 \item{age_col}{Column for ages}
 
+\item{date_onset}{Column of dates of onset of the events, normally date of onset of first symptoms of cases}
+
+\item{date_report}{Column of dates of report of the event, normally date of digitation of the notification of cases}
+
 \item{data.by.week}{If it has to be returned the whole time-series data.
 \link{Default} FALSE.}
 
@@ -50,7 +56,7 @@ or options between, "SI-PNI", "10 years", "5 years".
 \item{K}{How much weeks to forecast ahead?
 \link{Default} K is 0, no forecasting ahead}
 
-\item{...}{}
+\item{trajectories}{}
 }
 \value{
 a list of 2 elements, each element with a data.frame with nowcasting estimation, $\link{1} 'Total', $\link{2} by 'Age'.

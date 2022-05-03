@@ -4,7 +4,7 @@
 \alias{dados.w_no_age}
 \title{Title}
 \usage{
-dados.w_no_age(dataset, trim.data)
+dados.w_no_age(dataset, trim.data, date_onset, date_report)
 }
 \arguments{
 \item{dataset}{dataset to be formatted as data by week}

@@ -118,12 +118,12 @@ nowcasting_inla <- function(dataset,
 
   ## Filtering data to the parameters setted above
   if(missing(age_col)){
-    dados_w<-nowcaster::dados.w_no_age(dataset = dados,
+    dados_w<-dados.w_no_age(dataset = dados,
                             trim.data = trim.data,
                             date_onset = {{date_onset}},
                             date_report = {{date_report}})
   }else {
-    dados_w <- nowcaster::dados.w(dataset = dados,
+    dados_w <- dados.w(dataset = dados,
                        bins_age = bins_age,
                        trim.data = trim.data,
                        age_col = {{age_col}},
@@ -132,7 +132,8 @@ nowcasting_inla <- function(dataset,
   }
 
   ## Parameters of Nowcasting estimate
-  Tmax <- max(dados_w[,date_onset])
+  Tmax <- max(dados_w |>
+                pull(var = date_onset))
 
   ## Parameter of stratum
 
@@ -163,7 +164,8 @@ nowcasting_inla <- function(dataset,
 
   ## Auxiliary date table
   #if(K==0){
-  dates<-unique(dados.inla[,date_onset])
+  dates<-unique(dados.inla |>
+                  pull(var = date_onset))
   #} else {
   # dates<-c(unique(dados.inla${{date_onset}}),(max(dados.inla${{date_onset}}) + 7*K))
   #}
