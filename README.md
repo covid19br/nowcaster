@@ -32,14 +32,6 @@ To install `nowcaster` package simply run the code below in R:
 devtools::install_github("https://github.com/covid19br/nowcaster")
 ```
 
-    ## 
-    ## * checking for file ‘/tmp/Rtmpcj1Nh2/remotes3c44f8230ba406/covid19br-nowcaster-e3ea8bc/DESCRIPTION’ ... OK
-    ## * preparing ‘nowcaster’:
-    ## * checking DESCRIPTION meta-information ... OK
-    ## * checking for LF line-endings in source and make files and shell scripts
-    ## * checking for empty or unneeded directories
-    ## * building ‘nowcaster_0.1.0.tar.gz’
-
 After installing you can load the by typical library:
 
 ``` r
@@ -85,10 +77,12 @@ form. The estimate fits a negative binomial distribution,
 at time *t* with delay *d*, *ϕ* is the dispersion parameter. The rate
 *λ*<sub>*t*, *d*</sub> is then parameterized in a log-linear format by a
 constant term added by structured delay random effects and structured
-time random effects. Hence, the model isgiven by the following:
+time random effects. Hence, the model is given by the following:
 
-$$Y\_{t,d} \\sim  NegBinom(\\lambda\_{t,d}, \\phi), \\quad t=1,2,\\ldots,T, \\quad d=1,2,\\ldots,D, \\\\
-\\log(\\lambda\_{t,d}) =  \\alpha + \\beta_t + \\gamma_d$$
+$$\\begin{equation}
+Y\_{t,d} \\sim NegBinom(\\lambda\_{t,d}, \\phi), \\quad t=1,2,\\ldots,T, \\quad d=1,2,\\ldots,D, \\\\
+\\log(\\lambda\_{t,d}) = \\alpha + \\beta_t + \\gamma_d
+\\end{equation}$$
 
 where the intercept *α* follows is Gaussian distribution with a very
 large variance, *β*<sub>*t*</sub> is follows a second order random walk
@@ -110,10 +104,10 @@ head(nowcasting_bh_no_age$total)
     ##   <int> <date>      <dbl> <dbl> <dbl> <dbl> <dbl>
     ## 1    17 2021-12-13    625  621    632  623    627
     ## 2    18 2021-12-20    695  688    707  692    699
-    ## 3    19 2021-12-27    812  801.   829  807    817
-    ## 4    20 2022-01-03    886  872    909  881.   893
-    ## 5    21 2022-01-10    817  799    844  811.   826
-    ## 6    22 2022-01-17    631  610    661  623    640
+    ## 3    19 2021-12-27    812  800    829  808    817
+    ## 4    20 2022-01-03    886  872    907  881    893
+    ## 5    21 2022-01-10    818  800.   846  811.   827
+    ## 6    22 2022-01-17    632  611.   662  623    641
 
 This calling will return only the nowcasting estimate and its Confidence
 Interval (CI) for two different Credible interval, `LIb` and `LSb` are
@@ -177,8 +171,8 @@ effects to the delay distribution and and time distribution by each of
 the age-class chosen by the user to break the data. The model has the
 form now:
 
-$$Y\_{t,d,a} \\sim  NegBinom(\\lambda\_{t,d,a}, \\phi), \\quad t=1,2,\\ldots,T, \\quad d=1,2,\\ldots,D, a=1,2,\\ldots,A \\\\
-\\log(\\lambda\_{t,d,a}) =  \\alpha_a + \\beta\_{t,a} + \\gamma\_{d,a}$$
+$$\\begin{equation}Y\_{t,d,a} \\sim  NegBinom(\\lambda\_{t,d,a}, \\phi), \\quad t=1,2,\\ldots,T, \\quad d=1,2,\\ldots,D, a=1,2,\\ldots,A \\\\
+\\log(\\lambda\_{t,d,a}) =  \\alpha_a + \\beta\_{t,a} + \\gamma\_{d,a}\\end{equation}$$
 
 where each age class, *a*, has an intercept *α*<sub>*a*</sub> following
 a Gaussian distribution with a very large variance, the time-age random
@@ -303,7 +297,7 @@ sessionInfo()
     ## other attached packages:
     ##  [1] INLA_22.04.06   sp_1.4-6        foreach_1.5.2   Matrix_1.4-0   
     ##  [5] lubridate_1.8.0 forcats_0.5.1   stringr_1.4.0   dplyr_1.0.9    
-    ##  [9] purrr_0.3.4     readr_2.1.2     tidyr_1.2.0     tibble_3.1.6   
+    ##  [9] purrr_0.3.4     readr_2.1.2     tidyr_1.2.0     tibble_3.1.7   
     ## [13] ggplot2_3.3.5   tidyverse_1.3.1 nowcaster_0.1.0
     ## 
     ## loaded via a namespace (and not attached):
