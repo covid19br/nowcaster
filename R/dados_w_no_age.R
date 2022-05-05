@@ -8,9 +8,7 @@
 #'
 #' @examples
 dados.w_no_age<-function(dataset,
-                         trim.data,
-                         date_onset,
-                         date_report){
+                         trim.data){
 
   # Loading packages
   require(dplyr)
@@ -20,7 +18,7 @@ dados.w_no_age<-function(dataset,
   DT_max <- max(dataset |>
                   pull(var = {{date_report}}),
                 na.rm = T) - trim.data
-
+  
   # Dia da semana da ultima digitação
   DT_max_diadasemana <- as.integer(format(DT_max, "%w"))
 

@@ -12,8 +12,6 @@
 dados.w<-function(dataset,
                   trim.data,
                   bins_age = c("SI-PNI", "10 years", "5 years", bins_age),
-                  date_onset,
-                  date_report,
                   age_col){
   # Loading packages
   require(tidyr)
