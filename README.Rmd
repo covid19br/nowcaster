@@ -62,7 +62,7 @@ Y_{t,d} \sim NegBinom(\lambda_{t,d}, \phi), \quad t=1,2,\ldots,T, \quad d=1,2,\l
 
 where the intercept $\alpha$ follows is Gaussian distribution with a very large variance, $\beta_t$ is follows a second order random walk with precision $\tau_\beta$, $\gamma_d$ a first-order random walk with precision $\tau_\gamma$. The model is then completed by INLA default prior distributions for $\phi$, $\tau_\beta$, and $\tau_\gamma$. See nbinom, rw1 and rw2 INLA help pages.
 
-The call of the function is straightforward, it simply needs a dataset as input, here the `LazyData` loaded in the namespace of the package.
+The call of the function is straightforward, it simply needs a dataset as input, here the `LazyData` loaded in the namespace of the package. The function has 3 mandatory parameters, `dataset` for the parsing of the dataset to be nowcasted, `date_onset` for parsing the column name which is the date of onset of symptoms and `date_report` which parses the column name for the date of report of the cases. Here this columns are "DT_SIN_PRI" and "DT_DIGITA", respectively. 
 
 ```{r no_age}
 nowcasting_bh_no_age <- nowcasting_inla(dataset = sragBH, 
@@ -73,7 +73,7 @@ head(nowcasting_bh_no_age$total)
 
 This calling will return only the nowcasting estimate and its Confidence Interval (CI) for two different Credible interval, `LIb` and `LSb` are the max and min CI, respectively, with credibility of 50% and `LI` and `LS` are the max and min CI, respectively, with credibility of 95%.
 
-`nowcasting_inla` has the option to return the curve out of the window of action of the model, if the `data.by.week` is flagged as ``TRUE` it returns on the third element of the output list the summarized data by week. 
+`nowcasting_inla` has the option to return the curve for when the nowcasting estimate was set the window of action of the model, if the `data.by.week` parameter is flagged as `TRUE` it returns on the second element of the output list the summarized data by week. 
 
 ```{r no_age_data}
 nowcasting_bh_no_age <- nowcasting_inla(dataset = sragBH, 
@@ -82,8 +82,16 @@ nowcasting_bh_no_age <- nowcasting_inla(dataset = sragBH,
                                         data.by.week = T)
 head(nowcasting_bh_no_age$dados)
 ```
+This element it is the counts of cases by the amount of delay. It is known as the delay triangle, if we table it we can see  how is the pattern of the delay for the cases.  
 
-If this third element is groped by and summarized by the onset of symptoms date, here `DT_SIN_PRI` it is the epidemiological curve. To example it we plot the estimate and the epidemiological curve all together.
+```{r delay-triangle}
+delay_triangle<-table(nowcasting_bh_no_age$dados$Delay, nowcasting_bh_no_age$dados$date_onset,dnn = list("Delay", "Date of Onset"))
+head(delay_triangle, 10)
+```
+
+
+
+If this element is groped by and summarized by the onset of symptoms date, here `DT_SIN_PRI`, it is the epidemiological curve observed. To example it, we plot the estimate and the epidemiological curve all together.
 
 ```{r no_age_plot}
 library(ggplot2)
