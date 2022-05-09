@@ -82,14 +82,18 @@ nowcasting_bh_no_age <- nowcasting_inla(dataset = sragBH,
                                         data.by.week = T)
 head(nowcasting_bh_no_age$dados)
 ```
-This element it is the counts of cases by the amount of delay. It is known as the delay triangle, if we table it we can see  how is the pattern of the delay for the cases.  
+This element it is the counts of cases by the amount of delay. It is known as the delay triangle, if we table the delay amount against the data of onset of first symptoms, it can see how is the pattern of the delay for the cases.  
 
 ```{r delay-triangle}
-delay_triangle<-table(nowcasting_bh_no_age$dados$Delay, nowcasting_bh_no_age$dados$date_onset,dnn = list("Delay", "Date of Onset"))
-head(delay_triangle, 10)
+data_triangle<-nowcasting_bh_no_age$dados |> 
+  filter(Delay < 30) |> 
+  arrange(desc(Delay))
+delay_triangle<-table(data_triangle$date_onset, 
+                      rev(data_triangle$Delay),
+                      dnn = list("Date of Onset", "Delay"))
+head(delay_triangle)
 ```
-
-
+We just look at the amount of cases with 30 weeks of delay or less, it is the default maximum delay considered at nowcasting estimation.  
 
 If this element is groped by and summarized by the onset of symptoms date, here `DT_SIN_PRI`, it is the epidemiological curve observed. To example it, we plot the estimate and the epidemiological curve all together.
 
