@@ -29,16 +29,10 @@ surveillance database (SIVEP-Gripe).
 To install `nowcaster` package simply run the code below in R:
 
 ``` r
-devtools::install_github("https://github.com/covid19br/nowcaster")
+if( !require(nowcaster, quietly = T) ){
+  devtools::install_github("https://github.com/covid19br/nowcaster")
+}
 ```
-
-    ## 
-    ## * checking for file ‘/tmp/RtmpfLq7Sn/remotes1063d7a7249cd/covid19br-nowcaster-c270906/DESCRIPTION’ ... OK
-    ## * preparing ‘nowcaster’:
-    ## * checking DESCRIPTION meta-information ... OK
-    ## * checking for LF line-endings in source and make files and shell scripts
-    ## * checking for empty or unneeded directories
-    ## * building ‘nowcaster_0.1.0.9000.tar.gz’
 
 After installing you can load the by typical library:
 
@@ -54,13 +48,14 @@ in the city of Belo Horizonte, since March 2020 to April 2022. To load
 it basically write:
 
 ``` r
-data<-sragBH
+# Loading Belo Horizonte SARI dataset
+data(sragBH)
 ```
 
 And we take a look on the data:
 
 ``` r
-head(data)
+head(sragBH)
 ```
 
     ##   DT_SIN_PRI  DT_DIGITA CLASSI_FIN EVOLUCAO CO_MUN_RES Idade fx_etaria
@@ -88,8 +83,9 @@ constant term added by structured delay random effects and structured
 time random effects. Hence, the model is given by the following:
 
 $$\\begin{equation}
-Y\_{t,d} \\sim NegBinom(\\lambda\_{t,d}, \\phi), \\quad t=1,2,\\ldots,T, \\quad d=1,2,\\ldots,D, \\\\
-\\log(\\lambda\_{t,d}) = \\alpha + \\beta_t + \\gamma_d
+Y\_{t,d} \\sim NegBinom(\\lambda\_{t,d}, \\phi), \\\\
+\\log(\\lambda\_{t,d}) = \\alpha + \\beta_t + \\gamma_d, \\\\
+t=1,2,\\ldots,T, \\\\ d=1,2,\\ldots,D,
 \\end{equation}$$
 
 where the intercept *α* follows is Gaussian distribution with a very
@@ -117,12 +113,12 @@ head(nowcasting_bh_no_age$total)
     ## # A tibble: 6 × 7
     ##    Time dt_event   Median    LI    LS   LIb   LSb
     ##   <int> <date>      <dbl> <dbl> <dbl> <dbl> <dbl>
-    ## 1    17 2021-12-13    625  621   633    623   627
-    ## 2    18 2021-12-20    695  687   708    692   699
-    ## 3    19 2021-12-27    812  800   828    807   817
-    ## 4    20 2022-01-03    887  871   909    881   894
-    ## 5    21 2022-01-10    818  799.  844.   811   826
-    ## 6    22 2022-01-17    630  609   658    621   640
+    ## 1    17 2021-12-13   625    621  632.   623   627
+    ## 2    18 2021-12-20   695    687  707    692   698
+    ## 3    19 2021-12-27   812    800  830    808   818
+    ## 4    20 2022-01-03   886.   870  908    880   893
+    ## 5    21 2022-01-10   819    798  846    811   826
+    ## 6    22 2022-01-17   631    610  662    623   640
 
 This calling will return only the nowcasting estimate and its Confidence
 Interval (CI) for two different Credible interval, `LIb` and `LSb` are
@@ -158,7 +154,7 @@ data of onset of first symptoms, it can see how is the pattern of the
 delay for the cases.
 
 ``` r
-data_triangle<-nowcasting_bh_no_age$dados |> 
+data_triangle <- nowcasting_bh_no_age$dados |> 
   filter(Delay < 30) |> 
   arrange(desc(Delay))
 delay_triangle<-table(data_triangle$date_onset, 
@@ -224,8 +220,8 @@ effects to the delay distribution and and time distribution by each of
 the age-class chosen by the user to break the data. The model has the
 form now:
 
-$$\\begin{equation}Y\_{t,d,a} \\sim  NegBinom(\\lambda\_{t,d,a}, \\phi), \\quad t=1,2,\\ldots,T, \\quad d=1,2,\\ldots,D, a=1,2,\\ldots,A \\\\
-\\log(\\lambda\_{t,d,a}) =  \\alpha_a + \\beta\_{t,a} + \\gamma\_{d,a}\\end{equation}$$
+$$\\begin{equation}Y\_{t,d,a} \\sim  NegBinom(\\lambda\_{t,d,a}, \\phi), \\\\
+\\log(\\lambda\_{t,d,a}) =  \\alpha_a + \\beta\_{t,a} + \\gamma\_{d,a}, \\\\ \\quad t=1,2,\\ldots,T, \\\\ d=1,2,\\ldots,D, \\\\ a=1,2,\\ldots,A, \\end{equation}$$
 
 where each age class, *a*, has an intercept *α*<sub>*a*</sub> following
 a Gaussian distribution with a very large variance, the time-age random
@@ -356,30 +352,25 @@ sessionInfo()
     ## [13] ggplot2_3.3.5        tidyverse_1.3.1      nowcaster_0.1.0.9000
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] fs_1.5.2            usethis_2.1.5       devtools_2.4.3     
-    ##  [4] httr_1.4.2          rprojroot_2.0.2     numDeriv_2016.8-1.1
-    ##  [7] tools_4.1.3         backports_1.4.1     utf8_1.2.2         
-    ## [10] R6_2.5.1            sn_2.0.1            DBI_1.1.2          
-    ## [13] colorspace_2.0-3    withr_2.5.0         mnormt_2.0.2       
-    ## [16] tidyselect_1.1.2    prettyunits_1.1.1   processx_3.5.2     
-    ## [19] curl_4.3.2          compiler_4.1.3      cli_3.3.0          
-    ## [22] rvest_1.0.2         xml2_1.3.3          desc_1.4.0         
-    ## [25] labeling_0.4.2      scales_1.1.1        callr_3.7.0        
-    ## [28] digest_0.6.29       rmarkdown_2.11      pkgconfig_2.0.3    
-    ## [31] htmltools_0.5.2     sessioninfo_1.2.2   highr_0.9          
-    ## [34] dbplyr_2.1.1        fastmap_1.1.0       rlang_1.0.2        
-    ## [37] readxl_1.3.1        rstudioapi_0.13     farver_2.1.0       
-    ## [40] generics_0.1.2      jsonlite_1.7.3      magrittr_2.0.3     
-    ## [43] Rcpp_1.0.8          munsell_0.5.0       fansi_1.0.3        
-    ## [46] lifecycle_1.0.1     stringi_1.7.6       yaml_2.3.4         
-    ## [49] brio_1.1.3          pkgbuild_1.3.1      grid_4.1.3         
-    ## [52] crayon_1.5.1        lattice_0.20-45     haven_2.4.3        
-    ## [55] splines_4.1.3       hms_1.1.1           tmvnsim_1.0-2      
-    ## [58] knitr_1.37          ps_1.6.0            pillar_1.7.0       
-    ## [61] stats4_4.1.3        codetools_0.2-18    pkgload_1.2.4      
-    ## [64] reprex_2.0.1        glue_1.6.2          evaluate_0.15      
-    ## [67] remotes_2.4.2       modelr_0.1.8        vctrs_0.4.1        
-    ## [70] tzdb_0.2.0          MatrixModels_0.5-0  testthat_3.1.2     
-    ## [73] cellranger_1.1.0    gtable_0.3.0        assertthat_0.2.1   
-    ## [76] cachem_1.0.6        xfun_0.29           broom_0.7.12       
-    ## [79] iterators_1.0.14    memoise_2.0.1       ellipsis_0.3.2
+    ##  [1] Rcpp_1.0.8          lattice_0.20-45     assertthat_0.2.1   
+    ##  [4] digest_0.6.29       utf8_1.2.2          R6_2.5.1           
+    ##  [7] cellranger_1.1.0    MatrixModels_0.5-0  backports_1.4.1    
+    ## [10] stats4_4.1.3        reprex_2.0.1        evaluate_0.15      
+    ## [13] highr_0.9           httr_1.4.2          pillar_1.7.0       
+    ## [16] rlang_1.0.2         readxl_1.3.1        rstudioapi_0.13    
+    ## [19] rmarkdown_2.11      labeling_0.4.2      splines_4.1.3      
+    ## [22] munsell_0.5.0       broom_0.7.12        numDeriv_2016.8-1.1
+    ## [25] compiler_4.1.3      modelr_0.1.8        xfun_0.29          
+    ## [28] pkgconfig_2.0.3     mnormt_2.0.2        tmvnsim_1.0-2      
+    ## [31] htmltools_0.5.2     tidyselect_1.1.2    codetools_0.2-18   
+    ## [34] fansi_1.0.3         crayon_1.5.1        tzdb_0.2.0         
+    ## [37] dbplyr_2.1.1        withr_2.5.0         grid_4.1.3         
+    ## [40] jsonlite_1.7.3      gtable_0.3.0        lifecycle_1.0.1    
+    ## [43] DBI_1.1.2           magrittr_2.0.3      scales_1.1.1       
+    ## [46] cli_3.3.0           stringi_1.7.6       farver_2.1.0       
+    ## [49] sn_2.0.1            fs_1.5.2            xml2_1.3.3         
+    ## [52] ellipsis_0.3.2      generics_0.1.2      vctrs_0.4.1        
+    ## [55] iterators_1.0.14    tools_4.1.3         glue_1.6.2         
+    ## [58] hms_1.1.1           fastmap_1.1.0       yaml_2.3.4         
+    ## [61] colorspace_2.0-3    rvest_1.0.2         knitr_1.37         
+    ## [64] haven_2.4.3
