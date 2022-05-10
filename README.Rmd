@@ -25,7 +25,7 @@ An introduction to `INLA` can be found [here](https://becarioprecario.bitbucket.
 
 To install `nowcaster` package simply run the code below in R:
 
-```{r install}
+```{r install, eval=FALSE}
 if( !require(nowcaster, quietly = T) ){
   devtools::install_github("https://github.com/covid19br/nowcaster")
 }
