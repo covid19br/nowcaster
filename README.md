@@ -113,12 +113,12 @@ head(nowcasting_bh_no_age$total)
     ## # A tibble: 6 × 7
     ##    Time dt_event   Median    LI    LS   LIb   LSb
     ##   <int> <date>      <dbl> <dbl> <dbl> <dbl> <dbl>
-    ## 1    17 2021-12-13   625    621  632.   623   627
-    ## 2    18 2021-12-20   695    687  707    692   698
-    ## 3    19 2021-12-27   812    800  830    808   818
-    ## 4    20 2022-01-03   886.   870  908    880   893
-    ## 5    21 2022-01-10   819    798  846    811   826
-    ## 6    22 2022-01-17   631    610  662    623   640
+    ## 1    17 2021-12-13    625   621  632    623   627
+    ## 2    18 2021-12-20    695   687  707    692   699
+    ## 3    19 2021-12-27    812   801  829    807   817
+    ## 4    20 2022-01-03    886   872  909.   880   893
+    ## 5    21 2022-01-10    818   799  843    810   825
+    ## 6    22 2022-01-17    631   610  662    622   640
 
 This calling will return only the nowcasting estimate and its Confidence
 Interval (CI) for two different Credible interval, `LIb` and `LSb` are
