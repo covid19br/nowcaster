@@ -26,7 +26,9 @@ An introduction to `INLA` can be found [here](https://becarioprecario.bitbucket.
 To install `nowcaster` package simply run the code below in R:
 
 ```{r install}
-devtools::install_github("https://github.com/covid19br/nowcaster")
+if( !require(nowcaster, quietly = T) ){
+  devtools::install_github("https://github.com/covid19br/nowcaster")
+}
 ```
 
 After installing you can load the by typical library:
@@ -40,13 +42,14 @@ library(nowcaster)
 When the package is loaded it disponibilize a LazyData file, `sariBH`, it is a annonymized records of Severe Acute Respiratory Illness notified in the city of Belo Horizonte, since March 2020 to April 2022. To load it basically write:
 
 ```{r data-bh}
-data<-sragBH
+# Loading Belo Horizonte SARI dataset
+data(sragBH)
 ```
 
 And we take a look on the data:
 
 ```{r lookup}
-head(data)
+head(sragBH)
 ```
 
 It is a data.frame with 7 variables and 65,404 observations. We will make use of only the first two columns, "DT_SIN_PRI" (date of onset symptoms) and "DT_DIGITA" (recording date) as well the column "Idade" (age in years) to make age structured nowcasting.
@@ -56,8 +59,9 @@ It is a data.frame with 7 variables and 65,404 observations. We will make use of
 Now we call the nowcasting function, it has by default the parametrization to take the data and estimate with a non-structured data form. The estimate fits a negative binomial distribution, $NegBinom(\lambda_{t,d}, \phi)$, to the cases count at time $t$ with delay $d$, $\phi$ is the dispersion parameter. The rate $\lambda_{t,d}$ is then parameterized in a log-linear format by a constant term added by structured delay random effects and structured time random effects. Hence, the model is given by the following:
 
 $$\begin{equation}
-Y_{t,d} \sim NegBinom(\lambda_{t,d}, \phi), \quad t=1,2,\ldots,T, \quad d=1,2,\ldots,D, \\
-\log(\lambda_{t,d}) = \alpha + \beta_t + \gamma_d
+Y_{t,d} \sim NegBinom(\lambda_{t,d}, \phi), \\
+\log(\lambda_{t,d}) = \alpha + \beta_t + \gamma_d, \\
+t=1,2,\ldots,T, \\ d=1,2,\ldots,D,
 \end{equation}$$
 
 where the intercept $\alpha$ follows is Gaussian distribution with a very large variance, $\beta_t$ is follows a second order random walk with precision $\tau_\beta$, $\gamma_d$ a first-order random walk with precision $\tau_\gamma$. The model is then completed by INLA default prior distributions for $\phi$, $\tau_\beta$, and $\tau_\gamma$. See nbinom, rw1 and rw2 INLA help pages.
@@ -85,7 +89,7 @@ head(nowcasting_bh_no_age$dados)
 This element it is the counts of cases by the amount of delay. It is known as the delay triangle, if we table the delay amount against the data of onset of first symptoms, it can see how is the pattern of the delay for the cases.  
 
 ```{r delay-triangle}
-data_triangle<-nowcasting_bh_no_age$dados |> 
+data_triangle <- nowcasting_bh_no_age$dados |> 
   filter(Delay < 30) |> 
   arrange(desc(Delay))
 delay_triangle<-table(data_triangle$date_onset, 
@@ -123,8 +127,8 @@ nowcasting_bh_no_age$total %>%
 
 For the structured data the `nowcasting_inla()` fits again a Negative binomial distribution to the cases count at time $t$ with delay $d$. Differently, from the non-structured case the model now gives random effects to the delay distribution and and time distribution by each of the age-class chosen by the user to break the data. The model has the form now:
 
-$$\begin{equation}Y_{t,d,a} \sim  NegBinom(\lambda_{t,d,a}, \phi), \quad t=1,2,\ldots,T, \quad d=1,2,\ldots,D, a=1,2,\ldots,A \\
-\log(\lambda_{t,d,a}) =  \alpha_a + \beta_{t,a} + \gamma_{d,a}\end{equation}$$
+$$\begin{equation}Y_{t,d,a} \sim  NegBinom(\lambda_{t,d,a}, \phi), \\
+\log(\lambda_{t,d,a}) =  \alpha_a + \beta_{t,a} + \gamma_{d,a}, \\ \quad t=1,2,\ldots,T, \\ d=1,2,\ldots,D, \\ a=1,2,\ldots,A, \end{equation}$$
 
 where each age class, $a$, has an intercept $\alpha_a$ following a Gaussian distribution with a very large variance, the time-age random effects, $\beta_{t,a}$, follow a joint multivariate Gaussian distribution with a separable variance components an independent Gaussian term for the age classes with precision $\tau_{age,\beta}$ and a second order random walk term for the time with precision $\tau_{\beta}$. Analogously, the delay-age random effects, $\gamma_{d,a}$, follow a joint multivariate Gaussian distribution with a separable variance components an independent Gaussian term for the age classes with precision $\tau_{age,\gamma}$ and a first order random walk term for the time with precision $\tau_{\gamma}$. The model is then completed by INLA default prior distributions for $\phi$, $\tau_{age,\beta}$, $\tau_{age,\gamma}$, $\tau_{\beta}$ and $\tau_\gamma$. See nbinom, iid, rw1 and rw2 INLA help pages.
 
