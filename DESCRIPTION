@@ -16,8 +16,11 @@ Suggests: ggplot2, vroom
 Depends: 
     R (>= 2.10)
 LazyData: true
-Imports: dplyr, 
-         INLA,
-         lubridate,
-         tidyr,
-         tibble
+Additional_repositories: 
+    https://inla.r-inla-download.org/R/stable/
+Imports: 
+    dplyr,
+    INLA (>= 22.5.3),
+    lubridate,
+    tidyr,
+    tibble
