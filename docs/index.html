@@ -40,6 +40,12 @@
 <li class="nav-item">
   <a class="nav-link" href="reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="articles/getstarted.html">Get Started</a>
+  </div>
+</li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -116,12 +122,12 @@ t=1,2,\\ldots,T, \\\\ d=1,2,\\ldots,D,
 <div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 6 × 7</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="do">##    Time dt_event   Median    LI    LS   LIb   LSb</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;int&gt; &lt;date&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 1    17 2021-12-13    625   621  632    623   627</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 2    18 2021-12-20    695   687  707    692   699</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 3    19 2021-12-27    812   801  829    807   817</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 4    20 2022-01-03    886   872  909.   880   893</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 5    21 2022-01-10    818   799  843    810   825</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 6    22 2022-01-17    631   610  662    622   640</span></span></code></pre></div>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 1    17 2021-12-13    625   621  633    623   627</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 2    18 2021-12-20    695   687  706    692   698</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 3    19 2021-12-27    812   801  830    807   816</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 4    20 2022-01-03    886   871  910    880   893</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 5    21 2022-01-10    818   800  844.   811   827</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 6    22 2022-01-17    631   611  658.   623   640</span></span></code></pre></div>
 <p>This calling will return only the nowcasting estimate and its Confidence Interval (CI) for two different Credible interval, <code>LIb</code> and <code>LSb</code> are the max and min CI, respectively, with credibility of 50% and <code>LI</code> and <code>LS</code> are the max and min CI, respectively, with credibility of 95%.</p>
 <p><code>nowcasting_inla</code> has the option to return the curve for when the nowcasting estimate was set the window of action of the model, if the <code>data.by.week</code> parameter is flagged as <code>TRUE</code> it returns on the second element of the output list the summarized data by week.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
