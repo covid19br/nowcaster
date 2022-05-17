@@ -1,7 +1,7 @@
 ---
 title: "Get Started"
 output: rmarkdown::html_vignette
-author: "Rafael Lopes"
+author: "Rafael Lopes & Leonardo Bastos"
 vignette: >
   %\VignetteIndexEntry{Get Started}
   %\VignetteEngine{knitr::rmarkdown}
