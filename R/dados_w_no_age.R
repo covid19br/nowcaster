@@ -35,6 +35,7 @@ dados.w_no_age<-function(dataset,
   # Dia da semana da ultima digitação
   DT_max_diadasemana <- as.integer(format(DT_max, "%w"))
 
+
   dados_w <- dataset |>
     dplyr::rename(date_report = {{date_report}},
            date_onset = {{date_onset}}) |>

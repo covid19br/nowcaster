@@ -76,6 +76,7 @@ dados.w<-function(dataset,
   }
 
 
+
   dados_w <- dataset |>
     dplyr::rename(date_report = {{date_report}},
            date_onset = {{date_onset}}) |>
