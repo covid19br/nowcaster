@@ -1,8 +1,9 @@
 pandoc: 2.17.1.1
 pkgdown: 2.0.3
 pkgdown_sha: ~
-articles: {}
-last_built: 2022-05-10T23:13Z
+articles:
+  nowcaster: nowcaster.html
+last_built: 2022-05-17T14:02Z
 urls:
   reference: https://covid19br.github.io/nowcaster/reference
   article: https://covid19br.github.io/nowcaster/articles
