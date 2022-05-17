@@ -1,4 +1,14 @@
-url: ~
+destination: docs
+authors:
+  Rafael Lopes:
+    href: https://github.com/rafalopespx
+  Leonardo Bastos:
+    href: https://github.com/lsbastos/
+url: https://covid19br.github.io/nowcaster
 template:
   bootstrap: 5
-
+  bootswatch: cerulean
+navbar:
+  structure:
+    left:  [intro, reference, articles, tutorials, news]
+    right: [search, github]

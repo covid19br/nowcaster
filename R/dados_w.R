@@ -79,7 +79,8 @@ dados.w<-function(dataset,
   dados_w <- dataset %>%
     rename(date_report = {{date_report}},
            date_onset = {{date_onset}}) %>%
-    dplyr::filter(date_report <= DT_max, lubridate::epiyear(date_onset) >= 2021 &
+    dplyr::filter(date_report <= DT_max,
+                  #lubridate::epiyear(date_onset) >= 2021 &
              {{age_col}} <= max(bins_age)) %>%
     tidyr::drop_na({{age_col}}) %>%
     dplyr::mutate(

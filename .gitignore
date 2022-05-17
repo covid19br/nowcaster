@@ -46,4 +46,4 @@ test.R
 .Rproj.user
 .Rdata
 .DS_Store
-docs
+inst/doc

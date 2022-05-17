@@ -12,12 +12,20 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 URL: https://covid19br.github.io/nowcaster
 BugReports: https://github.com/covid19br/nowcaster/issues
-Suggests: ggplot2, vroom
+Suggests: 
+    ggplot2,
+    knitr,
+    rmarkdown,
+    vroom
 Depends: 
     R (>= 2.10)
 LazyData: true
-Imports: dplyr, 
-         INLA,
-         lubridate,
-         tidyr,
-         tibble
+Additional_repositories: 
+    https://inla.r-inla-download.org/R/stable/
+Imports: 
+    dplyr,
+    INLA (>= 22.5.3),
+    lubridate,
+    tidyr,
+    tibble
+VignetteBuilder: knitr
