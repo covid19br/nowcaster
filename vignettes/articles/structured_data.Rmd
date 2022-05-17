@@ -1,57 +1,34 @@
 ---
-output: github_document
+title: "Structured data"
+output: rmarkdown::html_vignette
+author: "Rafael Lopes & Leonardo Bastos"
+vignette: >
+  %\VignetteIndexEntry{Strutured Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include=FALSE}
+```{r echo=FALSE}
 knitr::opts_chunk$set(
-	echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE
+  collapse = TRUE,
+  comment = "#>",
+  warning = F,
+  message = F,
+  echo = T
 )
 ```
 
-# nowcaster <a href='https://github.com/covid19br/nowcaster'><img src='man/figures/nowcaster.png' align="right" width="140" /></a> <a href='https://github.com/covid19br/nowcaster'><img src='man/figures/nowcaster_rev.png' align="right" width="140" /></a>
-
-
-`nowcaster` is a R package for "nowcasting" epidemiological time-series. Every single system of notification has an intrinsic delay, `nowcaster` can estimate how many counts of any epidemiological data of interest (*i.e.*, daily cases and deaths counts) by fitting a negative binomial model to the time steps of delay between onset date of the event, (*i.e.*, date of first symptoms for cases or date of occurrence of death) and the date of report (*i.e.*, date of notification of the case or death).
-
-`nowcaster` is based on the [`R-INLA`](https://becarioprecario.bitbucket.io/inla-gitbook/index.html) and [`INLA`](https://inla.r-inla-download.org/r-inla.org/doc/inla-manual/inla-manual.pdf) packages for "**I**ntegrated **N**ested **L**aplace **A**pproximation" algorithm to Bayesian inference. `INLA` is a fast alternative to others methods for Bayesian inference like **MCMC**. 
-An introduction to `INLA` can be found [here](https://becarioprecario.bitbucket.io/inla-gitbook/index.html).
-
-`nowcaster` is build for epidemiological emergency use, it was constructed for the Brazilian Severe Acute Respiratory Illness (SARI) surveillance database (SIVEP-Gripe). 
-
-## Installing
-
-To install `nowcaster` package simply run the code below in R:
-
-```{r install}
-if( !require(nowcaster, quietly = T) ){
-  devtools::install_github("https://github.com/covid19br/nowcaster")
-}
-```
-
-After installing you can load the by typical library:
-
-```{r library}
-library(nowcaster)
-```
-
-## First example on LazyData
-
-When the package is loaded it disponibilize a LazyData file, `sariBH`, it is a annonymized records of Severe Acute Respiratory Illness notified in the city of Belo Horizonte, since March 2020 to April 2022. To load it basically write:
+As in the Get Started we start by loading the package and its lazy data, by:
 
 ```{r data-bh}
+library(nowcaster)
 # Loading Belo Horizonte SARI dataset
 data(sragBH)
 ```
 
-And we take a look on the data:
-
-```{r lookup}
-head(sragBH)
-```
-
-It is a data.frame with 7 variables and 65,404 observations. We will make use of only the first two columns, "DT_SIN_PRI" (date of onset symptoms) and "DT_DIGITA" (recording date) as well the column "Idade" (age in years) to make age structured nowcasting.
-
 ## Non-structured data
+
+Th Get Started example it is a non-strucutured data estimation, here we give a more detailed on the description of this type of data and how it can change the nowcasting estimation. 
 
 Now we call the nowcasting function, it has by default the parametrization to take the data and estimate with a non-structured data form. The estimate fits a negative binomial distribution, $NegBinom(\lambda_{t,d}, \phi)$, to the cases count at time $t$ with delay $d$, $\phi$ is the dispersion parameter. The rate $\lambda_{t,d}$ is then parameterized in a log-linear format by a constant term added by structured delay random effects and structured time random effects. Hence, the model is given by the following:
 
@@ -86,6 +63,8 @@ head(nowcasting_bh_no_age$dados)
 This element it is the counts of cases by the amount of delay. It is known as the delay triangle, if we table the delay amount against the data of onset of first symptoms, it can see how is the pattern of the delay for the cases.  
 
 ```{r delay-triangle}
+library(dplyr)
+
 data_triangle <- nowcasting_bh_no_age$dados |> 
   filter(Delay < 30) |> 
   arrange(desc(Delay))
@@ -101,11 +80,10 @@ If this element is groped by and summarized by the onset of symptoms date, here 
 ```{r no_age_plot}
 library(ggplot2)
 
-dados_by_week <- nowcasting_bh_no_age$dados |> 
-  filter(date_onset >= (Sys.Date()-270)) |> 
-  group_by(date_onset) |> 
+dados_by_week <- nowcasting_bh_no_age$dados %>% 
+  filter(date_onset >= (Sys.Date()-270)) %>% 
+  group_by(date_onset) %>% 
   summarise(n = n())
-
 
 nowcasting_bh_no_age$total |> 
   ggplot(aes(x = dt_event, y = Median, col = 'Nowcasting')) +
@@ -145,13 +123,13 @@ Each of the estimates returned by `nowcasting_inla` has the same form as in the 
 ```{r plot}
 library(ggplot2)
 
-dados_by_week <- nowcasting_bh_age$dados |>  
+dados_by_week <- nowcasting_bh_age$dados |> 
   filter(date_onset >= (Sys.Date()-270)) |>  
-  group_by(date_onset) |> 
+  group_by(date_onset) %>% 
   summarise(n = n())
 
 
-nowcasting_bh_age$total %>% 
+nowcasting_bh_age$total |> 
   ggplot(aes(x = dt_event, y = Median, col = 'Median'))+
   geom_line()+
   geom_line(data = dados_by_week, aes(date_onset, y = n))+
@@ -163,33 +141,3 @@ nowcasting_bh_age$total %>%
   labs(x = '', y = 'Nº Cases')
 ```
 
-## Comparing the estimates
-
-We can compare the estimates by each of the strategies, we plot the two estimates together:
-
-```{r compare_plot}
-nowcasting_bh_no_age$total$type <- "No Age structured"
-nowcasting_bh_age$total$type <- "Age structured"
-
-
-nowcasting_bh_total <- nowcasting_bh_age$total |> 
-  full_join(nowcasting_bh_no_age$total)
-
-nowcasting_bh_total |> 
-  ggplot(aes(x = dt_event, y = Median, col = type))+
-  geom_line(show.legend = F)+
-  geom_ribbon(aes(ymin = LI, ymax = LS, fill = NULL), alpha = 0,
-              show.legend = T)+
-  theme_bw()+
-  theme(legend.position = "bottom", axis.text.x = element_text(angle = 90))+
-  scale_color_manual(values = c('grey60', 'grey90'), name = '')+
-  scale_fill_manual(values = c('grey60', 'grey90'), name = '')+
-  scale_x_date(date_breaks = '2 weeks', date_labels = '%V/%y', name = 'Date in Weeks')+
-  labs(x = '', y = 'Nº Cases')
-```
-
-The estimates gives different CIs, this is due to a better fitting when considering random effects by age class for the delays at time, this has to do with the different capability to respond on different ages. This is an empirical finding of this models.
-
-```{r}
-sessionInfo()
-```

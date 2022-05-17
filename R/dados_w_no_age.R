@@ -13,21 +13,34 @@ dados.w_no_age<-function(dataset,
                          date_report){
 
   # Loading packages
-  require(dplyr)
-  require(lubridate)
+  # require(dplyr)
+  # require(lubridate)
+
+  ## Data da ultima digitacão
+  if(missing(trim.data)){
+    trim.data <-  0
+    warning("Using default, no trimming out of the data")
+  } else {
+    warning("Using default, trimming out ",
+            trim.data ,
+            " days of data",
+            call. = T)
+  }
 
   ## Data máxima de digitação a considerar
   DT_max <- max(dataset |>
-                  pull(var = {{date_report}}),
+                  dplyr::pull(var = {{date_report}}),
                 na.rm = T) - trim.data
 
   # Dia da semana da ultima digitação
   DT_max_diadasemana <- as.integer(format(DT_max, "%w"))
 
-  dados_w <- dataset %>%
-    rename(date_report = {{date_report}},
-           date_onset = {{date_onset}}) %>%
-    dplyr::filter(date_report <= DT_max, lubridate::epiyear(date_onset) >= 2021) %>%
+  dados_w <- dataset |>
+    dplyr::rename(date_report = {{date_report}},
+           date_onset = {{date_onset}}) |>
+    dplyr::filter(date_report <= DT_max,
+                  # lubridate::epiyear(date_onset) >= 2021
+                  ) |>
     dplyr::mutate(
       # Alterando a data para o primeiro dia da semana
       # Ex. se ultimo dado for de um domingo, entao a semana
@@ -38,7 +51,7 @@ dados.w_no_age<-function(dataset,
       date_report = date_report -
         as.integer(format(date_report, "%w")) -
         (6-DT_max_diadasemana),
-      Delay = as.numeric(date_report - date_onset) / 7) %>%
+      Delay = as.numeric(date_report - date_onset) / 7) |>
     dplyr::filter(Delay >= 0)
 
   # Returning

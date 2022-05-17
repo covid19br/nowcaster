@@ -9,9 +9,8 @@
 nowcasting_no_age <- function(dados.age){
 
   # ## Loading packages
-  require(INLA)
-  require(tidyr)
-
+  # require(INLA)
+  # require(tidyr)
 
   index.missing <- which(is.na(dados.age$Y))
 
@@ -89,12 +88,12 @@ nowcasting_no_age <- function(dados.age){
     data.aux <- dados.gg
     Tmin <- min(dados.gg$Time[idx])
     data.aux$Y[idx] <- x
-    data.aggregated <- data.aux %>%
+    data.aggregated <- data.aux |>
       ## Selecionando apenas os dias faltantes a partir
       ## do domingo da respectiva ultima epiweek
       ## com dados faltantes
-      dplyr::filter(Time >= Tmin  ) %>%
-      dplyr::group_by(Time, dt_event) %>%
+      dplyr::filter(Time >= Tmin  ) |>
+      dplyr::group_by(Time, dt_event) |>
       dplyr::summarise(
         Y = sum(Y), .groups = "keep"
       )

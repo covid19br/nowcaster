@@ -16,14 +16,14 @@ dados.w<-function(dataset,
                   date_report,
                   age_col){
   # Loading packages
-  require(tidyr)
-  require(dplyr)
-  require(lubridate)
+  # require(tidyr)
+  # require(dplyr)
+  # require(lubridate)
 
   ## Data da ultima digitacão
   if(missing(trim.data)){
-    trim.data <-  2
-    warning("Using default, trimming out 2 days of the data")
+    trim.data <-  0
+    warning("Using default, no trimming out of the data")
   } else {
     warning("Using default, trimming out ",
                    trim.data ,
@@ -33,7 +33,7 @@ dados.w<-function(dataset,
 
   ## Data máxima de digitação a considerar
   DT_max <- max(dataset |>
-                  pull(var = {{date_report}}),
+                  dplyr::pull(var = {{date_report}}),
                 na.rm = T) - trim.data
 
   # Dia da semana da ultima digitação
@@ -48,19 +48,19 @@ dados.w<-function(dataset,
         bins_age<-c(0,5,12,18,30,seq(40,90,by=10),130)
         labels_age<-1:(length(bins_age)-1)
         warning("Bins age as in SI-PNI: ",
-                str_c(bins_age[bins_age < 90], " "), "90+",
+                stringr::str_c(bins_age[bins_age < 90], " "), "90+",
                 call. = T)
       } else if(bins_age == "10 years"){
         bins_age<-c(seq(0,90, by = 10),130)
         labels_age<-1:(length(bins_age)-1)
         warning("Bins age in 10 years: ",
-                str_c(bins_age[bins_age < 90], " "), "90+",
+                stringr::str_c(bins_age[bins_age < 90], " "), "90+",
                 call. = T)
       } else if(bins_age == "5 years"){
         bins_age<-c(seq(0,90, by = 5),130)
         labels_age<-1:(length(bins_age)-1)
         warning("Bins age in 5 years: ",
-                str_c(bins_age[bins_age < 90], " "), "90+",
+                stringr::str_c(bins_age[bins_age < 90], " "), "90+",
                 call. = T)
       }
     else {
@@ -70,18 +70,19 @@ dados.w<-function(dataset,
     bins_age<-bins_age
     labels_age<-1:(length(bins_age)-1)
     warning("Using bins ages given: ",
-            str_c(bins_age[bins_age < bins_age[length(bins_age) - 1]], " "),
+            stringr::str_c(bins_age[bins_age < bins_age[length(bins_age) - 1]], " "),
             bins_age[length(bins_age) - 1], "+",
             call. = T)
   }
 
 
-  dados_w <- dataset %>%
-    rename(date_report = {{date_report}},
-           date_onset = {{date_onset}}) %>%
-    dplyr::filter(date_report <= DT_max, lubridate::epiyear(date_onset) >= 2021 &
-             {{age_col}} <= max(bins_age)) %>%
-    tidyr::drop_na({{age_col}}) %>%
+  dados_w <- dataset |>
+    dplyr::rename(date_report = {{date_report}},
+           date_onset = {{date_onset}}) |>
+    dplyr::filter(date_report <= DT_max,
+                  # lubridate::epiyear(date_onset) >= 2021 &
+             {{age_col}} <= max(bins_age)) |>
+    tidyr::drop_na({{age_col}}) |>
     dplyr::mutate(
       # Alterando a data para o primeiro dia da semana
       # Ex. se ultimo dado for de um domingo, entao a semana
@@ -97,8 +98,8 @@ dados.w<-function(dataset,
                       breaks = bins_age,
                       labels = labels_age,
                       right = F)
-    ) %>%
-    tidyr::drop_na(fx_etaria) %>%
+    ) |>
+    tidyr::drop_na(fx_etaria) |>
     dplyr::filter(Delay >= 0)
 
   # Returning
