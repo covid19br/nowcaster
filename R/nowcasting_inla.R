@@ -51,7 +51,7 @@ nowcasting_inla <- function(dataset,
                             ...){
 
   # ## Loading required packages
-  require(tidyverse)
+  # require(tidyverse)
   # require(lubridate)
   # require(vroom)
   # require(INLA)
@@ -106,13 +106,13 @@ nowcasting_inla <- function(dataset,
   ## Objects for keep the nowcasting
   ## Filtering out cases without report date
   if(missing(age_col)){
-    dados<-dataset %>%
-      dplyr::select({{date_report}}, {{date_onset}}) %>%
+    dados<-dataset |>
+      dplyr::select({{date_report}}, {{date_onset}})  |>
       tidyr::drop_na({{date_report}})
   } else {
-    dados <- dataset %>%
-      # dplyr::mutate(IDADE = NU_IDADE_N) %>%
-      dplyr::select({{date_report}}, {{date_onset}}, {{age_col}}) %>%
+    dados <- dataset  |>
+      # dplyr::mutate(IDADE = NU_IDADE_N)  |>
+      dplyr::select({{date_report}}, {{date_onset}}, {{age_col}})  |>
       tidyr::drop_na({{date_report}})
   }
 
@@ -133,31 +133,31 @@ nowcasting_inla <- function(dataset,
 
   ## Parameters of Nowcasting estimate
   Tmax <- max(dados_w |>
-                pull(var = date_onset))
+                dplyr::pull(var = date_onset))
 
   ## Parameter of stratum
 
   ## Data to be entered in Nowcasting function
   ##
   if(missing(age_col)){
-    dados.inla <- dados_w %>%
+    dados.inla <- dados_w  |>
       ## Filter for dates
       dplyr::filter(date_onset >= Tmax - 7 * wdw,
-                    Delay <= Dmax) %>%
+                    Delay <= Dmax)  |>
       ## Group by on Onset dates, Amounts of delays and Stratum
-      group_by(date_onset, delay = Delay) %>%
+      dplyr::group_by(date_onset, delay = Delay)  |>
       ## Counting
-      dplyr::tally(name = "Y") %>%
+      dplyr::tally(name = "Y")  |>
       dplyr::ungroup()
   } else {
-    dados.inla <- dados_w %>%
+    dados.inla <- dados_w  |>
       ## Filter for dates
       dplyr::filter(date_onset >= Tmax - 7 * wdw,
-                    Delay <= Dmax) %>%
+                    Delay <= Dmax)  |>
       ## Group by on Onset dates, Amounts of delays and Stratum
-      dplyr::group_by(date_onset, delay = Delay, fx_etaria) %>%
+      dplyr::group_by(date_onset, delay = Delay, fx_etaria)  |>
       ## Counting
-      dplyr::tally(name = "Y") %>%
+      dplyr::tally(name = "Y")  |>
       dplyr::ungroup()
   }
 
@@ -165,7 +165,7 @@ nowcasting_inla <- function(dataset,
   ## Auxiliary date table
   #if(K==0){
   dates<-unique(dados.inla |>
-                  pull(var = date_onset))
+                  dplyr::pull(var = date_onset))
   #} else {
   # dates<-c(unique(dados.inla${{date_onset}}),(max(dados.inla${{date_onset}}) + 7*K))
   #}
@@ -173,11 +173,11 @@ nowcasting_inla <- function(dataset,
   ## To make an auxiliary date table with each date plus an amount of dates  to forecast
   tbl.date.aux <- tibble::tibble(
     date_onset = dates
-  ) %>%
+  )  |>
     tibble::rowid_to_column(var = "Time")
 
   ## Joining auxiliary date tables
-  dados.inla <- dados.inla %>%
+  dados.inla <- dados.inla  |>
     dplyr::left_join(tbl.date.aux)
 
   ## Time maximum to be considered
@@ -187,39 +187,39 @@ nowcasting_inla <- function(dataset,
   if(missing(age_col)){
     tbl.NA <-
       expand.grid(Time = 1:(Tmax.id+K),
-                  delay = 0:Dmax) %>%
+                  delay = 0:Dmax)  |>
       dplyr::left_join(tbl.date.aux, by = "Time")
   } else{
     tbl.NA <-
       expand.grid(Time = 1:(Tmax.id+K),
                   delay = 0:Dmax,
                   fx_etaria = unique(dados.inla$fx_etaria)
-      )%>%
+      ) |>
       dplyr::left_join(tbl.date.aux, by = "Time")
   }
 
   ## Joining the auxiliary date table by Stratum
   if(missing(age_col)){
-    dados.inla <- dados.inla %>%
-      dplyr::full_join(tbl.NA) %>%  #View()
+    dados.inla <- dados.inla  |>
+      dplyr::full_join(tbl.NA) |>  #View()
       dplyr::mutate(
         Y = ifelse(Time + delay > Tmax.id, as.numeric(NA), Y),
         ## If Time + Delay is greater than Tmax, fill with NA
         Y = ifelse(is.na(Y) & Time + delay <= Tmax.id, 0, Y ),
         ## If Time + Delay is smaller than Tmax AND Y is NA, fill 0
-      ) %>%
-      dplyr::arrange(Time, delay)%>%
+      )  |>
+      dplyr::arrange(Time, delay) |>
       dplyr::rename(dt_event = date_onset)
   }else {
-    dados.inla <- dados.inla %>%
-      dplyr::full_join(tbl.NA) %>%  #View()
+    dados.inla <- dados.inla  |>
+      dplyr::full_join(tbl.NA)  |>   #View()
       dplyr::mutate(
         Y = ifelse(Time + delay > Tmax.id, as.numeric(NA), Y),
         ## If Time + Delay is greater than Tmax, fill with NA
         Y = ifelse(is.na(Y) & Time + delay <= Tmax.id, 0, Y ),
         ## If Time + Delay is smaller than Tmax AND Y is NA, fill 0
-      ) %>%
-      dplyr::arrange(Time, delay, fx_etaria)%>%
+      )  |>
+      dplyr::arrange(Time, delay, fx_etaria) |>
       dplyr::rename(dt_event = date_onset)
   }
   ## Precisamos transformar essa datas de volta no valor que é correspondente delas,

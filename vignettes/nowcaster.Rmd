@@ -54,9 +54,9 @@ On the second element it returns the data to be grouped and summarized to give t
 library(ggplot2)
 library(dplyr)
 
-dados_by_week <- nowcasting_bh_no_age$dados %>% 
-  filter(date_onset >= (Sys.Date()-270)) %>% 
-  group_by(date_onset) %>% 
+dados_by_week <- nowcasting_bh_no_age$dados |> 
+  filter(date_onset >= (Sys.Date()-270)) |> 
+  group_by(date_onset) |> 
   summarise(n = n())
 
 dados_by_week |> 
@@ -74,7 +74,7 @@ After this element is groped by and summarized by the onset of symptoms date, he
 
 ```{r no_age_plot}
 
-nowcasting_bh_no_age$total %>% 
+nowcasting_bh_no_age$total |> 
   ggplot(aes(x = dt_event, y = Median, col = 'Nowcasting')) +
   geom_line(data = dados_by_week, aes(date_onset, y = n, col = 'Observed'))+
   geom_ribbon(aes(ymin = LI, ymax = LS, col = NA), alpha = 0.2, show.legend = F)+
