@@ -44,6 +44,7 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/nowcasting_importance.html">Nowcasting for decision making</a>
     <a class="dropdown-item" href="../articles/structured_data.html">Structured data</a>
   </div>
 </li>
@@ -124,12 +125,12 @@ name for the date of report of the cases. Here this columns are
 <span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 7</span></span>
 <span class="co">#&gt;    Time dt_event   Median    LI    LS   LIb   LSb</span>
 <span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    17 2021-12-13    625   621   633   623   627</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    18 2021-12-20    695   687   706   692   699</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    19 2021-12-27    812   800   829   808   817</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    20 2022-01-03    886   870   906   880   892</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    21 2022-01-10    818   800   844   810   825</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    22 2022-01-17    630   610   660   623   640</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    17 2021-12-13    625   621  632    623   627</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    18 2021-12-20    694   687  707    691   698</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    19 2021-12-27    812   800  828    807   817</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    20 2022-01-03    886   870  909.   880   893</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    21 2022-01-10    818   798  846    810   827</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    22 2022-01-17    630   609  663    622   640</span></code></pre></div>
 <p>This calling will return for the first element the nowcasting
 estimate and its Confidence Interval (CI) for two different Credible
 interval, <code>LIb</code> and <code>LSb</code> are the max and min CI,
