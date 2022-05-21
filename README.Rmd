@@ -68,7 +68,8 @@ The call of the function is straightforward, it simply needs a dataset as input,
 ```{r no_age}
 nowcasting_bh_no_age <- nowcasting_inla(dataset = sragBH, 
                                         date_onset = DT_SIN_PRI, 
-                                        date_report = DT_DIGITA)
+                                        date_report = DT_DIGITA, 
+                                        data.by.week = T)
 head(nowcasting_bh_no_age$total)
 ```
 
@@ -98,7 +99,7 @@ dados_by_week |>
 
 After this element is groped by and summarized by the onset of symptoms date, here `DT_SIN_PRI`, it is the epidemiological curve observed. To example how the estimate compares with the observed curve, we plot the estimate and the epidemiological curve all together.
 
-```{r no_age_plot}
+```{r first_plot}
 
 nowcasting_bh_no_age$total |> 
   ggplot(aes(x = dt_event, y = Median, col = 'Nowcasting')) +
@@ -146,7 +147,7 @@ data_by_week |>
 
 On this filtered data, we estimate the cases already that started its date of onset of symptons but were not yet reported, so there not in the database. We just pass to the `nowcasting_inla` function, the dataset filtered, flag for the columns where are the `date_onset` and `date_report`, we add the flag for the function return back the epidemic curve by epiweek.
 
-```{r no_age_data}
+```{r now_no_age_data}
 nowcasting_bh_no_age <- nowcasting_inla(dataset = srag_now, 
                                         date_onset = DT_SIN_PRI, 
                                         date_report = DT_DIGITA, 
