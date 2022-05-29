@@ -66,6 +66,9 @@ nowcasting_inla <- function(dataset,
   if(missing(date_onset) | missing(date_report)){
     stop("date_onset or date_report missing! Please give a column name for each of this parameters")
   }
+  if(K < 0 ){
+    stop("K less than 0, we cannot produce backcasting! Please set the K to anything greater than 0 to Forecasting")
+  }
 
   ## Warnings
   if(!silent){
@@ -111,7 +114,6 @@ nowcasting_inla <- function(dataset,
       tidyr::drop_na({{date_report}})
   } else {
     dados <- dataset  |>
-      # dplyr::mutate(IDADE = NU_IDADE_N)  |>
       dplyr::select({{date_report}}, {{date_onset}}, {{age_col}})  |>
       tidyr::drop_na({{date_report}})
   }
@@ -134,8 +136,6 @@ nowcasting_inla <- function(dataset,
   ## Parameters of Nowcasting estimate
   Tmax <- max(dados_w |>
                 dplyr::pull(var = date_onset))
-
-  ## Parameter of stratum
 
   ## Data to be entered in Nowcasting function
   ##
@@ -163,13 +163,15 @@ nowcasting_inla <- function(dataset,
 
 
   ## Auxiliary date table
-  #if(K==0){
+  if(K==0){
   dates<-unique(dados.inla |>
                   dplyr::pull(var = date_onset))
-  #} else {
-  # dates<-c(unique(dados.inla${{date_onset}}),(max(dados.inla${{date_onset}}) + 7*K))
-  #}
-  ## Talvez isso não precise se a gente voltar as datas de primeiros sintomas para a data dela correspondente
+  } else {
+    ## This is done to explicitly say for the forecast part that its date of onset is the present date
+  date_k<-(max(dados.inla$date_onset + 7*K))
+  dates<-c(unique(dados.inla$date_onset), date_k)
+  }
+
   ## To make an auxiliary date table with each date plus an amount of dates  to forecast
   tbl.date.aux <- tibble::tibble(
     date_onset = dates
@@ -231,7 +233,7 @@ nowcasting_inla <- function(dataset,
     sample.now <- nowcasting_no_age(dados.age = dados.inla)
 
     ## Summary on the posteriors of nowcasting
-    now_summary<-nowcasting.summary(sample.now,
+    now_summary<-nowcasting.summary(trajetory = sample.now,
                                     age = F)
     l<-1
   } else {
@@ -239,7 +241,7 @@ nowcasting_inla <- function(dataset,
     sample.now <- nowcasting_age(dados.age = dados.inla)
 
     ## Summary on the posteriors of nowcasting
-    now_summary<-nowcasting.summary(sample.now,
+    now_summary<-nowcasting.summary(trajetory = sample.now,
                                     age = T)
     l<-0
   }
@@ -249,7 +251,7 @@ nowcasting_inla <- function(dataset,
   if(data.by.week){
 
     now_summary[[3-l]]<-dados_w
-    names(now_summary)[3-l]<-"dados"
+    names(now_summary)[3-l]<-"data"
 
     if(trajectories){
       now_summary[[4-l]]<-sample.now
@@ -261,18 +263,6 @@ nowcasting_inla <- function(dataset,
       names(now_summary)[3-l]<-"trajectories"
     }
   }
-
-  ## Returning Age
-  # if(!return.age){
-  #   if(trajectories){
-  #     now_summary<-now_summary$total
-  #
-  #     now_summary[[4]]<-sample.now
-  #     names(now_summary)[4]<-"trajectories"
-  #   } else {
-  #     now_summary <- now_summary$total
-  #   }
-  # }
 
   return(now_summary)
 

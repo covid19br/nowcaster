@@ -28,25 +28,6 @@ nowcasting_no_age <- function(dados.age){
                                  param = c(0.001, 0.001)))
     )
 
-  ## Age-Delay effects
-  ## f(delay, model = "rw1",
-  ## hyper = list("prec" = list(prior = "loggamma", param = c(0.001, 0.001))),
-  ## group = fx_etaria.num, control.group = list(model = "iid"))
-
-  # if(zeroinflated){
-  #   ## Running the Zero inflated Negative Binomial model in INLA
-  #   output0 <- inla(model, family = "zeroinflatednbinomial0", data = dados.age,
-  #                   control.predictor = list(link = 1, compute = T),
-  #                   control.compute = list( config = T, waic=F, dic=F),
-  #                   control.family = list(
-  #                     hyper = list("theta1" = list(prior = "loggamma",
-  #                                                  param = c(0.001, 0.001))
-  #                                  ## "theta2" = list(prior = "gaussian",
-  #                                  ##                 param = c(-1, .1))
-  #                     )
-  #                   )
-  #   )
-  # }else{
   ## Running the Negative Binomial model in INLA
   output0 <- INLA::inla(model, family = "nbinomial",
                         data = dados.age,

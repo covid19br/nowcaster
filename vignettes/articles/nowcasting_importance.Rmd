@@ -61,7 +61,7 @@ nowcasting_bh_no_age <- nowcasting_inla(dataset = srag_now,
                                         date_onset = DT_SIN_PRI, 
                                         date_report = DT_DIGITA, 
                                         data.by.week = T)
-head(nowcasting_bh_no_age$dados)
+head(nowcasting_bh_no_age$data)
 ```
 
 Before we see the result of the nowcasting estimate we take a look on intermediate part of the process of nowcasting, the delay triangle, which sets the objects for nowcasting. The delay triangle is only a table where each unique amount of delay, (i.e. integer numbers of days or weeks) has passed between date of onset and date of report spread over each date of onset. The part that is closer to the present has less counts and has a lower amount of delay, this trivial due to, as the system takes time to process the cases, the most newer cases are lesser than the older ones, that already time to be processed.
@@ -69,13 +69,13 @@ Before we see the result of the nowcasting estimate we take a look on intermedia
 From the data in weekly format we mount the counts of cases by the amount of delay. By tabling the delay amount against the data of onset of first symptoms, to see the pattern of the delay for the cases.  
 
 ```{r delay-triangle}
-data_triangle <- nowcasting_bh_no_age$dados |> 
+data_triangle <- nowcasting_bh_no_age$data |> 
   filter(Delay < 30) |> 
   arrange(desc(Delay))
 delay_triangle<-table(data_triangle$date_onset, 
                       rev(data_triangle$Delay),
                       dnn = list("Date of Onset", "Delay"))
-head(delay_triangle)
+delay_triangle
 ```
 
 We just look at the amount of cases with 30 weeks of delay or less, it is the default maximum delay considered at nowcasting estimation. It can be changed by the parameter `Dmax`.
@@ -85,7 +85,7 @@ If this element is grouped by and summarized by the onset of symptoms date, here
 ```{r no_age_plot}
 library(ggplot2)
 
-dados_by_week <- nowcasting_bh_no_age$dados %>% 
+dados_by_week <- nowcasting_bh_no_age$data %>% 
   group_by(date_onset) %>% 
   summarise(n = n())
 
