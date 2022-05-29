@@ -44,6 +44,7 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/forecasting.html">Forecasting</a>
     <a class="dropdown-item" href="../articles/nowcasting_importance.html">Nowcasting for decision making</a>
     <a class="dropdown-item" href="../articles/structured_data.html">Structured data</a>
   </div>
@@ -132,12 +133,12 @@ name for the date of report of the cases. Here this columns are
 <span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 7</span></span>
 <span class="co">#&gt;    Time dt_event   Median    LI    LS   LIb   LSb</span>
 <span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    17 2021-12-13    625  621   633   623    627</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    18 2021-12-20    695  688   708   692    698</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    19 2021-12-27    812  801   829.  808.   817</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    20 2022-01-03    886  871   909   880    894</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    21 2022-01-10    819  800.  847   811    827</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    22 2022-01-17    632  611.  660   623    641</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    17 2021-12-13    625   621  633    623   627</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    18 2021-12-20    694   687  707    692   698</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    19 2021-12-27    812   801  828    807   817</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    20 2022-01-03    887   871  908    880   893</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    21 2022-01-10    818   799  845    811   826</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    22 2022-01-17    630   610  659.   622   639</span></code></pre></div>
 <p>This calling will return only the nowcasting estimate and its
 Confidence Interval (CI) for two different Credible interval,
 <code>LIb</code> and <code>LSb</code> are the max and min CI,
@@ -154,7 +155,7 @@ the summarized data by week.</p>
                                         date_onset <span class="op">=</span> <span class="va">DT_SIN_PRI</span>, 
                                         date_report <span class="op">=</span> <span class="va">DT_DIGITA</span>, 
                                         data.by.week <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nowcasting_bh_no_age</span><span class="op">$</span><span class="va">dados</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nowcasting_bh_no_age</span><span class="op">$</span><span class="va">data</span><span class="op">)</span>
 <span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span>
 <span class="co">#&gt;   date_report date_onset Delay</span>
 <span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
@@ -171,7 +172,7 @@ delay for the cases.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
 
-<span class="va">data_triangle</span> <span class="op">&lt;-</span> <span class="va">nowcasting_bh_no_age</span><span class="op">$</span><span class="va">dados</span> |&gt; 
+<span class="va">data_triangle</span> <span class="op">&lt;-</span> <span class="va">nowcasting_bh_no_age</span><span class="op">$</span><span class="va">data</span> |&gt; 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">Delay</span> <span class="op">&lt;</span> <span class="fl">30</span><span class="op">)</span> |&gt; 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">Delay</span><span class="op">)</span><span class="op">)</span>
 <span class="va">delay_triangle</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">data_triangle</span><span class="op">$</span><span class="va">date_onset</span>, 
@@ -203,7 +204,7 @@ curve all together.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
 
-<span class="va">dados_by_week</span> <span class="op">&lt;-</span> <span class="va">nowcasting_bh_no_age</span><span class="op">$</span><span class="va">dados</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+<span class="va">dados_by_week</span> <span class="op">&lt;-</span> <span class="va">nowcasting_bh_no_age</span><span class="op">$</span><span class="va">data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">date_onset</span> <span class="op">&gt;=</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span><span class="op">-</span><span class="fl">270</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">date_onset</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
@@ -273,7 +274,7 @@ estimates, it returns a data.frame with the posterior edian and 50% and
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
 
-<span class="va">dados_by_week</span> <span class="op">&lt;-</span> <span class="va">nowcasting_bh_age</span><span class="op">$</span><span class="va">dados</span> |&gt; 
+<span class="va">dados_by_week</span> <span class="op">&lt;-</span> <span class="va">nowcasting_bh_age</span><span class="op">$</span><span class="va">data</span> |&gt; 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">date_onset</span> <span class="op">&gt;=</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span><span class="op">-</span><span class="fl">270</span><span class="op">)</span><span class="op">)</span> |&gt;  
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">date_onset</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
