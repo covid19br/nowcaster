@@ -4,6 +4,8 @@
 #' @param trim.data How much to trim of the data?
 #' @param bins_age Bins of age to cu the data, parsing from nowcasting_inla
 #' @param age_col Age column to be where to  cut the data into age classes
+#' @param K How much weeks to forecast ahead?
+#' [Default] K is 0, no forecasting ahead
 #'
 #' @return Data in weeks
 #' @export
@@ -14,7 +16,8 @@ dados.w<-function(dataset,
                   bins_age = c("SI-PNI", "10 years", "5 years", bins_age),
                   date_onset,
                   date_report,
-                  age_col){
+                  age_col,
+                  K){
   # Loading packages
   # require(tidyr)
   # require(dplyr)
@@ -31,10 +34,15 @@ dados.w<-function(dataset,
             call. = T)
   }
 
+  ## Trim.data
+  trim.data.w<-7*trim.data
+  ## K
+  K.w<-7*K
+
   ## Data máxima de digitação a considerar
   DT_max <- max(dataset |>
                   dplyr::pull(var = {{date_report}}),
-                na.rm = T) - trim.data
+                na.rm = T) - trim.data.w + K.w
 
   # Dia da semana da ultima digitação
   DT_max_diadasemana <- as.integer(format(DT_max, "%w"))
@@ -79,11 +87,12 @@ dados.w<-function(dataset,
 
   dados_w <- dataset |>
     dplyr::rename(date_report = {{date_report}},
-           date_onset = {{date_onset}}) |>
+           date_onset = {{date_onset}},
+           age_col = {{age_col}}) |>
     dplyr::filter(date_report <= DT_max,
                   # lubridate::epiyear(date_onset) >= 2021 &
-             {{age_col}} <= max(bins_age)) |>
-    tidyr::drop_na({{age_col}}) |>
+             age_col <= max(bins_age)) |>
+    tidyr::drop_na(age_col) |>
     dplyr::mutate(
       # Alterando a data para o primeiro dia da semana
       # Ex. se ultimo dado for de um domingo, entao a semana
@@ -95,7 +104,7 @@ dados.w<-function(dataset,
         as.integer(format(date_report, "%w")) -
         (6-DT_max_diadasemana),
       Delay = as.numeric(date_report - date_onset) / 7,
-      fx_etaria = cut({{age_col}},
+      fx_etaria = cut(age_col,
                       breaks = bins_age,
                       labels = labels_age,
                       right = F)

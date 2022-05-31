@@ -37,7 +37,7 @@
 #' @examples
 nowcasting_inla <- function(dataset,
                             bins_age="SI-PNI",
-                            trim.data,
+                            trim.data=0,
                             Dmax = 15,
                             wdw = 30,
                             age_col,
@@ -71,6 +71,10 @@ nowcasting_inla <- function(dataset,
   }
 
   ## Warnings
+  if (K > 0 & trim.data != 0){
+    warning(paste0("Using K = ", K, " and trim.data = ", trim.data, ", is that right?"))
+  }
+
   if(!silent){
     if(missing(bins_age)){
       bins_age <- "SI-PNI"
@@ -123,14 +127,16 @@ nowcasting_inla <- function(dataset,
     dados_w<-dados.w_no_age(dataset = dados,
                             trim.data = trim.data,
                             date_onset = {{date_onset}},
-                            date_report = {{date_report}})
+                            date_report = {{date_report}},
+                            K = K)
   }else {
     dados_w <- dados.w(dataset = dados,
                        bins_age = bins_age,
                        trim.data = trim.data,
                        age_col = {{age_col}},
                        date_onset = {{date_onset}},
-                       date_report = {{date_report}})
+                       date_report = {{date_report}},
+                       K = K)
   }
 
   ## Parameters of Nowcasting estimate
@@ -165,10 +171,10 @@ nowcasting_inla <- function(dataset,
   ## Auxiliary date table
   if(K==0){
   dates<-unique(dados.inla |>
-                  dplyr::pull(var = date_onset))
+                  dplyr::pull(var = date_onset - 7*trim.data))
   } else {
-    ## This is done to explicitly say for the forecast part that its date of onset is the present date
-  date_k<-(max(dados.inla$date_onset + 7*K))
+  ## This is done to explicitly say for the forecast part that its date of onset is the present date
+  date_k<-(max(dados.inla$date_onset + 7*K - 7*trim.data))
   dates<-c(unique(dados.inla$date_onset), date_k)
   }
 
@@ -211,7 +217,8 @@ nowcasting_inla <- function(dataset,
         ## If Time + Delay is smaller than Tmax AND Y is NA, fill 0
       )  |>
       dplyr::arrange(Time, delay) |>
-      dplyr::rename(dt_event = date_onset)
+      dplyr::rename(dt_event = date_onset) |>
+      tidyr::drop_na(delay)
   }else {
     dados.inla <- dados.inla  |>
       dplyr::full_join(tbl.NA)  |>   #View()
@@ -222,7 +229,8 @@ nowcasting_inla <- function(dataset,
         ## If Time + Delay is smaller than Tmax AND Y is NA, fill 0
       )  |>
       dplyr::arrange(Time, delay, fx_etaria) |>
-      dplyr::rename(dt_event = date_onset)
+      dplyr::rename(dt_event = date_onset) |>
+      tidyr::drop_na(delay)
   }
   ## Precisamos transformar essa datas de volta no valor que é correspondente delas,
   ## a ultima data de primeiro sintomas foi jogada pra até uma semana atrás

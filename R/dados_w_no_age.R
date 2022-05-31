@@ -2,6 +2,8 @@
 #'
 #' @param dataset dataset to be formatted as data by week
 #' @param trim.data How much to trim of the data?
+#' @param K How much weeks to forecast ahead?
+#' [Default] K is 0, no forecasting ahead
 #'
 #' @return Data in weeks
 #' @export
@@ -10,7 +12,8 @@
 dados.w_no_age<-function(dataset,
                          trim.data,
                          date_onset,
-                         date_report){
+                         date_report,
+                         K){
 
   # Loading packages
   # require(dplyr)
@@ -27,10 +30,15 @@ dados.w_no_age<-function(dataset,
             call. = T)
   }
 
+  ## Trim.data
+  trim.data.w<-7*trim.data
+  ## K
+  K.w<-7*K
+
   ## Data máxima de digitação a considerar
   DT_max <- max(dataset |>
                   dplyr::pull(var = {{date_report}}),
-                na.rm = T) - trim.data
+                na.rm = T) - trim.data.w + K.w
 
   # Dia da semana da ultima digitação
   DT_max_diadasemana <- as.integer(format(DT_max, "%w"))

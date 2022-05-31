@@ -43,7 +43,8 @@ srag_now<-sragBH |>
 
 data_by_week<-dados.w_no_age(dataset = srag_now, 
                              date_onset = DT_SIN_PRI, 
-                             date_report = DT_DIGITA) |> 
+                             date_report = DT_DIGITA, 
+                             K = 0) |> 
   group_by(date_onset) |> 
   tally()
 
@@ -96,13 +97,13 @@ data_one_year_after<-sragBH %>%
 nowcasting_estimate |> 
   ggplot(aes(x = dt_event, y = Median, col = "Nowcasting"))+
   geom_line()+
-  geom_ribbon(aes(ymin = LI, ymax = LS, col = NA), 
+  geom_ribbon(aes(ymin = LI, ymax = LS, col = "Nowcasting", fill = "Nowcasting"), 
               alpha = 0.2, 
               show.legend = F)+
   geom_line(data = forecasting_estimate, 
             aes(x = dt_event, y = Median, col = "Forecasting"))+
   geom_ribbon(data = forecasting_estimate, 
-              aes(ymin = LI, ymax = LS, col = "Forecasting"), 
+              aes(ymin = LI, ymax = LS, col = "Forecasting", fill = "Forecasting"), 
               alpha = 0.2,
               show.legend = F)+
   geom_line(data = data_by_week, 
@@ -115,12 +116,13 @@ nowcasting_estimate |>
         axis.text.x = element_text(angle = 90)) +
   scale_color_manual(values = c('orange','grey50', 'black', 'red'), 
                      name = '')+
+  scale_fill_manual(values = c('orange','grey50'), 
+                     name = '')+
   scale_x_date(date_breaks = '2 weeks', 
                date_labels = '%V/%y', 
                name = 'Date in Weeks')+
   labs(x = '', 
-       y = 'Nº Cases')+
-  ylim(c(0, 6500))
+       y = 'Nº Cases')
 ```
 
 ## Uncertainty growth
@@ -132,7 +134,7 @@ nowcasting_bh_age <- nowcasting_inla(dataset = srag_now,
                                      date_onset = DT_SIN_PRI, 
                                      date_report = DT_DIGITA, 
                                      data.by.week = T, 
-                                     K = 1, 
+                                     K = 1,
                                      age_col = Idade)
 head(nowcasting_bh_age$data)
 ```
@@ -151,13 +153,13 @@ forecasting_estimate<-nowcasting_bh_age$total |>
 nowcasting_estimate |> 
   ggplot(aes(x = dt_event, y = Median, col = "Nowcasting"))+
   geom_line()+
-  geom_ribbon(aes(ymin = LI, ymax = LS, col = NA), 
+  geom_ribbon(aes(ymin = LI, ymax = LS, col = "Nowcasting", fill = "Nowcasting"), 
               alpha = 0.2, 
               show.legend = F)+
   geom_line(data = forecasting_estimate, 
             aes(x = dt_event, y = Median, col = "Forecasting"))+
   geom_ribbon(data = forecasting_estimate, 
-              aes(ymin = LI, ymax = LS, col = "Forecasting"), 
+              aes(ymin = LI, ymax = LS, col = "Forecasting", fill = "Forecasting"), 
               alpha = 0.2,
               show.legend = F)+
   geom_line(data = data_by_week, 
@@ -170,12 +172,13 @@ nowcasting_estimate |>
         axis.text.x = element_text(angle = 90)) +
   scale_color_manual(values = c('orange','grey50', 'black', 'red'), 
                      name = '')+
+  scale_fill_manual(values = c('orange','grey50'), 
+                     name = '')+
   scale_x_date(date_breaks = '2 weeks', 
                date_labels = '%V/%y', 
                name = 'Date in Weeks')+
   labs(x = '', 
-       y = 'Nº Cases')+
-  ylim(c(0, 6500))
+       y = 'Nº Cases')
 ```
 
 
