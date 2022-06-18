@@ -7,14 +7,13 @@
 nowcasting_inla(
   dataset,
   bins_age = "SI-PNI",
-  trim.data,
+  trim.data = 0,
   Dmax = 15,
   wdw = 30,
   age_col,
   date_onset,
   date_report,
   data.by.week = FALSE,
-  return.age = NULL,
   silent = F,
   K = 0,
   trajectories = F,
@@ -28,8 +27,7 @@ nowcasting_inla(
 or options between, "SI-PNI", "10 years", "5 years".
 \link{Default} "SI-PNI".}
 
-\item{trim.data}{(in days) Date to be trimmed out from the data base, in days.
-
+\item{trim.data}{(in weeks) Date to be trimmed out from the data base, in days.
 \link{Default} 0 days.}
 
 \item{Dmax}{(in weeks) Until which maximum amount of weeks the Nowcasting will use for the estimation.
@@ -47,20 +45,24 @@ or options between, "SI-PNI", "10 years", "5 years".
 \item{data.by.week}{If it has to be returned the whole time-series data.
 \link{Default} FALSE.}
 
-\item{return.age}{\link{Depracted} If the estimate by Age should be returned.
-\link{Default} TRUE.}
-
 \item{silent}{\link{Depracted} Should be the warnings turned off?
 \link{Default} is TRUE.}
 
-\item{K}{How much weeks to forecast ahead?
+\item{K}{(in weeks) How much weeks to forecast ahead?
 \link{Default} K is 0, no forecasting ahead}
 
-\item{trajectories}{}
+\item{trajectories}{Returns the trajectories estimated on the inner 'INLA' model}
+
+\item{...}{}
+
+\item{return.age}{\link{Depracted} If the estimate by Age should be returned.
+\link{Default} TRUE.}
 }
 \value{
-a list of 2 elements, each element with a data.frame with nowcasting estimation, $\link{1} 'Total', $\link{2} by 'Age'.
-If data.by.week = TRUE, add a $\link{3} 'dados' with the time-series out of wdw.
+a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total',
+and 'data' with the time-series out of wdw .
+If 'age_col' is parsed, add a thrid element with by age estimation 'age' .
+If 'trajectories' = TRUE, add a forth element with the returned trajectories from 'inla'.
 }
 \description{
 function to estimate amount of events already started by not yet notified.
@@ -68,4 +70,12 @@ The main use is to estimate how many cases in a outbreak has already started the
 but has not yet notified.
 nowcasting_inla, fits a statistical distribution to the empirical distribution of time of delay between
 onset date and report date.
+}
+\examples{
+# Loading Belo Horizonte SARI dataset
+data(sragBH)
+nowcasting_inla(dataset = sragBH,
+                date_onset = DT_SIN_PRI,
+                date_report = DT_DIGITA,
+                silent = T)
 }

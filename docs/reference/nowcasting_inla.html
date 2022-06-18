@@ -74,14 +74,13 @@ onset date and report date.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">nowcasting_inla</span><span class="op">(</span>
   <span class="va">dataset</span>,
   bins_age <span class="op">=</span> <span class="st">"SI-PNI"</span>,
-  <span class="va">trim.data</span>,
+  trim.data <span class="op">=</span> <span class="fl">0</span>,
   Dmax <span class="op">=</span> <span class="fl">15</span>,
   wdw <span class="op">=</span> <span class="fl">30</span>,
   <span class="va">age_col</span>,
   <span class="va">date_onset</span>,
   <span class="va">date_report</span>,
   data.by.week <span class="op">=</span> <span class="cn">FALSE</span>,
-  return.age <span class="op">=</span> <span class="cn">NULL</span>,
   silent <span class="op">=</span> <span class="cn">F</span>,
   K <span class="op">=</span> <span class="fl">0</span>,
   trajectories <span class="op">=</span> <span class="cn">F</span>,
@@ -98,8 +97,8 @@ onset date and report date.</p>
 or options between, "SI-PNI", "10 years", "5 years".
 Default "SI-PNI".</p></dd>
 <dt>trim.data</dt>
-<dd><p>(in days) Date to be trimmed out from the data base, in days.</p>
-<p>Default 0 days.</p></dd>
+<dd><p>(in weeks) Date to be trimmed out from the data base, in days.
+Default 0 days.</p></dd>
 <dt>Dmax</dt>
 <dd><p>(in weeks) Until which maximum amount of weeks the Nowcasting will use for the estimation.
 Default 15 weeks.</p></dd>
@@ -115,24 +114,60 @@ Default 30 weeks.</p></dd>
 <dt>data.by.week</dt>
 <dd><p>If it has to be returned the whole time-series data.
 Default FALSE.</p></dd>
-<dt>return.age</dt>
-<dd><p>Depracted If the estimate by Age should be returned.
-Default TRUE.</p></dd>
 <dt>silent</dt>
 <dd><p>Depracted Should be the warnings turned off?
 Default is TRUE.</p></dd>
 <dt>K</dt>
-<dd><p>How much weeks to forecast ahead?
+<dd><p>(in weeks) How much weeks to forecast ahead?
 Default K is 0, no forecasting ahead</p></dd>
 <dt>trajectories</dt>
+<dd><p>Returns the trajectories estimated on the inner 'INLA' model</p></dd>
+<dt>...</dt>
 <dd></dd>
+<dt>return.age</dt>
+<dd><p>Depracted If the estimate by Age should be returned.
+Default TRUE.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>a list of 2 elements, each element with a data.frame with nowcasting estimation, $1 'Total', $2 by 'Age'.
-If data.by.week = TRUE, add a $3 'dados' with the time-series out of wdw.</p>
+    <p>a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total',
+and 'data' with the time-series out of wdw .
+If 'age_col' is parsed, add a thrid element with by age estimation 'age' .
+If 'trajectories' = TRUE, add a forth element with the returned trajectories from 'inla'.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Loading Belo Horizonte SARI dataset</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sragBH</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">nowcasting_inla</span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">sragBH</span>,</span>
+<span class="r-in">                date_onset <span class="op">=</span> <span class="va">DT_SIN_PRI</span>,</span>
+<span class="r-in">                date_report <span class="op">=</span> <span class="va">DT_DIGITA</span>,</span>
+<span class="r-in">                silent <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = "date_onset"</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("date_onset", "delay", "Time")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $total</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 15 × 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Time dt_event   Median    LI    LS   LIb   LSb</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>    17 2021-12-13   625   621   633    623  627 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>    18 2021-12-20   695   687   707    692  699 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>    19 2021-12-27   812   800   831    807  818 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>    20 2022-01-03   886   871   909    880  893 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>    21 2022-01-10   818   800.  846    811  827 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>    22 2022-01-17   631   610   661.   622  640 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>    23 2022-01-24   541   517   574    532  551 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>    24 2022-01-31   433   409.  468.   424  444 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>    25 2022-02-07   424.  392   465    410  436.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>    26 2022-02-14   358   321   415    345  374 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span>    27 2022-02-21   335   292.  399.   318  355 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span>    28 2022-02-28   344.  286   420.   322  367 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span>    29 2022-03-07   311   245   409.   286  344 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span>    30 2022-03-14   284   196.  433    251  320 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span>    31 2022-03-21   235   115.  469.   185  292 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

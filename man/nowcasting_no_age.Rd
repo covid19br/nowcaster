@@ -4,14 +4,14 @@
 \alias{nowcasting_no_age}
 \title{nowcasting_no_age}
 \usage{
-nowcasting_no_age(dados.age)
+nowcasting_no_age(dataset)
 }
 \arguments{
 \item{dataset}{data pre formatted in to age classes and delays by week for each cases, delay triangle format}
 }
 \value{
-
+Trajectories from the inner 'INLA' model
 }
 \description{
-nowcasting_no_age
+Nowcasting estimation with no age strcuture data, wrapper to a 'INLA' model
 }

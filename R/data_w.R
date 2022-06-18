@@ -1,7 +1,7 @@
-#' data.w
+#' @title data.w
 #'
-#' @description Function to put the data into the format proper to the nowcasting estimation, \n
-#' has to use the maximum of data present on the last week parsed to the estimation. \n
+#' @description Function to put the data into the format proper to the nowcasting estimation,
+#' has to use the maximum of data present on the last week parsed to the estimation.
 #' Makes the account of maximum days per week to be used.
 #'
 #' @param dataset dataset to be formatted as data by week
@@ -14,7 +14,7 @@
 #' @return Data in weeks format, with the maximum dates for the last week used
 #' @export
 #'
-#' @examples If the last data is at a Sunday, so the weel starts at Monday before. \n
+#' @examples If the last data is at a Sunday, so the weel starts at Monday before.
 #' If ends at Thursday, so it starts on the Friday before
 data.w<-function(dataset,
                  trim.data,

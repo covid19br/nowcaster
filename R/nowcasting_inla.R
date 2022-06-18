@@ -1,4 +1,4 @@
-#' nowcasting_inla
+#' @title nowcasting_inla
 #'
 #' @description function to estimate amount of events already started by not yet notified.
 #' The main use is to estimate how many cases in a outbreak has already started their onset date of symptons
@@ -7,7 +7,7 @@
 #' onset date and report date.
 #'
 #' @param dataset Dataset with at least 3 columns, date of onset, date of report and stratum.
-#' @param trim.data # (in weeks) Date to be trimmed out from the data base, in days.
+#' @param trim.data (in weeks) Date to be trimmed out from the data base, in days.
 #' [Default] 0 days.
 #' @param Dmax (in weeks) Until which maximum amount of weeks the Nowcasting will use for the estimation.
 #' [Default] 15 weeks.
@@ -27,11 +27,11 @@
 #' @param age_col Column for ages
 #' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases
 #' @param date_report Column of dates of report of the event, normally date of digitation of the notification of cases
-#' @param trajectories
+#' @param trajectories Returns the trajectories estimated on the inner 'INLA' model
 #' @param ...
 #'
-#' @return a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total', \n
-#' 'data' with the time-series out of wdw .
+#' @return a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total',
+#' and 'data' with the time-series out of wdw .
 #' If 'age_col' is parsed, add a thrid element with by age estimation 'age' .
 #' If 'trajectories' = TRUE, add a forth element with the returned trajectories from 'inla'.
 #' @export
@@ -258,7 +258,7 @@ nowcasting_inla <- function(dataset,
 
   if(missing(age_col)){
     ## Nowcasting estimate
-    sample.now <- nowcasting_no_age(dados.age = data.inla)
+    sample.now <- nowcasting_no_age(dataset = data.inla)
 
     ## Summary on the posteriors of nowcasting
     now_summary<-nowcasting.summary(trajetory = sample.now,
@@ -266,7 +266,7 @@ nowcasting_inla <- function(dataset,
     l<-1
   } else {
     ## Nowcasting estimate
-    sample.now <- nowcasting_age(dados.age = data.inla)
+    sample.now <- nowcasting_age(dataset = data.inla)
 
     ## Summary on the posteriors of nowcasting
     now_summary<-nowcasting.summary(trajetory = sample.now,
