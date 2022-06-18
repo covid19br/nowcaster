@@ -3,7 +3,7 @@ title: "Structured data"
 output: rmarkdown::html_vignette
 author: "Rafael Lopes & Leonardo Bastos"
 vignette: >
-  %\VignetteIndexEntry{Strutured Data}
+  %\VignetteIndexEntry{Structured Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -73,6 +73,7 @@ delay_triangle<-table(data_triangle$date_onset,
                       dnn = list("Date of Onset", "Delay"))
 head(delay_triangle)
 ```
+
 We just look at the amount of cases with 30 weeks of delay or less, it is the default maximum delay considered at nowcasting estimation.  
 
 If this element is groped by and summarized by the onset of symptoms date, here `DT_SIN_PRI`, it is the epidemiological curve observed. To example it, we plot the estimate and the epidemiological curve all together.

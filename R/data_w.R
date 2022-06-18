@@ -22,8 +22,8 @@ data.w<-function(dataset,
                  date_onset,
                  date_report,
                  age_col,
-                 K,
-                 silent){
+                 K=0,
+                 silent=F){
   if(!silent){
     ## Last digitation date considered
     if(missing(trim.data)){

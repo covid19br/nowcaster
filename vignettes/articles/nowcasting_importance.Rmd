@@ -3,7 +3,7 @@ title: "Nowcasting for decision making"
 output: rmarkdown::html_vignette
 author: "Rafael Lopes & Leonardo Bastos"
 vignette: >
-  %\VignetteIndexEntry{Get Started}
+  %\VignetteIndexEntry{Nowcasting for decision making}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -34,7 +34,7 @@ data("sragBH")
 srag_now<-sragBH |> 
   filter(DT_DIGITA <= "2020-07-04")
 
-data_by_week<-dados.w_no_age(dataset = srag_now, 
+data_by_week<-data.w_no_age(dataset = srag_now, 
                          date_onset = DT_SIN_PRI, 
                          date_report = DT_DIGITA) |> 
   group_by(date_onset) |> 

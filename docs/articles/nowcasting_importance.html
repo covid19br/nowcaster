@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">nowcaster</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -110,7 +110,7 @@ digitasation, a date that the cases shows up in the database.</p>
 <span class="va">srag_now</span><span class="op">&lt;-</span><span class="va">sragBH</span> |&gt; 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">DT_DIGITA</span> <span class="op">&lt;=</span> <span class="st">"2020-07-04"</span><span class="op">)</span>
 
-<span class="va">data_by_week</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/dados.w_no_age.html">dados.w_no_age</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">srag_now</span>, 
+<span class="va">data_by_week</span><span class="op">&lt;-</span><span class="fu">data.w_no_age</span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">srag_now</span>, 
                          date_onset <span class="op">=</span> <span class="va">DT_SIN_PRI</span>, 
                          date_report <span class="op">=</span> <span class="va">DT_DIGITA</span><span class="op">)</span> |&gt; 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">date_onset</span><span class="op">)</span> |&gt; 
@@ -312,7 +312,7 @@ takes in the face of a rising curve of hospitalisations.</p>
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by <a href="https://github.com/lsbastos/" class="external-link">Leonardo Bastos</a>, <a href="https://github.com/rafalopespx" class="external-link">Rafael Lopes</a>.</p>
+<p>Developed by <a href="https://github.com/rafalopespx" class="external-link">Rafael Lopes</a>, <a href="https://github.com/lsbastos/" class="external-link">Leonardo Bastos</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

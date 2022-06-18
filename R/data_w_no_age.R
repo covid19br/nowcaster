@@ -18,8 +18,8 @@ data.w_no_age<-function(dataset,
                         trim.data,
                         date_onset,
                         date_report,
-                        K,
-                        silent){
+                        K=0,
+                        silent=F){
   if(!silent){
     ## Last digitation date considered
     if(missing(trim.data)){

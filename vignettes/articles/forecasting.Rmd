@@ -29,7 +29,7 @@ The `nowcasting_inla` function has a functional parameter that flags to the mode
 First, we cut the lazydata loaded with the namespace of the package to a date of interest, more details on why we cut on this date see the article [Nowcasting for decision making](https://covid19br.github.io/nowcaster/articles/nowcasting_importance.html). 
 And after this we parse to the `nowcasting_inla` function the date of onset and date of report columns, a flag for returning a data.frame with the cases counts by week and setting the `K` parameter to a desired forecasting horizon, here we forecast one week ahead of the present date.
 
-Before forecasting, we construct the case counts curve from the lazydata, by using the internal function `dados.w_no_age`, we construct the curve by summarizing the case counts by each date of onset of first symptoms present at the database.
+Before forecasting, we construct the case counts curve from the lazydata, by using the internal function `data.w_no_age`, we construct the curve by summarizing the case counts by each date of onset of first symptoms present at the database.
 
 ```{r delay triangle}
 library(tidyverse)
@@ -41,7 +41,7 @@ data("sragBH")
 srag_now<-sragBH |> 
   filter(DT_DIGITA <= "2020-07-04")
 
-data_by_week<-dados.w_no_age(dataset = srag_now, 
+data_by_week<-data.w_no_age(dataset = srag_now, 
                              date_onset = DT_SIN_PRI, 
                              date_report = DT_DIGITA, 
                              K = 0) |> 
