@@ -10,7 +10,7 @@ model to the time steps of delay between onset date of the event,
                                 or death).
 
 `nowcaster` is based on the
-[`R-INLA`](https://becarioprecario.bitbucket.io/inla-gitbook/index.html)
+[`R-INLA`](https://www.r-inla.org/download-install)
 and
 [`INLA`](https://inla.r-inla-download.org/r-inla.org/doc/inla-manual/inla-manual.pdf)
 packages for “**I**ntegrated **N**ested **L**aplace **A**pproximation”
@@ -25,7 +25,19 @@ surveillance database (SIVEP-Gripe).
 
 ## Installing
 
-To install `nowcaster` package simply run the code below in R:
+Before installing the package certify you have an active installation of `INLA`, 
+to do so you can run the follwing code:
+
+``` r
+install.packages("INLA",
+                  repos=c(getOption("repos"),
+                  INLA="https://inla.r-inla-download.org/R/stable"), 
+                  dep=TRUE)
+```
+
+If you want more detail on other possible installations of `INLA`, please refer to the official [page](https://www.r-inla.org/download-install) of the package.
+
+After have a proper `INLA` installation to install `nowcaster` package simply run the code below in R:
 
 ``` r
 if( !require(nowcaster, quietly = T) ){

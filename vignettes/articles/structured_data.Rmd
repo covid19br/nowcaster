@@ -3,7 +3,7 @@ title: "Structured data"
 output: rmarkdown::html_vignette
 author: "Rafael Lopes & Leonardo Bastos"
 vignette: >
-  %\VignetteIndexEntry{Strutured Data}
+  %\VignetteIndexEntry{Structured Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -58,14 +58,14 @@ nowcasting_bh_no_age <- nowcasting_inla(dataset = sragBH,
                                         date_onset = DT_SIN_PRI, 
                                         date_report = DT_DIGITA, 
                                         data.by.week = T)
-head(nowcasting_bh_no_age$dados)
+head(nowcasting_bh_no_age$data)
 ```
 This element it is the counts of cases by the amount of delay. It is known as the delay triangle, if we table the delay amount against the data of onset of first symptoms, it can see how is the pattern of the delay for the cases.  
 
 ```{r delay-triangle}
 library(dplyr)
 
-data_triangle <- nowcasting_bh_no_age$dados |> 
+data_triangle <- nowcasting_bh_no_age$data |> 
   filter(Delay < 30) |> 
   arrange(desc(Delay))
 delay_triangle<-table(data_triangle$date_onset, 
@@ -73,6 +73,7 @@ delay_triangle<-table(data_triangle$date_onset,
                       dnn = list("Date of Onset", "Delay"))
 head(delay_triangle)
 ```
+
 We just look at the amount of cases with 30 weeks of delay or less, it is the default maximum delay considered at nowcasting estimation.  
 
 If this element is groped by and summarized by the onset of symptoms date, here `DT_SIN_PRI`, it is the epidemiological curve observed. To example it, we plot the estimate and the epidemiological curve all together.
@@ -80,7 +81,7 @@ If this element is groped by and summarized by the onset of symptoms date, here 
 ```{r no_age_plot}
 library(ggplot2)
 
-dados_by_week <- nowcasting_bh_no_age$dados %>% 
+dados_by_week <- nowcasting_bh_no_age$data %>% 
   filter(date_onset >= (Sys.Date()-270)) %>% 
   group_by(date_onset) %>% 
   summarise(n = n())
@@ -123,7 +124,7 @@ Each of the estimates returned by `nowcasting_inla` has the same form as in the 
 ```{r plot}
 library(ggplot2)
 
-dados_by_week <- nowcasting_bh_age$dados |> 
+dados_by_week <- nowcasting_bh_age$data |> 
   filter(date_onset >= (Sys.Date()-270)) |>  
   group_by(date_onset) %>% 
   summarise(n = n())
