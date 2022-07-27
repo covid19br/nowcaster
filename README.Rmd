@@ -36,7 +36,7 @@ library(nowcaster)
 
 ## First example on LazyData
 
-When the package is loaded it disponibilize a LazyData file, `sariBH`, it is a annonymized records of Severe Acute Respiratory Illness notified in the city of Belo Horizonte, since March 2020 to April 2022. To load it basically write:
+When the package is loaded it provides a LazyData file, `sariBH`, it is a anonymized records of Severe Acute Respiratory Illness notified in the city of Belo Horizonte, since March 2020 to April 2022. To load it basically write:
 
 ```{r data-bh}
 # Loading Belo Horizonte SARI dataset
@@ -113,7 +113,7 @@ nowcasting_bh_no_age$total |>
   labs(x = '', y = 'Nº Cases')
 ```
 
-This is an example were the estimate was done without considering any type of strucuture in data, which is the first assumption for the nowcasting.
+This is an example were the estimate was done without considering any type of structure in data, which is the first assumption for the nowcasting.
 
 ## Nowcasting as a tool to support decision making
 
@@ -145,7 +145,7 @@ data_by_week |>
   scale_x_date(date_breaks = '2 weeks', date_labels = '%V/%y', name = 'Date in Weeks')
 ```
 
-On this filtered data, we estimate the cases already that started its date of onset of symptons but were not yet reported, so there not in the database. We just pass to the `nowcasting_inla` function, the dataset filtered, flag for the columns where are the `date_onset` and `date_report`, we add the flag for the function return back the epidemic curve by epiweek.
+On this filtered data, we estimate the cases already that started its date of onset of symptoms but were not yet reported, so there not in the database. We just pass to the `nowcasting_inla` function, the dataset filtered, flag for the columns where are the `date_onset` and `date_report`, we add the flag for the function return back the epidemic curve by epiweek.
 
 ```{r now_no_age_data}
 nowcasting_bh_no_age <- nowcasting_inla(dataset = srag_now, 
@@ -193,7 +193,7 @@ nowcasting_bh_no_age$total |>
 
 ```
 
-And as expected, the nowcasting estimated a rising on curve when it were observed a decaying. Adding to the plot what actually has happened in that period, with the data inserted posterioly the period for when the nowcasting estimated the rising in the curve for SARI hospitalizations.
+And as expected, the nowcasting estimated a rising on curve when it were observed a decaying. Adding to the plot what actually has happened in that period, with the data inserted posteriorly the period for when the nowcasting estimated the rising in the curve for SARI hospitalizations.
 
 ```{r}
 nowcasting_bh_no_age$total %>% 
@@ -217,7 +217,7 @@ nowcasting_bh_no_age$total %>%
   scale_x_date(date_breaks = '2 weeks', date_labels = '%V/%y', name = 'Date in Weeks')+
   labs(x = '', y = 'Nº Cases')
 ```
-This end the first simple example when estimating the already started events but not yet reported (i.e. nowcasting). The relevance of nowcasting for public health decision is given by the understading that what is present on the databases are only a picture of the real time situation. The above graph can help policy makers on what decisions takes in the face of a rising curve of hospitalisations.
+This end the first simple example when estimating the already started events but not yet reported (i.e. nowcasting). The relevance of nowcasting for public health decision is given by the understanding that what is present on the databases are only a picture of the real time situation. The above graph can help policy makers on what decisions takes in the face of a rising curve of hospitalisations.
 
 ## Structured data, Age
 
@@ -239,7 +239,7 @@ nowcasting_bh_age <- nowcasting_inla(dataset = sragBH,
                                      age_col = Idade)
 ```
 
-Each of the estimates returned by `nowcasting_inla` has the same form as in the non-structured case. On the nowcasting estimates, it returns a data.frame with the posterior edian and 50% and 95% credible intervals, (LIb and LSb) and (LI and LS) respectively.
+Each of the estimates returned by `nowcasting_inla` has the same form as in the non-structured case. On the nowcasting estimates, it returns a data.frame with the posterior median and 50% and 95% credible intervals, (LIb and LSb) and (LI and LS) respectively.
 
 ```{r plot}
 library(ggplot2)
