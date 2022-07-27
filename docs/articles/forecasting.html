@@ -130,7 +130,7 @@ of first symptoms present at the database.</p>
 <span class="va">srag_now</span><span class="op">&lt;-</span><span class="va">sragBH</span> |&gt; 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">DT_DIGITA</span> <span class="op">&lt;=</span> <span class="st">"2020-07-04"</span><span class="op">)</span>
 
-<span class="va">data_by_week</span><span class="op">&lt;-</span><span class="fu">data.w_no_age</span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">srag_now</span>, 
+<span class="va">data_by_week</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/data.w_no_age.html">data.w_no_age</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">srag_now</span>, 
                              date_onset <span class="op">=</span> <span class="va">DT_SIN_PRI</span>, 
                              date_report <span class="op">=</span> <span class="va">DT_DIGITA</span>, 
                              K <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> |&gt; 

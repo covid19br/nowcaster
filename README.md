@@ -76,42 +76,42 @@ symptoms) and “DT_DIGITA” (recording date) as well the column “Idade”
 Now we call the nowcasting function, it has by default the
 parametrization to take the data and estimate with a non-structured data
 form. The estimate fits a negative binomial distribution,
-![NegBinom(\\lambda\_{t,d}, \\phi)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;NegBinom%28%5Clambda_%7Bt%2Cd%7D%2C%20%5Cphi%29 "NegBinom(\lambda_{t,d}, \phi)"),
+![NegBinom(\lambda\_{t,d}, \phi)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;NegBinom%28%5Clambda_%7Bt%2Cd%7D%2C%20%5Cphi%29 "NegBinom(\lambda_{t,d}, \phi)"),
 to the cases count at time
 ![t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t "t")
 with delay
 ![d](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;d "d"),
-![\\phi](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cphi "\phi")
+![\phi](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cphi "\phi")
 is the dispersion parameter. The rate
-![\\lambda\_{t,d}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Clambda_%7Bt%2Cd%7D "\lambda_{t,d}")
+![\lambda\_{t,d}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Clambda_%7Bt%2Cd%7D "\lambda_{t,d}")
 is then parameterized in a log-linear format by a constant term added by
 structured delay random effects and structured time random effects.
 Hence, the model is given by the following:
 
-![\\begin{equation}
-Y\_{t,d} \\sim NegBinom(\\lambda\_{t,d}, \\phi), \\\\
-\\log(\\lambda\_{t,d}) = \\alpha + \\beta_t + \\gamma_d, \\\\
-t=1,2,\\ldots,T, \\\\ d=1,2,\\ldots,D,
-\\end{equation}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbegin%7Bequation%7D%0AY_%7Bt%2Cd%7D%20%5Csim%20NegBinom%28%5Clambda_%7Bt%2Cd%7D%2C%20%5Cphi%29%2C%20%5C%5C%0A%5Clog%28%5Clambda_%7Bt%2Cd%7D%29%20%3D%20%5Calpha%20%2B%20%5Cbeta_t%20%2B%20%5Cgamma_d%2C%20%5C%5C%0At%3D1%2C2%2C%5Cldots%2CT%2C%20%5C%5C%20d%3D1%2C2%2C%5Cldots%2CD%2C%0A%5Cend%7Bequation%7D "\begin{equation}
+![\begin{equation}
+Y\_{t,d} \sim NegBinom(\lambda\_{t,d}, \phi), \\\\
+\log(\lambda\_{t,d}) = \alpha + \beta_t + \gamma_d, \\\\
+t=1,2,\ldots,T, \\\\ d=1,2,\ldots,D,
+\end{equation}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbegin%7Bequation%7D%0AY_%7Bt%2Cd%7D%20%5Csim%20NegBinom%28%5Clambda_%7Bt%2Cd%7D%2C%20%5Cphi%29%2C%20%5C%5C%0A%5Clog%28%5Clambda_%7Bt%2Cd%7D%29%20%3D%20%5Calpha%20%2B%20%5Cbeta_t%20%2B%20%5Cgamma_d%2C%20%5C%5C%0At%3D1%2C2%2C%5Cldots%2CT%2C%20%5C%5C%20d%3D1%2C2%2C%5Cldots%2CD%2C%0A%5Cend%7Bequation%7D "\begin{equation}
 Y_{t,d} \sim NegBinom(\lambda_{t,d}, \phi), \\
 \log(\lambda_{t,d}) = \alpha + \beta_t + \gamma_d, \\
 t=1,2,\ldots,T, \\ d=1,2,\ldots,D,
 \end{equation}")
 
 where the intercept
-![\\alpha](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Calpha "\alpha")
+![\alpha](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Calpha "\alpha")
 follows is Gaussian distribution with a very large variance,
-![\\beta_t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbeta_t "\beta_t")
+![\beta_t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbeta_t "\beta_t")
 is follows a second order random walk with precision
-![\\tau\_\\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%5Cbeta "\tau_\beta"),
-![\\gamma_d](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cgamma_d "\gamma_d")
+![\tau\_\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%5Cbeta "\tau_\beta"),
+![\gamma_d](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cgamma_d "\gamma_d")
 a first-order random walk with precision
-![\\tau\_\\gamma](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%5Cgamma "\tau_\gamma").
+![\tau\_\gamma](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%5Cgamma "\tau_\gamma").
 The model is then completed by INLA default prior distributions for
-![\\phi](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cphi "\phi"),
-![\\tau\_\\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%5Cbeta "\tau_\beta"),
+![\phi](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cphi "\phi"),
+![\tau\_\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%5Cbeta "\tau_\beta"),
 and
-![\\tau\_\\gamma](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%5Cgamma "\tau_\gamma").
+![\tau\_\gamma](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%5Cgamma "\tau_\gamma").
 See nbinom, rw1 and rw2 INLA help pages.
 
 The call of the function is straightforward, it simply needs a dataset
@@ -133,12 +133,12 @@ head(nowcasting_bh_no_age$total)
     ## # A tibble: 6 × 7
     ##    Time dt_event   Median    LI    LS   LIb   LSb
     ##   <int> <date>      <dbl> <dbl> <dbl> <dbl> <dbl>
-    ## 1    17 2021-12-13    625  621   633    623   627
-    ## 2    18 2021-12-20    695  687   707    692   699
-    ## 3    19 2021-12-27    812  800   829    807   817
-    ## 4    20 2022-01-03    887  871   908    881   894
-    ## 5    21 2022-01-10    819  800   845.   810   827
-    ## 6    22 2022-01-17    631  610.  664    622   640
+    ## 1    17 2021-12-13    625  621   633   623    627
+    ## 2    18 2021-12-20    695  687   708   692    698
+    ## 3    19 2021-12-27    812  801.  828   807    817
+    ## 4    20 2022-01-03    886  871   907   880    893
+    ## 5    21 2022-01-10    818  799   845.  811.   826
+    ## 6    22 2022-01-17    631  609   662.  622    640
 
 This calling will return only the nowcasting estimate and its Confidence
 Interval (CI) for two different Credible interval, `LIb` and `LSb` are
@@ -154,7 +154,7 @@ element of the output list the summarized data by week.
 library(ggplot2)
 library(dplyr)
 
-dados_by_week <- nowcasting_bh_no_age$dados |> 
+dados_by_week <- nowcasting_bh_no_age$data |> 
   filter(date_onset >= (Sys.Date()-270)) |> 
   group_by(date_onset) |> 
   summarise(n = n())
@@ -220,7 +220,7 @@ library(lubridate)
 srag_now<-sragBH |> 
   filter(DT_DIGITA <= "2020-07-04")
 
-data_by_week<-dados.w_no_age(dataset = srag_now, 
+data_by_week<-data.w_no_age(dataset = srag_now, 
                          date_onset = DT_SIN_PRI, 
                          date_report = DT_DIGITA) |> 
   group_by(date_onset) |> 
@@ -250,7 +250,7 @@ nowcasting_bh_no_age <- nowcasting_inla(dataset = srag_now,
                                         date_onset = DT_SIN_PRI, 
                                         date_report = DT_DIGITA, 
                                         data.by.week = T)
-head(nowcasting_bh_no_age$dados)
+head(nowcasting_bh_no_age$data)
 ```
 
     ## # A tibble: 6 × 3
@@ -278,7 +278,7 @@ amount of delay. By tabling the delay amount against the data of onset
 of first symptoms, to see the pattern of the delay for the cases.
 
 ``` r
-data_triangle <- nowcasting_bh_no_age$dados |> 
+data_triangle <- nowcasting_bh_no_age$data |> 
   filter(Delay < 30) |> 
   arrange(desc(Delay))
 delay_triangle<-table(data_triangle$date_onset, 
@@ -308,8 +308,8 @@ together.
 ``` r
 library(ggplot2)
 
-dados_by_week <- nowcasting_bh_no_age$dados %>% 
-  group_by(date_onset) %>% 
+dados_by_week <- nowcasting_bh_no_age$data |> 
+  group_by(date_onset) |> 
   summarise(n = n())
 
 nowcasting_bh_no_age$total |> 
@@ -374,38 +374,38 @@ effects to the delay distribution and and time distribution by each of
 the age-class chosen by the user to break the data. The model has the
 form now:
 
-![\\begin{equation}Y\_{t,d,a} \\sim  NegBinom(\\lambda\_{t,d,a}, \\phi), \\\\
-\\log(\\lambda\_{t,d,a}) =  \\alpha_a + \\beta\_{t,a} + \\gamma\_{d,a}, \\\\ \\quad t=1,2,\\ldots,T, \\\\ d=1,2,\\ldots,D, \\\\ a=1,2,\\ldots,A, \\end{equation}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbegin%7Bequation%7DY_%7Bt%2Cd%2Ca%7D%20%5Csim%20%20NegBinom%28%5Clambda_%7Bt%2Cd%2Ca%7D%2C%20%5Cphi%29%2C%20%5C%5C%0A%5Clog%28%5Clambda_%7Bt%2Cd%2Ca%7D%29%20%3D%20%20%5Calpha_a%20%2B%20%5Cbeta_%7Bt%2Ca%7D%20%2B%20%5Cgamma_%7Bd%2Ca%7D%2C%20%5C%5C%20%5Cquad%20t%3D1%2C2%2C%5Cldots%2CT%2C%20%5C%5C%20d%3D1%2C2%2C%5Cldots%2CD%2C%20%5C%5C%20a%3D1%2C2%2C%5Cldots%2CA%2C%20%5Cend%7Bequation%7D "\begin{equation}Y_{t,d,a} \sim  NegBinom(\lambda_{t,d,a}, \phi), \\
+![\begin{equation}Y\_{t,d,a} \sim  NegBinom(\lambda\_{t,d,a}, \phi), \\\\
+\log(\lambda\_{t,d,a}) =  \alpha_a + \beta\_{t,a} + \gamma\_{d,a}, \\\\ \quad t=1,2,\ldots,T, \\\\ d=1,2,\ldots,D, \\\\ a=1,2,\ldots,A, \end{equation}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbegin%7Bequation%7DY_%7Bt%2Cd%2Ca%7D%20%5Csim%20%20NegBinom%28%5Clambda_%7Bt%2Cd%2Ca%7D%2C%20%5Cphi%29%2C%20%5C%5C%0A%5Clog%28%5Clambda_%7Bt%2Cd%2Ca%7D%29%20%3D%20%20%5Calpha_a%20%2B%20%5Cbeta_%7Bt%2Ca%7D%20%2B%20%5Cgamma_%7Bd%2Ca%7D%2C%20%5C%5C%20%5Cquad%20t%3D1%2C2%2C%5Cldots%2CT%2C%20%5C%5C%20d%3D1%2C2%2C%5Cldots%2CD%2C%20%5C%5C%20a%3D1%2C2%2C%5Cldots%2CA%2C%20%5Cend%7Bequation%7D "\begin{equation}Y_{t,d,a} \sim  NegBinom(\lambda_{t,d,a}, \phi), \\
 \log(\lambda_{t,d,a}) =  \alpha_a + \beta_{t,a} + \gamma_{d,a}, \\ \quad t=1,2,\ldots,T, \\ d=1,2,\ldots,D, \\ a=1,2,\ldots,A, \end{equation}")
 
 where each age class,
 ![a](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;a "a"),
 has an intercept
-![\\alpha_a](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Calpha_a "\alpha_a")
+![\alpha_a](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Calpha_a "\alpha_a")
 following a Gaussian distribution with a very large variance, the
 time-age random effects,
-![\\beta\_{t,a}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbeta_%7Bt%2Ca%7D "\beta_{t,a}"),
+![\beta\_{t,a}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbeta_%7Bt%2Ca%7D "\beta_{t,a}"),
 follow a joint multivariate Gaussian distribution with a separable
 variance components an independent Gaussian term for the age classes
 with precision
-![\\tau\_{age,\\beta}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%7Bage%2C%5Cbeta%7D "\tau_{age,\beta}")
+![\tau\_{age,\beta}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%7Bage%2C%5Cbeta%7D "\tau_{age,\beta}")
 and a second order random walk term for the time with precision
-![\\tau\_{\\beta}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%7B%5Cbeta%7D "\tau_{\beta}").
+![\tau\_{\beta}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%7B%5Cbeta%7D "\tau_{\beta}").
 Analogously, the delay-age random effects,
-![\\gamma\_{d,a}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cgamma_%7Bd%2Ca%7D "\gamma_{d,a}"),
+![\gamma\_{d,a}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cgamma_%7Bd%2Ca%7D "\gamma_{d,a}"),
 follow a joint multivariate Gaussian distribution with a separable
 variance components an independent Gaussian term for the age classes
 with precision
-![\\tau\_{age,\\gamma}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%7Bage%2C%5Cgamma%7D "\tau_{age,\gamma}")
+![\tau\_{age,\gamma}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%7Bage%2C%5Cgamma%7D "\tau_{age,\gamma}")
 and a first order random walk term for the time with precision
-![\\tau\_{\\gamma}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%7B%5Cgamma%7D "\tau_{\gamma}").
+![\tau\_{\gamma}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%7B%5Cgamma%7D "\tau_{\gamma}").
 The model is then completed by INLA default prior distributions for
-![\\phi](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cphi "\phi"),
-![\\tau\_{age,\\beta}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%7Bage%2C%5Cbeta%7D "\tau_{age,\beta}"),
-![\\tau\_{age,\\gamma}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%7Bage%2C%5Cgamma%7D "\tau_{age,\gamma}"),
-![\\tau\_{\\beta}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%7B%5Cbeta%7D "\tau_{\beta}")
+![\phi](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cphi "\phi"),
+![\tau\_{age,\beta}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%7Bage%2C%5Cbeta%7D "\tau_{age,\beta}"),
+![\tau\_{age,\gamma}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%7Bage%2C%5Cgamma%7D "\tau_{age,\gamma}"),
+![\tau\_{\beta}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%7B%5Cbeta%7D "\tau_{\beta}")
 and
-![\\tau\_\\gamma](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%5Cgamma "\tau_\gamma").
+![\tau\_\gamma](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%5Cgamma "\tau_\gamma").
 See nbinom, iid, rw1 and rw2 INLA help pages.
 
 This new model corrects the delay taking into account the effects of age
@@ -436,13 +436,13 @@ data.frame with the posterior edian and 50% and 95% credible intervals,
 ``` r
 library(ggplot2)
 
-dados_by_week <- nowcasting_bh_age$dados |>  
-  filter(date_onset >= (Sys.Date()-270)) |>  
+dados_by_week <- nowcasting_bh_age$data |>  
+  filter(date_onset >= (Sys.Date()-270)) |>
   group_by(date_onset) |> 
   summarise(n = n())
 
 
-nowcasting_bh_age$total %>% 
+nowcasting_bh_age$total |>  
   ggplot(aes(x = dt_event, y = Median, col = 'Median'))+
   geom_line()+
   geom_line(data = dados_by_week, aes(date_onset, y = n))+
@@ -493,7 +493,7 @@ is an empirical finding of this models.
 sessionInfo()
 ```
 
-    ## R version 4.2.0 (2022-04-22)
+    ## R version 4.2.1 (2022-06-23)
     ## Platform: x86_64-pc-linux-gnu (64-bit)
     ## Running under: Manjaro Linux
     ## 
@@ -513,31 +513,30 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] lubridate_1.8.0      forcats_0.5.1        stringr_1.4.0       
-    ##  [4] purrr_0.3.4          readr_2.1.2          tidyr_1.2.0         
-    ##  [7] tibble_3.1.7         tidyverse_1.3.1      dplyr_1.0.9         
-    ## [10] ggplot2_3.3.6        nowcaster_0.1.0.9000
+    ##  [1] lubridate_1.8.0 forcats_0.5.1   stringr_1.4.0   purrr_0.3.4    
+    ##  [5] readr_2.1.2     tidyr_1.2.0     tibble_3.1.7    tidyverse_1.3.1
+    ##  [9] dplyr_1.0.9     ggplot2_3.3.6   nowcaster_0.2.1
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] lattice_0.20-45     assertthat_0.2.1    digest_0.6.29      
     ##  [4] utf8_1.2.2          cellranger_1.1.0    R6_2.5.1           
     ##  [7] backports_1.4.1     MatrixModels_0.5-0  reprex_2.0.1       
-    ## [10] stats4_4.2.0        evaluate_0.15       httr_1.4.3         
-    ## [13] highr_0.9           pillar_1.7.0        rlang_1.0.2        
+    ## [10] stats4_4.2.1        evaluate_0.15       httr_1.4.3         
+    ## [13] highr_0.9           pillar_1.7.0        rlang_1.0.3        
     ## [16] readxl_1.4.0        rstudioapi_0.13     Matrix_1.4-1       
-    ## [19] rmarkdown_2.14      labeling_0.4.2      splines_4.2.0      
-    ## [22] munsell_0.5.0       broom_0.8.0         modelr_0.1.8       
-    ## [25] compiler_4.2.0      numDeriv_2016.8-1.1 xfun_0.31          
+    ## [19] rmarkdown_2.14      labeling_0.4.2      splines_4.2.1      
+    ## [22] munsell_0.5.0       broom_1.0.0         modelr_0.1.8       
+    ## [25] compiler_4.2.1      numDeriv_2016.8-1.1 xfun_0.31          
     ## [28] pkgconfig_2.0.3     mnormt_2.0.2        tmvnsim_1.0-2      
     ## [31] htmltools_0.5.2     tidyselect_1.1.2    fansi_1.0.3        
     ## [34] tzdb_0.3.0          crayon_1.5.1        dbplyr_2.1.1       
-    ## [37] withr_2.5.0         grid_4.2.0          jsonlite_1.8.0     
+    ## [37] withr_2.5.0         grid_4.2.1          jsonlite_1.8.0     
     ## [40] gtable_0.3.0        lifecycle_1.0.1     DBI_1.1.2          
     ## [43] magrittr_2.0.3      scales_1.2.0        cli_3.3.0          
     ## [46] stringi_1.7.6       INLA_22.05.07       farver_2.1.0       
-    ## [49] sn_2.0.2            fs_1.5.2            sp_1.4-7           
+    ## [49] sn_2.0.2            fs_1.5.2            sp_1.5-0           
     ## [52] xml2_1.3.3          ellipsis_0.3.2      generics_0.1.2     
-    ## [55] vctrs_0.4.1         tools_4.2.0         glue_1.6.2         
-    ## [58] hms_1.1.1           parallel_4.2.0      fastmap_1.1.0      
+    ## [55] vctrs_0.4.1         tools_4.2.1         glue_1.6.2         
+    ## [58] hms_1.1.1           parallel_4.2.1      fastmap_1.1.0      
     ## [61] yaml_2.3.5          colorspace_2.0-3    rvest_1.0.2        
     ## [64] knitr_1.39          haven_2.5.0

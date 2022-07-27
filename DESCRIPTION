@@ -2,8 +2,10 @@ Package: nowcaster
 Title: Nowcaster
 Version: 0.2.1
 Authors@R: c(
-    person("Rafael", "Lopes", , "rafael.lp.silva@unesp.br", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-9416-6145")),
-    person("Leonardo", "Bastos", , "leonardo.bastos@fiocruz.br", role = c("aut"), comment = c(ORCID = "0000-0002-1406-0122")))
+    person("Rafael", "Lopes", , "rafael.lp.silva@unesp.br", role = c("aut", "cre"), 
+    comment = c(ORCID = "0000-0002-9416-6145", "Caster-in-chief")),
+    person("Leonardo", "Bastos", , "leonardo.bastos@fiocruz.br", role = c("aut"), 
+    comment = c(ORCID = "0000-0002-1406-0122")))
 Description: Nowcaster is a package wrapping statistical models to estimate not yet reported data from a empirical delay distribution 
   between dates of onset of symptoms and date of digitation.
 License: GPL (>= 3)

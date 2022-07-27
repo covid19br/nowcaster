@@ -12,3 +12,10 @@ navbar:
   structure:
     left:  [intro, reference, articles, tutorials, news]
     right: [search, github]
+footer:
+  structure:
+    left: developed_by
+    right: built_with
+home:
+  sidebar:
+    structure: [links, license, community, citation, authors, dev]
