@@ -26,7 +26,7 @@ surveillance database (SIVEP-Gripe).
 ## Installing
 
 Before installing the package certify you have an active installation of `INLA`, 
-to do so you can run the follwing code:
+to do so you can run the following code:
 
 ``` r
 install.packages("INLA",
