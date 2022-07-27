@@ -1,5 +1,5 @@
 ---
-title: "index"
+title: "Nowcaster"
 output: github_document
 ---
 
@@ -8,9 +8,12 @@ knitr::opts_chunk$set(echo = TRUE)
 library(badger)
 ```
 
+
+<a href='https://github.com/covid19br/nowcaster'><img src='man/figures/nowcaster.png' align="right" width="140" /></a> <a href='https://github.com/covid19br/nowcaster'><img src='man/figures/nowcaster_rev.png' align="right" width="140" /></a>
+
+<!-- badges: start -->
 `r badge_github_version("nowcaster", "blue")`
-<!-- `r badge_bioc_download("nowcaster", "total", "blue", "total")`  -->
-<!-- `r badge_github_actions("covid19br/nowcaster")` -->
+<!-- badges: end -->
 
 `nowcaster` is a R package for “nowcasting” epidemiological time-series.
 Every single system of notification has an intrinsic delay, `nowcaster`
@@ -40,7 +43,7 @@ surveillance database (SIVEP-Gripe).
 Before installing the package certify you have an active installation of `INLA`, 
 to do so you can run the following code:
 
-```{r INLA, eval=FALSE, echo = TRUE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+``` r 
 install.packages("INLA",
                  repos=c(getOption("repos"),
                          INLA="https://inla.r-inla-download.org/R/stable"), 
@@ -51,7 +54,7 @@ If you want more detail on other possible installations of `INLA`, please refer 
 
 After have a proper `INLA` installation to install `nowcaster` package simply run the code below in R:
 
-```{r, install, eval=FALSE, echo = TRUE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+``` r
 if( !require(nowcaster, quietly = T) ){
 devtools::install_github("https://github.com/covid19br/nowcaster")
 }

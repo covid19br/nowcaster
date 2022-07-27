@@ -71,9 +71,9 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="nowcaster--">Nowcaster <a href="https://github.com/covid19br/nowcaster" class="external-link"><img src="reference/figures/nowcaster.png" align="right" width="140"></a> <a href="https://github.com/covid19br/nowcaster" class="external-link"><img src="reference/figures/nowcaster_rev.png" align="right" width="140"></a>
-<a class="anchor" aria-label="anchor" href="#nowcaster--"></a>
+<div class="page-header"><h1 id="nowcaster">Nowcaster<a class="anchor" aria-label="anchor" href="#nowcaster"></a>
 </h1></div>
+<p><a href="https://github.com/covid19br/nowcaster" class="external-link"><img src="reference/figures/nowcaster.png" align="right" width="140"></a> <a href="https://github.com/covid19br/nowcaster" class="external-link"><img src="reference/figures/nowcaster_rev.png" align="right" width="140"></a></p>
 <!-- badges: start -->
 
 <p><code>nowcaster</code> is a R package for “nowcasting” epidemiological time-series. Every single system of notification has an intrinsic delay, <code>nowcaster</code> can estimate how many counts of any epidemiological data of interest (<em>i.e.</em>, daily cases and deaths counts) by fitting a negative binomial model to the time steps of delay between onset date of the event, (<em>i.e.</em>, date of first symptoms for cases or date of occurrence of death) and the date of report (<em>i.e.</em>, date of notification of the case or death).</p>
@@ -85,14 +85,14 @@
 <p>Before installing the package certify you have an active installation of <code>INLA</code>, to do so you can run the following code:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"INLA"</span>,
-                  repos<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"repos"</span><span class="op">)</span>,
-                  INLA<span class="op">=</span><span class="st">"https://inla.r-inla-download.org/R/stable"</span><span class="op">)</span>, 
-                  dep<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+                 repos<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"repos"</span><span class="op">)</span>,
+                         INLA<span class="op">=</span><span class="st">"https://inla.r-inla-download.org/R/stable"</span><span class="op">)</span>, 
+                 dep<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>If you want more detail on other possible installations of <code>INLA</code>, please refer to the official <a href="https://www.r-inla.org/download-install" class="external-link">page</a> of the package.</p>
 <p>After have a proper <code>INLA</code> installation to install <code>nowcaster</code> package simply run the code below in R:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw">if</span><span class="op">(</span> <span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://covid19br.github.io/nowcaster">nowcaster</a></span>, quietly <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op">)</span><span class="op">{</span>
-  <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"https://github.com/covid19br/nowcaster"</span><span class="op">)</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"https://github.com/covid19br/nowcaster"</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 </div>
 </div>
@@ -133,7 +133,7 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/covid19br/nowcaster/actions" class="external-link"><img src="https://github.com/covid19br/nowcaster/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://github.com/nowcaster" class="external-link"><img src="https://img.shields.io/badge/devel%20version-0.2.1-blue.svg"></a></li>
 </ul>
 </div>
 

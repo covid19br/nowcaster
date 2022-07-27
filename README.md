@@ -1,6 +1,11 @@
 
 # nowcaster <a href='https://github.com/covid19br/nowcaster'><img src='man/figures/nowcaster.png' align="right" width="140" /></a> <a href='https://github.com/covid19br/nowcaster'><img src='man/figures/nowcaster_rev.png' align="right" width="140" /></a>
 
+<!-- badges: start -->
+
+[![](https://img.shields.io/badge/devel%20version-0.2.1-blue.svg)](https://github.com/nowcaster)
+<!-- badges: end -->
+
 `nowcaster` is a R package for “nowcasting” epidemiological time-series.
 Every single system of notification has an intrinsic delay, `nowcaster`
 can estimate how many counts of any epidemiological data of interest
@@ -42,10 +47,10 @@ library(nowcaster)
 
 ## First example on LazyData
 
-When the package is loaded it disponibilize a LazyData file, `sariBH`,
-it is a annonymized records of Severe Acute Respiratory Illness notified
-in the city of Belo Horizonte, since March 2020 to April 2022. To load
-it basically write:
+When the package is loaded it provides a LazyData file, `sariBH`, it is
+a anonymized records of Severe Acute Respiratory Illness notified in the
+city of Belo Horizonte, since March 2020 to April 2022. To load it
+basically write:
 
 ``` r
 # Loading Belo Horizonte SARI dataset
@@ -58,13 +63,15 @@ And we take a look on the data:
 head(sragBH)
 ```
 
-    ##   DT_SIN_PRI  DT_DIGITA CLASSI_FIN EVOLUCAO CO_MUN_RES Idade fx_etaria
-    ## 1 2020-02-11 2020-03-05          4        1     310620    59   50 - 59
-    ## 2 2020-01-21 2020-02-06          4        1     310620    79   70 - 79
-    ## 3 2020-03-30 2020-04-17          4        1     310620    72   70 - 79
-    ## 4 2020-03-26 2020-04-02          4        1     310620    82      80 +
-    ## 5 2020-03-20 2020-04-13          4        1     310620    50   50 - 59
-    ## 6 2020-04-07 2020-04-22          5        1     310620    74   70 - 79
+    ## # A tibble: 6 × 7
+    ##   DT_SIN_PRI DT_DIGITA  CLASSI_FIN EVOLUCAO CO_MUN_RES Idade fx_etaria
+    ##   <date>     <date>          <dbl>    <dbl>      <dbl> <dbl> <fct>    
+    ## 1 2020-02-11 2020-03-05          4        1     310620    59 50 - 59  
+    ## 2 2020-01-21 2020-02-06          4        1     310620    79 70 - 79  
+    ## 3 2020-03-30 2020-04-17          4        1     310620    72 70 - 79  
+    ## 4 2020-03-26 2020-04-02          4        1     310620    82 80 +     
+    ## 5 2020-03-20 2020-04-13          4        1     310620    50 50 - 59  
+    ## 6 2020-04-07 2020-04-22          5        1     310620    74 70 - 79
 
 It is a data.frame with 7 variables and 65,404 observations. We will
 make use of only the first two columns, “DT_SIN_PRI” (date of onset
@@ -133,12 +140,12 @@ head(nowcasting_bh_no_age$total)
     ## # A tibble: 6 × 7
     ##    Time dt_event   Median    LI    LS   LIb   LSb
     ##   <int> <date>      <dbl> <dbl> <dbl> <dbl> <dbl>
-    ## 1    17 2021-12-13    625  621   633   623    627
-    ## 2    18 2021-12-20    695  687   708   692    698
-    ## 3    19 2021-12-27    812  801.  828   807    817
-    ## 4    20 2022-01-03    886  871   907   880    893
-    ## 5    21 2022-01-10    818  799   845.  811.   826
-    ## 6    22 2022-01-17    631  609   662.  622    640
+    ## 1    17 2021-12-13    625   621  632    623  627 
+    ## 2    18 2021-12-20    695   687  707    692  698 
+    ## 3    19 2021-12-27    812   800  828    807  817 
+    ## 4    20 2022-01-03    886   871  907    880  893 
+    ## 5    21 2022-01-10    818   800  845.   811  827.
+    ## 6    22 2022-01-17    631   609  661.   623  640
 
 This calling will return only the nowcasting estimate and its Confidence
 Interval (CI) for two different Credible interval, `LIb` and `LSb` are
@@ -192,7 +199,7 @@ nowcasting_bh_no_age$total |>
 ![](README_files/figure-gfm/first_plot-1.png)<!-- -->
 
 This is an example were the estimate was done without considering any
-type of strucuture in data, which is the first assumption for the
+type of structure in data, which is the first assumption for the
 nowcasting.
 
 ## Nowcasting as a tool to support decision making
@@ -239,7 +246,7 @@ data_by_week |>
 ![](README_files/figure-gfm/no_age_data-1.png)<!-- -->
 
 On this filtered data, we estimate the cases already that started its
-date of onset of symptons but were not yet reported, so there not in the
+date of onset of symptoms but were not yet reported, so there not in the
 database. We just pass to the `nowcasting_inla` function, the dataset
 filtered, flag for the columns where are the `date_onset` and
 `date_report`, we add the flag for the function return back the epidemic
@@ -328,7 +335,7 @@ nowcasting_bh_no_age$total |>
 
 And as expected, the nowcasting estimated a rising on curve when it were
 observed a decaying. Adding to the plot what actually has happened in
-that period, with the data inserted posterioly the period for when the
+that period, with the data inserted posteriorly the period for when the
 nowcasting estimated the rising in the curve for SARI hospitalizations.
 
 ``` r
@@ -357,10 +364,10 @@ nowcasting_bh_no_age$total %>%
 ![](README_files/figure-gfm/unnamed-chunk-1-1.png)<!-- --> This end the
 first simple example when estimating the already started events but not
 yet reported (i.e. nowcasting). The relevance of nowcasting for public
-health decision is given by the understading that what is present on the
-databases are only a picture of the real time situation. The above graph
-can help policy makers on what decisions takes in the face of a rising
-curve of hospitalisations.
+health decision is given by the understanding that what is present on
+the databases are only a picture of the real time situation. The above
+graph can help policy makers on what decisions takes in the face of a
+rising curve of hospitalisations.
 
 ## Structured data, Age
 
@@ -430,7 +437,7 @@ nowcasting_bh_age <- nowcasting_inla(dataset = sragBH,
 
 Each of the estimates returned by `nowcasting_inla` has the same form as
 in the non-structured case. On the nowcasting estimates, it returns a
-data.frame with the posterior edian and 50% and 95% credible intervals,
+data.frame with the posterior median and 50% and 95% credible intervals,
 (LIb and LSb) and (LI and LS) respectively.
 
 ``` r
@@ -515,28 +522,30 @@ sessionInfo()
     ## other attached packages:
     ##  [1] lubridate_1.8.0 forcats_0.5.1   stringr_1.4.0   purrr_0.3.4    
     ##  [5] readr_2.1.2     tidyr_1.2.0     tibble_3.1.7    tidyverse_1.3.1
-    ##  [9] dplyr_1.0.9     ggplot2_3.3.6   nowcaster_0.2.1
+    ##  [9] dplyr_1.0.9     ggplot2_3.3.6   nowcaster_0.2.1 badger_0.2.1   
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] lattice_0.20-45     assertthat_0.2.1    digest_0.6.29      
-    ##  [4] utf8_1.2.2          cellranger_1.1.0    R6_2.5.1           
-    ##  [7] backports_1.4.1     MatrixModels_0.5-0  reprex_2.0.1       
-    ## [10] stats4_4.2.1        evaluate_0.15       httr_1.4.3         
-    ## [13] highr_0.9           pillar_1.7.0        rlang_1.0.3        
-    ## [16] readxl_1.4.0        rstudioapi_0.13     Matrix_1.4-1       
-    ## [19] rmarkdown_2.14      labeling_0.4.2      splines_4.2.1      
-    ## [22] munsell_0.5.0       broom_1.0.0         modelr_0.1.8       
-    ## [25] compiler_4.2.1      numDeriv_2016.8-1.1 xfun_0.31          
-    ## [28] pkgconfig_2.0.3     mnormt_2.0.2        tmvnsim_1.0-2      
-    ## [31] htmltools_0.5.2     tidyselect_1.1.2    fansi_1.0.3        
-    ## [34] tzdb_0.3.0          crayon_1.5.1        dbplyr_2.1.1       
-    ## [37] withr_2.5.0         grid_4.2.1          jsonlite_1.8.0     
-    ## [40] gtable_0.3.0        lifecycle_1.0.1     DBI_1.1.2          
-    ## [43] magrittr_2.0.3      scales_1.2.0        cli_3.3.0          
-    ## [46] stringi_1.7.6       INLA_22.05.07       farver_2.1.0       
-    ## [49] sn_2.0.2            fs_1.5.2            sp_1.5-0           
-    ## [52] xml2_1.3.3          ellipsis_0.3.2      generics_0.1.2     
-    ## [55] vctrs_0.4.1         tools_4.2.1         glue_1.6.2         
-    ## [58] hms_1.1.1           parallel_4.2.1      fastmap_1.1.0      
-    ## [61] yaml_2.3.5          colorspace_2.0-3    rvest_1.0.2        
-    ## [64] knitr_1.39          haven_2.5.0
+    ##  [1] httr_1.4.3          jsonlite_1.8.0      splines_4.2.1      
+    ##  [4] tmvnsim_1.0-2       modelr_0.1.8        sn_2.0.2           
+    ##  [7] assertthat_0.2.1    BiocManager_1.30.18 rvcheck_0.2.1      
+    ## [10] sp_1.5-0            highr_0.9           stats4_4.2.1       
+    ## [13] yulab.utils_0.0.5   cellranger_1.1.0    yaml_2.3.5         
+    ## [16] numDeriv_2016.8-1.1 pillar_1.7.0        backports_1.4.1    
+    ## [19] lattice_0.20-45     glue_1.6.2          digest_0.6.29      
+    ## [22] RColorBrewer_1.1-3  rvest_1.0.2         colorspace_2.0-3   
+    ## [25] htmltools_0.5.2     Matrix_1.4-1        pkgconfig_2.0.3    
+    ## [28] broom_1.0.0         haven_2.5.0         scales_1.2.0       
+    ## [31] tzdb_0.3.0          MatrixModels_0.5-0  generics_0.1.2     
+    ## [34] farver_2.1.0        ellipsis_0.3.2      withr_2.5.0        
+    ## [37] cli_3.3.0           mnormt_2.0.2        magrittr_2.0.3     
+    ## [40] crayon_1.5.1        readxl_1.4.0        evaluate_0.15      
+    ## [43] fs_1.5.2            fansi_1.0.3         xml2_1.3.3         
+    ## [46] tools_4.2.1         hms_1.1.1           lifecycle_1.0.1    
+    ## [49] reprex_2.0.1        munsell_0.5.0       compiler_4.2.1     
+    ## [52] rlang_1.0.3         grid_4.2.1          rstudioapi_0.13    
+    ## [55] INLA_22.05.07       labeling_0.4.2      rmarkdown_2.14     
+    ## [58] gtable_0.3.0        DBI_1.1.2           R6_2.5.1           
+    ## [61] knitr_1.39          fastmap_1.1.0       utf8_1.2.2         
+    ## [64] rprojroot_2.0.3     dlstats_0.1.5       desc_1.4.1         
+    ## [67] stringi_1.7.6       parallel_4.2.1      vctrs_0.4.1        
+    ## [70] dbplyr_2.1.1        tidyselect_1.1.2    xfun_0.31
