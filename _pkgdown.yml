@@ -4,6 +4,8 @@ authors:
     href: https://github.com/rafalopespx
   Leonardo Bastos:
     href: https://github.com/lsbastos/
+  footer:
+    text: "Casted by"
 url: https://covid19br.github.io/nowcaster
 template:
   bootstrap: 5

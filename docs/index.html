@@ -74,13 +74,15 @@
 <div class="page-header"><h1 id="nowcaster--">Nowcaster <a href="https://github.com/covid19br/nowcaster" class="external-link"><img src="reference/figures/nowcaster.png" align="right" width="140"></a> <a href="https://github.com/covid19br/nowcaster" class="external-link"><img src="reference/figures/nowcaster_rev.png" align="right" width="140"></a>
 <a class="anchor" aria-label="anchor" href="#nowcaster--"></a>
 </h1></div>
+<!-- badges: start -->
+
 <p><code>nowcaster</code> is a R package for “nowcasting” epidemiological time-series. Every single system of notification has an intrinsic delay, <code>nowcaster</code> can estimate how many counts of any epidemiological data of interest (<em>i.e.</em>, daily cases and deaths counts) by fitting a negative binomial model to the time steps of delay between onset date of the event, (<em>i.e.</em>, date of first symptoms for cases or date of occurrence of death) and the date of report (<em>i.e.</em>, date of notification of the case or death).</p>
 <p><code>nowcaster</code> is based on the <a href="https://www.r-inla.org/download-install" class="external-link"><code>R-INLA</code></a> and <a href="https://inla.r-inla-download.org/r-inla.org/doc/inla-manual/inla-manual.pdf" class="external-link"><code>INLA</code></a> packages for “<strong>I</strong>ntegrated <strong>N</strong>ested <strong>L</strong>aplace <strong>A</strong>pproximation” algorithm to Bayesian inference. <code>INLA</code> is a fast alternative to others methods for Bayesian inference like <strong>MCMC</strong>. An introduction to <code>INLA</code> can be found <a href="https://becarioprecario.bitbucket.io/inla-gitbook/index.html" class="external-link">here</a>.</p>
 <p><code>nowcaster</code> is build for epidemiological emergency use, it was constructed for the Brazilian Severe Acute Respiratory Illness (SARI) surveillance database (SIVEP-Gripe).</p>
 <div class="section level2">
 <h2 id="installing">Installing<a class="anchor" aria-label="anchor" href="#installing"></a>
 </h2>
-<p>Before installing the package certify you have an active installation of <code>INLA</code>, to do so you can run the follwing code:</p>
+<p>Before installing the package certify you have an active installation of <code>INLA</code>, to do so you can run the following code:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"INLA"</span>,
                   repos<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"repos"</span><span class="op">)</span>,
@@ -125,11 +127,15 @@
 <a href="https://github.com/rafalopespx" class="external-link">Rafael Lopes</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-9416-6145" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>
 <a href="https://github.com/lsbastos/" class="external-link">Leonardo Bastos</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-1406-0122" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/covid19br/nowcaster/actions" class="external-link"><img src="https://github.com/covid19br/nowcaster/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+</ul>
+</div>
 
   </aside>
 </div>
@@ -137,7 +143,7 @@
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by <a href="https://github.com/rafalopespx" class="external-link">Rafael Lopes</a>, <a href="https://github.com/lsbastos/" class="external-link">Leonardo Bastos</a>.</p>
+<p>Casted by <a href="https://github.com/rafalopespx" class="external-link">Rafael Lopes</a>, <a href="https://github.com/lsbastos/" class="external-link">Leonardo Bastos</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

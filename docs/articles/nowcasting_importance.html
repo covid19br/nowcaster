@@ -91,7 +91,7 @@
 quantitative support for decision making, during the public health
 crises, the most needed is a way to anticipate, at least, what it is
 happening at the moment. Nowcasting is the tool for this type of
-questioning and can gives insights on the data to support nedded
+questioning and can gives insights on the data to support needed
 decisions.</p>
 <p>We start this section by cutting the original data at a moment of
 apparent decaying of the SARI hospitalisation, for the city of Belo
@@ -99,7 +99,7 @@ Horizonte, which had a prompt starting response to the Covid=19
 pandemic. The pressure on the health system took more time than the rest
 of the country, and the data at same time were showing a decay. We
 filter all cases entered until 4th of July of 2020 by the date of
-digitasation, a date that the cases shows up in the database.</p>
+digitisation, a date that the cases shows up in the database.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org" class="external-link">lubridate</a></span><span class="op">)</span>
@@ -130,7 +130,7 @@ digitasation, a date that the cases shows up in the database.</p>
                name <span class="op">=</span> <span class="st">'Date in Weeks'</span><span class="op">)</span></code></pre></div>
 <p><img src="nowcasting_importance_files/figure-html/no_age_data-1.png" width="700"></p>
 <p>On this filtered data, we estimate the cases already that started its
-date of onset of symptons but were not yet reported, so there not in the
+date of onset of symptoms but were not yet reported, so there not in the
 database. We just pass to the <code>nowcasting_inla</code> function, the
 dataset filtered, flag for the columns where are the
 <code>date_onset</code> and <code>date_report</code>, we add the flag
@@ -265,7 +265,7 @@ curve all together.</p>
 <p><img src="nowcasting_importance_files/figure-html/no_age_plot-1.png" width="700"></p>
 <p>And as expected, the nowcasting estimated a rising on curve when it
 were observed a decaying. Adding to the plot what actually has happened
-in that period, with the data inserted posterioly the period for when
+in that period, with the data inserted posteriorly the period for when
 the nowcasting estimated the rising in the curve for SARI
 hospitalizations.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -299,7 +299,7 @@ hospitalizations.</p>
 <p><img src="nowcasting_importance_files/figure-html/after_one_year-1.png" width="700"></p>
 <p>This end the first simple example when estimating the already started
 events but not yet reported (i.e. nowcasting). The relevance of
-nowcasting for public health decision is given by the understading that
+nowcasting for public health decision is given by the understanding that
 what is present on the databases are only a picture of the real time
 situation. The above graph can help policy makers on what decisions
 takes in the face of a rising curve of hospitalisations.</p>
@@ -312,7 +312,7 @@ takes in the face of a rising curve of hospitalisations.</p>
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by <a href="https://github.com/rafalopespx" class="external-link">Rafael Lopes</a>, <a href="https://github.com/lsbastos/" class="external-link">Leonardo Bastos</a>.</p>
+<p>Casted by <a href="https://github.com/rafalopespx" class="external-link">Rafael Lopes</a>, <a href="https://github.com/lsbastos/" class="external-link">Leonardo Bastos</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
