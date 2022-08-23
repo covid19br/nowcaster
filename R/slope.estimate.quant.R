@@ -1,6 +1,3 @@
-suppressWarnings(suppressPackageStartupMessages(library("tidyverse")))
-suppressWarnings(suppressPackageStartupMessages(library(lme4)))
-
 #' @title Slope.estimate
 #'
 #' @param end.week [in weeks] The end of the week wanted to the slope estimate
