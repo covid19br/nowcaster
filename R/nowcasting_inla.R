@@ -81,33 +81,35 @@ nowcasting_inla <- function(dataset,
 
   ## Warnings
   if(!silent){
+    
+    bins_age <- "SI-PNI"; 
+    trim.data <- 0; 
+    Dmax <- 15; 
+    wdw <- 30; 
+    data.by.week <- FALSE
+    
     ## K parameter and trim.data warnings
     if (K > 0 & trim.data != 0){
       warning(paste0("Using K = ", K, " and trim.data = ", trim.data, ", is that right?"))
     }
     ## Missing age column warning
     if(missing(bins_age)){
-      bins_age <- "SI-PNI"
       warning("Using 'SI-PNI' age bins!")
     }
     ## Missing trim.data warning
     if(missing(trim.data)){
-      trim.data <- 0
       warning("Using default to trim dates, trim.data = 0")
     }
     ## Missing Dmax warning
     if(missing(Dmax)){
-      Dmax <- 15
       warning("Using default to maximum delay, Dmax = 15")
     }
     ## Missing wdw warning
     if(missing(wdw)){
-      wdw <- 30
       warning("Using default to window of action, wdw = 30")
     }
     ## Missing data.by.week warning
     if(missing(data.by.week)){
-      data.by.week <- FALSE
       warning("Using default to returning option for the data, data.by.week = FALSE")
     }
     # ## Missing return.age warning
