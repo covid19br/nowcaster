@@ -55,7 +55,7 @@ library(ggplot2)
 library(dplyr)
 
 dados_by_week <- nowcasting_bh_no_age$data |> 
-  filter(date_onset >= (Sys.Date()-270)) |> 
+  dplyr::filter(date_onset >= (Sys.Date()-270)) |> 
   group_by(date_onset) |> 
   summarise(n = n())
 

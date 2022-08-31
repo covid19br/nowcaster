@@ -81,36 +81,56 @@ nowcasting_inla <- function(dataset,
 
   ## Warnings
   if(missing(silent) | silent == FALSE){
-    
-    bins_age <- "SI-PNI"; 
-    trim.data <- 0; 
-    Dmax <- 15; 
-    wdw <- 30; 
-    data.by.week <- FALSE
-    
+
     ## K parameter and trim.data warnings
     if (K > 0 & trim.data != 0){
       warning(paste0("Using K = ", K, " and trim.data = ", trim.data, ", is that right?"))
+    }else{
+      if(K > 0){
+        message(paste0("Forecasting with K ", K, " ahead"))
+      }else{
+        message("Nowcasting only")
+      }
     }
     ## Missing age column warning
     if(missing(bins_age)){
+      bins_age <- "SI-PNI"
       warning("Using 'SI-PNI' age bins!")
+    }else{
+      bins_age<-bins_age
+      message("Using age bins inputed")
     }
     ## Missing trim.data warning
     if(missing(trim.data)){
+      trim.data <- 0
       warning("Using default to trim dates, trim.data = 0")
+    }else{
+      trim.data<-trim.data
+      message("Using trim.data inputed")
     }
     ## Missing Dmax warning
     if(missing(Dmax)){
+      Dmax <- 15
       warning("Using default to maximum delay, Dmax = 15")
+    }else{
+      Dmax<-Dmax
+      message("Using Dmax inputed")
     }
     ## Missing wdw warning
     if(missing(wdw)){
+      wdw <- 30
       warning("Using default to window of action, wdw = 30")
+    }else{
+      wdw<-wdw
+      message("Using wdw inputed")
     }
     ## Missing data.by.week warning
     if(missing(data.by.week)){
+      data.by.week <- FALSE
       warning("Using default to returning option for the data, data.by.week = FALSE")
+    }else{
+      data.by.week<-data.by.week
+      message("Returning data.by.week")
     }
     # ## Missing return.age warning
     # if(missing(return.age)){
@@ -119,16 +139,26 @@ nowcasting_inla <- function(dataset,
     # }
     ## Missing age_col warning
     if(missing(age_col)){
-      warning("Age_col missing, nowcasting with unstructured data")
+      warning("Age_col missing, nowcasting with unstructured model")
+    }else{
+      message("Age col inputed, nowcasting with structured model")
     }
 
-  }else {
-    bins_age <- "SI-PNI";
-    trim.data <- 0;
-    Dmax <- 15;
-    wdw <- 30;
-    data.by.week <- FALSE
+    if(missing(trajectories) | trajectories == FALSE){
+      warning("Not returning trajectories")
+    }else{
+      trajectories = TRUE
+      message("Trajectories returned")
+    }
+  }else{
+    bins_age<-bins_age;
+    trim.data<-trim.data;
+    Dmax<-Dmax;
+    wdw<-wdw;
+    data.by.week<-data.by.week
   }
+
+
 
   ## Objects for keep the nowcasting
   ## Filtering out cases without report date
@@ -145,11 +175,11 @@ nowcasting_inla <- function(dataset,
   ## Filtering data to the parameters setted above
   if(missing(age_col)){
     data_w<-data.w_no_age(dataset = data,
-                           trim.data = trim.data,
-                           date_onset = {{date_onset}},
-                           date_report = {{date_report}},
-                           K = K,
-                           silent = silent)
+                          trim.data = trim.data,
+                          date_onset = {{date_onset}},
+                          date_report = {{date_report}},
+                          K = K,
+                          silent = silent)
   }else {
     data_w <- data.w(dataset = data,
                      bins_age = bins_age,
