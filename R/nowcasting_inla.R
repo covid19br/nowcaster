@@ -80,7 +80,7 @@ nowcasting_inla <- function(dataset,
   }
 
   ## Warnings
-  if(!silent){
+  if(missing(silent) | silent == FALSE){
     
     bins_age <- "SI-PNI"; 
     trim.data <- 0; 
