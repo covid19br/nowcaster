@@ -3,7 +3,7 @@
 
 <!-- badges: start -->
 
-[![](https://img.shields.io/badge/devel%20version-0.2.1-blue.svg)](https://github.com/nowcaster)
+[![](https://img.shields.io/badge/devel%20version-0.2.2-blue.svg)](https://github.com/nowcaster)
 <!-- badges: end -->
 
 `nowcaster` is a R package for “nowcasting” epidemiological time-series.
@@ -63,7 +63,7 @@ And we take a look on the data:
 head(sragBH)
 ```
 
-    ## # A tibble: 6 × 7
+    ## # A tibble: 6 x 7
     ##   DT_SIN_PRI DT_DIGITA  CLASSI_FIN EVOLUCAO CO_MUN_RES Idade fx_etaria
     ##   <date>     <date>          <dbl>    <dbl>      <dbl> <dbl> <fct>    
     ## 1 2020-02-11 2020-03-05          4        1     310620    59 50 - 59  
@@ -137,15 +137,15 @@ nowcasting_bh_no_age <- nowcasting_inla(dataset = sragBH,
 head(nowcasting_bh_no_age$total)
 ```
 
-    ## # A tibble: 6 × 7
+    ## # A tibble: 6 x 7
     ##    Time dt_event   Median    LI    LS   LIb   LSb
     ##   <int> <date>      <dbl> <dbl> <dbl> <dbl> <dbl>
-    ## 1    17 2021-12-13    625   621  632    623  627 
-    ## 2    18 2021-12-20    695   687  707    692  698 
-    ## 3    19 2021-12-27    812   800  828    807  817 
-    ## 4    20 2022-01-03    886   871  907    880  893 
-    ## 5    21 2022-01-10    818   800  845.   811  827.
-    ## 6    22 2022-01-17    631   609  661.   623  640
+    ## 1    17 2021-12-13    625  621    632   623   627
+    ## 2    18 2021-12-20    695  687    707   692   699
+    ## 3    19 2021-12-27    812  800    829   807   817
+    ## 4    20 2022-01-03    886  871    909   880   893
+    ## 5    21 2022-01-10    818  800    844   810   826
+    ## 6    22 2022-01-17    631  609.   661   623   640
 
 This calling will return only the nowcasting estimate and its Confidence
 Interval (CI) for two different Credible interval, `LIb` and `LSb` are
@@ -260,7 +260,7 @@ nowcasting_bh_no_age <- nowcasting_inla(dataset = srag_now,
 head(nowcasting_bh_no_age$data)
 ```
 
-    ## # A tibble: 6 × 3
+    ## # A tibble: 6 x 3
     ##   date_report date_onset Delay
     ##   <date>      <date>     <dbl>
     ## 1 2020-02-29  2020-02-08     3
@@ -500,52 +500,49 @@ is an empirical finding of this models.
 sessionInfo()
 ```
 
-    ## R version 4.2.1 (2022-06-23)
-    ## Platform: x86_64-pc-linux-gnu (64-bit)
-    ## Running under: Manjaro Linux
+    ## R version 4.1.2 (2021-11-01)
+    ## Platform: x86_64-w64-mingw32/x64 (64-bit)
+    ## Running under: Windows 10 x64 (build 19042)
     ## 
     ## Matrix products: default
-    ## BLAS:   /usr/lib/libblas.so.3.10.1
-    ## LAPACK: /usr/lib/liblapack.so.3.10.1
     ## 
     ## locale:
-    ##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-    ##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-    ##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
-    ##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-    ##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-    ## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+    ## [1] LC_COLLATE=Portuguese_Brazil.1252  LC_CTYPE=Portuguese_Brazil.1252   
+    ## [3] LC_MONETARY=Portuguese_Brazil.1252 LC_NUMERIC=C                      
+    ## [5] LC_TIME=Portuguese_Brazil.1252    
     ## 
     ## attached base packages:
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
     ##  [1] lubridate_1.8.0 forcats_0.5.1   stringr_1.4.0   purrr_0.3.4    
-    ##  [5] readr_2.1.2     tidyr_1.2.0     tibble_3.1.7    tidyverse_1.3.1
-    ##  [9] dplyr_1.0.9     ggplot2_3.3.6   nowcaster_0.2.1 badger_0.2.1   
+    ##  [5] readr_2.1.2     tidyr_1.2.0     tibble_3.1.8    tidyverse_1.3.2
+    ##  [9] dplyr_1.0.8     ggplot2_3.3.6   nowcaster_0.2.1 badger_0.2.1   
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] httr_1.4.3          jsonlite_1.8.0      splines_4.2.1      
-    ##  [4] tmvnsim_1.0-2       modelr_0.1.8        sn_2.0.2           
+    ##  [1] httr_1.4.3          jsonlite_1.7.3      splines_4.1.2      
+    ##  [4] tmvnsim_1.0-2       modelr_0.1.8        sn_2.0.1           
     ##  [7] assertthat_0.2.1    BiocManager_1.30.18 rvcheck_0.2.1      
-    ## [10] sp_1.5-0            highr_0.9           stats4_4.2.1       
-    ## [13] yulab.utils_0.0.5   cellranger_1.1.0    yaml_2.3.5         
-    ## [16] numDeriv_2016.8-1.1 pillar_1.7.0        backports_1.4.1    
-    ## [19] lattice_0.20-45     glue_1.6.2          digest_0.6.29      
-    ## [22] RColorBrewer_1.1-3  rvest_1.0.2         colorspace_2.0-3   
-    ## [25] htmltools_0.5.2     Matrix_1.4-1        pkgconfig_2.0.3    
-    ## [28] broom_1.0.0         haven_2.5.0         scales_1.2.0       
-    ## [31] tzdb_0.3.0          MatrixModels_0.5-0  generics_0.1.2     
-    ## [34] farver_2.1.0        ellipsis_0.3.2      withr_2.5.0        
-    ## [37] cli_3.3.0           mnormt_2.0.2        magrittr_2.0.3     
-    ## [40] crayon_1.5.1        readxl_1.4.0        evaluate_0.15      
-    ## [43] fs_1.5.2            fansi_1.0.3         xml2_1.3.3         
-    ## [46] tools_4.2.1         hms_1.1.1           lifecycle_1.0.1    
-    ## [49] reprex_2.0.1        munsell_0.5.0       compiler_4.2.1     
-    ## [52] rlang_1.0.3         grid_4.2.1          rstudioapi_0.13    
-    ## [55] INLA_22.05.07       labeling_0.4.2      rmarkdown_2.14     
-    ## [58] gtable_0.3.0        DBI_1.1.2           R6_2.5.1           
-    ## [61] knitr_1.39          fastmap_1.1.0       utf8_1.2.2         
-    ## [64] rprojroot_2.0.3     dlstats_0.1.5       desc_1.4.1         
-    ## [67] stringi_1.7.6       parallel_4.2.1      vctrs_0.4.1        
-    ## [70] dbplyr_2.1.1        tidyselect_1.1.2    xfun_0.31
+    ## [10] sp_1.4-6            highr_0.9           stats4_4.1.2       
+    ## [13] yulab.utils_0.0.5   googlesheets4_1.0.0 cellranger_1.1.0   
+    ## [16] yaml_2.2.2          numDeriv_2016.8-1.1 pillar_1.8.1       
+    ## [19] backports_1.4.1     lattice_0.20-45     glue_1.6.1         
+    ## [22] digest_0.6.29       RColorBrewer_1.1-3  rvest_1.0.2        
+    ## [25] colorspace_2.0-3    htmltools_0.5.2     Matrix_1.3-4       
+    ## [28] pkgconfig_2.0.3     broom_1.0.0         haven_2.4.3        
+    ## [31] scales_1.2.1        tzdb_0.2.0          MatrixModels_0.5-0 
+    ## [34] googledrive_2.0.0   generics_0.1.3      farver_2.1.1       
+    ## [37] ellipsis_0.3.2      withr_2.5.0         cli_3.1.1          
+    ## [40] mnormt_2.0.2        crayon_1.5.1        readxl_1.3.1       
+    ## [43] magrittr_2.0.2      evaluate_0.15       fs_1.5.2           
+    ## [46] fansi_1.0.3         xml2_1.3.3          tools_4.1.2        
+    ## [49] hms_1.1.1           gargle_1.2.0        lifecycle_1.0.1    
+    ## [52] reprex_2.0.1        munsell_0.5.0       compiler_4.1.2     
+    ## [55] rlang_1.0.5         grid_4.1.2          rstudioapi_0.13    
+    ## [58] INLA_21.11.22       labeling_0.4.2      rmarkdown_2.13     
+    ## [61] gtable_0.3.0        DBI_1.1.2           R6_2.5.1           
+    ## [64] knitr_1.39          fastmap_1.1.0       utf8_1.2.2         
+    ## [67] rprojroot_2.0.3     dlstats_0.1.5       desc_1.4.1         
+    ## [70] stringi_1.7.6       Rcpp_1.0.7          parallel_4.1.2     
+    ## [73] vctrs_0.4.1         dbplyr_2.1.1        tidyselect_1.1.2   
+    ## [76] xfun_0.29
