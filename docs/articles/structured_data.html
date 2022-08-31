@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">nowcaster</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -130,15 +130,15 @@ name for the date of report of the cases. Here this columns are
                                         date_onset <span class="op">=</span> <span class="va">DT_SIN_PRI</span>, 
                                         date_report <span class="op">=</span> <span class="va">DT_DIGITA</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nowcasting_bh_no_age</span><span class="op">$</span><span class="va">total</span><span class="op">)</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 7</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 x 7</span></span>
 <span class="co">#&gt;    Time dt_event   Median    LI    LS   LIb   LSb</span>
 <span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    17 2021-12-13    625  621   633    623   627</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    18 2021-12-20    695  688   707.   692   699</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    19 2021-12-27    812  801   828    808   818</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    20 2022-01-03    887  870   910.   880   893</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    21 2022-01-10    818  800   847.   811   826</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    22 2022-01-17    630  609.  659.   622   640</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    17 2021-12-13    625   621   632   623   627</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    18 2021-12-20    695   687   707   692   699</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    19 2021-12-27    813   801   829   808   818</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    20 2022-01-03    887   871   910   880   893</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    21 2022-01-10    818   800   845   811   826</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    22 2022-01-17    631   608   660   623   640</span></code></pre></div>
 <p>This calling will return only the nowcasting estimate and its
 Confidence Interval (CI) for two different Credible interval,
 <code>LIb</code> and <code>LSb</code> are the max and min CI,
@@ -156,7 +156,7 @@ the summarized data by week.</p>
                                         date_report <span class="op">=</span> <span class="va">DT_DIGITA</span>, 
                                         data.by.week <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nowcasting_bh_no_age</span><span class="op">$</span><span class="va">data</span><span class="op">)</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 x 3</span></span>
 <span class="co">#&gt;   date_report date_onset Delay</span>
 <span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 2020-02-24  2020-02-03     3</span>
