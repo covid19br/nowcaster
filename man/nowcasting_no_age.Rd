@@ -4,10 +4,13 @@
 \alias{nowcasting_no_age}
 \title{nowcasting_no_age}
 \usage{
-nowcasting_no_age(dados.age)
+nowcasting_no_age(dados.age, zero_inflated)
 }
 \arguments{
-\item{dataset}{data pre formatted in to age classes and delays by week for each cases, delay triangle format}
+\item{zero_inflated}{zero-inflated model}
+
+\item{dataset}{data pre formatted in to age classes and delays by week for each cases,
+delay triangle format}
 }
 \value{
 

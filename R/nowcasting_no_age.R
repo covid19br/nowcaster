@@ -1,16 +1,31 @@
 #' nowcasting_no_age
 #'
-#' @param dataset data pre formatted in to age classes and delays by week for each cases, delay triangle format
+#' @param dataset data pre formatted in to age classes and delays by week for each cases,
+#' delay triangle format
+#' @param zero_inflated zero-inflated model
 #'
 #' @return
 #' @export
 #'
 #' @examples
-nowcasting_no_age <- function(dados.age){
+nowcasting_no_age <- function(dados.age,
+                              zero_inflated){
 
-  # ## Loading packages
-  # require(INLA)
-  # require(tidyr)
+  if (zero.inflated){
+    family <- "zeroinflatednbinomial1"
+    control.family <- list(
+      hyper = list("theta1" = list(prior = "loggamma",
+                                   param = c(0.01, 0.01)),
+                   "theta2" = list(prior = "gaussian",
+                                   param = c(0, 0.4)))
+    )
+  } else {
+    family <- 'nbinomial'
+    control.family <- list(
+      hyper = list("theta" = list(prior = "loggamma",
+                                  param = c(0.001, 0.001)))
+    )
+  }
 
   index.missing <- which(is.na(dados.age$Y))
 
@@ -29,15 +44,12 @@ nowcasting_no_age <- function(dados.age){
     )
 
   ## Running the Negative Binomial model in INLA
-  output0 <- INLA::inla(model, family = "nbinomial",
+  output0 <- INLA::inla(model,
+                        family = family,
                         data = dados.age,
                         control.predictor = list(link = 1, compute = T),
                         control.compute = list( config = T, waic=F, dic=F),
-                        control.family = list(
-                          hyper = list("theta" = list(prior = "loggamma",
-                                                      param = c(0.001, 0.001))
-                          )
-                        )
+                        control.family = control.family
   )
 
   # }
@@ -52,11 +64,11 @@ nowcasting_no_age <- function(dados.age){
   ## Step 2: Sampling the missing triangle from the likelihood using INLA estimates
   vector.samples0 <- lapply(X = srag.samples0.list,
                             FUN = function(x, idx = index.missing){
-                              # if(zeroinflated){
-                              #   unif.log <- as.numeric(runif(idx,0,1) < x$hyperpar[2])
-                              # }else{
-                              unif.log = 1
-                              # }
+                              if(zeroinflated){
+                                unif.log <- as.numeric(runif(idx,0,1) < x$hyperpar[2])
+                              }else{
+                                unif.log = 1
+                              }
                               stats::rnbinom(n = idx,
                                              mu = exp(x$latent[idx]),
                                              size = x$hyperpar[1]

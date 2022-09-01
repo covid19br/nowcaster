@@ -27,7 +27,9 @@
 #' @param age_col Column for ages
 #' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases
 #' @param date_report Column of dates of report of the event, normally date of digitation of the notification of cases
-#' @param trajectories
+#' @param trajectories Returns the trajectories estimated on the inner 'INLA' model
+#' @param zero_inflated In non-structured models, fit a model that deals with zero-inflated data.
+#' [Default] FALSE. If the [age_col] is not missing this flag is ignored.
 #' @param ...
 #'
 #' @return a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total', \n
@@ -56,6 +58,7 @@ nowcasting_inla <- function(dataset,
                             silent = F,
                             K = 0,
                             trajectories = F,
+                            zero_inflated = F,
                             ...){
 
   ## Safe tests
@@ -119,13 +122,24 @@ nowcasting_inla <- function(dataset,
     if(missing(age_col)){
       warning("Age_col missing, nowcasting with unstructured data")
     }
+    if(missing(trajectories) | trajectories == FALSE){
+      warning("Not returning trajectories")
+    }else{
+      trajectories = TRUE
+      message("Trajectories returned")
+    }
 
-  }else {
-    bins_age <- "SI-PNI";
-    trim.data <- 0;
-    Dmax <- 15;
-    wdw <- 30;
-    data.by.week <- FALSE
+    if(!missing(age_col) & !missing(zero_inflated)){
+      zero_inflated<-FALSE
+      warning("age_col parsed, zero_inflated ignored!")
+    }
+  }else{
+    bins_age<-bins_age;
+    trim.data<-trim.data;
+    Dmax<-Dmax;
+    wdw<-wdw;
+    data.by.week<-data.by.week
+    zero_inflated<-zero_inflated
   }
 
   ## Objects for keep the nowcasting
@@ -257,8 +271,16 @@ nowcasting_inla <- function(dataset,
 
 
   if(missing(age_col)){
-    ## Nowcasting estimate
-    sample.now <- nowcasting_no_age(dados.age = data.inla)
+
+    if(zero_inflated){
+      ## Nowcasting estimate
+      sample.now <- nowcasting_no_age(dados.age = data.inla,
+                                      zero_inflated = T)
+    }else{
+      ## Nowcasting estimate
+      sample.now <- nowcasting_no_age(dados.age = data.inla,
+                                      zero_inflated = F)
+    }
 
     ## Summary on the posteriors of nowcasting
     now_summary<-nowcasting.summary(trajetory = sample.now,
