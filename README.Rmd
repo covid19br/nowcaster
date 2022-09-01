@@ -12,7 +12,11 @@ library(badger)
 # nowcaster <a href='https://github.com/covid19br/nowcaster'><img src='man/figures/nowcaster.png' align="right" width="140" /></a> <a href='https://github.com/covid19br/nowcaster'><img src='man/figures/nowcaster_rev.png' align="right" width="140" /></a>
 
 <!-- badges: start -->
-`r badge_github_version("nowcaster", "blue")`
+<!-- `r badger::badge_cran_checks(pkg = NULL)` -->
+<!-- `r badger::badge_dependencies(pkg = NULL)` -->
+`r badger::badge_devel(pkg = "nowcaster", color = "blue")`
+`r badger::badge_license(url = "https://github.com/covid19br/nowcaster/blob/main/LICENSE.md")`
+`r badger::badge_lifecycle(stage = "experimental")`
 <!-- badges: end -->
 
 `nowcaster` is a R package for "nowcasting" epidemiological time-series. Every single system of notification has an intrinsic delay, `nowcaster` can estimate how many counts of any epidemiological data of interest (*i.e.*, daily cases and deaths counts) by fitting a negative binomial model to the time steps of delay between onset date of the event, (*i.e.*, date of first symptoms for cases or date of occurrence of death) and the date of report (*i.e.*, date of notification of the case or death).
