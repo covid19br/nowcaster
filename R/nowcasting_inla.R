@@ -15,16 +15,16 @@
 #' [Default] 30 weeks.
 #' @param data.by.week If it has to be returned the whole time-series data.
 #' [Default] FALSE.
-#' @param return.age [Depracted] If the estimate by Age should be returned.
+#' @param return.age [Deprecated] If the estimate by Age should be returned.
 #' [Default] TRUE.
 #' @param bins_age Age bins to do the nowcasting, it receive a vector of age bins,
 #' or options between, "SI-PNI", "10 years", "5 years".
 #' [Default] "SI-PNI".
-#' @param silent [Depracted] Should be the warnings turned off?
+#' @param silent Should be the warnings turned off?
 #' [Default] is TRUE.
 #' @param K (in weeks) How much weeks to forecast ahead?
 #' [Default] K is 0, no forecasting ahead
-#' @param age_col Column for ages
+#' @param age_col Column for ages on individual level data, in numeric values
 #' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases
 #' @param date_report Column of dates of report of the event, normally date of digitation of the notification of cases
 #' @param trajectories Returns the trajectories estimated on the inner 'INLA' model

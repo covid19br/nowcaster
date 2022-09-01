@@ -36,7 +36,7 @@ or options between, "SI-PNI", "10 years", "5 years".
 \item{wdw}{(in weeks) Window of dates the estimation will act, i.e., how many past weeks the nowcasting will estimates.
 \link{Default} 30 weeks.}
 
-\item{age_col}{Column for ages}
+\item{age_col}{Column for ages on individual level data, in numeric values}
 
 \item{date_onset}{Column of dates of onset of the events, normally date of onset of first symptoms of cases}
 
@@ -45,7 +45,7 @@ or options between, "SI-PNI", "10 years", "5 years".
 \item{data.by.week}{If it has to be returned the whole time-series data.
 \link{Default} FALSE.}
 
-\item{silent}{\link{Depracted} Should be the warnings turned off?
+\item{silent}{Should be the warnings turned off?
 \link{Default} is TRUE.}
 
 \item{K}{(in weeks) How much weeks to forecast ahead?
@@ -55,7 +55,7 @@ or options between, "SI-PNI", "10 years", "5 years".
 
 \item{...}{}
 
-\item{return.age}{\link{Depracted} If the estimate by Age should be returned.
+\item{return.age}{\link{Deprecated} If the estimate by Age should be returned.
 \link{Default} TRUE.}
 }
 \value{
