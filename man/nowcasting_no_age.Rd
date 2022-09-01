@@ -16,5 +16,6 @@ delay triangle format}
 
 }
 \description{
-nowcasting_no_age
+Run INLA model on non-structured data,
+data has to be in the format of delay-triangle
 }

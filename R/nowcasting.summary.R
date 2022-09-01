@@ -1,4 +1,7 @@
-#' nowcasting.summary
+#' @title nowcasting.summary
+#'
+#' @description Function to summarize the output from the posteriors generated from any of the
+#' of the workhorse functions, [nowcasting_no_age] and [nowcasting_age]
 #'
 #' @param trajectory Trajectories to be summarized, trajectory should have sample, Time, dt_event and Y columns.
 #' @param age Is by age data? [Default] FALSE, If its TRUE it will have columns  for age class, fx_etaria e fx_etaria.num

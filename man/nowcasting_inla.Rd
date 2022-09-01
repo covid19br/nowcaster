@@ -47,7 +47,7 @@ or options between, "SI-PNI", "10 years", "5 years".
 \item{data.by.week}{If it has to be returned the whole time-series data.
 \link{Default} FALSE.}
 
-\item{silent}{\link{Depracted} Should be the warnings turned off?
+\item{silent}{\link{Deprecated} Should be the warnings turned off?
 \link{Default} is TRUE.}
 
 \item{K}{(in weeks) How much weeks to forecast ahead?
@@ -60,11 +60,11 @@ or options between, "SI-PNI", "10 years", "5 years".
 
 \item{...}{}
 
-\item{return.age}{\link{Depracted} If the estimate by Age should be returned.
+\item{return.age}{\link{Deprecated} If the estimate by Age should be returned.
 \link{Default} TRUE.}
 }
 \value{
-a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total', \n
+a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total',
 'data' with the time-series out of wdw .
 If 'age_col' is parsed, add a thrid element with by age estimation 'age' .
 If 'trajectories' = TRUE, add a forth element with the returned trajectories from 'inla'.

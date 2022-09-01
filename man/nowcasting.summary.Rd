@@ -15,5 +15,6 @@ nowcasting.summary(trajetory, age = F)
 
 }
 \description{
-nowcasting.summary
+Function to summarize the output from the posteriors generated from any of the
+of the workhorse functions, \link{nowcasting_no_age} and \link{nowcasting_age}
 }

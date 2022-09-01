@@ -1,4 +1,7 @@
-#' nowcasting_no_age
+#' @title nowcasting_no_age
+#'
+#' @description Run INLA model on non-structured data,
+#' data has to be in the format of delay-triangle
 #'
 #' @param dataset data pre formatted in to age classes and delays by week for each cases,
 #' delay triangle format
@@ -11,7 +14,7 @@
 nowcasting_no_age <- function(dados.age,
                               zero_inflated){
 
-  if (zero.inflated){
+  if (zero_inflated){
     family <- "zeroinflatednbinomial1"
     control.family <- list(
       hyper = list("theta1" = list(prior = "loggamma",
@@ -64,7 +67,7 @@ nowcasting_no_age <- function(dados.age,
   ## Step 2: Sampling the missing triangle from the likelihood using INLA estimates
   vector.samples0 <- lapply(X = srag.samples0.list,
                             FUN = function(x, idx = index.missing){
-                              if(zeroinflated){
+                              if(zero_inflated){
                                 unif.log <- as.numeric(runif(idx,0,1) < x$hyperpar[2])
                               }else{
                                 unif.log = 1

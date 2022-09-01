@@ -1,4 +1,7 @@
-#' nowcasting_age
+#' @title nowcasting_age
+#'
+#' @description Run INLA model on structured data by age-class
+#' data has to be in the format of delay-triangle
 #'
 #' @param dataset data pre formatted in to age classes and delays by week for each cases, delay triangle format
 #'

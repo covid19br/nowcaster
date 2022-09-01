@@ -13,5 +13,6 @@ nowcasting_age(dados.age)
 
 }
 \description{
-nowcasting_age
+Run INLA model on structured data by age-class
+data has to be in the format of delay-triangle
 }

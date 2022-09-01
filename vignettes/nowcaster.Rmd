@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 ## First example on LazyData
 
-When the package is loaded it disponibilize a LazyData file, `sariBH`, it is a annonymized records of Severe Acute Respiratory Illness notified in the city of Belo Horizonte, since March 2020 to April 2022. To load it basically write:
+When the package is loaded it provides a LazyData file, `sariBH`, it is a anonymized records of Severe Acute Respiratory Illness notified in the city of Belo Horizonte, since March 2020 to April 2022. To load it basically write:
 
 ```{r data-bh}
 library(nowcaster)
@@ -55,7 +55,7 @@ library(ggplot2)
 library(dplyr)
 
 dados_by_week <- nowcasting_bh_no_age$data |> 
-  filter(date_onset >= (Sys.Date()-270)) |> 
+  dplyr::filter(date_onset >= (Sys.Date()-270)) |> 
   group_by(date_onset) |> 
   summarise(n = n())
 
@@ -105,4 +105,4 @@ nowcasting_bh_no_age$total |>
        y = 'Nº Cases')
 ```
 
-This is an example were the estimate was done without considering any type of strucuture in data, which is the first assumption for the nowcasting.
+This is an example were the estimate was done without considering any type of structure in data, which is the first assumption for the nowcasting.

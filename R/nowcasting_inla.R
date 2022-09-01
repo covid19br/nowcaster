@@ -1,4 +1,4 @@
-#' nowcasting_inla
+#' @title nowcasting_inla
 #'
 #' @description function to estimate amount of events already started by not yet notified.
 #' The main use is to estimate how many cases in a outbreak has already started their onset date of symptons
@@ -15,12 +15,12 @@
 #' [Default] 30 weeks.
 #' @param data.by.week If it has to be returned the whole time-series data.
 #' [Default] FALSE.
-#' @param return.age [Depracted] If the estimate by Age should be returned.
+#' @param return.age [Deprecated] If the estimate by Age should be returned.
 #' [Default] TRUE.
 #' @param bins_age Age bins to do the nowcasting, it receive a vector of age bins,
 #' or options between, "SI-PNI", "10 years", "5 years".
 #' [Default] "SI-PNI".
-#' @param silent [Depracted] Should be the warnings turned off?
+#' @param silent [Deprecated] Should be the warnings turned off?
 #' [Default] is TRUE.
 #' @param K (in weeks) How much weeks to forecast ahead?
 #' [Default] K is 0, no forecasting ahead
@@ -32,7 +32,7 @@
 #' [Default] FALSE. If the [age_col] is not missing this flag is ignored.
 #' @param ...
 #'
-#' @return a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total', \n
+#' @return a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total',
 #' 'data' with the time-series out of wdw .
 #' If 'age_col' is parsed, add a thrid element with by age estimation 'age' .
 #' If 'trajectories' = TRUE, add a forth element with the returned trajectories from 'inla'.
@@ -138,7 +138,7 @@ nowcasting_inla <- function(dataset,
     trim.data<-trim.data;
     Dmax<-Dmax;
     wdw<-wdw;
-    data.by.week<-data.by.week
+    data.by.week<-data.by.week;
     zero_inflated<-zero_inflated
   }
 
