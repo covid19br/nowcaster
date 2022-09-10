@@ -23,8 +23,9 @@ last_data_obs<-max(obs$data)
 Sys.setlocale(category = "LC_TIME", locale = "pt_BR.UTF-8")
 
 ## Gif casos ##
-nowc <-
-  ggplot(data = casos, aes(x = dt_sin_pri, y = n, col = as.factor(data))) +
+nowc <-casos |>
+  filter(dt_sin_pri >= as.Date('2020-02-26') ) |>
+  ggplot(aes(x = dt_sin_pri, y = n, col = as.factor(data))) +
   geom_line(size = .3)+
   # geom_line(aes(x=dt_sin_pri, y=-n, col = as.factor(data)))+
   # scale_color_viridis_d(direction = 1,
@@ -35,18 +36,30 @@ nowc <-
   theme_transparent()+
   # scale_color_gradientn(colors = colorRampPalette(c("#f4f7fb","#004f9f")))
   scale_colour_discrete_sequential(palette = "Blues 3", rev = T)
+  # geom_hexagon()+
+  # geom_url(url = 'covid19br.github.io/nowcaster',
+  #          size = 4.5, color = 'navyblue')
 nowc
 
-sticker(nowc, package="nowcaster", 
-        h_color="#004F9F", p_color = "#004F9F", h_fill="white", h_size = .3,
-        s_x=.95, s_y=1.2, s_width=2, s_height=1.5, dpi = 300, 
-        p_x = .65, p_size=15,
-        filename="man/figures/nowcaster.png")
+ggsave(filename = 'man/figures/srag_curve.png',
+       plot = nowc,
+       width = 11,
+       height = 9,
+       dpi = 200)
 
+s<-sticker(nowc, package="Nowcaster",
+        h_color="#004F9F", p_color = "#004F9F", h_fill="white", h_size = .3,
+        s_x=1.0, s_y=1.2, s_width=1.5, s_height=1.5, dpi = 300,
+        p_x = .65, p_size=15,
+        url = "covid19br.github.io/nowcaster",
+        u_size = 5.5, u_color = "#004F9F",
+        filename="man/figures/nowcaster.png")
+s
 ## Reverse colors logo
 
-nowc_rev <-
-  ggplot(data = casos, aes(x = dt_sin_pri, y = n, col = as.factor(data))) +
+nowc_rev <-casos |>
+  filter(dt_sin_pri >= as.Date('2020-02-26') ) |>
+  ggplot(aes(x = dt_sin_pri, y = n, col = as.factor(data))) +
   geom_line(size = .3)+
   # geom_line(aes(x=dt_sin_pri, y=-n, col = as.factor(data)))+
   # scale_color_viridis_d(direction = 1,
@@ -59,8 +72,17 @@ nowc_rev <-
   scale_colour_discrete_sequential(palette = "Blues 3", rev = F)
 nowc_rev
 
-sticker(nowc_rev, package="nowcaster", 
+ggsave(filename = 'man/figures/srag_curve_rev.png',
+       plot = nowc_rev,
+       width = 11,
+       height = 9,
+       dpi = 200)
+
+s_rev<-sticker(nowc_rev, package="Nowcaster",
         h_fill="#004F9F", p_color = "white", h_color="white", h_size = .3,
-        s_x=.95, s_y=1.2, s_width=2, s_height=1.5, dpi = 300, 
+        s_x=1.0, s_y=1.2, s_width=1.5, s_height=1.5, dpi = 300,
         p_x = .65, p_size=15,
+        url = "covid19br.github.io/nowcaster",
+        u_size = 5.5, u_color = "white",
         filename="man/figures/nowcaster_rev.png")
+s_rev

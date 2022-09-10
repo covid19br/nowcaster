@@ -42,8 +42,7 @@ The call of the function is straightforward, it simply needs a dataset as input,
 nowcasting_bh_no_age <- nowcasting_inla(dataset = sragBH, 
                                         date_onset = DT_SIN_PRI, 
                                         date_report = DT_DIGITA, 
-                                        data.by.week = T, 
-                                        silent = T)
+                                        data.by.week = T)
 head(nowcasting_bh_no_age$total)
 ```
 
