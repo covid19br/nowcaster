@@ -79,7 +79,7 @@ ggsave(filename = 'man/figures/srag_curve_rev.png',
        dpi = 200)
 
 s_rev<-sticker(nowc_rev, package="Nowcaster",
-        h_fill="#004F9F", p_color = "white", h_color="white", h_size = .3,
+        h_fill="#004F9F", p_color = "white", h_color="white", h_size = .9,
         s_x=1.0, s_y=1.2, s_width=1.5, s_height=1.5, dpi = 300,
         p_x = .65, p_size=15,
         url = "covid19br.github.io/nowcaster",
