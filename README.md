@@ -2,10 +2,9 @@
 # nowcaster <a href='https://github.com/covid19br/nowcaster'><img src='man/figures/nowcaster.png' align="right" width="140" /></a> <a href='https://github.com/covid19br/nowcaster'><img src='man/figures/nowcaster_rev.png' align="right" width="140" /></a>
 
 <!-- badges: start -->
+<!-- [![CRAN checks](https://cranchecks.info/badges/summary/nowcaster)](https://cran.r-project.org/web/checks/check_results_nowcaster.html) -->
+<!-- [![Dependencies](https://tinyverse.netlify.com/badge/nowcaster)](https://cran.r-project.org/package=nowcaster) -->
 
-[![CRAN
-checks](https://cranchecks.info/badges/summary/nowcaster)](https://cran.r-project.org/web/checks/check_results_nowcaster.html)
-[![Dependencies](https://tinyverse.netlify.com/badge/nowcaster)](https://cran.r-project.org/package=nowcaster)
 [![](https://img.shields.io/badge/devel%20version-0.2.2-blue.svg)](https://github.com/nowcaster)
 [![License: GPL (\>=
 3)](https://img.shields.io/badge/license-GPL%20(%3E=%203)-blue.svg)](https://github.com/covid19br/nowcaster/blob/main/LICENSE.md)
@@ -147,11 +146,11 @@ head(nowcasting_bh_no_age$total)
     ##    Time dt_event   Median    LI    LS   LIb   LSb
     ##   <int> <date>      <dbl> <dbl> <dbl> <dbl> <dbl>
     ## 1    17 2021-12-13    625  621    632   623   627
-    ## 2    18 2021-12-20    695  687    707   692   699
-    ## 3    19 2021-12-27    812  800    829   807   817
-    ## 4    20 2022-01-03    886  871    909   880   893
-    ## 5    21 2022-01-10    818  800    844   810   826
-    ## 6    22 2022-01-17    631  609.   661   623   640
+    ## 2    18 2021-12-20    695  687    709   692   699
+    ## 3    19 2021-12-27    812  801    829   808   817
+    ## 4    20 2022-01-03    886  871    906   880   893
+    ## 5    21 2022-01-10    819  799.   847   811   826
+    ## 6    22 2022-01-17    631  608    661   623   641
 
 This calling will return only the nowcasting estimate and its Confidence
 Interval (CI) for two different Credible interval, `LIb` and `LSb` are
@@ -522,14 +521,14 @@ sessionInfo()
     ## 
     ## other attached packages:
     ##  [1] lubridate_1.8.0 forcats_0.5.1   stringr_1.4.0   purrr_0.3.4    
-    ##  [5] readr_2.1.2     tidyr_1.2.0     tibble_3.1.8    tidyverse_1.3.2
-    ##  [9] dplyr_1.0.8     ggplot2_3.3.6   nowcaster_0.2.1 badger_0.2.1   
+    ##  [5] readr_2.1.2     tidyr_1.2.1     tibble_3.1.8    tidyverse_1.3.2
+    ##  [9] dplyr_1.0.10    ggplot2_3.3.6   nowcaster_0.2.2 badger_0.2.1   
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] httr_1.4.3          jsonlite_1.7.3      splines_4.1.2      
     ##  [4] tmvnsim_1.0-2       modelr_0.1.8        sn_2.0.1           
     ##  [7] assertthat_0.2.1    BiocManager_1.30.18 rvcheck_0.2.1      
-    ## [10] sp_1.4-6            highr_0.9           stats4_4.1.2       
+    ## [10] sp_1.5-0            highr_0.9           stats4_4.1.2       
     ## [13] yulab.utils_0.0.5   googlesheets4_1.0.0 cellranger_1.1.0   
     ## [16] yaml_2.2.2          numDeriv_2016.8-1.1 pillar_1.8.1       
     ## [19] backports_1.4.1     lattice_0.20-45     glue_1.6.1         
@@ -542,7 +541,7 @@ sessionInfo()
     ## [40] mnormt_2.0.2        crayon_1.5.1        readxl_1.3.1       
     ## [43] magrittr_2.0.2      evaluate_0.15       fs_1.5.2           
     ## [46] fansi_1.0.3         xml2_1.3.3          tools_4.1.2        
-    ## [49] hms_1.1.1           gargle_1.2.0        lifecycle_1.0.1    
+    ## [49] hms_1.1.1           gargle_1.2.0        lifecycle_1.0.2    
     ## [52] reprex_2.0.1        munsell_0.5.0       compiler_4.1.2     
     ## [55] rlang_1.0.5         grid_4.1.2          rstudioapi_0.13    
     ## [58] INLA_21.11.22       labeling_0.4.2      rmarkdown_2.13     
