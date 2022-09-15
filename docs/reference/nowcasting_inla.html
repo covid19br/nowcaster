@@ -91,7 +91,9 @@ onset date and report date.</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>dataset</dt>
-<dd><p>Dataset with at least 3 columns, date of onset, date of report and stratum.</p></dd>
+<dd><p>Dataset with at least 2 columns, date of onset, date of report.
+It can be a dataset with 3 columns, two dates columns as before said and a another one being an stratum column,
+in which data will stratified, usually being age.</p></dd>
 <dt>bins_age</dt>
 <dd><p>Age bins to do the nowcasting, it receive a vector of age bins,
 or options between, "SI-PNI", "10 years", "5 years".
@@ -100,28 +102,29 @@ Default "SI-PNI".</p></dd>
 <dd><p>(in weeks) Date to be trimmed out from the data base, in days.
 Default 0 days.</p></dd>
 <dt>Dmax</dt>
-<dd><p>(in weeks) Until which maximum amount of weeks the Nowcasting will use for the estimation.
+<dd><p>(in weeks) Window of dates the estimation will act, i.e., till how many past weeks the nowcasting will estimate.
 Default 15 weeks.</p></dd>
 <dt>wdw</dt>
-<dd><p>(in weeks) Window of dates the estimation will act, i.e., how many past weeks the nowcasting will estimates.
+<dd><p>(in weeks) Until which maximum amount of weeks the Nowcasting will use to the estimation.
 Default 30 weeks.</p></dd>
 <dt>age_col</dt>
-<dd><p>Column for ages on individual level data, in numeric values</p></dd>
+<dd><p>Column for ages on individual level data, in numeric values.</p></dd>
 <dt>date_onset</dt>
-<dd><p>Column of dates of onset of the events, normally date of onset of first symptoms of cases</p></dd>
+<dd><p>Column of dates of onset of the events, normally date of onset of first symptoms of cases.</p></dd>
 <dt>date_report</dt>
-<dd><p>Column of dates of report of the event, normally date of digitation of the notification of cases</p></dd>
+<dd><p>Column of dates of report of the event, normally date of digitation of the notification of cases.</p></dd>
 <dt>data.by.week</dt>
 <dd><p>If it has to be returned the whole time-series data.
 Default FALSE.</p></dd>
 <dt>silent</dt>
 <dd><p>Should be the warnings turned off?
-Default is TRUE.</p></dd>
+Default FALSE.</p></dd>
 <dt>K</dt>
 <dd><p>(in weeks) How much weeks to forecast ahead?
-Default K is 0, no forecasting ahead</p></dd>
+Default 0, no forecasting ahead.</p></dd>
 <dt>trajectories</dt>
-<dd><p>Returns the trajectories estimated on the inner 'INLA' model</p></dd>
+<dd><p>Returns the posterior trajectories estimated on the inner 'INLA' model.
+Default FALSE</p></dd>
 <dt>...</dt>
 <dd></dd>
 <dt>return.age</dt>
@@ -132,8 +135,8 @@ Default TRUE.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total',
 and 'data' with the time-series out of wdw .
-If 'age_col' is parsed, add a thrid element with by age estimation 'age' .
-If 'trajectories' = TRUE, add a forth element with the returned trajectories from 'inla'.</p>
+If 'age_col' is parsed, add a third element with by age estimation 'age' .
+If 'trajectories' = TRUE, add a forth element with the returned trajectories from 'INLA'.</p>
     </div>
 
     <div class="section level2">
@@ -147,24 +150,24 @@ If 'trajectories' = TRUE, add a forth element with the returned trajectories fro
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = "date_onset"</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("date_onset", "delay", "Time")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $total</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 15 × 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 15 x 7</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Time dt_event   Median    LI    LS   LIb   LSb</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>    17 2021-12-13   625   621   632   623   627 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>    18 2021-12-20   695   688   707   692   698 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>    19 2021-12-27   812   800   828   807   817 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>    20 2022-01-03   886   871   907.  880   892 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>    21 2022-01-10   818   799   844.  811   826 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>    22 2022-01-17   631   610   661   623.  640 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>    23 2022-01-24   541   516   574   532   551 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>    24 2022-01-31   433   407   470.  423   446 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>    25 2022-02-07   421   392   465   410   435 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>    26 2022-02-14   356   322   403.  343   371 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span>    27 2022-02-21   333   292   388   317   350.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span>    28 2022-02-28   342   285   414.  322   364 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span>    29 2022-03-07   312.  242.  417   286   343 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span>    30 2022-03-14   284   193.  432   250.  326 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span>    31 2022-03-21   232   117   442.  181   290.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>    17 2021-12-13    625  621   632    623  627 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>    18 2021-12-20    695  687   707    692  699 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>    19 2021-12-27    812  801   831    807  817.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>    20 2022-01-03    886  872   908    880  894 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>    21 2022-01-10    818  799   846    811  826 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>    22 2022-01-17    631  609   662.   623  640 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>    23 2022-01-24    540  516   575    531  551 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>    24 2022-01-31    434  407   472    424  446 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>    25 2022-02-07    421  390   465.   410  433 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>    26 2022-02-14    358  322   409.   344  374 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span>    27 2022-02-21    333  291.  394.   317  350 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span>    28 2022-02-28    341  289   420.   322  364 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span>    29 2022-03-07    308  245   404    287  337 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span>    30 2022-03-14    287  194.  429.   249  327 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span>    31 2022-03-21    234  117.  451.   186  297 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>

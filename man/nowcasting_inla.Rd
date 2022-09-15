@@ -21,7 +21,9 @@ nowcasting_inla(
 )
 }
 \arguments{
-\item{dataset}{Dataset with at least 3 columns, date of onset, date of report and stratum.}
+\item{dataset}{Dataset with at least 2 columns, date of onset, date of report.
+It can be a dataset with 3 columns, two dates columns as before said and a another one being an stratum column,
+in which data will stratified, usually being age.}
 
 \item{bins_age}{Age bins to do the nowcasting, it receive a vector of age bins,
 or options between, "SI-PNI", "10 years", "5 years".
@@ -30,28 +32,29 @@ or options between, "SI-PNI", "10 years", "5 years".
 \item{trim.data}{(in weeks) Date to be trimmed out from the data base, in days.
 \link{Default} 0 days.}
 
-\item{Dmax}{(in weeks) Until which maximum amount of weeks the Nowcasting will use for the estimation.
+\item{Dmax}{(in weeks) Window of dates the estimation will act, i.e., till how many past weeks the nowcasting will estimate.
 \link{Default} 15 weeks.}
 
-\item{wdw}{(in weeks) Window of dates the estimation will act, i.e., how many past weeks the nowcasting will estimates.
+\item{wdw}{(in weeks) Until which maximum amount of weeks the Nowcasting will use to the estimation.
 \link{Default} 30 weeks.}
 
-\item{age_col}{Column for ages on individual level data, in numeric values}
+\item{age_col}{Column for ages on individual level data, in numeric values.}
 
-\item{date_onset}{Column of dates of onset of the events, normally date of onset of first symptoms of cases}
+\item{date_onset}{Column of dates of onset of the events, normally date of onset of first symptoms of cases.}
 
-\item{date_report}{Column of dates of report of the event, normally date of digitation of the notification of cases}
+\item{date_report}{Column of dates of report of the event, normally date of digitation of the notification of cases.}
 
 \item{data.by.week}{If it has to be returned the whole time-series data.
 \link{Default} FALSE.}
 
 \item{silent}{Should be the warnings turned off?
-\link{Default} is TRUE.}
+\link{Default} FALSE.}
 
 \item{K}{(in weeks) How much weeks to forecast ahead?
-\link{Default} K is 0, no forecasting ahead}
+\link{Default} 0, no forecasting ahead.}
 
-\item{trajectories}{Returns the trajectories estimated on the inner 'INLA' model}
+\item{trajectories}{Returns the posterior trajectories estimated on the inner 'INLA' model.
+\link{Default} FALSE}
 
 \item{...}{}
 
@@ -61,8 +64,8 @@ or options between, "SI-PNI", "10 years", "5 years".
 \value{
 a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total',
 and 'data' with the time-series out of wdw .
-If 'age_col' is parsed, add a thrid element with by age estimation 'age' .
-If 'trajectories' = TRUE, add a forth element with the returned trajectories from 'inla'.
+If 'age_col' is parsed, add a third element with by age estimation 'age' .
+If 'trajectories' = TRUE, add a forth element with the returned trajectories from 'INLA'.
 }
 \description{
 function to estimate amount of events already started by not yet notified.

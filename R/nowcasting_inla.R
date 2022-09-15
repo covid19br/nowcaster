@@ -6,12 +6,14 @@
 #' nowcasting_inla, fits a statistical distribution to the empirical distribution of time of delay between
 #' onset date and report date.
 #'
-#' @param dataset Dataset with at least 3 columns, date of onset, date of report and stratum.
+#' @param dataset Dataset with at least 2 columns, date of onset, date of report.
+#' It can be a dataset with 3 columns, two dates columns as before said and a another one being an stratum column,
+#' in which data will stratified, usually being age.
 #' @param trim.data (in weeks) Date to be trimmed out from the data base, in days.
 #' [Default] 0 days.
-#' @param Dmax (in weeks) Until which maximum amount of weeks the Nowcasting will use for the estimation.
+#' @param Dmax (in weeks) Window of dates the estimation will act, i.e., till how many past weeks the nowcasting will estimate.
 #' [Default] 15 weeks.
-#' @param wdw (in weeks) Window of dates the estimation will act, i.e., how many past weeks the nowcasting will estimates.
+#' @param wdw (in weeks) Until which maximum amount of weeks the Nowcasting will use to the estimation.
 #' [Default] 30 weeks.
 #' @param data.by.week If it has to be returned the whole time-series data.
 #' [Default] FALSE.
@@ -21,19 +23,20 @@
 #' or options between, "SI-PNI", "10 years", "5 years".
 #' [Default] "SI-PNI".
 #' @param silent Should be the warnings turned off?
-#' [Default] is TRUE.
+#' [Default] FALSE.
 #' @param K (in weeks) How much weeks to forecast ahead?
-#' [Default] K is 0, no forecasting ahead
-#' @param age_col Column for ages on individual level data, in numeric values
-#' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases
-#' @param date_report Column of dates of report of the event, normally date of digitation of the notification of cases
-#' @param trajectories Returns the trajectories estimated on the inner 'INLA' model
+#' [Default] 0, no forecasting ahead.
+#' @param age_col Column for ages on individual level data, in numeric values.
+#' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases.
+#' @param date_report Column of dates of report of the event, normally date of digitation of the notification of cases.
+#' @param trajectories Returns the posterior trajectories estimated on the inner 'INLA' model.
+#' [Default] FALSE
 #' @param ...
 #'
 #' @return a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total',
 #' and 'data' with the time-series out of wdw .
-#' If 'age_col' is parsed, add a thrid element with by age estimation 'age' .
-#' If 'trajectories' = TRUE, add a forth element with the returned trajectories from 'inla'.
+#' If 'age_col' is parsed, add a third element with by age estimation 'age' .
+#' If 'trajectories' = TRUE, add a forth element with the returned trajectories from 'INLA'.
 #' @export
 #'
 #' @examples
