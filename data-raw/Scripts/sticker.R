@@ -10,8 +10,8 @@ library("vroom")
 library(colorRamps)
 library(colorspace)
 
-casos <- vroom("../central_covid/dados_processados/integridade_SIVEP/dados_srag_br.csv")
-obs <- read_csv("../central_covid//dados_processados/integridade_SIVEP/dados_obsrag_br.csv")
+casos <- vroom("https://raw.githubusercontent.com/covid19br/central_covid/master/dados_processados/integridade_SIVEP/dados_srag_br.csv")
+obs <- read_csv("https://raw.githubusercontent.com/covid19br/central_covid/master/dados_processados/integridade_SIVEP/dados_obsrag_br.csv")
 
 casos<-casos %>%
   filter(dt_sin_pri >=  "2020-01-01")
@@ -52,7 +52,7 @@ s<-sticker(nowc, package="Nowcaster",
         s_x=1.0, s_y=1.2, s_width=1.5, s_height=1.5, dpi = 300,
         p_x = .65, p_size=15,
         url = "covid19br.github.io/nowcaster",
-        u_size = 5.5, u_color = "#004F9F",
+        u_size = 4.5, u_color = "#004F9F",
         filename="man/figures/nowcaster.png")
 s
 ## Reverse colors logo
@@ -83,6 +83,6 @@ s_rev<-sticker(nowc_rev, package="Nowcaster",
         s_x=1.0, s_y=1.2, s_width=1.5, s_height=1.5, dpi = 300,
         p_x = .65, p_size=15,
         url = "covid19br.github.io/nowcaster",
-        u_size = 5.5, u_color = "white",
+        u_size = 4.5, u_color = "white",
         filename="man/figures/nowcaster_rev.png")
 s_rev
