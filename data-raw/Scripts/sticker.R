@@ -9,9 +9,10 @@ library("transformr")
 library("vroom")
 library(colorRamps)
 library(colorspace)
+library(scico)
 
 casos <- vroom("https://raw.githubusercontent.com/covid19br/central_covid/master/dados_processados/integridade_SIVEP/dados_srag_br.csv")
-obs <- read_csv("https://raw.githubusercontent.com/covid19br/central_covid/master/dados_processados/integridade_SIVEP/dados_obsrag_br.csv")
+obs <- vroom("https://raw.githubusercontent.com/covid19br/central_covid/master/dados_processados/integridade_SIVEP/dados_obsrag_br.csv")
 
 casos<-casos %>%
   filter(dt_sin_pri >=  "2020-01-01")
@@ -35,7 +36,8 @@ nowc <-casos |>
   theme(legend.position = "none")+
   theme_transparent()+
   # scale_color_gradientn(colors = colorRampPalette(c("#f4f7fb","#004f9f")))
-  scale_colour_discrete_sequential(palette = "Blues 3", rev = T)
+  # scale_colour_discrete_sequential(palette = "Blues 3", rev = T)+
+  scale_color_scico_d(palette = "devon", direction = -1)
   # geom_hexagon()+
   # geom_url(url = 'covid19br.github.io/nowcaster',
   #          size = 4.5, color = 'navyblue')
@@ -69,7 +71,8 @@ nowc_rev <-casos |>
   theme(legend.position = "none")+
   theme_transparent()+
   # scale_color_gradientn(colors = colorRampPalette(c("#f4f7fb","#004f9f")))
-  scale_colour_discrete_sequential(palette = "Blues 3", rev = F)
+  # scale_colour_discrete_sequential(palette = "Blues 3", rev = F)
+  scale_color_scico_d(palette = "devon")
 nowc_rev
 
 ggsave(filename = 'man/figures/srag_curve_rev.png',

@@ -61,6 +61,8 @@ nowcasting_inla <- function(dataset,
                             trajectories = F,
                             ...){
 
+  dots<-list(...)
+
   ## Safe tests
   if(missing(dataset)){
     stop("Dataset is missing!")
