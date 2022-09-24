@@ -6,6 +6,8 @@
 #'
 #' @param dataset dataset to be formatted as data by week
 #' @param trim.data How much to trim of the data?
+#' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases
+#' @param date_report Column of dates of report of the event, normally date of digitation of the notification of cases
 #' @param K How much weeks to forecast ahead?
 #' [Default] K is 0, no forecasting ahead
 #'

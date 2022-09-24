@@ -1,6 +1,7 @@
 #' @title nowcasting_age
 #'
-#' @description Nowcasting estimation by age strcuture data, wrraper to a 'INLA' model
+#' @description Run INLA model on structured data by age-class
+#' data has to be in the format of delay-triangle
 #'
 #' @param dataset data pre formatted in to age classes and delays by week for each cases, delay triangle format
 #'

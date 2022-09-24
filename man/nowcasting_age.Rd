@@ -13,5 +13,6 @@ nowcasting_age(dataset)
 Trajectories from the inner 'INLA' model
 }
 \description{
-Nowcasting estimation by age strcuture data, wrraper to a 'INLA' model
+Run INLA model on structured data by age-class
+data has to be in the format of delay-triangle
 }

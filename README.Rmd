@@ -12,12 +12,21 @@ library(badger)
 # nowcaster <a href='https://github.com/covid19br/nowcaster'><img src='man/figures/nowcaster.png' align="right" width="140" /></a> <a href='https://github.com/covid19br/nowcaster'><img src='man/figures/nowcaster_rev.png' align="right" width="140" /></a>
 
 <!-- badges: start -->
+<<<<<<< HEAD
 <!-- `r badger::badge_cran_checks(pkg = NULL)` -->
 <!-- `r badger::badge_dependencies(pkg = NULL)` -->
+=======
+`r badger::badge_cran_checks(pkg = NULL)`
+`r badger::badge_dependencies(pkg = NULL)`
+>>>>>>> dev
 `r badger::badge_devel(pkg = "nowcaster", color = "blue")`
 `r badger::badge_license(url = "https://github.com/covid19br/nowcaster/blob/main/LICENSE.md")`
 `r badger::badge_lifecycle(stage = "experimental")`
 <!-- badges: end -->
+<<<<<<< HEAD
+=======
+
+>>>>>>> dev
 
 `nowcaster` is a R package for "nowcasting" epidemiological time-series. Every single system of notification has an intrinsic delay, `nowcaster` can estimate how many counts of any epidemiological data of interest (*i.e.*, daily cases and deaths counts) by fitting a negative binomial model to the time steps of delay between onset date of the event, (*i.e.*, date of first symptoms for cases or date of occurrence of death) and the date of report (*i.e.*, date of notification of the case or death).
 
@@ -184,8 +193,13 @@ If this element is grouped by and summarized by the onset of symptoms date, here
 ```{r no_age_plot}
 library(ggplot2)
 
+<<<<<<< HEAD
 dados_by_week <- nowcasting_bh_no_age$data |> 
   group_by(date_onset) |> 
+=======
+dados_by_week <- nowcasting_bh_no_age$da %>% 
+  group_by(date_onset) %>% 
+>>>>>>> dev
   summarise(n = n())
 
 nowcasting_bh_no_age$total |> 
@@ -253,7 +267,11 @@ Each of the estimates returned by `nowcasting_inla` has the same form as in the 
 library(ggplot2)
 
 dados_by_week <- nowcasting_bh_age$data |>  
+<<<<<<< HEAD
   filter(date_onset >= (Sys.Date()-270)) |>
+=======
+  filter(date_onset >= (Sys.Date()-270)) |>  
+>>>>>>> dev
   group_by(date_onset) |> 
   summarise(n = n())
 

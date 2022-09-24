@@ -22,21 +22,22 @@
 #' @param bins_age Age bins to do the nowcasting, it receive a vector of age bins,
 #' or options between, "SI-PNI", "10 years", "5 years".
 #' [Default] "SI-PNI".
-#' @param silent Should be the warnings turned off?
-#' [Default] FALSE.
+#' @param silent [Deprecated] Should be the warnings turned off?
+#' [Default] is TRUE.
 #' @param K (in weeks) How much weeks to forecast ahead?
-#' [Default] 0, no forecasting ahead.
-#' @param age_col Column for ages on individual level data, in numeric values.
-#' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases.
-#' @param date_report Column of dates of report of the event, normally date of digitation of the notification of cases.
-#' @param trajectories Returns the posterior trajectories estimated on the inner 'INLA' model.
-#' [Default] FALSE
-#' @param ...
+#' [Default] K is 0, no forecasting ahead
+#' @param age_col Column for ages
+#' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases
+#' @param date_report Column of dates of report of the event, normally date of digitation of the notification of cases
+#' @param trajectories Returns the trajectories estimated on the inner 'INLA' model
+#' @param zero_inflated [Experimental] In non-structured models, fit a model that deals with zero-inflated data.
+#' [Default] FALSE. If the [age_col] is not missing this flag is ignored.
+#' @param ... list parameters to other functions
 #'
 #' @return a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total',
-#' and 'data' with the time-series out of wdw .
-#' If 'age_col' is parsed, add a third element with by age estimation 'age' .
-#' If 'trajectories' = TRUE, add a forth element with the returned trajectories from 'INLA'.
+#' 'data' with the time-series out of wdw .
+#' If 'age_col' is parsed, add a thrid element with by age estimation 'age' .
+#' If 'trajectories' = TRUE, add a forth element with the returned trajectories from 'inla'.
 #' @export
 #'
 #' @examples
@@ -59,6 +60,7 @@ nowcasting_inla <- function(dataset,
                             silent = F,
                             K = 0,
                             trajectories = F,
+                            zero_inflated = F,
                             ...){
 
   dots<-list(...)
@@ -154,183 +156,202 @@ nowcasting_inla <- function(dataset,
     }else{
       trajectories = TRUE
       message("Trajectories returned")
+
+      if(!missing(age_col) & !missing(zero_inflated)){
+        zero_inflated<-FALSE
+        warning("age_col parsed, zero_inflated ignored!")
+      }
     }
-  }else{
-    bins_age<-bins_age;
-    trim.data<-trim.data;
-    Dmax<-Dmax;
-    wdw<-wdw;
-    data.by.week<-data.by.week
-  }
+    }
+  # else{
+  #     bins_age<-bins_age;
+  #     trim.data<-trim.data;
+  #     Dmax<-Dmax;
+  #     wdw<-wdw;
+  #     data.by.week<-data.by.week;
+  #     zero_inflated<-zero_inflated
+  #   }
 
 
 
-  ## Objects for keep the nowcasting
-  ## Filtering out cases without report date
-  if(missing(age_col)){
-    data<-dataset |>
-      dplyr::select({{date_report}}, {{date_onset}})  |>
-      tidyr::drop_na({{date_report}})
-  } else {
-    data <- dataset  |>
-      dplyr::select({{date_report}}, {{date_onset}}, {{age_col}})  |>
-      tidyr::drop_na({{date_report}})
-  }
+    ## Objects for keep the nowcasting
+    ## Filtering out cases without report date
+    if(missing(age_col)){
+      data<-dataset |>
+        dplyr::select({{date_report}}, {{date_onset}})  |>
+        tidyr::drop_na({{date_report}})
+    } else {
+      data <- dataset  |>
+        dplyr::select({{date_report}}, {{date_onset}}, {{age_col}})  |>
+        tidyr::drop_na({{date_report}})
+    }
 
-  ## Filtering data to the parameters setted above
-  if(missing(age_col)){
-    data_w<-data.w_no_age(dataset = data,
-                          trim.data = trim.data,
-                          date_onset = {{date_onset}},
-                          date_report = {{date_report}},
-                          K = K,
-                          silent = silent)
-  }else {
-    data_w <- data.w(dataset = data,
-                     bins_age = bins_age,
-                     trim.data = trim.data,
-                     age_col = {{age_col}},
-                     date_onset = {{date_onset}},
-                     date_report = {{date_report}},
-                     K = K,
-                     silent = silent)
-  }
+    ## Filtering data to the parameters setted above
+    if(missing(age_col)){
+      data_w<-data.w_no_age(dataset = data,
+                            trim.data = trim.data,
+                            date_onset = {{date_onset}},
+                            date_report = {{date_report}},
+                            K = K,
+                            silent = silent)
+    }else {
+      data_w <- data.w(dataset = data,
+                       bins_age = bins_age,
+                       trim.data = trim.data,
+                       age_col = {{age_col}},
+                       date_onset = {{date_onset}},
+                       date_report = {{date_report}},
+                       K = K,
+                       silent = silent)
+    }
 
-  ## Parameters of Nowcasting estimate
-  Tmax <- max(data_w |>
-                dplyr::pull(var = date_onset))
+    ## Parameters of Nowcasting estimate
+    Tmax <- max(data_w |>
+                  dplyr::pull(var = date_onset))
 
-  ## Data to be entered in Nowcasting function
-  ##
-  if(missing(age_col)){
-    data.inla <- data_w  |>
-      ## Filter for dates
-      dplyr::filter(date_onset >= Tmax - 7 * wdw,
-                    Delay <= Dmax)  |>
-      ## Group by on Onset dates, Amounts of delays and Stratum
-      dplyr::group_by(date_onset, delay = Delay)  |>
-      ## Counting
-      dplyr::tally(name = "Y")  |>
-      dplyr::ungroup()
-  } else {
-    data.inla <- data_w  |>
-      ## Filter for dates
-      dplyr::filter(date_onset >= Tmax - 7 * wdw,
-                    Delay <= Dmax)  |>
-      ## Group by on Onset dates, Amounts of delays and Stratum
-      dplyr::group_by(date_onset, delay = Delay, fx_etaria)  |>
-      ## Counting
-      dplyr::tally(name = "Y")  |>
-      dplyr::ungroup()
-  }
+    ## Data to be entered in Nowcasting function
+    ##
+    if(missing(age_col)){
+      data.inla <- data_w  |>
+        ## Filter for dates
+        dplyr::filter(date_onset >= Tmax - 7 * wdw,
+                      Delay <= Dmax)  |>
+        ## Group by on Onset dates, Amounts of delays and Stratum
+        dplyr::group_by(date_onset, delay = Delay)  |>
+        ## Counting
+        dplyr::tally(name = "Y")  |>
+        dplyr::ungroup()
+    } else {
+      data.inla <- data_w  |>
+        ## Filter for dates
+        dplyr::filter(date_onset >= Tmax - 7 * wdw,
+                      Delay <= Dmax)  |>
+        ## Group by on Onset dates, Amounts of delays and Stratum
+        dplyr::group_by(date_onset, delay = Delay, fx_etaria)  |>
+        ## Counting
+        dplyr::tally(name = "Y")  |>
+        dplyr::ungroup()
+    }
 
 
-  ## Auxiliary date table
-  if(K==0){
-    dates<-unique(data.inla |>
-                    dplyr::pull(var = date_onset - 7*trim.data))
-  } else {
-    ## This is done to explicitly say for the forecast part that its date of onset is the present date
-    date_k<-(max(data.inla$date_onset + 7*K - 7*trim.data))
-    dates<-c(unique(data.inla$date_onset), date_k)
-  }
+    ## Auxiliary date table
+    if(K==0){
+      dates<-unique(data.inla |>
+                      dplyr::pull(var = date_onset - 7*trim.data))
+    } else {
+      ## This is done to explicitly say for the forecast part that its date of onset is the present date
+      date_k<-(max(data.inla$date_onset + 7*K - 7*trim.data))
+      dates<-c(unique(data.inla$date_onset), date_k)
+    }
 
-  ## To make an auxiliary date table with each date plus an amount of dates  to forecast
-  tbl.date.aux <- tibble::tibble(
-    date_onset = dates
-  )  |>
-    tibble::rowid_to_column(var = "Time")
+    ## To make an auxiliary date table with each date plus an amount of dates  to forecast
+    tbl.date.aux <- tibble::tibble(
+      date_onset = dates
+    )  |>
+      tibble::rowid_to_column(var = "Time")
 
-  ## Joining auxiliary date tables
-  data.inla <- data.inla  |>
-    dplyr::left_join(tbl.date.aux)
-
-  ## Time maximum to be considered
-  Tmax.id <- max(data.inla$Time)
-
-  # Auxiliary date table on each stratum, By age
-  if(missing(age_col)){
-    tbl.NA <-
-      expand.grid(Time = 1:(Tmax.id+K),
-                  delay = 0:Dmax)  |>
-      dplyr::left_join(tbl.date.aux, by = "Time")
-  } else{
-    tbl.NA <-
-      expand.grid(Time = 1:(Tmax.id+K),
-                  delay = 0:Dmax,
-                  fx_etaria = unique(data.inla$fx_etaria)
-      ) |>
-      dplyr::left_join(tbl.date.aux, by = "Time")
-  }
-
-  ## Joining the auxiliary date table by Stratum
-  if(missing(age_col)){
+    ## Joining auxiliary date tables
     data.inla <- data.inla  |>
-      dplyr::full_join(tbl.NA) |>  #View()
-      dplyr::mutate(
-        Y = ifelse(Time + delay > Tmax.id, as.numeric(NA), Y),
-        ## If Time + Delay is greater than Tmax, fill with NA
-        Y = ifelse(is.na(Y) & Time + delay <= Tmax.id, 0, Y ),
-        ## If Time + Delay is smaller than Tmax AND Y is NA, fill 0
-      )  |>
-      dplyr::arrange(Time, delay) |>
-      dplyr::rename(dt_event = date_onset) |>
-      tidyr::drop_na(delay)
-  }else {
-    data.inla <- data.inla  |>
-      dplyr::full_join(tbl.NA)  |>   #View()
-      dplyr::mutate(
-        Y = ifelse(Time + delay > Tmax.id, as.numeric(NA), Y),
-        ## If Time + Delay is greater than Tmax, fill with NA
-        Y = ifelse(is.na(Y) & Time + delay <= Tmax.id, 0, Y ),
-        ## If Time + Delay is smaller than Tmax AND Y is NA, fill 0
-      )  |>
-      dplyr::arrange(Time, delay, fx_etaria) |>
-      dplyr::rename(dt_event = date_onset) |>
-      tidyr::drop_na(delay)
-  }
-  ## Precisamos transformar essa datas de volta no valor que é correspondente delas,
-  ## a ultima data de primeiro sintomas foi jogada pra até uma semana atrás
+      dplyr::left_join(tbl.date.aux)
 
+    ## Time maximum to be considered
+    Tmax.id <- max(data.inla$Time)
 
-  if(missing(age_col)){
-    ## Nowcasting estimate
-    sample.now <- nowcasting_no_age(dataset = data.inla)
-
-    ## Summary on the posteriors of nowcasting
-    now_summary<-nowcasting.summary(trajetory = sample.now,
-                                    age = F)
-    l<-1
-  } else {
-    ## Nowcasting estimate
-    sample.now <- nowcasting_age(dataset = data.inla)
-
-    ## Summary on the posteriors of nowcasting
-    now_summary<-nowcasting.summary(trajetory = sample.now,
-                                    age = T)
-    l<-0
-  }
-
-  ## Objects to be returned
-
-  if(data.by.week){
-
-    now_summary[[3-l]]<-data_w
-    names(now_summary)[3-l]<-"data"
-
-    if(trajectories){
-      now_summary[[4-l]]<-sample.now
-      names(now_summary)[4-l]<-"trajectories"
+    # Auxiliary date table on each stratum, By age
+    if(missing(age_col)){
+      tbl.NA <-
+        expand.grid(Time = 1:(Tmax.id+K),
+                    delay = 0:Dmax)  |>
+        dplyr::left_join(tbl.date.aux, by = "Time")
+    } else{
+      tbl.NA <-
+        expand.grid(Time = 1:(Tmax.id+K),
+                    delay = 0:Dmax,
+                    fx_etaria = unique(data.inla$fx_etaria)
+        ) |>
+        dplyr::left_join(tbl.date.aux, by = "Time")
     }
-  } else {
-    if(trajectories){
-      now_summary[[3-l]]<-sample.now
-      names(now_summary)[3-l]<-"trajectories"
+
+    ## Joining the auxiliary date table by Stratum
+    if(missing(age_col)){
+      data.inla <- data.inla  |>
+        dplyr::full_join(tbl.NA) |>  #View()
+        dplyr::mutate(
+          Y = ifelse(Time + delay > Tmax.id, as.numeric(NA), Y),
+          ## If Time + Delay is greater than Tmax, fill with NA
+          Y = ifelse(is.na(Y) & Time + delay <= Tmax.id, 0, Y ),
+          ## If Time + Delay is smaller than Tmax AND Y is NA, fill 0
+        )  |>
+        dplyr::arrange(Time, delay) |>
+        dplyr::rename(dt_event = date_onset) |>
+        tidyr::drop_na(delay)
+    }else {
+      data.inla <- data.inla  |>
+        dplyr::full_join(tbl.NA)  |>   #View()
+        dplyr::mutate(
+          Y = ifelse(Time + delay > Tmax.id, as.numeric(NA), Y),
+          ## If Time + Delay is greater than Tmax, fill with NA
+          Y = ifelse(is.na(Y) & Time + delay <= Tmax.id, 0, Y ),
+          ## If Time + Delay is smaller than Tmax AND Y is NA, fill 0
+        )  |>
+        dplyr::arrange(Time, delay, fx_etaria) |>
+        dplyr::rename(dt_event = date_onset) |>
+        tidyr::drop_na(delay)
     }
+    ## Precisamos transformar essa datas de volta no valor que é correspondente delas,
+    ## a ultima data de primeiro sintomas foi jogada pra até uma semana atrás
+
+
+    if(missing(age_col)){
+
+      if(zero_inflated){
+        ## Nowcasting estimate
+        sample.now <- nowcasting_no_age(dataset = data.inla,
+                                        zero_inflated = T)
+      }else{
+        ## Nowcasting estimate
+        sample.now <- nowcasting_no_age(dataset = data.inla,
+                                        zero_inflated = F)
+      }
+
+      ## Summary on the posteriors of nowcasting
+      now_summary<-nowcasting.summary(trajetory = sample.now,
+                                      age = F)
+      l<-1
+    } else {
+      ## Nowcasting estimate
+      sample.now <- nowcasting_age(dataset = data.inla)
+
+      ## Summary on the posteriors of nowcasting
+      now_summary<-nowcasting.summary(trajetory = sample.now,
+                                      age = T)
+      l<-0
+    }
+
+    ## Objects to be returned
+
+    if(data.by.week){
+
+      now_summary[[3-l]]<-data_w |>
+        dplyr::group_by(date_onset) |>
+        dplyr::summarise(observed = dplyr::n(),
+                         Delay = Delay)
+
+      names(now_summary)[3-l]<-"data"
+
+      if(trajectories){
+        now_summary[[4-l]]<-sample.now
+        names(now_summary)[4-l]<-"trajectories"
+      }
+    } else {
+      if(trajectories){
+        now_summary[[3-l]]<-sample.now
+        names(now_summary)[3-l]<-"trajectories"
+      }
+    }
+
+    ## Final object returned
+    return(now_summary)
+
   }
-
-  ## Final object returned
-  return(now_summary)
-
-}
 

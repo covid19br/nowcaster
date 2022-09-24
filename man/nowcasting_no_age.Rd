@@ -4,14 +4,18 @@
 \alias{nowcasting_no_age}
 \title{nowcasting_no_age}
 \usage{
-nowcasting_no_age(dataset)
+nowcasting_no_age(dataset, zero_inflated)
 }
 \arguments{
-\item{dataset}{data pre formatted in to age classes and delays by week for each cases, delay triangle format}
+\item{dataset}{data pre formatted in to age classes and delays by week for each cases,
+delay triangle format}
+
+\item{zero_inflated}{zero-inflated model}
 }
 \value{
 Trajectories from the inner 'INLA' model
 }
 \description{
-Nowcasting estimation with no age strcuture data, wrapper to a 'INLA' model
+Run INLA model on non-structured data,
+data has to be in the format of delay-triangle
 }

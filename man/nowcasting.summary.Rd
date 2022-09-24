@@ -20,5 +20,6 @@ with the 'Median',
 'LIb' lower limit, 50\% CI
 }
 \description{
-Summarizing into a easy managable 'list' object, wrapper function
+Function to summarize the output from the posteriors generated from any of the
+of the workhorse functions, \link{nowcasting_no_age} and \link{nowcasting_age}
 }

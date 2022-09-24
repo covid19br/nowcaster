@@ -22,6 +22,10 @@ data.w(
 
 \item{bins_age}{Bins of age to cu the data, parsing from nowcasting_inla}
 
+\item{date_onset}{Column of dates of onset of the events, normally date of onset of first symptoms of cases}
+
+\item{date_report}{Column of dates of report of the event, normally date of digitation of the notification of cases}
+
 \item{age_col}{Age column to be where to  cut the data into age classes}
 
 \item{K}{How much weeks to forecast ahead?

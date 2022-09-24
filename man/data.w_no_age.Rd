@@ -11,6 +11,10 @@ data.w_no_age(dataset, trim.data, date_onset, date_report, K = 0, silent = F)
 
 \item{trim.data}{How much to trim of the data?}
 
+\item{date_onset}{Column of dates of onset of the events, normally date of onset of first symptoms of cases}
+
+\item{date_report}{Column of dates of report of the event, normally date of digitation of the notification of cases}
+
 \item{K}{How much weeks to forecast ahead?
 \link{Default} K is 0, no forecasting ahead}
 }

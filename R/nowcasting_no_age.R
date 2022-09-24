@@ -1,12 +1,32 @@
 #' @title nowcasting_no_age
 #'
-#' @description Nowcasting estimation with no age strcuture data, wrapper to a 'INLA' model
+#' @description Run INLA model on non-structured data,
+#' data has to be in the format of delay-triangle
 #'
-#' @param dataset data pre formatted in to age classes and delays by week for each cases, delay triangle format
+#' @param dataset data pre formatted in to age classes and delays by week for each cases,
+#' delay triangle format
+#' @param zero_inflated zero-inflated model
 #'
 #' @return Trajectories from the inner 'INLA' model
 #' @export
-nowcasting_no_age <- function(dataset){
+nowcasting_no_age <- function(dataset,
+                              zero_inflated){
+
+  if (zero_inflated){
+    family <- "zeroinflatednbinomial1"
+    control.family <- list(
+      hyper = list("theta1" = list(prior = "loggamma",
+                                   param = c(0.01, 0.01)),
+                   "theta2" = list(prior = "gaussian",
+                                   param = c(0, 0.4)))
+    )
+  } else {
+    family <- 'nbinomial'
+    control.family <- list(
+      hyper = list("theta" = list(prior = "loggamma",
+                                  param = c(0.001, 0.001)))
+    )
+  }
 
   index.missing <- which(is.na(dataset$Y))
 
@@ -25,15 +45,12 @@ nowcasting_no_age <- function(dataset){
     )
 
   ## Running the Negative Binomial model in INLA
-  output0 <- INLA::inla(model, family = "nbinomial",
+  output0 <- INLA::inla(model,
+                        family = family,
                         data = dataset,
                         control.predictor = list(link = 1, compute = T),
                         control.compute = list( config = T, waic=F, dic=F),
-                        control.family = list(
-                          hyper = list("theta" = list(prior = "loggamma",
-                                                      param = c(0.001, 0.001))
-                          )
-                        )
+                        control.family = control.family
   )
 
   # }
@@ -48,7 +65,11 @@ nowcasting_no_age <- function(dataset){
   ## Step 2: Sampling the missing triangle from the likelihood using INLA estimates
   vector.samples0 <- lapply(X = srag.samples0.list,
                             FUN = function(x, idx = index.missing){
-                              unif.log = 1
+                              if(zero_inflated){
+                                unif.log <- as.numeric(runif(idx,0,1) < x$hyperpar[2])
+                              }else{
+                                unif.log = 1
+                              }
                               stats::rnbinom(n = idx,
                                              mu = exp(x$latent[idx]),
                                              size = x$hyperpar[1]
@@ -57,9 +78,9 @@ nowcasting_no_age <- function(dataset){
 
   ## Step 3: Calculate N_{a,t} for each triangle sample {N_{t,a} : t=Tactual-Dmax+1,...Tactual}
 
-  gg.age <- function(x, dados, idx){
-    data.aux <- dados
-    Tmin <- min(dados$Time[idx])
+  gg.age <- function(x, dados.gg, idx){
+    data.aux <- dados.gg
+    Tmin <- min(dados.gg$Time[idx])
     data.aux$Y[idx] <- x
     data.aggregated <- data.aux |>
       ## Selecionando apenas os dias faltantes a partir
@@ -81,7 +102,6 @@ nowcasting_no_age <- function(dataset){
 
   srag.pred.0 <- dplyr::bind_rows(tibble.samples.0, .id = "sample")
 
-  ## Returning nowcasting estimation
   return(srag.pred.0)
 
 }

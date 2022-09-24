@@ -17,6 +17,7 @@ nowcasting_inla(
   silent = F,
   K = 0,
   trajectories = F,
+  zero_inflated = F,
   ...
 )
 }
@@ -38,34 +39,36 @@ or options between, "SI-PNI", "10 years", "5 years".
 \item{wdw}{(in weeks) Until which maximum amount of weeks the Nowcasting will use to the estimation.
 \link{Default} 30 weeks.}
 
-\item{age_col}{Column for ages on individual level data, in numeric values.}
+\item{age_col}{Column for ages}
 
-\item{date_onset}{Column of dates of onset of the events, normally date of onset of first symptoms of cases.}
+\item{date_onset}{Column of dates of onset of the events, normally date of onset of first symptoms of cases}
 
-\item{date_report}{Column of dates of report of the event, normally date of digitation of the notification of cases.}
+\item{date_report}{Column of dates of report of the event, normally date of digitation of the notification of cases}
 
 \item{data.by.week}{If it has to be returned the whole time-series data.
 \link{Default} FALSE.}
 
-\item{silent}{Should be the warnings turned off?
-\link{Default} FALSE.}
+\item{silent}{\link{Deprecated} Should be the warnings turned off?
+\link{Default} is TRUE.}
 
 \item{K}{(in weeks) How much weeks to forecast ahead?
-\link{Default} 0, no forecasting ahead.}
+\link{Default} K is 0, no forecasting ahead}
 
-\item{trajectories}{Returns the posterior trajectories estimated on the inner 'INLA' model.
-\link{Default} FALSE}
+\item{trajectories}{Returns the trajectories estimated on the inner 'INLA' model}
 
-\item{...}{}
+\item{zero_inflated}{\link{Experimental} In non-structured models, fit a model that deals with zero-inflated data.
+\link{Default} FALSE. If the \link{age_col} is not missing this flag is ignored.}
+
+\item{...}{list parameters to other functions}
 
 \item{return.age}{\link{Deprecated} If the estimate by Age should be returned.
 \link{Default} TRUE.}
 }
 \value{
 a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total',
-and 'data' with the time-series out of wdw .
-If 'age_col' is parsed, add a third element with by age estimation 'age' .
-If 'trajectories' = TRUE, add a forth element with the returned trajectories from 'INLA'.
+'data' with the time-series out of wdw .
+If 'age_col' is parsed, add a thrid element with by age estimation 'age' .
+If 'trajectories' = TRUE, add a forth element with the returned trajectories from 'inla'.
 }
 \description{
 function to estimate amount of events already started by not yet notified.
