@@ -11,9 +11,6 @@ nowcasting.summary(trajetory, age = F)
 
 \item{trajectory}{Trajectories to be summarized, trajectory should have sample, Time, dt_event and Y columns.}
 }
-\value{
-
-}
 \description{
 Function to summarize the output from the posteriors generated from any of the
 of the workhorse functions, \link{nowcasting_no_age} and \link{nowcasting_age}

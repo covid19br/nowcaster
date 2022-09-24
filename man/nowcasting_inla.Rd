@@ -55,7 +55,7 @@ or options between, "SI-PNI", "10 years", "5 years".
 
 \item{trajectories}{Returns the trajectories estimated on the inner 'INLA' model}
 
-\item{zero_inflated}{In non-structured models, fit a model that deals with zero-inflated data.
+\item{zero_inflated}{\link{Experimental} In non-structured models, fit a model that deals with zero-inflated data.
 \link{Default} FALSE. If the \link{age_col} is not missing this flag is ignored.}
 
 \item{...}{}

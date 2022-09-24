@@ -28,7 +28,7 @@
 #' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases
 #' @param date_report Column of dates of report of the event, normally date of digitation of the notification of cases
 #' @param trajectories Returns the trajectories estimated on the inner 'INLA' model
-#' @param zero_inflated In non-structured models, fit a model that deals with zero-inflated data.
+#' @param zero_inflated [Experimental] In non-structured models, fit a model that deals with zero-inflated data.
 #' [Default] FALSE. If the [age_col] is not missing this flag is ignored.
 #' @param ...
 #'
@@ -300,7 +300,11 @@ nowcasting_inla <- function(dataset,
 
   if(data.by.week){
 
-    now_summary[[3-l]]<-data_w
+    now_summary[[3-l]]<-data_w |>
+      dplyr::group_by(date_onset) |>
+      dplyr::summarise(observed = dplyr::n(),
+                       Delay = Delay)
+
     names(now_summary)[3-l]<-"data"
 
     if(trajectories){

@@ -9,9 +9,6 @@ nowcasting_age(dados.age)
 \arguments{
 \item{dataset}{data pre formatted in to age classes and delays by week for each cases, delay triangle format}
 }
-\value{
-
-}
 \description{
 Run INLA model on structured data by age-class
 data has to be in the format of delay-triangle

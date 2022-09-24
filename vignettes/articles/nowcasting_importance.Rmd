@@ -70,10 +70,11 @@ From the data in weekly format we mount the counts of cases by the amount of del
 
 ```{r delay-triangle}
 data_triangle <- nowcasting_bh_no_age$data |> 
-  filter(Delay < 30) |> 
-  arrange(desc(Delay))
+  filter(Delay < 30, date_onset > max(date_onset) - 105) |> 
+  arrange(Delay)
+
 delay_triangle<-table(data_triangle$date_onset, 
-                      rev(data_triangle$Delay),
+                      data_triangle$Delay,
                       dnn = list("Date of Onset", "Delay"))
 delay_triangle
 ```

@@ -12,9 +12,6 @@ nowcasting_no_age(dados.age, zero_inflated)
 \item{dataset}{data pre formatted in to age classes and delays by week for each cases,
 delay triangle format}
 }
-\value{
-
-}
 \description{
 Run INLA model on non-structured data,
 data has to be in the format of delay-triangle

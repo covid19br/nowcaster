@@ -130,7 +130,7 @@ of first symptoms present at the database.</p>
 <span class="va">srag_now</span><span class="op">&lt;-</span><span class="va">sragBH</span> |&gt; 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">DT_DIGITA</span> <span class="op">&lt;=</span> <span class="st">"2020-07-04"</span><span class="op">)</span>
 
-<span class="va">data_by_week</span><span class="op">&lt;-</span><span class="fu">data.w_no_age</span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">srag_now</span>, 
+<span class="va">data_by_week</span><span class="op">&lt;-</span><span class="fu"><a href="../reference/data.w_no_age.html">data.w_no_age</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">srag_now</span>, 
                              date_onset <span class="op">=</span> <span class="va">DT_SIN_PRI</span>, 
                              date_report <span class="op">=</span> <span class="va">DT_DIGITA</span>, 
                              K <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> |&gt; 
@@ -160,14 +160,15 @@ and proceed as in normal nowcasting calling, the code is:</p>
                                         K <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nowcasting_bh_no_age</span><span class="op">$</span><span class="va">data</span><span class="op">)</span>
 <span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span>
-<span class="co">#&gt;   date_report date_onset Delay</span>
-<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 2020-02-29  2020-02-08     3</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 2020-02-01  2020-01-18     2</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 2020-04-11  2020-03-28     2</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 2020-03-28  2020-03-21     1</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 2020-04-11  2020-03-14     4</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2020-04-18  2020-04-04     2</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #949494;"># Groups:   date_onset [1]</span></span>
+<span class="co">#&gt;   date_onset observed Delay</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 2019-12-28       21     6</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 2019-12-28       21     1</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 2019-12-28       21     2</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 2019-12-28       21     3</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 2019-12-28       21     3</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2019-12-28       21    18</span></code></pre></div>
 <p>To visualize the forecast we plot the observed curve and the
 nowcasting and forecasting estimate, change the colors for each part. We
 plot together the nowcasting and forecasting estimate, the curve
@@ -244,15 +245,16 @@ confidence interval.</p>
                                      K <span class="op">=</span> <span class="fl">1</span>,
                                      age_col <span class="op">=</span> <span class="va">Idade</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nowcasting_bh_age</span><span class="op">$</span><span class="va">data</span><span class="op">)</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span>
-<span class="co">#&gt;   date_report date_onset age_col Delay fx_etaria</span>
-<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 2020-02-29  2020-02-08      59     3 7        </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 2020-02-01  2020-01-18      79     2 9        </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 2020-04-11  2020-03-28      72     2 9        </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 2020-03-28  2020-03-21      82     1 10       </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 2020-04-11  2020-03-14      50     4 7        </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2020-04-18  2020-04-04      74     2 9</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># Groups:   date_onset [1]</span></span>
+<span class="co">#&gt;   date_onset observed Delay</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 2019-12-28       21     6</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 2019-12-28       21     1</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 2019-12-28       21     2</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 2019-12-28       21     3</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 2019-12-28       21     3</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2019-12-28       21    18</span></code></pre></div>
 <p>And we plot the nowcasting estimate and forecasting estimate
 again:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
