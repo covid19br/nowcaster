@@ -22,20 +22,21 @@ nowcasting_inla(
 )
 }
 \arguments{
-\item{dataset}{Dataset with at least 3 columns, date of onset, date of report and stratum.}
+\item{dataset}{Dataset with at least 2 columns, date of onset, date of report.
+It can be a dataset with 3 columns, two dates columns as before said and a another one being an stratum column,
+in which data will stratified, usually being age.}
 
 \item{bins_age}{Age bins to do the nowcasting, it receive a vector of age bins,
 or options between, "SI-PNI", "10 years", "5 years".
 \link{Default} "SI-PNI".}
 
 \item{trim.data}{(in weeks) Date to be trimmed out from the data base, in days.
-
 \link{Default} 0 days.}
 
-\item{Dmax}{(in weeks) Until which maximum amount of weeks the Nowcasting will use for the estimation.
+\item{Dmax}{(in weeks) Window of dates the estimation will act, i.e., till how many past weeks the nowcasting will estimate.
 \link{Default} 15 weeks.}
 
-\item{wdw}{(in weeks) Window of dates the estimation will act, i.e., how many past weeks the nowcasting will estimates.
+\item{wdw}{(in weeks) Until which maximum amount of weeks the Nowcasting will use to the estimation.
 \link{Default} 30 weeks.}
 
 \item{age_col}{Column for ages}
@@ -58,7 +59,7 @@ or options between, "SI-PNI", "10 years", "5 years".
 \item{zero_inflated}{\link{Experimental} In non-structured models, fit a model that deals with zero-inflated data.
 \link{Default} FALSE. If the \link{age_col} is not missing this flag is ignored.}
 
-\item{...}{}
+\item{...}{list parameters to other functions}
 
 \item{return.age}{\link{Deprecated} If the estimate by Age should be returned.
 \link{Default} TRUE.}

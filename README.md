@@ -5,7 +5,11 @@
 <!-- [![CRAN checks](https://cranchecks.info/badges/summary/nowcaster)](https://cran.r-project.org/web/checks/check_results_nowcaster.html) -->
 <!-- [![Dependencies](https://tinyverse.netlify.com/badge/nowcaster)](https://cran.r-project.org/package=nowcaster) -->
 
+<<<<<<< HEAD
+[![](https://img.shields.io/badge/devel%20version-0.2.2-blue.svg)](https://github.com/nowcaster)
+=======
 [![](https://img.shields.io/badge/devel%20version-0.2.1-blue.svg)](https://github.com/nowcaster)
+>>>>>>> dev
 [![License: GPL (\>=
 3)](https://img.shields.io/badge/license-GPL%20(%3E=%203)-blue.svg)](https://github.com/covid19br/nowcaster/blob/main/LICENSE.md)
 [![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
@@ -52,10 +56,10 @@ library(nowcaster)
 
 ## First example on LazyData
 
-When the package is loaded it disponibilize a LazyData file, `sariBH`,
-it is a annonymized records of Severe Acute Respiratory Illness notified
-in the city of Belo Horizonte, since March 2020 to April 2022. To load
-it basically write:
+When the package is loaded it provides a LazyData file, `sariBH`, it is
+a anonymized records of Severe Acute Respiratory Illness notified in the
+city of Belo Horizonte, since March 2020 to April 2022. To load it
+basically write:
 
 ``` r
 # Loading Belo Horizonte SARI dataset
@@ -145,12 +149,21 @@ head(nowcasting_bh_no_age$total)
     ## # A tibble: 6 x 7
     ##    Time dt_event   Median    LI    LS   LIb   LSb
     ##   <int> <date>      <dbl> <dbl> <dbl> <dbl> <dbl>
+<<<<<<< HEAD
+    ## 1    17 2021-12-13    625  621    632   623   627
+    ## 2    18 2021-12-20    695  687    709   692   699
+    ## 3    19 2021-12-27    812  801    829   808   817
+    ## 4    20 2022-01-03    886  871    906   880   893
+    ## 5    21 2022-01-10    819  799.   847   811   826
+    ## 6    22 2022-01-17    631  608    661   623   641
+=======
     ## 1    17 2021-12-13    625   621  632   623    627
     ## 2    18 2021-12-20    695   687  707.  692    699
     ## 3    19 2021-12-27    812   801  831   808    817
     ## 4    20 2022-01-03    887   871  907   881    893
     ## 5    21 2022-01-10    819   800  845.  812    826
     ## 6    22 2022-01-17    632   610  660   624.   641
+>>>>>>> dev
 
 This calling will return only the nowcasting estimate and its Confidence
 Interval (CI) for two different Credible interval, `LIb` and `LSb` are
@@ -204,7 +217,7 @@ nowcasting_bh_no_age$total |>
 ![](README_files/figure-gfm/first_plot-1.png)<!-- -->
 
 This is an example were the estimate was done without considering any
-type of strucuture in data, which is the first assumption for the
+type of structure in data, which is the first assumption for the
 nowcasting.
 
 ## Nowcasting as a tool to support decision making
@@ -251,7 +264,7 @@ data_by_week |>
 ![](README_files/figure-gfm/no_age_data-1.png)<!-- -->
 
 On this filtered data, we estimate the cases already that started its
-date of onset of symptons but were not yet reported, so there not in the
+date of onset of symptoms but were not yet reported, so there not in the
 database. We just pass to the `nowcasting_inla` function, the dataset
 filtered, flag for the columns where are the `date_onset` and
 `date_report`, we add the flag for the function return back the epidemic
@@ -320,8 +333,13 @@ together.
 ``` r
 library(ggplot2)
 
+<<<<<<< HEAD
+dados_by_week <- nowcasting_bh_no_age$data |> 
+  group_by(date_onset) |> 
+=======
 dados_by_week <- nowcasting_bh_no_age$da %>% 
   group_by(date_onset) %>% 
+>>>>>>> dev
   summarise(n = n())
 
 nowcasting_bh_no_age$total |> 
@@ -340,7 +358,7 @@ nowcasting_bh_no_age$total |>
 
 And as expected, the nowcasting estimated a rising on curve when it were
 observed a decaying. Adding to the plot what actually has happened in
-that period, with the data inserted posterioly the period for when the
+that period, with the data inserted posteriorly the period for when the
 nowcasting estimated the rising in the curve for SARI hospitalizations.
 
 ``` r
@@ -369,10 +387,10 @@ nowcasting_bh_no_age$total %>%
 ![](README_files/figure-gfm/unnamed-chunk-1-1.png)<!-- --> This end the
 first simple example when estimating the already started events but not
 yet reported (i.e. nowcasting). The relevance of nowcasting for public
-health decision is given by the understading that what is present on the
-databases are only a picture of the real time situation. The above graph
-can help policy makers on what decisions takes in the face of a rising
-curve of hospitalisations.
+health decision is given by the understanding that what is present on
+the databases are only a picture of the real time situation. The above
+graph can help policy makers on what decisions takes in the face of a
+rising curve of hospitalisations.
 
 ## Structured data, Age
 
@@ -442,19 +460,23 @@ nowcasting_bh_age <- nowcasting_inla(dataset = sragBH,
 
 Each of the estimates returned by `nowcasting_inla` has the same form as
 in the non-structured case. On the nowcasting estimates, it returns a
-data.frame with the posterior edian and 50% and 95% credible intervals,
+data.frame with the posterior median and 50% and 95% credible intervals,
 (LIb and LSb) and (LI and LS) respectively.
 
 ``` r
 library(ggplot2)
 
 dados_by_week <- nowcasting_bh_age$data |>  
+<<<<<<< HEAD
+  filter(date_onset >= (Sys.Date()-270)) |>
+=======
   filter(date_onset >= (Sys.Date()-270)) |>  
+>>>>>>> dev
   group_by(date_onset) |> 
   summarise(n = n())
 
 
-nowcasting_bh_age$total %>% 
+nowcasting_bh_age$total |>  
   ggplot(aes(x = dt_event, y = Median, col = 'Median'))+
   geom_line()+
   geom_line(data = dados_by_week, aes(date_onset, y = n))+
@@ -521,14 +543,23 @@ sessionInfo()
     ## 
     ## other attached packages:
     ##  [1] lubridate_1.8.0 forcats_0.5.1   stringr_1.4.0   purrr_0.3.4    
+<<<<<<< HEAD
+    ##  [5] readr_2.1.2     tidyr_1.2.1     tibble_3.1.8    tidyverse_1.3.2
+    ##  [9] dplyr_1.0.10    ggplot2_3.3.6   nowcaster_0.2.2 badger_0.2.1   
+=======
     ##  [5] readr_2.1.2     tidyr_1.2.0     tibble_3.1.8    tidyverse_1.3.2
     ##  [9] dplyr_1.0.8     ggplot2_3.3.6   nowcaster_0.2.1
+>>>>>>> dev
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] httr_1.4.3          jsonlite_1.7.3      splines_4.1.2      
     ##  [4] tmvnsim_1.0-2       modelr_0.1.8        sn_2.0.1           
     ##  [7] assertthat_0.2.1    BiocManager_1.30.18 rvcheck_0.2.1      
+<<<<<<< HEAD
+    ## [10] sp_1.5-0            highr_0.9           stats4_4.1.2       
+=======
     ## [10] sp_1.4-6            highr_0.9           stats4_4.1.2       
+>>>>>>> dev
     ## [13] yulab.utils_0.0.5   googlesheets4_1.0.0 cellranger_1.1.0   
     ## [16] yaml_2.2.2          numDeriv_2016.8-1.1 pillar_1.8.1       
     ## [19] backports_1.4.1     lattice_0.20-45     glue_1.6.1         
@@ -539,6 +570,20 @@ sessionInfo()
     ## [34] googledrive_2.0.0   generics_0.1.3      farver_2.1.1       
     ## [37] ellipsis_0.3.2      withr_2.5.0         cli_3.1.1          
     ## [40] mnormt_2.0.2        crayon_1.5.1        readxl_1.3.1       
+<<<<<<< HEAD
+    ## [43] magrittr_2.0.2      evaluate_0.15       fs_1.5.2           
+    ## [46] fansi_1.0.3         xml2_1.3.3          tools_4.1.2        
+    ## [49] hms_1.1.1           gargle_1.2.0        lifecycle_1.0.2    
+    ## [52] reprex_2.0.1        munsell_0.5.0       compiler_4.1.2     
+    ## [55] rlang_1.0.5         grid_4.1.2          rstudioapi_0.13    
+    ## [58] INLA_21.11.22       labeling_0.4.2      rmarkdown_2.13     
+    ## [61] gtable_0.3.0        DBI_1.1.2           R6_2.5.1           
+    ## [64] knitr_1.39          fastmap_1.1.0       utf8_1.2.2         
+    ## [67] rprojroot_2.0.3     dlstats_0.1.5       desc_1.4.1         
+    ## [70] stringi_1.7.6       Rcpp_1.0.7          parallel_4.1.2     
+    ## [73] vctrs_0.4.1         dbplyr_2.1.1        tidyselect_1.1.2   
+    ## [76] xfun_0.29
+=======
     ## [43] magrittr_2.0.2      evaluate_0.15       badger_0.2.1       
     ## [46] fs_1.5.2            fansi_1.0.3         xml2_1.3.3         
     ## [49] tools_4.1.2         hms_1.1.1           gargle_1.2.0       
@@ -551,3 +596,4 @@ sessionInfo()
     ## [70] desc_1.4.1          stringi_1.7.6       Rcpp_1.0.7         
     ## [73] parallel_4.1.2      vctrs_0.4.1         dbplyr_2.1.1       
     ## [76] tidyselect_1.1.2    xfun_0.29
+>>>>>>> dev

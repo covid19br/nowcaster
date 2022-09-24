@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">nowcaster</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -119,19 +119,19 @@ name for the date of report of the cases. Here this columns are
 “DT_SIN_PRI” and “DT_DIGITA”, respectively.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nowcasting_bh_no_age</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nowcasting_inla.html">nowcasting_inla</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">sragBH</span>, 
-                                        date_onset <span class="op">=</span> <span class="va">DT_SIN_PRI</span>, 
-                                        date_report <span class="op">=</span> <span class="va">DT_DIGITA</span>, 
+                                        date_onset <span class="op">=</span> <span class="st">"DT_SIN_PRI"</span>, 
+                                        date_report <span class="op">=</span> <span class="st">"DT_DIGITA"</span>, 
                                         data.by.week <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nowcasting_bh_no_age</span><span class="op">$</span><span class="va">total</span><span class="op">)</span>
 <span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 7</span></span>
 <span class="co">#&gt;    Time dt_event   Median    LI    LS   LIb   LSb</span>
 <span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    17 2021-12-13    625   621  633    623   627</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    18 2021-12-20    695   687  706.   692   699</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    19 2021-12-27    812   801  829    808   817</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    20 2022-01-03    886   870  907    880   894</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    21 2022-01-10    818   799  844    811   826</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    22 2022-01-17    630   609  662    622   640</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    17 2021-12-13    625   621  632   623   627 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    18 2021-12-20    695   687  707   692   699 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    19 2021-12-27    812   800  829   807   817 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    20 2022-01-03    886   872  909   880   893 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    21 2022-01-10    818   800  845.  811   826.</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    22 2022-01-17    631   610  662   623.  640</span></code></pre></div>
 <p>This calling will return for the first element the nowcasting
 estimate and its Confidence Interval (CI) for two different Credible
 interval, <code>LIb</code> and <code>LSb</code> are the max and min CI,
@@ -146,7 +146,8 @@ element.</p>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
 
 <span class="va">dados_by_week</span> <span class="op">&lt;-</span> <span class="va">nowcasting_bh_no_age</span><span class="op">$</span><span class="va">data</span> |&gt; 
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">date_onset</span> <span class="op">&gt;=</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">date_onset</span><span class="op">)</span><span class="op">-</span><span class="fl">270</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> |&gt; 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">date_onset</span> <span class="op">&gt;=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">date_onset</span><span class="op">)</span><span class="op">-</span><span class="fl">270</span><span class="op">)</span>
 
 <span class="va">dados_by_week</span> |&gt; 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span>
@@ -206,7 +207,7 @@ nowcasting.</p>
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by <a href="https://github.com/rafalopespx" class="external-link">Rafael Lopes</a>, <a href="https://github.com/lsbastos/" class="external-link">Leonardo Bastos</a>.</p>
+<p>Casted by <a href="https://github.com/rafalopespx" class="external-link">Rafael Lopes</a>, <a href="https://github.com/lsbastos/" class="external-link">Leonardo Bastos</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

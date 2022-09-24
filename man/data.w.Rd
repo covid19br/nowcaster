@@ -22,6 +22,10 @@ data.w(
 
 \item{bins_age}{Bins of age to cu the data, parsing from nowcasting_inla}
 
+\item{date_onset}{Column of dates of onset of the events, normally date of onset of first symptoms of cases}
+
+\item{date_report}{Column of dates of report of the event, normally date of digitation of the notification of cases}
+
 \item{age_col}{Age column to be where to  cut the data into age classes}
 
 \item{K}{How much weeks to forecast ahead?
@@ -31,11 +35,11 @@ data.w(
 Data in weeks format, with the maximum dates for the last week used
 }
 \description{
-Function to put the data into the format proper to the nowcasting estimation, \n
-has to use the maximum of data present on the last week parsed to the estimation. \n
+Function to put the data into the format proper to the nowcasting estimation,
+has to use the maximum of data present on the last week parsed to the estimation.
 Makes the account of maximum days per week to be used.
 }
 \examples{
-If the last data is at a Sunday, so the weel starts at Monday before. \n
+If the last data is at a Sunday, so the weel starts at Monday before.
 If ends at Thursday, so it starts on the Friday before
 }

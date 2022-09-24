@@ -127,7 +127,7 @@ nowcasting_estimate |>
 
 ## Uncertainty growth
 
-As we try to forecasting longer ahead of the present date, the uncertaintiy has to grow. This is saw by the opening of the confidence intervals on the  last graph. Although it is wide the realized curve still falls inside it, indicating that is assertative on the tendencey of the curve at least. This can be taken to support decision making when planning ahead of the present date. To any other forecasting horizon futher than 1 week ahead, the confidence interval will be wider than this, to help a little we can try a forecasting with an imposed structured on the data. Now, we forecasting parsing the columns for age to the nowcasting function, this can reduce the openning of the confidence interval.
+As we try to forecasting longer ahead of the present date, the uncertainty has to grow. This is saw by the opening of the confidence intervals on the  last graph. Although it is wide the realized curve still falls inside it, indicating that is assertative on the tendency of the curve at least. This can be taken to support decision making when planning ahead of the present date. To any other forecasting horizon further than 1 week ahead, the confidence interval will be wider than this, to help a little we can try a forecasting with an imposed structured on the data. Now, we forecasting parsing the columns for age to the nowcasting function, this can reduce the opening of the confidence interval.
 
 ```{r}
 nowcasting_bh_age <- nowcasting_inla(dataset = srag_now, 

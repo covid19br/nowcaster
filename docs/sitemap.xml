@@ -64,6 +64,9 @@
     <loc>https://covid19br.github.io/nowcaster/reference/nowcasting_no_age.html</loc>
   </url>
   <url>
+    <loc>https://covid19br.github.io/nowcaster/reference/slope.estimate.quant.html</loc>
+  </url>
+  <url>
     <loc>https://covid19br.github.io/nowcaster/reference/sragBH.html</loc>
   </url>
 </urlset>

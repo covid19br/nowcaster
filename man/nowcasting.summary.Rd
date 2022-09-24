@@ -7,9 +7,17 @@
 nowcasting.summary(trajetory, age = F)
 }
 \arguments{
-\item{age}{Is by age data? \link{Default} FALSE, If its TRUE it will have columns  for age class, fx_etaria e fx_etaria.num}
+\item{age}{Is by age data? \link{Default} FALSE, If its TRUE it will have columns for age class, fx_etaria e fx_etaria.num}
 
 \item{trajectory}{Trajectories to be summarized, trajectory should have sample, Time, dt_event and Y columns.}
+}
+\value{
+A list with 2 elements summarized and grouped by,
+with the 'Median',
+'LS' upper limit, 95\% CI
+'LI' lower limit, 95\% CI
+'LSb' upper limit, 50\% CI
+'LIb' lower limit, 50\% CI
 }
 \description{
 Function to summarize the output from the posteriors generated from any of the

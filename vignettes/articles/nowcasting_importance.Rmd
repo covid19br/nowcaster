@@ -20,9 +20,9 @@ knitr::opts_chunk$set(
 
 ## Nowcasting as a tool to support decision making
 
-Nowcasting a rising curve or a curve on any other moment can give quantitative support for decision making, during the public health crises, the most needed is a way to anticipate, at least, what it is happening at the moment. Nowcasting is the tool for this type of questioning and can gives insights on the data to support nedded decisions.
+Nowcasting a rising curve or a curve on any other moment can give quantitative support for decision making, during the public health crises, the most needed is a way to anticipate, at least, what it is happening at the moment. Nowcasting is the tool for this type of questioning and can gives insights on the data to support needed decisions.
 
-We start this section by cutting the original data at a moment of apparent decaying of the SARI hospitalisation, for the city of Belo Horizonte, which had a prompt starting response to the Covid=19 pandemic. The pressure on the health system took more time than the rest of the country, and the data at same time were showing a decay. We filter all cases entered until 4th of July of 2020 by the date of digitasation, a date that the cases shows up in the database.
+We start this section by cutting the original data at a moment of apparent decaying of the SARI hospitalisation, for the city of Belo Horizonte, which had a prompt starting response to the Covid=19 pandemic. The pressure on the health system took more time than the rest of the country, and the data at same time were showing a decay. We filter all cases entered until 4th of July of 2020 by the date of digitisation, a date that the cases shows up in the database.
 
 ```{r no_age_data}
 library(tidyverse)
@@ -54,7 +54,7 @@ data_by_week |>
                name = 'Date in Weeks')
 ```
 
-On this filtered data, we estimate the cases already that started its date of onset of symptons but were not yet reported, so there not in the database. We just pass to the `nowcasting_inla` function, the dataset filtered, flag for the columns where are the `date_onset` and `date_report`, we add the flag for the function return back the epidemic curve by epiweek.
+On this filtered data, we estimate the cases already that started its date of onset of symptoms but were not yet reported, so there not in the database. We just pass to the `nowcasting_inla` function, the dataset filtered, flag for the columns where are the `date_onset` and `date_report`, we add the flag for the function return back the epidemic curve by epiweek.
 
 ```{r now_no_age_data}
 nowcasting_bh_no_age <- nowcasting_inla(dataset = srag_now, 
@@ -70,7 +70,8 @@ From the data in weekly format we mount the counts of cases by the amount of del
 
 ```{r delay-triangle}
 data_triangle <- nowcasting_bh_no_age$data |> 
-  filter(Delay < 30, date_onset > max(date_onset) - 105) |> 
+  ungroup() |> 
+  filter(Delay < 30, date_onset >= max(date_onset) - 270) |> 
   arrange(Delay)
 
 delay_triangle<-table(data_triangle$date_onset, 
@@ -86,15 +87,13 @@ If this element is grouped by and summarized by the onset of symptoms date, here
 ```{r no_age_plot}
 library(ggplot2)
 
-dados_by_week <- nowcasting_bh_no_age$data %>% 
-  group_by(date_onset) %>% 
-  summarise(n = n())
+dados_by_week <- nowcasting_bh_no_age$data
 
 nowcasting_bh_no_age$total |> 
   ggplot(aes(x = dt_event, y = Median, 
              col = 'Nowcasting')) +
   geom_line(data = dados_by_week, 
-            aes(date_onset, y = n, 
+            aes(date_onset, y = observed, 
                 col = 'Observed'))+
   geom_ribbon(aes(ymin = LI, ymax = LS, col = NA), 
               alpha = 0.2, 
@@ -113,13 +112,13 @@ nowcasting_bh_no_age$total |>
 
 ```
 
-And as expected, the nowcasting estimated a rising on curve when it were observed a decaying. Adding to the plot what actually has happened in that period, with the data inserted posterioly the period for when the nowcasting estimated the rising in the curve for SARI hospitalizations.
+And as expected, the nowcasting estimated a rising on curve when it were observed a decaying. Adding to the plot what actually has happened in that period, with the data inserted posteriorly the period for when the nowcasting estimated the rising in the curve for SARI hospitalizations.
 
 ```{r after_one_year}
 nowcasting_bh_no_age$total %>% 
   ggplot(aes(x = dt_event, y = Median, col = 'Nowcasting')) +
   geom_line(data = dados_by_week, 
-            aes(date_onset, y = n, col = 'Observed'))+
+            aes(date_onset, y = observed, col = 'Observed'))+
   geom_ribbon(aes(ymin = LI, ymax = LS, col = NA), 
               alpha = 0.2, 
               show.legend = F)+
@@ -145,4 +144,4 @@ nowcasting_bh_no_age$total %>%
        y = 'Nº Cases')
 ```
 
-This end the first simple example when estimating the already started events but not yet reported (i.e. nowcasting). The relevance of nowcasting for public health decision is given by the understading that what is present on the databases are only a picture of the real time situation. The above graph can help policy makers on what decisions takes in the face of a rising curve of hospitalisations.
+This end the first simple example when estimating the already started events but not yet reported (i.e. nowcasting). The relevance of nowcasting for public health decision is given by the understanding that what is present on the databases are only a picture of the real time situation. The above graph can help policy makers on what decisions takes in the face of a rising curve of hospitalisations.

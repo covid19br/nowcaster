@@ -11,6 +11,10 @@ data.w_no_age(dataset, trim.data, date_onset, date_report, K = 0, silent = F)
 
 \item{trim.data}{How much to trim of the data?}
 
+\item{date_onset}{Column of dates of onset of the events, normally date of onset of first symptoms of cases}
+
+\item{date_report}{Column of dates of report of the event, normally date of digitation of the notification of cases}
+
 \item{K}{How much weeks to forecast ahead?
 \link{Default} K is 0, no forecasting ahead}
 }
@@ -18,11 +22,11 @@ data.w_no_age(dataset, trim.data, date_onset, date_report, K = 0, silent = F)
 Data in weeks format, with the maximum dates for the last week used
 }
 \description{
-Function to put the data into the format proper to the nowcasting estimation, \n
-has to use the maximum of data present on the last week parsed to the estimation. \n
+Function to put the data into the format proper to the nowcasting estimation,
+has to use the maximum of data present on the last week parsed to the estimation.
 Makes the account of maximum days per week to be used. With no age structure.
 }
 \examples{
-If the last data is at a Sunday, so the weel starts at Monday before. \n
+If the last data is at a Sunday, so the weel starts at Monday before.
 If ends at Thursday, so it starts on the Friday before
 }

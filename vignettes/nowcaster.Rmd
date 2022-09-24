@@ -40,8 +40,8 @@ The call of the function is straightforward, it simply needs a dataset as input,
 
 ```{r no_age}
 nowcasting_bh_no_age <- nowcasting_inla(dataset = sragBH, 
-                                        date_onset = DT_SIN_PRI, 
-                                        date_report = DT_DIGITA, 
+                                        date_onset = "DT_SIN_PRI", 
+                                        date_report = "DT_DIGITA", 
                                         data.by.week = T)
 head(nowcasting_bh_no_age$total)
 ```
@@ -55,7 +55,8 @@ library(ggplot2)
 library(dplyr)
 
 dados_by_week <- nowcasting_bh_no_age$data |> 
-  dplyr::filter(date_onset >= (max(date_onset)-270))
+  ungroup() |> 
+  dplyr::filter(date_onset >= max(date_onset)-270)
 
 dados_by_week |> 
   ggplot()+

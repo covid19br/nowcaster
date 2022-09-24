@@ -4,10 +4,13 @@
 \alias{nowcasting_age}
 \title{nowcasting_age}
 \usage{
-nowcasting_age(dados.age)
+nowcasting_age(dataset)
 }
 \arguments{
 \item{dataset}{data pre formatted in to age classes and delays by week for each cases, delay triangle format}
+}
+\value{
+Trajectories from the inner 'INLA' model
 }
 \description{
 Run INLA model on structured data by age-class

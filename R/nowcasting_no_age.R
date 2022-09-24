@@ -7,11 +7,9 @@
 #' delay triangle format
 #' @param zero_inflated zero-inflated model
 #'
-#' @return
+#' @return Trajectories from the inner 'INLA' model
 #' @export
-#'
-#' @examples
-nowcasting_no_age <- function(dados.age,
+nowcasting_no_age <- function(dataset,
                               zero_inflated){
 
   if (zero_inflated){
@@ -30,7 +28,7 @@ nowcasting_no_age <- function(dados.age,
     )
   }
 
-  index.missing <- which(is.na(dados.age$Y))
+  index.missing <- which(is.na(dataset$Y))
 
   ## Model equation: intercept + f(time random effect) + f(Delay random effect)
   ## Y(t) ~ 1 + rw2(t) + rw1(delay),
@@ -49,7 +47,7 @@ nowcasting_no_age <- function(dados.age,
   ## Running the Negative Binomial model in INLA
   output0 <- INLA::inla(model,
                         family = family,
-                        data = dados.age,
+                        data = dataset,
                         control.predictor = list(link = 1, compute = T),
                         control.compute = list( config = T, waic=F, dic=F),
                         control.family = control.family
@@ -99,7 +97,7 @@ nowcasting_no_age <- function(dados.age,
   ## Step 4: Applying the age aggregation on each posterior
   tibble.samples.0 <- lapply( X = vector.samples0,
                               FUN = gg.age,
-                              dados = dados.age,
+                              dados = dataset,
                               idx = index.missing)
 
   srag.pred.0 <- dplyr::bind_rows(tibble.samples.0, .id = "sample")

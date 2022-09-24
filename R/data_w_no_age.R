@@ -1,18 +1,20 @@
-#' data.w_no_age
+#' @title data.w_no_age
 #'
-#' @description Function to put the data into the format proper to the nowcasting estimation, \n
-#' has to use the maximum of data present on the last week parsed to the estimation. \n
+#' @description Function to put the data into the format proper to the nowcasting estimation,
+#' has to use the maximum of data present on the last week parsed to the estimation.
 #' Makes the account of maximum days per week to be used. With no age structure.
 #'
 #' @param dataset dataset to be formatted as data by week
 #' @param trim.data How much to trim of the data?
+#' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases
+#' @param date_report Column of dates of report of the event, normally date of digitation of the notification of cases
 #' @param K How much weeks to forecast ahead?
 #' [Default] K is 0, no forecasting ahead
 #'
 #' @return Data in weeks format, with the maximum dates for the last week used
 #' @export
 #'
-#' @examples If the last data is at a Sunday, so the weel starts at Monday before. \n
+#' @examples If the last data is at a Sunday, so the weel starts at Monday before.
 #' If ends at Thursday, so it starts on the Friday before
 data.w_no_age<-function(dataset,
                         trim.data,
