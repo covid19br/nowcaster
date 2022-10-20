@@ -10,8 +10,9 @@
 #' @return Trajectories from the inner 'INLA' model
 #' @export
 nowcasting_no_age <- function(dataset,
-                              zero_inflated){
+                              zero_inflated=FALSE){
 
+  ## Check for the zero-inflated
   if (zero_inflated){
     family <- "zeroinflatednbinomial1"
     control.family <- list(
