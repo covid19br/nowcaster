@@ -44,28 +44,35 @@ data.w_no_age<-function(dataset,
   ## K parameter of forecasting
   K.w<-7*K
 
-  ## Maximum date to be considered on the estimation
-  DT_max <- max(dataset |>
-                  dplyr::pull(var = {{date_report}}),
+  ## Maximum date to be considered on the estimation for onset date
+  DT_max_onset <- max(dataset |>
+                  dplyr::pull(var = {{date_onset}}),
                 na.rm = T) - trim.data.w + K.w
+  
+  ## Maximum date to be considered on the estimation for report date
+  DT_max_report<-max(dataset |>
+                       dplyr::pull(var = {{date_report}}),
+                     na.rm = T) - trim.data.w + K.w
 
   ## Last day of the week for the digitation date calculation
-  DT_max_diadasemana <- as.integer(format(DT_max, "%w"))
+  DT_max_diadasemana_onset <- as.integer(format(DT_max_onset, "%w"))
+  ## Last day of the week for the digitation date calculation
+  DT_max_diadasemana_report <- as.integer(format(DT_max_report, "%w"))
 
 
   ## Accounting for the maximum of days on the last week to be used
   data_w <- dataset |>
     dplyr::rename(date_report = {{date_report}},
                   date_onset = {{date_onset}}) |>
-    dplyr::filter(date_report <= DT_max ) |>
+    dplyr::filter(date_report <= DT_max_report ) |>
     dplyr::mutate(
       ## Altering the date for the first day of the week
       date_onset = date_onset -
         as.integer(format(date_onset, "%w")) -
-        (6-DT_max_diadasemana),
+        (6-DT_max_diadasemana_onset),
       date_report = date_report -
         as.integer(format(date_report, "%w")) -
-        (6-DT_max_diadasemana),
+        (6-DT_max_diadasemana_report),
       Delay = as.numeric(date_report - date_onset) / 7) |>
     dplyr::filter(Delay >= 0)
 

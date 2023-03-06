@@ -48,13 +48,20 @@ data.w<-function(dataset,
   ## K parameter of forecasting
   K.w<-7*K
 
-  ## Maximum date to be considered on the estimation
-  DT_max <- max(dataset |>
-                  dplyr::pull(var = {{date_report}}),
-                na.rm = T) - trim.data.w + K.w
+  ## Maximum date to be considered on the estimation for onset date
+  DT_max_onset <- max(dataset |>
+                        dplyr::pull(var = {{date_onset}}),
+                      na.rm = T) - trim.data.w + K.w
+  
+  ## Maximum date to be considered on the estimation for report date
+  DT_max_report<-max(dataset |>
+                       dplyr::pull(var = {{date_report}}),
+                     na.rm = T) - trim.data.w + K.w
 
+  ## Last day of the week for the onset date 
+  DT_max_diadasemana_onset <- as.integer(format(DT_max_onset, "%w"))
   ## Last day of the week for the digitation date calculation
-  DT_max_diadasemana <- as.integer(format(DT_max, "%w"))
+  DT_max_diadasemana_report <- as.integer(format(DT_max_report, "%w"))
 
   # ## Test for age bins
   if(!is.numeric(bins_age)){
@@ -97,7 +104,7 @@ data.w<-function(dataset,
     dplyr::rename(date_report = {{date_report}},
                   date_onset = {{date_onset}},
                   age_col = {{age_col}}) |>
-    dplyr::filter(date_report <= DT_max,
+    dplyr::filter(date_report <= DT_max_report,
                   age_col <= max(bins_age)) |>
     tidyr::drop_na(age_col) |>
     dplyr::mutate(
@@ -106,10 +113,10 @@ data.w<-function(dataset,
       # comeca na 2a anterior, se termina 5a, entao começará 6a
       date_onset = date_onset -
         as.integer(format(date_onset, "%w")) -
-        (6-DT_max_diadasemana),
+        (6-DT_max_diadasemana_onset),
       date_report = date_report -
         as.integer(format(date_report, "%w")) -
-        (6-DT_max_diadasemana),
+        (6-DT_max_diadasemana_report),
       Delay = as.numeric(date_report - date_onset) / 7,
       fx_etaria = cut(age_col,
                       breaks = bins_age,
