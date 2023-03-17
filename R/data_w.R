@@ -56,6 +56,9 @@ data.w<-function(dataset,
   ## Last day of the week for the digitation date calculation
   DT_max_diadasemana <- as.integer(format(DT_max, "%w"))
 
+  ## Setting the last recording day as the last Saturday
+  DT_max = DT_max - DT_max_diadasemana - ifelse(DT_max_diadasemana == 6, 0, 1)
+
   # ## Test for age bins
   if(!is.numeric(bins_age)){
     if(missing(bins_age) | is.null(bins_age)){
@@ -105,11 +108,9 @@ data.w<-function(dataset,
       # Ex. se ultimo dado for de um domingo, entao a semana
       # comeca na 2a anterior, se termina 5a, entao começará 6a
       date_onset = date_onset -
-        as.integer(format(date_onset, "%w")) -
-        (6-DT_max_diadasemana),
+        as.integer(format(date_onset, "%w")), # - (6-DT_max_diadasemana), (voltei p epiweek)
       date_report = date_report -
-        as.integer(format(date_report, "%w")) -
-        (6-DT_max_diadasemana),
+        as.integer(format(date_report, "%w")), # - (6-DT_max_diadasemana), (voltei p epiweek)
       Delay = as.numeric(date_report - date_onset) / 7,
       fx_etaria = cut(age_col,
                       breaks = bins_age,

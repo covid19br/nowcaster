@@ -52,20 +52,21 @@ data.w_no_age<-function(dataset,
   ## Last day of the week for the digitation date calculation
   DT_max_diadasemana <- as.integer(format(DT_max, "%w"))
 
+  ## Setting the last recording day as the last Saturday
+  DT_max = DT_max - DT_max_diadasemana - ifelse(DT_max_diadasemana == 6, 0, 1)
 
   ## Accounting for the maximum of days on the last week to be used
   data_w <- dataset |>
     dplyr::rename(date_report = {{date_report}},
                   date_onset = {{date_onset}}) |>
+    # Excluding data after Saturday (incomplete epiweek)
     dplyr::filter(date_report <= DT_max ) |>
     dplyr::mutate(
       ## Altering the date for the first day of the week
       date_onset = date_onset -
-        as.integer(format(date_onset, "%w")) -
-        (6-DT_max_diadasemana),
+        as.integer(format(date_onset, "%w")), #- (6-DT_max_diadasemana),
       date_report = date_report -
-        as.integer(format(date_report, "%w")) -
-        (6-DT_max_diadasemana),
+        as.integer(format(date_report, "%w")), #- (6-DT_max_diadasemana),
       Delay = as.numeric(date_report - date_onset) / 7) |>
     dplyr::filter(Delay >= 0)
 
