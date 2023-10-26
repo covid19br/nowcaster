@@ -6,18 +6,18 @@
 #'
 #' @param dataset dataset to be formatted as data by week
 #' @param trim.data How much to trim of the data?
-#' @param bins_age Bins of age to cu the data, parsing from nowcasting_inla
+#' @param bins_age Bins of age to cut the data, parsing from nowcasting_inla
 #' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases
 #' @param date_report Column of dates of report of the event, normally date of digitation of the notification of cases
 #' @param age_col Age column to be where to  cut the data into age classes
-#' @param K How much weeks to forecast ahead?
+#' @param K How many weeks to forecast ahead?
 #' [Default] K is 0, no forecasting ahead
 #'
 #' @return Data in weeks format, with the maximum dates for the last week used
 #' @export
 #'
-#' @examples If the last data is at a Sunday, so the weel starts at Monday before.
-#' If ends at Thursday, so it starts on the Friday before
+#' @examples If the last data is on a Sunday, the week starts on the previous Monday.
+#' If it ends on Thursday, the week starts on the Friday before
 data.w<-function(dataset,
                  trim.data,
                  bins_age = c("SI-PNI", "10 years", "5 years", bins_age),
@@ -114,7 +114,8 @@ data.w<-function(dataset,
       fx_etaria = cut(age_col,
                       breaks = bins_age,
                       labels = labels_age,
-                      right = F)
+                      right = F,
+                      ordered=T)
     ) |>
     tidyr::drop_na(fx_etaria) |>
     dplyr::filter(Delay >= 0)

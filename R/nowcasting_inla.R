@@ -340,13 +340,16 @@ nowcasting_inla <- function(dataset,
 
   if(data.by.week){
 
-    now_summary[[3-l]]<-data_w |>
-      dplyr::group_by(date_onset) |>
-      dplyr::summarise(observed = dplyr::n(),
-                       Delay = Delay)
-
+    if(missing(age_col)){
+      now_summary[[3-l]]<-data_w |>
+        dplyr::group_by(date_onset, Delay) |>
+        dplyr::summarise(observed = dplyr::n())
+    } else {
+      now_summary[[3-l]]<-data_w |>
+        dplyr::group_by(date_onset, Delay, fx_etaria) |>
+        dplyr::summarise(observed = dplyr::n())
+    }
     names(now_summary)[3-l]<-"data"
-
     if(trajectories){
       now_summary[[4-l]]<-sample.now
       names(now_summary)[4-l]<-"trajectories"
