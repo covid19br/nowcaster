@@ -21,7 +21,7 @@ data.w_no_age<-function(dataset,
                         trim.data,
                         date_onset,
                         date_report,
-                        use.epiweek = TRUE,
+                        use.epiweek = FALSE,
                         K=0,
                         silent=F){
   if(!silent){

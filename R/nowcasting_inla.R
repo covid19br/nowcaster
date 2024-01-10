@@ -16,7 +16,7 @@
 #' @param wdw (in weeks) Until which maximum amount of weeks the Nowcasting will use to the estimation.
 #' [Default] 30 weeks.
 #' @param use.epiweek If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date.
-#' [Default] TRUE.
+#' [Default] FALSE
 #' @param data.by.week If it has to be returned the whole time-series data.
 #' [Default] FALSE.
 #' @param return.age [Deprecated] If the estimate by Age should be returned.
@@ -54,7 +54,7 @@ nowcasting_inla <- function(dataset,
                             trim.data=0,
                             Dmax = 15,
                             wdw = 30,
-                            use.epiweek = TRUE,
+                            use.epiweek = FALSE,
                             age_col,
                             date_onset,
                             date_report,
