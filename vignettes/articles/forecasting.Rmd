@@ -38,10 +38,10 @@ library(nowcaster)
 
 ## To see Nowcasting as if we were on the verge of rise in the curve
 data("sragBH")
-srag_now<-sragBH |> 
+srag_now <- sragBH |> 
   filter(DT_DIGITA <= "2020-07-04")
 
-data_by_week<-data.w_no_age(dataset = srag_now, 
+data_by_week <- data.w_no_age(dataset = srag_now, 
                              date_onset = DT_SIN_PRI, 
                              date_report = DT_DIGITA, 
                              K = 0) |> 
@@ -85,7 +85,7 @@ forecasting_estimate<-nowcasting_bh_no_age$total |>
 
 ## One year after observed
 data_one_year_after<-sragBH %>%
-  filter(DT_SIN_PRI <= "2020-07-16") %>% 
+  filter(DT_SIN_PRI <= "2020-07-11") %>% 
   mutate(
     D_SIN_PRI_2 = DT_SIN_PRI - as.numeric(format(DT_SIN_PRI, "%w"))
   ) %>% 
@@ -133,7 +133,7 @@ As we try to forecasting longer ahead of the present date, the uncertainty has t
 nowcasting_bh_age <- nowcasting_inla(dataset = srag_now, 
                                      date_onset = DT_SIN_PRI, 
                                      date_report = DT_DIGITA, 
-                                     data.by.week = T, 
+                                     #data.by.week = T, 
                                      K = 1,
                                      age_col = Idade)
 head(nowcasting_bh_age$data)

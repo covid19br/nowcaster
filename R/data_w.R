@@ -10,6 +10,7 @@
 #' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases
 #' @param date_report Column of dates of report of the event, normally date of digitation of the notification of cases
 #' @param age_col Age column to be where to  cut the data into age classes
+#' @param use.epiweek If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date.
 #' @param K How much weeks to forecast ahead?
 #' [Default] K is 0, no forecasting ahead
 #'
@@ -18,14 +19,15 @@
 #'
 #' @examples If the last data is at a Sunday, so the weel starts at Monday before.
 #' If ends at Thursday, so it starts on the Friday before
-data.w<-function(dataset,
-                 trim.data,
-                 bins_age = c("SI-PNI", "10 years", "5 years", bins_age),
-                 date_onset,
-                 date_report,
-                 age_col,
-                 K=0,
-                 silent=F){
+data.w <- function(dataset,
+                   trim.data,
+                   bins_age = c("SI-PNI", "10 years", "5 years", bins_age),
+                   date_onset,
+                   date_report,
+                   age_col,
+                   use.epiweek = TRUE,
+                   K = 0,
+                   silent = F){
   if(!silent){
     ## Last digitation date considered
     if(missing(trim.data)){
@@ -55,6 +57,10 @@ data.w<-function(dataset,
 
   ## Last day of the week for the digitation date calculation
   DT_max_diadasemana <- as.integer(format(DT_max, "%w"))
+
+  #  Notice that if max recording date is Saturday (DT_max_diadasemana = 6) then the week is complete,
+  # and the epiweek is on course. Otherwise some data must be ignored
+  aux.trimming.date = ifelse( use.epiweek, 6-DT_max_diadasemana, 0)
 
   # ## Test for age bins
   if(!is.numeric(bins_age)){
@@ -97,7 +103,7 @@ data.w<-function(dataset,
     dplyr::rename(date_report = {{date_report}},
                   date_onset = {{date_onset}},
                   age_col = {{age_col}}) |>
-    dplyr::filter(date_report <= DT_max,
+    dplyr::filter(date_report <= DT_max - aux.trimming.date,
                   age_col <= max(bins_age)) |>
     tidyr::drop_na(age_col) |>
     dplyr::mutate(

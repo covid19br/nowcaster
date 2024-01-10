@@ -8,18 +8,20 @@
 #' @param trim.data How much to trim of the data?
 #' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases
 #' @param date_report Column of dates of report of the event, normally date of digitation of the notification of cases
+#' @param use.epiweek If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date.
 #' @param K How much weeks to forecast ahead?
 #' [Default] K is 0, no forecasting ahead
 #'
 #' @return Data in weeks format, with the maximum dates for the last week used
 #' @export
 #'
-#' @examples If the last data is at a Sunday, so the weel starts at Monday before.
+#' @examples If the last data is at a Sunday, so the week starts at Monday before.
 #' If ends at Thursday, so it starts on the Friday before
 data.w_no_age<-function(dataset,
                         trim.data,
                         date_onset,
                         date_report,
+                        use.epiweek = TRUE,
                         K=0,
                         silent=F){
   if(!silent){
@@ -49,15 +51,19 @@ data.w_no_age<-function(dataset,
                   dplyr::pull(var = {{date_report}}),
                 na.rm = T) - trim.data.w + K.w
 
+
   ## Last day of the week for the digitation date calculation
   DT_max_diadasemana <- as.integer(format(DT_max, "%w"))
 
+  #  Notice that if max recording date is Saturday (DT_max_diadasemana = 6) then the week is complete,
+  # and the epiweek is on course. Otherwise some data must be ignored
+  aux.trimming.date = ifelse( use.epiweek, 6-DT_max_diadasemana, 0)
 
   ## Accounting for the maximum of days on the last week to be used
   data_w <- dataset |>
     dplyr::rename(date_report = {{date_report}},
                   date_onset = {{date_onset}}) |>
-    dplyr::filter(date_report <= DT_max ) |>
+    dplyr::filter(date_report <= DT_max - aux.trimming.date) |>
     dplyr::mutate(
       ## Altering the date for the first day of the week
       date_onset = date_onset -

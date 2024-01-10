@@ -4,7 +4,7 @@
 \alias{nowcasting_age}
 \title{nowcasting_age}
 \usage{
-nowcasting_age(dataset)
+nowcasting_age(dataset, zero_inflated = FALSE)
 }
 \arguments{
 \item{dataset}{data pre formatted in to age classes and delays by week for each cases, delay triangle format}

@@ -4,7 +4,7 @@
 \alias{nowcasting_no_age}
 \title{nowcasting_no_age}
 \usage{
-nowcasting_no_age(dataset, zero_inflated)
+nowcasting_no_age(dataset, zero_inflated = FALSE)
 }
 \arguments{
 \item{dataset}{data pre formatted in to age classes and delays by week for each cases,
