@@ -15,6 +15,8 @@
 #' [Default] 15 weeks.
 #' @param wdw (in weeks) Until which maximum amount of weeks the Nowcasting will use to the estimation.
 #' [Default] 30 weeks.
+#' @param use.epiweek If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date.
+#' [Default] TRUE.
 #' @param data.by.week If it has to be returned the whole time-series data.
 #' [Default] FALSE.
 #' @param return.age [Deprecated] If the estimate by Age should be returned.
@@ -52,6 +54,7 @@ nowcasting_inla <- function(dataset,
                             trim.data=0,
                             Dmax = 15,
                             wdw = 30,
+                            use.epiweek = TRUE,
                             age_col,
                             date_onset,
                             date_report,
@@ -177,30 +180,32 @@ nowcasting_inla <- function(dataset,
   ## Objects for keep the nowcasting
   ## Filtering out cases without report date
   if(missing(age_col)){
-    data<-dataset |>
+    data.clean <- dataset |>
       dplyr::select({{date_report}}, {{date_onset}})  |>
       tidyr::drop_na({{date_report}})
   } else {
-    data <- dataset  |>
+    data.clean <- dataset  |>
       dplyr::select({{date_report}}, {{date_onset}}, {{age_col}})  |>
       tidyr::drop_na({{date_report}})
   }
 
   ## Filtering data to the parameters setted above
   if(missing(age_col)){
-    data_w<-data.w_no_age(dataset = data,
+    data_w<-data.w_no_age(dataset = data.clean,
                           trim.data = trim.data,
                           date_onset = {{date_onset}},
                           date_report = {{date_report}},
+                          use.epiweek = use.epiweek,
                           K = K,
                           silent = silent)
   }else {
-    data_w <- data.w(dataset = data,
+    data_w <- data.w(dataset = data.clean,
                      bins_age = bins_age,
                      trim.data = trim.data,
                      age_col = {{age_col}},
                      date_onset = {{date_onset}},
                      date_report = {{date_report}},
+                     use.epiweek = use.epiweek,
                      K = K,
                      silent = silent)
   }
@@ -208,6 +213,7 @@ nowcasting_inla <- function(dataset,
   ## Parameters of Nowcasting estimate
   Tmax <- max(data_w |>
                 dplyr::pull(var = date_onset))
+
 
   ## Data to be entered in Nowcasting function
   ##
@@ -234,19 +240,27 @@ nowcasting_inla <- function(dataset,
   }
 
 
+
+  # ## Maximum recording date
+  # max.date_report = data.clean %>%
+  #   dplyr::pull(var = {{date_report}}) %>%
+  #   max(na.rm = T)
+
+
+
   ## Auxiliary date table
   if(K==0){
-    dates<-unique(data.inla |>
+    dates <- range(data.inla |>
                     dplyr::pull(var = date_onset - 7*trim.data))
   } else {
     ## This is done to explicitly say for the forecast part that its date of onset is the present date
-    date_k<-(max(data.inla$date_onset + 7*K - 7*trim.data))
-    dates<-c(unique(data.inla$date_onset), date_k)
+    date_k <- max(data.inla$date_onset) + 7*K - 7*trim.data
+    dates <- range(data.inla$date_onset, date_k)
   }
 
   ## To make an auxiliary date table with each date plus an amount of dates  to forecast
   tbl.date.aux <- tibble::tibble(
-    date_onset = dates
+    date_onset = seq(dates[1], dates[2], by = 7)
   )  |>
     tibble::rowid_to_column(var = "Time")
 
@@ -340,10 +354,14 @@ nowcasting_inla <- function(dataset,
 
   if(data.by.week){
 
-    now_summary[[3-l]]<-data_w |>
-      dplyr::group_by(date_onset) |>
-      dplyr::summarise(observed = dplyr::n(),
-                       Delay = Delay)
+    # if(missing(age_col)){
+      now_summary[[3-l]]<- data.inla
+    # }
+
+    # now_summary[[3-l]]<-data_w |>
+    #   dplyr::group_by(date_onset) |>
+    #   dplyr::summarise(observed = dplyr::n(),
+    #                    Delay = Delay)
 
     names(now_summary)[3-l]<-"data"
 
