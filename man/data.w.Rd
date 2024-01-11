@@ -11,7 +11,7 @@ data.w(
   date_onset,
   date_report,
   age_col,
-  use.epiweek = TRUE,
+  use.epiweek = FALSE,
   K = 0,
   silent = F
 )
