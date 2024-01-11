@@ -40,24 +40,23 @@ data.w_no_age<-function(dataset,
     trim.data <-  0
   }
 
-  ## Transforming trim.data into weeks
+  ## Transforming trim.data into days
   trim.data.w <- 7*trim.data
 
   ## K parameter of forecasting
   K.w<-7*K
 
-  ## Maximum date to be considered on the estimation
+  ## Maximum date to be considered on the estimation (Last day)
   DT_max <- max(dataset |>
                   dplyr::pull(var = {{date_report}}),
                 na.rm = T) - trim.data.w + K.w
 
 
-  ## Last day of the week for the digitation date calculation
+  ## Day of the week of the last day
   DT_max_diadasemana <- as.integer(format(DT_max, "%w"))
 
-  #  Notice that if max recording date is Saturday (DT_max_diadasemana = 6) then the week is complete,
-  # and the epiweek is on course. Otherwise some data must be ignored
-  aux.trimming.date = ifelse( use.epiweek, 6-DT_max_diadasemana, 0)
+  ## Ignore data after the last Sunday of recording (Sunday as too)
+  aux.trimming.date = ifelse( use.epiweek | DT_max_diadasemana == 6, DT_max_diadasemana + 1, 0)
 
   ## Accounting for the maximum of days on the last week to be used
   data_w <- dataset |>
@@ -65,14 +64,30 @@ data.w_no_age<-function(dataset,
                   date_onset = {{date_onset}}) |>
     dplyr::filter(date_report <= DT_max - aux.trimming.date) |>
     dplyr::mutate(
+      ## Onset date
+      # Moving the date to sunday
+      DT.sun.aux = as.integer(format(date_onset, "%w")),
       ## Altering the date for the first day of the week
-      date_onset = date_onset -
-        as.integer(format(date_onset, "%w")) -
-        (6-DT_max_diadasemana),
-      date_report = date_report -
-        as.integer(format(date_report, "%w")) -
-        (6-DT_max_diadasemana),
-      Delay = as.numeric(date_report - date_onset) / 7) |>
+      dt.aux = date_onset -
+        # Last recording date (DT_max_diadasemana) is the last day of the new week format
+        DT.sun.aux +
+        ifelse( use.epiweek, 0, DT_max_diadasemana+1 -
+                  ifelse(DT_max_diadasemana+1>DT.sun.aux,7, 0)
+                ),
+      date_onset = dt.aux - ifelse( date_onset < dt.aux, 7, 0),
+      # Recording date
+      DT.sun.aux = as.integer(format(date_report, "%w")),
+      ## Altering the date for the first day of the week
+      dt.aux = date_report -
+        # Last recording date (DT_max_diadasemana) is the last day of the new week format
+        DT.sun.aux +
+        ifelse( use.epiweek, 0, DT_max_diadasemana+1 -
+                  ifelse(DT_max_diadasemana+1 > DT.sun.aux,7, 0)
+        ),
+      date_report = dt.aux - ifelse( date_report < dt.aux, 7, 0),
+      Delay = as.numeric(date_report - date_onset) / 7
+      ) |>
+    dplyr::select(-dt.aux, -DT.sun.aux) |>
     dplyr::filter(Delay >= 0)
 
   # Returning the data
