@@ -7,7 +7,24 @@
 #'
 #' @return Trajectories from the inner 'INLA' model
 #' @export
-nowcasting_age <- function(dataset){
+nowcasting_age <- function(dataset,
+                           zero_inflated=FALSE){
+  ## Cehcl for zero-inflated
+  if (zero_inflated){
+    family <- "zeroinflatednbinomial1"
+    control.family <- list(
+      hyper = list("theta1" = list(prior = "loggamma",
+                                   param = c(0.01, 0.01)),
+                   "theta2" = list(prior = "gaussian",
+                                   param = c(0, 0.4)))
+    )
+  } else {
+    family <- 'nbinomial'
+    control.family <- list(
+      hyper = list("theta" = list(prior = "loggamma",
+                                  param = c(0.001, 0.001)))
+    )
+  }
 
   index.missing <- which(is.na(dataset$Y))
 
@@ -32,15 +49,11 @@ nowcasting_age <- function(dataset){
     )
 
   ## Running the Negative Binomial model in INLA
-  output0 <- INLA::inla(model, family = "nbinomial",
+  output0 <- INLA::inla(model, family = family,
                         data = dataset,
                         control.predictor = list(link = 1, compute = T),
                         control.compute = list( config = T, waic=F, dic=F),
-                        control.family = list(
-                          hyper = list("theta" = list(prior = "loggamma",
-                                                      param = c(0.001, 0.001))
-                          )
-                        )
+                        control.family = control.family
   )
 
   ## Algorithm to get samples for the predictive distribution for the number of cases
@@ -53,7 +66,11 @@ nowcasting_age <- function(dataset){
   ## Step 2: Sampling the missing triangle from the likelihood using INLA estimates
   vector.samples0 <- lapply(X = srag.samples0.list,
                             FUN = function(x, idx = index.missing){
-                              unif.log = 1
+                              if(zero_inflated){
+                                unif.log <- as.numeric(runif(idx,0,1) < x$hyperpar[2])
+                              }else{
+                                unif.log = 1
+                              }
                               stats::rnbinom(n = idx,
                                              mu = exp(x$latent[idx]),
                                              size = x$hyperpar[1]

@@ -11,6 +11,7 @@ data.w(
   date_onset,
   date_report,
   age_col,
+  use.epiweek = FALSE,
   K = 0,
   silent = F
 )
@@ -27,6 +28,8 @@ data.w(
 \item{date_report}{Column of dates of report of the event, normally date of digitation of the notification of cases}
 
 \item{age_col}{Age column to be where to  cut the data into age classes}
+
+\item{use.epiweek}{If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date.}
 
 \item{K}{How much weeks to forecast ahead?
 \link{Default} K is 0, no forecasting ahead}

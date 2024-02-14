@@ -10,6 +10,7 @@ nowcasting_inla(
   trim.data = 0,
   Dmax = 15,
   wdw = 30,
+  use.epiweek = FALSE,
   age_col,
   date_onset,
   date_report,
@@ -38,6 +39,9 @@ or options between, "SI-PNI", "10 years", "5 years".
 
 \item{wdw}{(in weeks) Until which maximum amount of weeks the Nowcasting will use to the estimation.
 \link{Default} 30 weeks.}
+
+\item{use.epiweek}{If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date.
+\link{Default} FALSE}
 
 \item{age_col}{Column for ages}
 

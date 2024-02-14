@@ -34,9 +34,9 @@ data("sragBH")
 srag_now<-sragBH |> 
   filter(DT_DIGITA <= "2020-07-04")
 
-data_by_week<-data.w_no_age(dataset = srag_now, 
-                         date_onset = DT_SIN_PRI, 
-                         date_report = DT_DIGITA) |> 
+data_by_week <- data.w_no_age(dataset = srag_now, 
+                              date_onset = DT_SIN_PRI, 
+                              date_report = DT_DIGITA) |> 
   group_by(date_onset) |> 
   tally()
 
@@ -70,14 +70,15 @@ From the data in weekly format we mount the counts of cases by the amount of del
 
 ```{r delay-triangle}
 data_triangle <- nowcasting_bh_no_age$data |> 
-  ungroup() |> 
-  filter(Delay < 30, date_onset >= max(date_onset) - 270) |> 
-  arrange(Delay)
+  filter(delay < 30) |> 
+  arrange(delay) %>% select(-Time)
 
-delay_triangle<-table(data_triangle$date_onset, 
-                      data_triangle$Delay,
-                      dnn = list("Date of Onset", "Delay"))
-delay_triangle
+# delay_triangle<-table(data_triangle$dt_event, 
+#                       data_triangle$delay, 
+#                       dnn = list("Date of Onset", "Delay"))
+
+data_triangle %>% 
+  tidyr::spread(key = delay, value = Y)
 ```
 
 We just look at the amount of cases with 30 weeks of delay or less, it is the default maximum delay considered at nowcasting estimation. It can be changed by the parameter `Dmax`.
@@ -87,13 +88,17 @@ If this element is grouped by and summarized by the onset of symptoms date, here
 ```{r no_age_plot}
 library(ggplot2)
 
-dados_by_week <- nowcasting_bh_no_age$data
+dados_by_week <- nowcasting_bh_no_age$data |> 
+  dplyr::group_by(dt_event) |> 
+  dplyr::reframe(
+    observed = sum(Y, na.rm = T)
+  )
 
 nowcasting_bh_no_age$total |> 
   ggplot(aes(x = dt_event, y = Median, 
              col = 'Nowcasting')) +
   geom_line(data = dados_by_week, 
-            aes(date_onset, y = observed, 
+            aes(x = dt_event, y = observed, 
                 col = 'Observed'))+
   geom_ribbon(aes(ymin = LI, ymax = LS, col = NA), 
               alpha = 0.2, 
@@ -118,7 +123,7 @@ And as expected, the nowcasting estimated a rising on curve when it were observe
 nowcasting_bh_no_age$total %>% 
   ggplot(aes(x = dt_event, y = Median, col = 'Nowcasting')) +
   geom_line(data = dados_by_week, 
-            aes(date_onset, y = observed, col = 'Observed'))+
+            aes(x = dt_event, y = observed, col = 'Observed'))+
   geom_ribbon(aes(ymin = LI, ymax = LS, col = NA), 
               alpha = 0.2, 
               show.legend = F)+
