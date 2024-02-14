@@ -10,22 +10,25 @@
 #' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases
 #' @param date_report Column of dates of report of the event, normally date of digitation of the notification of cases
 #' @param age_col Age column to be where to  cut the data into age classes
-#' @param K How many weeks to forecast ahead?
+#' @param use.epiweek If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date.
+#' @param K How much weeks to forecast ahead?
+
 #' [Default] K is 0, no forecasting ahead
 #'
 #' @return Data in weeks format, with the maximum dates for the last week used
 #' @export
 #'
-#' @examples If the last data is on a Sunday, the week starts on the previous Monday.
-#' If it ends on Thursday, the week starts on the Friday before
-data.w<-function(dataset,
-                 trim.data,
-                 bins_age = c("SI-PNI", "10 years", "5 years", bins_age),
-                 date_onset,
-                 date_report,
-                 age_col,
-                 K=0,
-                 silent=F){
+#' @examples If the last data is at a Sunday, so the weel starts at Monday before.
+#' If ends at Thursday, so it starts on the Friday before
+data.w <- function(dataset,
+                   trim.data,
+                   bins_age = c("SI-PNI", "10 years", "5 years", bins_age),
+                   date_onset,
+                   date_report,
+                   age_col,
+                   use.epiweek = FALSE,
+                   K = 0,
+                   silent = F){
   if(!silent){
     ## Last digitation date considered
     if(missing(trim.data)){
@@ -55,6 +58,13 @@ data.w<-function(dataset,
 
   ## Last day of the week for the digitation date calculation
   DT_max_diadasemana <- as.integer(format(DT_max, "%w"))
+
+  #  Notice that if max recording date is Saturday (DT_max_diadasemana = 6) then the week is complete,
+  # and the epiweek is on course. Otherwise some data must be ignored
+
+  ## Ignore data after the last Sunday of recording (Sunday as too)
+  aux.trimming.date = ifelse( use.epiweek | DT_max_diadasemana == 6, DT_max_diadasemana + 1, 0)
+
 
   # ## Test for age bins
   if(!is.numeric(bins_age)){
@@ -97,19 +107,31 @@ data.w<-function(dataset,
     dplyr::rename(date_report = {{date_report}},
                   date_onset = {{date_onset}},
                   age_col = {{age_col}}) |>
-    dplyr::filter(date_report <= DT_max,
+    dplyr::filter(date_report <= DT_max - aux.trimming.date,
                   age_col <= max(bins_age)) |>
     tidyr::drop_na(age_col) |>
     dplyr::mutate(
-      # Alterando a data para o primeiro dia da semana
-      # Ex. se ultimo dado for de um domingo, entao a semana
-      # comeca na 2a anterior, se termina 5a, entao começará 6a
-      date_onset = date_onset -
-        as.integer(format(date_onset, "%w")) -
-        (6-DT_max_diadasemana),
-      date_report = date_report -
-        as.integer(format(date_report, "%w")) -
-        (6-DT_max_diadasemana),
+      ## Onset date
+      # Moving the date to sunday
+      DT.sun.aux = as.integer(format(date_onset, "%w")),
+      ## Altering the date for the first day of the week
+      dt.aux = date_onset -
+        # Last recording date (DT_max_diadasemana) is the last day of the new week format
+        DT.sun.aux +
+        ifelse( use.epiweek, 0, DT_max_diadasemana+1 -
+                  ifelse(DT_max_diadasemana+1>DT.sun.aux,7, 0)
+        ),
+      date_onset = dt.aux - ifelse( date_onset < dt.aux, 7, 0),
+      # Recording date
+      DT.sun.aux = as.integer(format(date_report, "%w")),
+      ## Altering the date for the first day of the week
+      dt.aux = date_report -
+        # Last recording date (DT_max_diadasemana) is the last day of the new week format
+        DT.sun.aux +
+        ifelse( use.epiweek, 0, DT_max_diadasemana+1 -
+                  ifelse(DT_max_diadasemana+1 > DT.sun.aux,7, 0)
+        ),
+      date_report = dt.aux - ifelse( date_report < dt.aux, 7, 0),
       Delay = as.numeric(date_report - date_onset) / 7,
       fx_etaria = cut(age_col,
                       breaks = bins_age,
@@ -117,6 +139,7 @@ data.w<-function(dataset,
                       right = F,
                       ordered=T)
     ) |>
+    dplyr::select(-dt.aux, -DT.sun.aux) |>
     tidyr::drop_na(fx_etaria) |>
     dplyr::filter(Delay >= 0)
 

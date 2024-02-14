@@ -11,11 +11,11 @@
 [![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-`nowcaster` is a R package for “nowcasting” epidemiological time-series.
+`nowcaster` is an R package for “nowcasting” epidemiological time series.
 Every single system of notification has an intrinsic delay, `nowcaster`
 can estimate how many counts of any epidemiological data of interest
-(*i.e.*, daily cases and deaths counts) by fitting a negative binomial
-model to the time steps of delay between onset date of the event,
+(*i.e.*, daily cases and death counts) by fitting a negative binomial
+model to the time steps of delay between the onset date of the event,
 (*i.e.*, date of first symptoms for cases or date of occurrence of
 death) and the date of report (*i.e.*, date of notification of the case
 or death).
@@ -25,12 +25,12 @@ or death).
 and
 [`INLA`](https://inla.r-inla-download.org/r-inla.org/doc/inla-manual/inla-manual.pdf)
 packages for “**I**ntegrated **N**ested **L**aplace **A**pproximation”
-algorithm to Bayesian inference. `INLA` is a fast alternative to others
+algorithm to Bayesian inference. `INLA` is a fast alternative to other
 methods for Bayesian inference like **MCMC**. An introduction to `INLA`
 can be found
 [here](https://becarioprecario.bitbucket.io/inla-gitbook/index.html).
 
-`nowcaster` is build for epidemiological emergency use, it was
+`nowcaster` is built for epidemiological emergency use, it was
 constructed for the Brazilian Severe Acute Respiratory Illness (SARI)
 surveillance database (SIVEP-Gripe).
 
@@ -44,7 +44,7 @@ if( !require(nowcaster, quietly = T) ){
 }
 ```
 
-After installing you can load the by typical library:
+After installing you can load the typical library:
 
 ``` r
 library(nowcaster)
@@ -53,16 +53,16 @@ library(nowcaster)
 ## First example on LazyData
 
 When the package is loaded it provides a LazyData file, `sariBH`, it is
-a anonymized records of Severe Acute Respiratory Illness notified in the
-city of Belo Horizonte, since March 2020 to April 2022. To load it
-basically write:
+an anonymized record of Severe Acute Respiratory Illness notified in the
+city of Belo Horizonte, from March 2020 to April 2022. To load it
+basically, write:
 
 ``` r
 # Loading Belo Horizonte SARI dataset
 data(sragBH)
 ```
 
-And we take a look on the data:
+And we take a look at the data:
 
 ``` r
 head(sragBH)
@@ -80,16 +80,16 @@ head(sragBH)
 
 It is a data.frame with 7 variables and 65,404 observations. We will
 make use of only the first two columns, “DT_SIN_PRI” (date of onset
-symptoms) and “DT_DIGITA” (recording date) as well the column “Idade”
-(age in years) to make age structured nowcasting.
+symptoms) and “DT_DIGITA” (recording date) as well as the column “Idade”
+(age in years) to make age-structured nowcasting.
 
 ## Non-structured data
 
 Now we call the nowcasting function, it has by default the
-parametrization to take the data and estimate with a non-structured data
+parametrization to take the data and estimate it with non-structured data
 form. The estimate fits a negative binomial distribution,
 ![NegBinom(\lambda\_{t,d}, \phi)](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;NegBinom%28%5Clambda_%7Bt%2Cd%7D%2C%20%5Cphi%29 "NegBinom(\lambda_{t,d}, \phi)"),
-to the cases count at time
+to the cases count at the time
 ![t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t "t")
 with delay
 ![d](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;d "d"),
@@ -114,7 +114,7 @@ where the intercept
 ![\alpha](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Calpha "\alpha")
 follows is Gaussian distribution with a very large variance,
 ![\beta_t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cbeta_t "\beta_t")
-is follows a second order random walk with precision
+is follows a second-order random walk with precision
 ![\tau\_\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%5Cbeta "\tau_\beta"),
 ![\gamma_d](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cgamma_d "\gamma_d")
 a first-order random walk with precision
@@ -124,14 +124,14 @@ The model is then completed by INLA default prior distributions for
 ![\tau\_\beta](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%5Cbeta "\tau_\beta"),
 and
 ![\tau\_\gamma](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%5Cgamma "\tau_\gamma").
-See nbinom, rw1 and rw2 INLA help pages.
+See nbinom, rw1, and rw2 INLA help pages.
 
 The call of the function is straightforward, it simply needs a dataset
-as input, here the `LazyData` loaded in the namespace of the package.
+as input, here the `LazyData` is loaded in the namespace of the package.
 The function has 3 mandatory parameters, `dataset` for the parsing of
 the dataset to be nowcasted, `date_onset` for parsing the column name
-which is the date of onset of symptoms and `date_report` which parses
-the column name for the date of report of the cases. Here this columns
+which is the date of onset of symptoms, and `date_report` which parses
+the column name for the date of report of the cases. Here these columns
 are “DT_SIN_PRI” and “DT_DIGITA”, respectively.
 
 ``` r
@@ -153,12 +153,12 @@ head(nowcasting_bh_no_age$total)
     ## 6    22 2022-01-17    631  608    661   623   641
     
 This calling will return only the nowcasting estimate and its Confidence
-Interval (CI) for two different Credible interval, `LIb` and `LSb` are
+Interval (CI) for two different Credible intervals, `LIb` and `LSb` are
 the max and min CI, respectively, with credibility of 50% and `LI` and
-`LS` are the max and min CI, respectively, with credibility of 95%.
+`LS` is the max and min CI, respectively, with a credibility of 95%.
 
-`nowcasting_inla` has the option to return the curve for when the
-nowcasting estimate was set the window of action of the model, if the
+`nowcasting_inla` has the option to return the curve when the
+nowcasting estimate was set as the window of action of the model, if the
 `data.by.week` parameter is flagged as `TRUE` it returns on the second
 element of the output list the summarized data by week.
 
@@ -184,8 +184,8 @@ dados_by_week |>
 ![](README_files/figure-gfm/epi-curve-plot-1.png)<!-- -->
 
 After this element is groped by and summarized by the onset of symptoms
-date, here `DT_SIN_PRI`, it is the epidemiological curve observed. To
-example how the estimate compares with the observed curve, we plot the
+date, here `DT_SIN_PRI`, it is the epidemiological curve observed. For
+example, how the estimate compares with the observed curve, we plot the
 estimate and the epidemiological curve all together.
 
 ``` r
@@ -203,26 +203,26 @@ nowcasting_bh_no_age$total |>
 
 ![](README_files/figure-gfm/first_plot-1.png)<!-- -->
 
-This is an example were the estimate was done without considering any
+This is an example where the estimate was done without considering any
 type of structure in data, which is the first assumption for the
 nowcasting.
 
-## Nowcasting as a tool to support decision making
+## Nowcasting as a tool to support decision-making
 
-Nowcasting a rising curve or a curve on any other moment can give
-quantitative support for decision making, during the public health
+Nowcasting a rising curve or a curve at any other moment can give
+quantitative support for decision-making, during the public health
 crises, the most needed is a way to anticipate, at least, what it is
 happening at the moment. Nowcasting is the tool for this type of
-questioning and can gives insights on the data to support nedded
+questioning and can give insights on the data to support the needed
 decisions.
 
 We start this section by cutting the original data at a moment of
-apparent decaying of the SARI hospitalisation, for the city of Belo
-Horizonte, which had a prompt starting response to the Covid=19
+apparent decaying of the SARI hospitalization, for the city of Belo
+Horizonte, which had a prompt starting response to the COVID-19
 pandemic. The pressure on the health system took more time than the rest
-of the country, and the data at same time were showing a decay. We
-filter all cases entered until 4th of July of 2020 by the date of
-digitasation, a date that the cases shows up in the database.
+of the country, and the data at the same time were showing a decay. We
+filter all cases entered until the 4th of July 2020 by the date of
+digitalization, a date that the cases show up in the database.
 
 ``` r
 library(tidyverse)
@@ -254,7 +254,7 @@ On this filtered data, we estimate the cases already that started its
 date of onset of symptoms but were not yet reported, so there not in the
 database. We just pass to the `nowcasting_inla` function, the dataset
 filtered, flag for the columns where are the `date_onset` and
-`date_report`, we add the flag for the function return back the epidemic
+`date_report`, we add the flag for the function return the epidemic
 curve by epiweek.
 
 ``` r
@@ -276,18 +276,18 @@ head(nowcasting_bh_no_age$data)
     ## 6 2020-04-18  2020-04-04     2
 
 Before we see the result of the nowcasting estimate we take a look on
-intermediate part of the process of nowcasting, the delay triangle,
+the intermediate part of the process of nowcasting, the delay triangle,
 which sets the objects for nowcasting. The delay triangle is only a
-table where each unique amount of delay, (i.e. integer numbers of days
-or weeks) has passed between date of onset and date of report spread
+a table where each unique amount of delay, (i.e. integer numbers of days
+or weeks) has passed between the date of onset and the date of report spread
 over each date of onset. The part that is closer to the present has less
-counts and has a lower amount of delay, this trivial due to, as the
-system takes time to process the cases, the most newer cases are lesser
-than the older ones, that already time to be processed.
+counts and has a lower amount of delay, this is trivial due to, the
+the system takes time to process the cases, the newer cases are lesser
+then the older ones, which already have time to be processed.
 
-From the data in weekly format we mount the counts of cases by the
-amount of delay. By tabling the delay amount against the data of onset
-of first symptoms, to see the pattern of the delay for the cases.
+From the data in a weekly format, we mount the counts of cases by the
+amount of delay. By tabling the delay amount against the data of the onset
+of the first symptoms, we see the pattern of the delay for the cases.
 
 ``` r
 data_triangle <- nowcasting_bh_no_age$data |> 
@@ -313,8 +313,8 @@ is the default maximum delay considered at nowcasting estimation. It can
 be changed by the parameter `Dmax`.
 
 If this element is grouped by and summarized by the onset of symptoms
-date, here `DT_SIN_PRI`, it is the epidemiological curve observed. To
-example it, we plot the estimate and the epidemiological curve all
+date, here `DT_SIN_PRI`, it is the epidemiological curve observed. For
+example, we plot the estimate and the epidemiological curve all
 together.
 
 ``` r
@@ -338,8 +338,8 @@ nowcasting_bh_no_age$total |>
 
 ![](README_files/figure-gfm/no_age_plot-1.png)<!-- -->
 
-And as expected, the nowcasting estimated a rising on curve when it were
-observed a decaying. Adding to the plot what actually has happened in
+As expected, the nowcasting estimated a rise on a curve when it was
+observed a decaying. Adding to the plot what has happened in
 that period, with the data inserted posteriorly the period for when the
 nowcasting estimated the rising in the curve for SARI hospitalizations.
 
@@ -366,24 +366,24 @@ nowcasting_bh_no_age$total %>%
   labs(x = '', y = 'Nº Cases')
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-1-1.png)<!-- --> This end the
+![](README_files/figure-gfm/unnamed-chunk-1-1.png)<!-- --> This ends the
 first simple example when estimating the already started events but not
 yet reported (i.e. nowcasting). The relevance of nowcasting for public
-health decision is given by the understanding that what is present on
-the databases are only a picture of the real time situation. The above
-graph can help policy makers on what decisions takes in the face of a
-rising curve of hospitalisations.
+health decisions is given by the understanding that what is present in
+the databases is only a picture of the real-time situation. The above
+graph can help policymakers on what decisions to take in the face of a
+rising curve of hospitalizations.
 
 ## Structured data, Age
 
 For the structured data the `nowcasting_inla()` fits again a Negative
-binomial distribution to the cases count at time
+binomial distribution to the cases count at the time
 ![t](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;t "t")
 with delay
 ![d](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;d "d").
-Differently, from the non-structured case the model now gives random
-effects to the delay distribution and and time distribution by each of
-the age-class chosen by the user to break the data. The model has the
+Differently, from the non-structured case, the model now gives random
+effects on the delay distribution and and time distribution by each of
+the age class chosen by the user to break the data. The model has the
 form now:
 
 ![\begin{equation}Y\_{t,d,a} \sim  NegBinom(\lambda\_{t,d,a}, \phi), \\\\
@@ -401,7 +401,7 @@ follow a joint multivariate Gaussian distribution with a separable
 variance components an independent Gaussian term for the age classes
 with precision
 ![\tau\_{age,\beta}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%7Bage%2C%5Cbeta%7D "\tau_{age,\beta}")
-and a second order random walk term for the time with precision
+and a second-order random walk term for the time with precision
 ![\tau\_{\beta}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%7B%5Cbeta%7D "\tau_{\beta}").
 Analogously, the delay-age random effects,
 ![\gamma\_{d,a}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cgamma_%7Bd%2Ca%7D "\gamma_{d,a}"),
@@ -409,7 +409,7 @@ follow a joint multivariate Gaussian distribution with a separable
 variance components an independent Gaussian term for the age classes
 with precision
 ![\tau\_{age,\gamma}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%7Bage%2C%5Cgamma%7D "\tau_{age,\gamma}")
-and a first order random walk term for the time with precision
+and a first-order random walk term for the time with precision
 ![\tau\_{\gamma}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%7B%5Cgamma%7D "\tau_{\gamma}").
 The model is then completed by INLA default prior distributions for
 ![\phi](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cphi "\phi"),
@@ -418,15 +418,15 @@ The model is then completed by INLA default prior distributions for
 ![\tau\_{\beta}](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%7B%5Cbeta%7D "\tau_{\beta}")
 and
 ![\tau\_\gamma](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Ctau_%5Cgamma "\tau_\gamma").
-See nbinom, iid, rw1 and rw2 INLA help pages.
+See nbinom, iid, rw1, and rw2 INLA help pages.
 
 This new model corrects the delay taking into account the effects of age
 classes and the interactions of each age class between time and also
-delay. Now the model needs a flag indicating which is the column on the
-dataset which will be used to break the data into age classes and how
+delay. Now the model needs a flag indicating which column on the
+dataset will be used to break the data into age classes and how
 the age classes will be split. This is given by the parameters `age_col`
 and `bins_age`. We pass three additional parameters, `data.by.week` to
-return the epidemiological curve out of window of action of nowcasting
+return the epidemiological curve out of a window of action of the nowcasting
 estimate and `return.age` to inform we desire a nowcasting result in two
 ways, the total aggregation estimate and the age-stratified estimate.
 The calling of the function has the following form:
@@ -496,10 +496,10 @@ nowcasting_bh_total |>
 
 ![](README_files/figure-gfm/compare_plot-1.png)<!-- -->
 
-The estimates gives different CIs, this is due to a better fitting when
+The estimates give different CIs, this is due to a better fitting when
 considering random effects by age class for the delays at time, this has
-to do with the different capability to respond on different ages. This
-is an empirical finding of this models.
+to do with the different capabilities to respond at different ages. This
+is an empirical finding of this model.
 
 ``` r
 sessionInfo()

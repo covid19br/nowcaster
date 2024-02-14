@@ -55,13 +55,16 @@ library(ggplot2)
 library(dplyr)
 
 dados_by_week <- nowcasting_bh_no_age$data |> 
-  ungroup() |> 
-  dplyr::filter(date_onset >= max(date_onset)-270)
+  dplyr::group_by(dt_event) |> 
+  dplyr::reframe(
+    observed = sum(Y, na.rm = T)
+  ) |>
+  dplyr::filter(dt_event >= max(dt_event)-270)
 
 dados_by_week |> 
   ggplot()+
   geom_line(data = dados_by_week, 
-            aes(date_onset, 
+            aes(dt_event, 
                 y = observed, 
                 col = 'Observed'))+
   theme_bw()+
@@ -85,8 +88,7 @@ nowcasting_bh_no_age$total |>
   ggplot(aes(x = dt_event, y = Median, 
              col = 'Nowcasting')) +
   geom_line(data = dados_by_week, 
-            aes(date_onset, 
-                y = observed, 
+            aes(y = observed, 
                 col = 'Observed'))+
   geom_ribbon(aes(ymin = LI, ymax = LS, col = NA), 
               alpha = 0.2, 
