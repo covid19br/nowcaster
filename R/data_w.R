@@ -6,12 +6,13 @@
 #'
 #' @param dataset dataset to be formatted as data by week
 #' @param trim.data How much to trim of the data?
-#' @param bins_age Bins of age to cu the data, parsing from nowcasting_inla
+#' @param bins_age Bins of age to cut the data, parsing from nowcasting_inla
 #' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases
 #' @param date_report Column of dates of report of the event, normally date of digitation of the notification of cases
 #' @param age_col Age column to be where to  cut the data into age classes
 #' @param use.epiweek If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date.
 #' @param K How much weeks to forecast ahead?
+
 #' [Default] K is 0, no forecasting ahead
 #'
 #' @return Data in weeks format, with the maximum dates for the last week used
@@ -135,7 +136,8 @@ data.w <- function(dataset,
       fx_etaria = cut(age_col,
                       breaks = bins_age,
                       labels = labels_age,
-                      right = F)
+                      right = F,
+                      ordered=T)
     ) |>
     dplyr::select(-dt.aux, -DT.sun.aux) |>
     tidyr::drop_na(fx_etaria) |>

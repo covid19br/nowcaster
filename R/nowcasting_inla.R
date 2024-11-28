@@ -353,18 +353,9 @@ nowcasting_inla <- function(dataset,
   ## Objects to be returned
 
   if(data.by.week){
-
-    # if(missing(age_col)){
       now_summary[[3-l]]<- data.inla
-    # }
-
-    # now_summary[[3-l]]<-data_w |>
-    #   dplyr::group_by(date_onset) |>
-    #   dplyr::summarise(observed = dplyr::n(),
-    #                    Delay = Delay)
-
+    
     names(now_summary)[3-l]<-"data"
-
     if(trajectories){
       now_summary[[4-l]]<-sample.now
       names(now_summary)[4-l]<-"trajectories"
