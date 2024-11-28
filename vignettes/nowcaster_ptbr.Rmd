@@ -1,5 +1,5 @@
 ---
-title: "Get Started"
+title: "Ponto de partida"
 output: rmarkdown::html_vignette
 author: "Rafael Lopes & Leonardo Bastos"
 vignette: >
@@ -18,9 +18,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-## First example on LazyData
+## Primeiro exemplo com LazyData
 
-When the package is loaded it provides a LazyData file, `sariBH`, it is a anonymized records of Severe Acute Respiratory Illness notified in the city of Belo Horizonte, since March 2020 to April 2022. To load it basically write:
+Quando o pacote é carregado ele fornece um arquivo LazyData, `sariBH`, que são registros anonimizados de Síndrome Respiratória Aguda Grave notificados in the city of Belo Horizonte, desde março de 2020 até abril de 2022. Para carregá-lo, basicamente escreva:
 
 ```{r data-bh}
 library(nowcaster)
@@ -28,15 +28,15 @@ library(nowcaster)
 data(sragBH)
 ```
 
-And we take a look on the data:
+E damos uma olhada nos dados:
 
 ```{r lookup}
 head(sragBH)
 ```
 
-It is a data.frame with 7 variables and 65,404 observations. We will make use of only the first two columns, "DT_SIN_PRI" (date of onset symptoms) and "DT_DIGITA" (recording date) as well the column "Idade" (age in years) to make age structured nowcasting.
+É um data.frame com 7 variáveis e 65.404 observações. Vamos utilizar apenas as duas primeiras colunas, "DT_SIN_PRI" (data de início de sintomas) e "DT_DIGITA" (data de digitação), bem como a coluna "Idade" (idade em anos) para fazer nowcasting com estrutura etária.
 
-The call of the function is straightforward, it simply needs a dataset as input, here the `LazyData` loaded in the namespace of the package. The function has 3 mandatory parameters, `dataset` for the parsing of the dataset to be nowcasted, `date_onset` for parsing the column name which is the date of onset of symptoms and `date_report` which parses the column name for the date of report of the cases. Here this columns are "DT_SIN_PRI" and "DT_DIGITA", respectively. 
+A chamada da função é simples, ela simplesmente precisa de um conjunto de dados como entrada, aqui o `LazyData` disponível no pacote. A função tem 3 parâmetros obrigatórios, `dataset` para o fornecimento do conjunto de dados a ser usado no nowcasting, `date_onset` para indicar o nome da coluna que contém a data de início dos sintomas, e `date_report` que indica o nome da coluna com a data de digitação dos casos. Aqui, essas colunas são "DT_SIN_PRI" e "DT_DIGITA", respectivamente.
 
 ```{r no_age}
 nowcasting_bh_no_age <- nowcasting_inla(dataset = sragBH, 
@@ -46,19 +46,19 @@ nowcasting_bh_no_age <- nowcasting_inla(dataset = sragBH,
 head(nowcasting_bh_no_age$total)
 ```
 
-This calling will return for the first element the nowcasting estimate and its Confidence Interval (CI) for two different Credible interval, `LIb` and `LSb` are the max and min CI, respectively, with credibility of 50% and `LI` and `LS` are the max and min CI, respectively, with credibility of 95%.
+Essa chamada retornará, no primeiro elemento, a estimativa de nowcasting e seu Intervalo de Confiança (CI) para dois diferentes intervalos de credibilidade. `LIb` e `LSb` são o CI máximo e mínimo, respectivamente, com credibilidade de 50%, e `LI` e `LS` são o CI máximo e mínimo, respectivamente, com credibilidade de 95%.
 
-On the second element it returns the data to be grouped and summarized to give the epidemic curve, we can take a look on this element. 
+No segundo elemento, ela retorna os dados a serem agrupados e resumidos para gerar a curva epidêmica. Podemos dar uma olhada nesse elemento.
 
 ```{r epi-curve-plot}
 library(ggplot2)
 library(dplyr)
 
 dados_by_week <- nowcasting_bh_no_age$data |> 
-  dplyr::rename(dt_event = date_onset) |>
+  rename(dt_event = date_onset) |>
   dplyr::group_by(dt_event) |> 
   dplyr::reframe(
-    observed = sum(Y, na.rm = T)
+    observed = n()
   ) |>
   dplyr::filter(dt_event >= max(dt_event)-270)
 
@@ -80,8 +80,7 @@ dados_by_week |>
        y = 'Nº Cases')
 ```
 
-
-After this element is groped by and summarized by the onset of symptoms date, here `DT_SIN_PRI`, it is the epidemiological curve observed. To example how the estimate compares with the observed curve, we plot the estimate and the epidemiological curve all together.
+Após esse elemento ser agrupado e resumido pela data de início dos sintomas, aqui `DT_SIN_PRI`, obtém-se a curva epidemiológica observada. Para exemplificar como a estimativa se compara com a curva observada, plotamos a estimativa e a curva epidemiológica juntas.
 
 ```{r no_age_plot}
 
@@ -107,4 +106,4 @@ nowcasting_bh_no_age$total |>
        y = 'Nº Cases')
 ```
 
-This is an example were the estimate was done without considering any type of structure in data, which is the first assumption for the nowcasting.
+Este é um exemplo em que a estimativa foi feita sem considerar nenhum tipo de estrutura nos dados, que é a primeira suposição para o nowcasting.

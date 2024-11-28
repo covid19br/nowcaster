@@ -69,16 +69,14 @@ Before we see the result of the nowcasting estimate we take a look on intermedia
 From the data in weekly format we mount the counts of cases by the amount of delay. By tabling the delay amount against the data of onset of first symptoms, to see the pattern of the delay for the cases.  
 
 ```{r delay-triangle}
-data_triangle <- nowcasting_bh_no_age$data |> 
-  filter(delay < 30) |> 
-  arrange(delay) %>% select(-Time)
+data_triangle <- nowcasting_bh_no_age$data |>
+  rename(dt_event = date_onset) |>
+  filter(Delay < 15) |> 
+  arrange(Delay)
 
-# delay_triangle<-table(data_triangle$dt_event, 
-#                       data_triangle$delay, 
-#                       dnn = list("Date of Onset", "Delay"))
-
-data_triangle %>% 
-  tidyr::spread(key = delay, value = Y)
+table(data_triangle$dt_event, 
+                     data_triangle$Delay, 
+                     dnn = list("Date of Onset", "Delay"))
 ```
 
 We just look at the amount of cases with 30 weeks of delay or less, it is the default maximum delay considered at nowcasting estimation. It can be changed by the parameter `Dmax`.
@@ -89,10 +87,12 @@ If this element is grouped by and summarized by the onset of symptoms date, here
 library(ggplot2)
 
 dados_by_week <- nowcasting_bh_no_age$data |> 
+  dplyr::rename(dt_event = date_onset) |>
   dplyr::group_by(dt_event) |> 
   dplyr::reframe(
-    observed = sum(Y, na.rm = T)
-  )
+    observed = n()
+  ) |>
+  dplyr::filter(dt_event >= max(dt_event)-270)
 
 nowcasting_bh_no_age$total |> 
   ggplot(aes(x = dt_event, y = Median, 
