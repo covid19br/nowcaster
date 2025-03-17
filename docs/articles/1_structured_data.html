@@ -22,7 +22,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">nowcaster</a>
 
@@ -96,7 +96,7 @@ behind the nowcasting model and its advantages and limitations.</p>
 <p>As in the <a href="%22vignettes/nowcaster.Rmd%22">Get Started</a> we
 start by loading the package and its lazy data, by:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://covid19br.github.io/nowcaster" class="external-link">nowcaster</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://covid19br.github.io/nowcaster">nowcaster</a></span><span class="op">)</span></span>
 <span><span class="co"># Loading Belo Horizonte SARI dataset</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sragBH</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -153,12 +153,12 @@ cases observed.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
 <span><span class="co">#&gt;    Time dt_event   Median    LI    LS   LIb   LSb</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    17 2021-12-13    443  442   448    443   445</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    18 2021-12-20    632  626   640.   629   634</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    19 2021-12-27    736  728.  750    733   740</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    20 2022-01-03    759  746   778.   754   765</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    21 2022-01-10    878  860   905    871   886</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    22 2022-01-17    785  764.  814    777   794</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    17 2021-12-13    444   442   448   443   445</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    18 2021-12-20    632   626   641   629   634</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    19 2021-12-27    736   727   750   732   740</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    20 2022-01-03    759   746   778   754   765</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    21 2022-01-10    879   862   905   872   887</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    22 2022-01-17    786   765   813   778   794</span></span></code></pre></div>
 <p>The above calling will return only the nowcasting estimate and its
 Confidence Interval (CI) for two different credibility levels,
 <code>LIb</code> and <code>LSb</code> are the max and min CI,
@@ -406,7 +406,7 @@ the age class information to nowcasting produce narrower estimates</p>
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Rafael Lopes, Leonardo Bastos.</p>
+<p>Casted by <a href="https://github.com/rafalopespx" class="external-link">Rafael Lopes</a>, <a href="https://github.com/lsbastos/" class="external-link">Leonardo Bastos</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

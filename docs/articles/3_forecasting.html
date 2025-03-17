@@ -22,7 +22,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">nowcaster</a>
 
@@ -114,11 +114,11 @@ delay triangle with dates greater than the present date. This is done by
 the setting the <code>K</code> parameter to a value greater than 0, like
 <span class="math inline">\(K = 1,2,3,\dots\)</span>. We proceed as in
 any other example of nowcasting. We will forecasting as was done for
-nowcasting in the article <a href="https://covid19br.github.io/nowcaster/articles/nowcasting_importance.html" class="external-link">Nowcasting
+nowcasting in the article <a href="https://covid19br.github.io/nowcaster/articles/nowcasting_importance.html">Nowcasting
 for decision making</a>.</p>
 <p>First, we cut the lazydata loaded with the namespace of the package
 to a date of interest, more details on why we cut on this date see the
-article <a href="https://covid19br.github.io/nowcaster/articles/nowcasting_importance.html" class="external-link">Nowcasting
+article <a href="https://covid19br.github.io/nowcaster/articles/nowcasting_importance.html">Nowcasting
 for decision making</a>. And after this we parse to the
 <code>nowcasting_inla</code> function the date of onset and date of
 report columns, a flag for returning a data.frame with the cases counts
@@ -132,7 +132,7 @@ of first symptoms present at the database.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org" class="external-link">lubridate</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://covid19br.github.io/nowcaster" class="external-link">nowcaster</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://covid19br.github.io/nowcaster">nowcaster</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## To see Nowcasting as if we were on the verge of rise in the curve</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"sragBH"</span><span class="op">)</span></span>
@@ -326,7 +326,7 @@ to add a line of complete unobserved dates to the delay triangle.</p>
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Rafael Lopes, Leonardo Bastos.</p>
+<p>Casted by <a href="https://github.com/rafalopespx" class="external-link">Rafael Lopes</a>, <a href="https://github.com/lsbastos/" class="external-link">Leonardo Bastos</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
