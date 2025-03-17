@@ -47,3 +47,4 @@ test.R
 .Rdata
 .DS_Store
 inst/doc
+docs

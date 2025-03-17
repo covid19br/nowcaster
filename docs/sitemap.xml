@@ -1,57 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://covid19br.github.io/nowcaster/404.html</loc>
+    <loc>/404.html</loc>
   </url>
   <url>
-    <loc>https://covid19br.github.io/nowcaster/LICENSE.html</loc>
+    <loc>/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://covid19br.github.io/nowcaster/articles/1_structured_data.html</loc>
+    <loc>/articles/1_structured_data.html</loc>
   </url>
   <url>
-    <loc>https://covid19br.github.io/nowcaster/articles/2_nowcasting_importance.html</loc>
+    <loc>/articles/2_nowcasting_importance.html</loc>
   </url>
   <url>
-    <loc>https://covid19br.github.io/nowcaster/articles/3_forecasting.html</loc>
+    <loc>/articles/3_forecasting.html</loc>
   </url>
   <url>
-    <loc>https://covid19br.github.io/nowcaster/articles/index.html</loc>
+    <loc>/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://covid19br.github.io/nowcaster/articles/nowcaster.html</loc>
+    <loc>/articles/nowcaster.html</loc>
   </url>
   <url>
-    <loc>https://covid19br.github.io/nowcaster/authors.html</loc>
+    <loc>/authors.html</loc>
   </url>
   <url>
-    <loc>https://covid19br.github.io/nowcaster/index.html</loc>
+    <loc>/index.html</loc>
   </url>
   <url>
-    <loc>https://covid19br.github.io/nowcaster/reference/data.w.html</loc>
+    <loc>/reference/data.w.html</loc>
   </url>
   <url>
-    <loc>https://covid19br.github.io/nowcaster/reference/data.w_no_age.html</loc>
+    <loc>/reference/data.w_no_age.html</loc>
   </url>
   <url>
-    <loc>https://covid19br.github.io/nowcaster/reference/index.html</loc>
+    <loc>/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://covid19br.github.io/nowcaster/reference/nowcasting.summary.html</loc>
+    <loc>/reference/nowcasting.summary.html</loc>
   </url>
   <url>
-    <loc>https://covid19br.github.io/nowcaster/reference/nowcasting_age.html</loc>
+    <loc>/reference/nowcasting_age.html</loc>
   </url>
   <url>
-    <loc>https://covid19br.github.io/nowcaster/reference/nowcasting_inla.html</loc>
+    <loc>/reference/nowcasting_inla.html</loc>
   </url>
   <url>
-    <loc>https://covid19br.github.io/nowcaster/reference/nowcasting_no_age.html</loc>
+    <loc>/reference/nowcasting_no_age.html</loc>
   </url>
   <url>
-    <loc>https://covid19br.github.io/nowcaster/reference/slope.estimate.quant.html</loc>
+    <loc>/reference/slope.estimate.quant.html</loc>
   </url>
   <url>
-    <loc>https://covid19br.github.io/nowcaster/reference/sragBH.html</loc>
+    <loc>/reference/sragBH.html</loc>
   </url>
 </urlset>
