@@ -1,12 +1,12 @@
-pandoc: '2.18'
-pkgdown: 2.0.3
+pandoc: 3.6.3
+pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
-  forecasting: forecasting.html
-  nowcasting_importance: nowcasting_importance.html
-  structured_data: structured_data.html
+  1_structured_data: 1_structured_data.html
+  2_nowcasting_importance: 2_nowcasting_importance.html
+  3_forecasting: 3_forecasting.html
   nowcaster: nowcaster.html
-last_built: 2022-09-24T17:30Z
+last_built: 2025-03-17T15:48Z
 urls:
   reference: https://covid19br.github.io/nowcaster/reference
   article: https://covid19br.github.io/nowcaster/articles

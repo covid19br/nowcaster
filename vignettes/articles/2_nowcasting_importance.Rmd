@@ -18,6 +18,10 @@ knitr::opts_chunk$set(
 )
 ```
 
+## TLDR
+
+This is a short example showing how helpful can be a to use nowcasting estimate to helop the decision-making process
+
 ## Nowcasting as a tool to support decision making
 
 Nowcasting a rising curve or a curve on any other moment can give quantitative support for decision making, during the public health crises, the most needed is a way to anticipate, at least, what it is happening at the moment. Nowcasting is the tool for this type of questioning and can gives insights on the data to support needed decisions.
@@ -69,15 +73,16 @@ Before we see the result of the nowcasting estimate we take a look on intermedia
 From the data in weekly format we mount the counts of cases by the amount of delay. By tabling the delay amount against the data of onset of first symptoms, to see the pattern of the delay for the cases.  
 
 ```{r delay-triangle}
+library(dplyr)
+
 data_triangle <- nowcasting_bh_no_age$data |> 
   filter(delay < 30) |> 
-  arrange(delay) %>% select(-Time)
+  arrange(delay) |> 
+  select(-Time)
 
-# delay_triangle<-table(data_triangle$dt_event, 
-#                       data_triangle$delay, 
-#                       dnn = list("Date of Onset", "Delay"))
-
-data_triangle %>% 
+data_triangle |> 
+  filter(dt_event >= (max(dt_event) - 84),
+         delay <= 10) |> 
   tidyr::spread(key = delay, value = Y)
 ```
 
@@ -150,3 +155,7 @@ nowcasting_bh_no_age$total %>%
 ```
 
 This end the first simple example when estimating the already started events but not yet reported (i.e. nowcasting). The relevance of nowcasting for public health decision is given by the understanding that what is present on the databases are only a picture of the real time situation. The above graph can help policy makers on what decisions they can take in face of a rising curve of cases, hospitalisations or deaths.
+
+## Conclusion
+
+On this vignettes we make the case for using nowcasting as a helping tool for decision making, by accessing the estimate with data a year after it was observed we check the goodness of the estimates produced, showing the nowcasting had produced at the time of observation of the data a good estimate of the true number of cases happening.

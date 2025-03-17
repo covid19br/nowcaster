@@ -1,9 +1,9 @@
 ---
-title: "Forecasting"
+title: "Beyond Nowcasting, Forecasting"
 output: rmarkdown::html_vignette
 author: "Rafael Lopes & Leonardo Bastos"
 vignette: >
-  %\VignetteIndexEntry{Forecasting}
+  %\VignetteIndexEntry{Beyond Nowcasting, Forecasting}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -17,6 +17,10 @@ knitr::opts_chunk$set(
   echo = T
 )
 ```
+
+## TLDR
+
+After having learned how nowcasting works, we add unobserved dates to our delay triangle and forecasting, i.e. project the number of cases beyond the data already observed.
 
 ## Forecasting
 
@@ -182,3 +186,7 @@ nowcasting_estimate |>
   labs(x = '', 
        y = 'Nº Cases')
 ```
+
+## Conclusion
+
+On this vignette we explored the forecasting estimates that the model can produces. We have add the `K` parameter different than 0 meaning we want an estimate that goes beyond the partial unobserved data. We further compared forecasting produced considering age class as another predictor, as explored on the [Nowcasting on Structured data]("vignettes/articles/1_structured_data.Rmd), we fit a model to each of the age classes present on the data but now we make use of `K` equals to 1, meaning to add a line of complete unobserved dates to the delay triangle.
