@@ -73,21 +73,21 @@
 <h2 id="tldr">TLDR<a class="anchor" aria-label="anchor" href="#tldr"></a>
 </h2>
 <p>After having learned how nowcasting works, we add unobserved dates to
-our delay triangle and forecasting, i.e. project the number of cases
+our delay triangle and forecasting, i.e., project the number of cases
 beyond the data already observed.</p>
 </div>
 <div class="section level2">
 <h2 id="forecasting">Forecasting<a class="anchor" aria-label="anchor" href="#forecasting"></a>
 </h2>
-<p>Nowcasting is the estimation of the events that are already started
-but not yet reported. In epidemiology, the events as like cases of an
-infectious disease that has onset its first symptoms but are not yet
+<p>Nowcasting is the estimation of the events that have already started
+but not yet reported. In epidemiology, the events as cases of an
+infectious disease that has onset its first symptoms but is not yet
 captured from the notification system. Forecasting is simply the
-estimation of the events that are not yet started its onset of first
-symptoms, i.e. cases that are in a probable incubation period. From the
-data structure that any databases has is basically the cases that has a
+estimation of the events that have not yet started their onset of first
+symptoms, i.e., cases that are in a probable incubation period. From the
+data structure that any database has is the cases that have a
 date of onset greater than present date. In the language of delay
-triangle, forecasting will be only to estimate the part that is
+triangle, forecasting will only be to estimate the part that is
 completely unobserved.</p>
 </div>
 <div class="section level2">
@@ -98,28 +98,28 @@ that flags to the model parsed to <code>inla</code> to construct the
 delay triangle with dates greater than the present date. This is done by
 the setting the <code>K</code> parameter to a value greater than 0, like
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn><mo>,</mo><mi>…</mi></mrow><annotation encoding="application/x-tex">K = 1,2,3,\dots</annotation></semantics></math>.
-We proceed as in any other example of nowcasting. We will forecasting as
+We proceed as in any other example of nowcasting. We will be forecasting as
 was done for nowcasting in the article <a href="https://covid19br.github.io/nowcaster/articles/2_nowcasting_importance.html">Nowcasting
 for decision making</a>.</p>
 <p>First, we cut the lazy data loaded with the namespace of the package
-to a date of interest, more details on why we cut on this date see the
+to a date of interest. For more details on why we cut on this date, see the
 article <a href="https://covid19br.github.io/nowcaster/articles/2_nowcasting_importance.html">Nowcasting
 for decision making</a>. And after this we parse to the
-<code>nowcasting_inla</code> function the date of onset and date of
-report columns, a flag for returning a data.frame with the cases counts
+<code>nowcasting_inla</code> function returns the date of onset and date of
+report columns, a flag for returning a data.frame with the case counts
 by week and setting the <code>K</code> parameter to a desired
 forecasting horizon, here we forecast one week ahead of the present
 date.</p>
 <p>Before forecasting, we construct the case counts curve from the lazy
 data, by using the internal function <code>data.w_no_age</code>, we
 construct the curve by summarizing the case counts by each date of onset
-of first symptoms present at the database.</p>
+of the first symptoms present in the database.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org" class="external-link">lubridate</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://covid19br.github.io/nowcaster">nowcaster</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## To see Nowcasting as if we were on the verge of rise in the curve</span></span>
+<span><span class="co">## To see Nowcasting as if we were on the verge of a rise in the curve</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"sragBH"</span><span class="op">)</span></span>
 <span><span class="va">srag_now</span> <span class="op">&lt;-</span> <span class="va">sragBH</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">DT_DIGITA</span> <span class="op">&lt;=</span> <span class="st">"2020-07-04"</span><span class="op">)</span></span>
@@ -144,7 +144,7 @@ of first symptoms present at the database.</p>
 <span>               date_labels <span class="op">=</span> <span class="st">'%V/%y'</span>, </span>
 <span>               name <span class="op">=</span> <span class="st">'Date in Weeks'</span><span class="op">)</span></span></code></pre></div>
 <p><img src="3_forecasting_files/figure-html/delay%20triangle-1.png" width="700"></p>
-<p>Now, to forecast one week ahead we just flag the <code>K = 1</code>,
+<p>Now, to forecast one week ahead, we just flag the <code>K = 1</code>,
 and proceed as in normal nowcasting calling, the code is:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nowcasting_bh_no_age</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nowcasting_inla.html">nowcasting_inla</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">srag_now</span>, </span>
@@ -162,10 +162,10 @@ and proceed as in normal nowcasting calling, the code is:</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 2019-12-28     3     5     1</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 2019-12-28     4     2     1</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2019-12-28     5     2     1</span></span></code></pre></div>
-<p>To visualize the forecast we plot the observed curve and the
+<p>To visualize the forecast, we plot the observed curve and the
 nowcasting and forecasting estimate, change the colors for each part. We
-plot together the nowcasting and forecasting estimate, the curve
-observed one year later, to validate the estimate done.</p>
+plot together the nowcasting and forecasting estimates, the curve
+observed one year later, to validate the estimate made.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co">## Nowcasting estimate filtering</span></span>
@@ -221,14 +221,14 @@ observed one year later, to validate the estimate done.</p>
 <h2 id="uncertainty-grows">Uncertainty grows<a class="anchor" aria-label="anchor" href="#uncertainty-grows"></a>
 </h2>
 <p>As we try to forecasting longer ahead of the present date, the
-uncertainty has to grow. This is saw by the opening of the confidence
-intervals on the last graph. Although it is wide the realized curve
-still falls inside it, indicating that is assertive on the tendency of
-the curve at least. This can be taken to support decision making when
+uncertainty has to grow. This is seen by the opening of the confidence
+intervals on the last graph. Although it is wide, the realized curve
+still falls inside it, indicating that it  is assertive of the tendency of
+the curve at least. This can be taken to support decision-making when
 planning ahead of the present date. To any other forecasting horizon
 further than 1 week ahead, the confidence interval will be wider than
-this, to help a little we can try a forecasting with an imposed
-structured on the data. Now, we forecasting parsing the columns for age
+this, to help a little, we can try forecasting with an imposed
+structured on the data. Now, we forecasting the parsing of the columns for age
 to the nowcasting function, this can reduce the opening of the
 confidence interval.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -294,14 +294,14 @@ again:</p>
 <div class="section level2">
 <h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
 </h2>
-<p>On this vignette we explored the forecasting estimates that the model
+<p> In this vignette, we explored the forecasting estimates that the model
 can produces. We have add the <code>K</code> parameter different than 0
 meaning we want an estimate that goes beyond the partial unobserved
 data. We further compared forecasting produced considering age class as
 another predictor, as explored on the <a href="https://covid19br.github.io/nowcaster/articles/1_structured_data.html">Nowcasting
 on Structured data</a>, we fit a model to each of the age classes
 present on the data but now we make use of <code>K</code> equals to 1,
-meaning to add a line of complete unobserved dates to the delay
+meaning to add a line of completely unobserved dates to the delay
 triangle.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
