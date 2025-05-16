@@ -1,13 +1,36 @@
-pandoc: 3.6.3
-pkgdown: 2.0.7
-pkgdown_sha: ~
-articles:
-  1_structured_data: 1_structured_data.html
-  2_nowcasting_importance: 2_nowcasting_importance.html
-  3_forecasting: 3_forecasting.html
-  nowcaster: nowcaster.html
-last_built: 2025-03-17T18:23Z
-urls:
-  reference: https://covid19br.github.io/nowcaster/reference
-  article: https://covid19br.github.io/nowcaster/articles
-
+destination: docs
+authors:
+  Rafael Lopes:
+    href: https://github.com/rafalopespx
+  Leonardo Bastos:
+    href: https://github.com/lsbastos/
+  footer:
+    text: Casted by
+url: https://covid19br.github.io/nowcaster/
+template:
+  bootstrap: 5
+  bootswatch: cerulean
+navbar:
+  structure:
+    left:
+    - intro
+    - reference
+    - articles
+    - tutorials
+    - news
+    right:
+    - search
+    - github
+footer:
+  structure:
+    left: developed_by
+    right: built_with
+home:
+  sidebar:
+    structure:
+    - links
+    - license
+    - community
+    - citation
+    - authors
+    - dev
