@@ -5,10 +5,12 @@ Nowcaster
 <a href='https://github.com/covid19br/nowcaster'><img src='man/figures/nowcaster_rev.png' align="right" width="140" /></a>
 
 <!-- badges: start -->
-<!-- [![CRAN checks](https://cranchecks.info/badges/summary/nowcaster)](https://cran.r-project.org/web/checks/check_results_nowcaster.html) -->
+
+<!-- [![CRAN checks](https://badges.cranchecks.info/summary/nowcaster.svg)](https://cran.r-project.org/web/checks/check_results_nowcaster.html) -->
+
 <!-- [![Dependencies](https://tinyverse.netlify.com/badge/nowcaster)](https://cran.r-project.org/package=nowcaster) -->
 
-[![](https://img.shields.io/badge/devel%20version-0.2.2-blue.svg)](https://github.com/nowcaster)
+[![](https://img.shields.io/badge/devel%20version-0.2.3-blue.svg)](https://github.com/nowcaster)
 [![License: GPL (\>=
 3)](https://img.shields.io/badge/license-GPL%20(%3E=%203)-blue.svg)](https://github.com/covid19br/nowcaster/blob/main/LICENSE.md)
 [![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
@@ -72,5 +74,5 @@ please refer to the official
 There are other alternative packages, that can produce nowcasting
 estimation, here it is some options:
 
--   [Epinow2](https://epiforecasts.io/EpiNow/)
--   [Surveillance](https://surveillance.r-forge.r-project.org/pkgdown/index.html)
+- [Epinowcast](https://package.epinowcast.org/)
+- [Surveillance](https://surveillance.r-forge.r-project.org/pkgdown/index.html)

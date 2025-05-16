@@ -4,7 +4,11 @@ output: github_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
 library(badger)
 ```
 
@@ -33,7 +37,7 @@ or death).
 
 After have a proper `INLA` installation to install `nowcaster` package simply run the code below in R:
 
-``` r
+```{r Installing, eval=FALSE, message=FALSE, warning=FALSE, include=TRUE}
 devtools::install_github("https://github.com/covid19br/nowcaster")
 ```
 If you have any problem installing, please refer to next section on the dependencies of the package.
@@ -57,7 +61,7 @@ surveillance system (SIVEP-Gripe), at the time of Covid-19 pandemic.
 Before installing the package certify you have an active installation of `INLA`, 
 to do so you can run the following code:
 
-``` r 
+```{r Installing INLA, eval=FALSE, message=FALSE, warning=FALSE, include=TRUE}
 install.packages("INLA",
                  repos=c(getOption("repos"),
                          INLA="https://inla.r-inla-download.org/R/stable"), 
