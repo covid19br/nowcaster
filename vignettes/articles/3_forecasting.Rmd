@@ -28,12 +28,12 @@ Nowcasting is the estimation of the events that are already started but not yet 
 
 ## Parameter K > 0
 
-The `nowcasting_inla` function has a functional parameter that flags to the model parsed to `inla` to construct the delay triangle with dates greater than the present date. This is done by the setting the `K` parameter to a value greater than 0, like $K = 1,2,3,\dots$. We proceed as in any other example of nowcasting. We will forecasting as was done for nowcasting in the article [Nowcasting for decision making](https://covid19br.github.io/nowcaster/articles/nowcasting_importance.html).
+The `nowcasting_inla` function has a functional parameter that flags to the model parsed to `inla` to construct the delay triangle with dates greater than the present date. This is done by the setting the `K` parameter to a value greater than 0, like $K = 1,2,3,\dots$. We proceed as in any other example of nowcasting. We will forecasting as was done for nowcasting in the article [Nowcasting for decision making](https://covid19br.github.io/nowcaster/articles/2_nowcasting_importance.html).
 
-First, we cut the lazydata loaded with the namespace of the package to a date of interest, more details on why we cut on this date see the article [Nowcasting for decision making](https://covid19br.github.io/nowcaster/articles/nowcasting_importance.html). 
+First, we cut the lazy data loaded with the namespace of the package to a date of interest, more details on why we cut on this date see the article [Nowcasting for decision making](https://covid19br.github.io/nowcaster/articles/2_nowcasting_importance.html). 
 And after this we parse to the `nowcasting_inla` function the date of onset and date of report columns, a flag for returning a data.frame with the cases counts by week and setting the `K` parameter to a desired forecasting horizon, here we forecast one week ahead of the present date.
 
-Before forecasting, we construct the case counts curve from the lazydata, by using the internal function `data.w_no_age`, we construct the curve by summarizing the case counts by each date of onset of first symptoms present at the database.
+Before forecasting, we construct the case counts curve from the lazy data, by using the internal function `data.w_no_age`, we construct the curve by summarizing the case counts by each date of onset of first symptoms present at the database.
 
 ```{r delay triangle}
 library(tidyverse)
@@ -132,7 +132,7 @@ nowcasting_estimate |>
 
 ## Uncertainty grows
 
-As we try to forecasting longer ahead of the present date, the uncertainty has to grow. This is saw by the opening of the confidence intervals on the  last graph. Although it is wide the realized curve still falls inside it, indicating that is assertative on the tendency of the curve at least. This can be taken to support decision making when planning ahead of the present date. To any other forecasting horizon further than 1 week ahead, the confidence interval will be wider than this, to help a little we can try a forecasting with an imposed structured on the data. Now, we forecasting parsing the columns for age to the nowcasting function, this can reduce the opening of the confidence interval.
+As we try to forecasting longer ahead of the present date, the uncertainty has to grow. This is saw by the opening of the confidence intervals on the  last graph. Although it is wide the realized curve still falls inside it, indicating that is assertive on the tendency of the curve at least. This can be taken to support decision making when planning ahead of the present date. To any other forecasting horizon further than 1 week ahead, the confidence interval will be wider than this, to help a little we can try a forecasting with an imposed structured on the data. Now, we forecasting parsing the columns for age to the nowcasting function, this can reduce the opening of the confidence interval.
 
 ```{r forecasting}
 nowcasting_bh_age <- nowcasting_inla(dataset = srag_now, 
@@ -189,4 +189,4 @@ nowcasting_estimate |>
 
 ## Conclusion
 
-On this vignette we explored the forecasting estimates that the model can produces. We have add the `K` parameter different than 0 meaning we want an estimate that goes beyond the partial unobserved data. We further compared forecasting produced considering age class as another predictor, as explored on the [Nowcasting on Structured data]("vignettes/articles/1_structured_data.Rmd), we fit a model to each of the age classes present on the data but now we make use of `K` equals to 1, meaning to add a line of complete unobserved dates to the delay triangle.
+On this vignette we explored the forecasting estimates that the model can produces. We have add the `K` parameter different than 0 meaning we want an estimate that goes beyond the partial unobserved data. We further compared forecasting produced considering age class as another predictor, as explored on the [Nowcasting on Structured data](https://covid19br.github.io/nowcaster/articles/1_structured_data.html), we fit a model to each of the age classes present on the data but now we make use of `K` equals to 1, meaning to add a line of complete unobserved dates to the delay triangle.

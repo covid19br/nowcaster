@@ -5,19 +5,33 @@ authors:
   Leonardo Bastos:
     href: https://github.com/lsbastos/
   footer:
-    text: "Casted by"
-url: https://covid19br.github.io/nowcaster
+    text: Casted by
+url: https://covid19br.github.io/nowcaster/
 template:
   bootstrap: 5
   bootswatch: cerulean
 navbar:
   structure:
-    left:  [intro, reference, articles, tutorials, news]
-    right: [search, github]
+    left:
+    - intro
+    - reference
+    - articles
+    - tutorials
+    - news
+    right:
+    - search
+    - github
 footer:
   structure:
     left: developed_by
     right: built_with
 home:
   sidebar:
-    structure: [links, license, community, citation, authors, dev]
+    structure:
+    - links
+    - license
+    - community
+    - citation
+    - authors
+    - dev
+

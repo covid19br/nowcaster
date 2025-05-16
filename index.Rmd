@@ -70,5 +70,5 @@ If you want more detail on other possible installations of `INLA`, please refer 
 
 There are other alternative packages, that can produce nowcasting estimation, here it is some options:
 
-* [Epinow2](https://epiforecasts.io/EpiNow/)
+* [Epinowcast](https://package.epinowcast.org/)
 * [Surveillance](https://surveillance.r-forge.r-project.org/pkgdown/index.html)
