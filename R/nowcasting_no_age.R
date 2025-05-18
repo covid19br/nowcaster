@@ -6,11 +6,16 @@
 #' @param dataset data pre formatted in to age classes and delays by week for each cases,
 #' delay triangle format
 #' @param zero_inflated zero-inflated model
+#' [Default] FALSE.
 #'
 #' @return Trajectories from the inner 'INLA' model
 #' @export
 nowcasting_no_age <- function(dataset,
                               zero_inflated=FALSE){
+  ## Safe test
+  if(missing(dataset)){
+    stop("'dataset' is missing in 'nowcasting_no_age()'.")
+  }
 
   ## Check for the zero-inflated
   if (zero_inflated){

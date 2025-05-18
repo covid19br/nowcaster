@@ -9,7 +9,7 @@
 #' @export
 nowcasting_age <- function(dataset,
                            zero_inflated=FALSE){
-  ## Cehcl for zero-inflated
+  ## [Not in use] Check for zero-inflated
   if (zero_inflated){
     family <- "zeroinflatednbinomial1"
     control.family <- list(

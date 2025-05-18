@@ -1,53 +1,74 @@
-#' @title Slope.estimate
+#' @title Slope.estimate.quant
 #'
-#' @param end.week [in weeks] The end of the week wanted to the slope estimate
+#' @description
+#' Fits a linear model to trajectories returned from 'nowcasting_inla()' within a given window [Default] is 3 weeks. If 'end.week' is missing uses the maximum date in 'trajectories'.
+#'
 #' @param trajectories Data.frame with the predicted or nowcasted estimate
+#' @param end.week [in weeks] The end of the week wanted to the slope estimate
+#' [Default] max. date in 'trajectories'.
 #' @param window [in weeks] Window of how much time will be used to calculate the slope estimate
+#' [Default] 3 weeks.
 #'
-#' @return The slope of the estimate
+#' @return The numerical value of the slope of the estimate
 #' @export
 #'
 #' @examples
+#' # Loading Belo Horizonte SARI dataset
+#' data(sragBH)
+#' now <- nowcasting_inla(dataset = sragBH,
+#'                 date_onset = DT_SIN_PRI,
+#'                 date_report = DT_DIGITA,
+#'                 trajectories = TRUE,
+#'                 silent = T)
+#' slope.estimate.quant(trajectories = now$trajectories)
 slope.estimate.quant <- function(end.week, trajectories, window=3){
 
-  if(missing(end.week)){
-    end.week<-max(trajectories$dt_event)
+  if(missing(trajectories)){
+    stop("'trajectories' is missing!")
   }
 
+  ## If 'end.week' is missing uses the max. date from trajectories
+  if(missing(end.week)){
+    end.week<-max(trajectories$dt_event)
+    warning("Using max. date in 'trajectories' as 'end.week'")
+  }
+
+  ## Handling trajectories object
   trajectories<-trajectories |>
     dplyr::rename(Date = dt_event,
-                  Casos = Y)
+                  Cases = Y)
 
-  ## Testing if the amount of weeks in the data encompasse the size of the window
+  ## Testing if the amount of weeks in the data encompass the size of the window
   base.week <- end.week - (window*7 - 7)
   if (!base.week %in% trajectories$Date){
-    return(NA)
+    base.week <- min(trajectories$Date)
+    warning("'base.week' wasn't present in 'trajectories', using min. of date.")
   }
 
   ## Normalizing the cases column name
-  norm.casos <- trajectories |>
+  norm.cases <- trajectories |>
     dplyr::filter(Date == base.week) |>
-    dplyr::rename(valorbase = Casos) |>
-    dplyr::group_by(sample, valorbase) |>
-    dplyr::select(-Time, -Date)
-
-  norm.casos <- norm.casos |>
+    dplyr::rename(database_value = Cases) |>
+    dplyr::group_by(sample, database_value) |>
+    dplyr::select(-Time, -Date) |>
     dplyr::right_join(trajectories |>
                         dplyr::filter(Date >= base.week & Date <= end.week),
                       by='sample') |>
-    dplyr::mutate(Casos = case_when(
-      valorbase > 0 ~ Casos/valorbase,
-      TRUE ~ Casos))
+    dplyr::mutate(Cases = dplyr::case_when(
+      database_value > 0 ~ Cases/database_value,
+      TRUE ~ Cases))
 
   ## Testing the amount of samples in the trajectories, if it unique, fit the line and get the slope
   ## if it is more than one, fit for each sample the line and does statistical estimates for the slope
-  if (length(norm.casos$sample |>  unique()) == 1){
+  if (length(norm.cases$sample |>  unique()) == 1){
 
     ## The line model fitting
-    tmp <- stats::lm(Casos ~ Date, data = norm.casos)
+    tmp <- stats::lm(Cases ~ Date, data = norm.cases)
+
     ## Confidence Intervals
     l <- stats::confint(tmp, parm = 'Date', level = .9)
     q <- stats::confint(tmp, parm = 'Date', level = .5)
+
     ## Slope estimate
     slope <- dplyr::case_when(
       l[1] > 0 ~ 1,
@@ -57,9 +78,12 @@ slope.estimate.quant <- function(end.week, trajectories, window=3){
       l[2] < 0 ~ -1
     ) |>
       as.numeric()
+
   } else {
+
     ## More than one sample
-    tmp <- lme4::lmList(Casos ~ Date | sample, data = norm.casos)
+    tmp <- lme4::lmList(Cases ~ Date | sample, data = norm.cases)
+
     slope <- stats::coefficients(tmp) |>
       dplyr::select(Date) |>
       ## Quantiles calculations
@@ -78,6 +102,7 @@ slope.estimate.quant <- function(end.week, trajectories, window=3){
       as.numeric()
 
   }
+
   ## Return the slope
   return(slope)
 }

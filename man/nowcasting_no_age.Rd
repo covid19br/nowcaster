@@ -10,7 +10,8 @@ nowcasting_no_age(dataset, zero_inflated = FALSE)
 \item{dataset}{data pre formatted in to age classes and delays by week for each cases,
 delay triangle format}
 
-\item{zero_inflated}{zero-inflated model}
+\item{zero_inflated}{zero-inflated model
+\link{Default} FALSE.}
 }
 \value{
 Trajectories from the inner 'INLA' model

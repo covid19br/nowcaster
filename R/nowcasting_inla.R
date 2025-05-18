@@ -31,7 +31,8 @@
 #' @param age_col Column for ages
 #' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases
 #' @param date_report Column of dates of report of the event, normally date of digitation of the notification of cases
-#' @param trajectories Returns the trajectories estimated on the inner 'INLA' model
+#' @param trajectories Returns the trajectories estimated from the inner 'INLA' model
+#' [Default] FALSE.
 #' @param zero_inflated [Experimental] In non-structured models, fit a model that deals with zero-inflated data.
 #' [Default] FALSE. If the [age_col] is not missing this flag is ignored.
 #' @param ... list parameters to other functions
@@ -82,7 +83,7 @@ nowcasting_inla <- function(dataset,
 
   }
   if(missing(date_onset) | missing(date_report)){
-    stop("date_onset or date_report missing! Please give a column name for each of this parameters")
+    stop("'date_onset' or 'date_report' missing! Please give a column name for each of this parameters")
   }
   if(K < 0 ){
     stop("K less than 0, we cannot produce backcasting! \n
@@ -113,7 +114,7 @@ nowcasting_inla <- function(dataset,
     ## Missing trim.data warning
     if(missing(trim.data)){
       trim.data <- 0
-      warning("Using default to trim dates, trim.data = 0")
+      warning("Using default to trim dates, 'trim.data = 0'")
     }else{
       trim.data<-trim.data
       message("Using trim.data inputed")
@@ -121,7 +122,7 @@ nowcasting_inla <- function(dataset,
     ## Missing Dmax warning
     if(missing(Dmax)){
       Dmax <- 15
-      warning("Using default to maximum delay, Dmax = 15")
+      warning("Using default to maximum delay, 'Dmax = 15'")
     }else{
       Dmax<-Dmax
       message("Using Dmax inputed")
@@ -129,7 +130,7 @@ nowcasting_inla <- function(dataset,
     ## Missing wdw warning
     if(missing(wdw)){
       wdw <- 30
-      warning("Using default to window of action, wdw = 30")
+      warning("Using default to window of action, 'wdw = 30'")
     }else{
       wdw<-wdw
       message("Using wdw inputed")
@@ -137,10 +138,10 @@ nowcasting_inla <- function(dataset,
     ## Missing data.by.week warning
     if(missing(data.by.week)){
       data.by.week <- FALSE
-      warning("Using default to returning option for the data, data.by.week = FALSE")
+      warning("Using default to returning option for the data, 'data.by.week = FALSE'")
     }else{
       data.by.week<-data.by.week
-      message("Returning data.by.week")
+      message("Returning 'data.by.week'")
     }
     # ## Missing return.age warning
     # if(missing(return.age)){
@@ -149,9 +150,9 @@ nowcasting_inla <- function(dataset,
     # }
     ## Missing age_col warning
     if(missing(age_col)){
-      warning("Age_col missing, nowcasting with unstructured model")
+      warning("'age_col' missing, nowcasting with unstructured model")
     }else{
-      message("Age col inputed, nowcasting with structured model")
+      message("'age_col' inputed, nowcasting with structured model")
     }
 
     if(missing(trajectories) | trajectories == FALSE){
@@ -162,7 +163,7 @@ nowcasting_inla <- function(dataset,
 
       if(!missing(age_col) & !missing(zero_inflated)){
         zero_inflated<-FALSE
-        warning("age_col parsed, zero_inflated ignored!")
+        warning("'age_col' parsed, 'zero_inflated' ignored!")
       }
     }
   }

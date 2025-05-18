@@ -58,7 +58,8 @@ or options between, "SI-PNI", "10 years", "5 years".
 \item{K}{(in weeks) How much weeks to forecast ahead?
 \link{Default} K is 0, no forecasting ahead}
 
-\item{trajectories}{Returns the trajectories estimated on the inner 'INLA' model}
+\item{trajectories}{Returns the trajectories estimated from the inner 'INLA' model
+\link{Default} FALSE.}
 
 \item{zero_inflated}{\link{Experimental} In non-structured models, fit a model that deals with zero-inflated data.
 \link{Default} FALSE. If the \link{age_col} is not missing this flag is ignored.}

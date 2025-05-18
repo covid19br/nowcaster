@@ -2,20 +2,32 @@
 % Please edit documentation in R/slope.estimate.quant.R
 \name{slope.estimate.quant}
 \alias{slope.estimate.quant}
-\title{Slope.estimate}
+\title{Slope.estimate.quant}
 \usage{
 slope.estimate.quant(end.week, trajectories, window = 3)
 }
 \arguments{
-\item{end.week}{\link{in weeks} The end of the week wanted to the slope estimate}
+\item{end.week}{\link{in weeks} The end of the week wanted to the slope estimate
+\link{Default} max. date in 'trajectories'.}
 
 \item{trajectories}{Data.frame with the predicted or nowcasted estimate}
 
-\item{window}{\link{in weeks} Window of how much time will be used to calculate the slope estimate}
+\item{window}{\link{in weeks} Window of how much time will be used to calculate the slope estimate
+\link{Default} 3 weeks.}
 }
 \value{
 The slope of the estimate
 }
 \description{
-Slope.estimate
+Fits a linear model to trajectories returned from 'nowcasting_inla()' within a given window \link{Default} is 3 weeks. If 'end.week' is missing uses the maximum date in 'trajectories'.
+}
+\examples{
+# Loading Belo Horizonte SARI dataset
+data(sragBH)
+now <- nowcasting_inla(dataset = sragBH,
+                date_onset = DT_SIN_PRI,
+                date_report = DT_DIGITA,
+                trajectories = TRUE,
+                silent = T)
+slope.estimate.quant(trajectories = now$trajectories)
 }
