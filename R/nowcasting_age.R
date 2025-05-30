@@ -4,11 +4,18 @@
 #' data has to be in the format of delay-triangle
 #'
 #' @param dataset data pre formatted in to age classes and delays by week for each cases, delay triangle format
+#' @param timeREmodel Latent model for time random effects.
+#' [Default] is a second-order random walk model.
+#' @param INLAoutput return the INLA output. [Default] is FALSE.
+#' @param INLAoutputOnly return the only the INLA output. [Default] is FALSE.
 #'
 #' @return Trajectories from the inner 'INLA' model
 #' @export
 nowcasting_age <- function(dataset,
-                           zero_inflated=FALSE){
+                           zero_inflated=FALSE,
+                           timeREmodel = "rw2",
+                           INLAoutput = F,
+                           INLAoutputOnly = F){
   ## [Not in use] Check for zero-inflated
   if (zero_inflated){
     family <- "zeroinflatednbinomial1"
@@ -35,18 +42,19 @@ nowcasting_age <- function(dataset,
   ## Model equation: intercept + age + f(time random effect | age) + f(Delay random effect | age)
   ## Y(t,Age) ~ 1 + Age + rw2(t,Age) + rw1(delay, Age),
   ## prec(rw2) ~ logGamma(10e-3, 10e-3), prec(rw1) ~ logGamma(10e-3, 10e-3)
-  model <- Y ~ 1 + fx_etaria +
-    f(Time,
-      model = "rw2",
-      hyper = list("prec" = list(prior = "loggamma",
+  model <- as.formula(paste0( "Y ~ 1 + fx_etaria +
+    f(Time, model = \"", timeREmodel, " \",
+      hyper = list(\"prec\" = list(prior = \"loggamma\",
                                  param = c(0.001, 0.001))
       ),
-      group = fx_etaria.num, control.group = list(model = "iid")) +
-    f(delay, model = "rw1",
-      hyper = list("prec" = list(prior = "loggamma",
+      group = fx_etaria.num, control.group = list(model = \"iid\")) +
+    f(delay, model = \"rw1\",
+      hyper = list(\"prec\" = list(prior = \"loggamma\",
                                  param = c(0.001, 0.001))),
-      group = fx_etaria.num, control.group = list(model = "iid")
-    )
+      group = fx_etaria.num, control.group = list(model = \"iid\")
+    )"))
+
+
 
   ## Running the Negative Binomial model in INLA
   output0 <- INLA::inla(model, family = family,

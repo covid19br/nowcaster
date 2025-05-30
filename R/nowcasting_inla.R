@@ -35,6 +35,10 @@
 #' [Default] FALSE.
 #' @param zero_inflated [Experimental] In non-structured models, fit a model that deals with zero-inflated data.
 #' [Default] FALSE. If the [age_col] is not missing this flag is ignored.
+#' @param timeREmodel Latent model for time random effects.
+#' [Default] is a second-order random walk model.
+#' @param INLAoutput return the INLA output. [Default] is FALSE.
+#' @param INLAoutputOnly return the only the INLA output. [Default] is FALSE.
 #' @param ... list parameters to other functions
 #'
 #' @return a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total',
@@ -65,6 +69,9 @@ nowcasting_inla <- function(dataset,
                             K = 0,
                             trajectories = F,
                             zero_inflated = F,
+                            timeREmodel = "rw2",
+                            INLAoutput = F,
+                            INLAoutputOnly = F,
                             ...){
 
   dots<-list(...)
@@ -322,7 +329,11 @@ nowcasting_inla <- function(dataset,
     if(zero_inflated){
       ## Nowcasting estimate
       sample.now <- nowcasting_no_age(dataset = data.inla,
-                                      zero_inflated = T)
+                                      zero_inflated = T,
+                                      timeREmodel = timeREmodel,
+                                      INLAoutput = INLAoutput,
+                                      INLAoutputOnly = INLAoutputOnly
+      )
     }else{
       ## Nowcasting estimate
       sample.now <- nowcasting_no_age(dataset = data.inla,
@@ -338,11 +349,19 @@ nowcasting_inla <- function(dataset,
     if(zero_inflated){
       ## Nowcasting estimate
       sample.now <- nowcasting_age(dataset = data.inla,
-                                   zero_inflated = T)
+                                   zero_inflated = T,
+                                   timeREmodel = timeREmodel,
+                                   INLAoutput = INLAoutput,
+                                   INLAoutputOnly = INLAoutputOnly
+      )
     }else{
       ## Nowcasting estimate
       sample.now <- nowcasting_age(dataset = data.inla,
-                                   zero_inflated = F)
+                                   zero_inflated = F,
+                                   timeREmodel = timeREmodel,
+                                   INLAoutput = INLAoutput,
+                                   INLAoutputOnly = INLAoutputOnly
+      )
     }
 
     ## Summary on the posteriors of nowcasting
@@ -353,27 +372,31 @@ nowcasting_inla <- function(dataset,
 
   ## Objects to be returned
 
-  if(data.by.week){
+  if(INLAoutputOnly){
+    names(now_summary) <- "output"
+  }else{
+    if(data.by.week){
 
-    # if(missing(age_col)){
+      # if(missing(age_col)){
       now_summary[[3-l]]<- data.inla
-    # }
+      # }
 
-    # now_summary[[3-l]]<-data_w |>
-    #   dplyr::group_by(date_onset) |>
-    #   dplyr::summarise(observed = dplyr::n(),
-    #                    Delay = Delay)
+      # now_summary[[3-l]]<-data_w |>
+      #   dplyr::group_by(date_onset) |>
+      #   dplyr::summarise(observed = dplyr::n(),
+      #                    Delay = Delay)
 
-    names(now_summary)[3-l]<-"data"
+      names(now_summary)[3-l]<-"data"
 
-    if(trajectories){
-      now_summary[[4-l]]<-sample.now
-      names(now_summary)[4-l]<-"trajectories"
-    }
-  } else {
-    if(trajectories){
-      now_summary[[3-l]]<-sample.now
-      names(now_summary)[3-l]<-"trajectories"
+      if(trajectories){
+        now_summary[[4-l]]<-sample.now
+        names(now_summary)[4-l]<-"trajectories"
+      }
+    } else {
+      if(trajectories){
+        now_summary[[3-l]]<-sample.now
+        names(now_summary)[3-l]<-"trajectories"
+      }
     }
   }
 

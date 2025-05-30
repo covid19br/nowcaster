@@ -7,11 +7,20 @@
 #' delay triangle format
 #' @param zero_inflated zero-inflated model
 #' [Default] FALSE.
+#' @param timeREmodel Latent model for time random effects.
+#' [Default] is a second-order random walk model.
+#' @param INLAoutput return the INLA output. [Default] is FALSE.
+#' @param INLAoutputOnly return the only the INLA output. [Default] is FALSE.
+
 #'
 #' @return Trajectories from the inner 'INLA' model
 #' @export
 nowcasting_no_age <- function(dataset,
-                              zero_inflated=FALSE){
+                              zero_inflated=FALSE,
+                              timeREmodel = "rw2",
+                              INLAoutput = F,
+                              INLAoutputOnly = F
+                              ){
   ## Safe test
   if(missing(dataset)){
     stop("'dataset' is missing in 'nowcasting_no_age()'.")
@@ -39,16 +48,15 @@ nowcasting_no_age <- function(dataset,
   ## Model equation: intercept + f(time random effect) + f(Delay random effect)
   ## Y(t) ~ 1 + rw2(t) + rw1(delay),
   ## prec(rw2) ~ logGamma(10e-3, 10e-3), prec(rw1) ~ logGamma(10e-3, 10e-3)
-  model <- Y ~ 1 +
-    f(Time,
-      model = "rw2",
-      hyper = list("prec" = list(prior = "loggamma",
-                                 param = c(0.001, 0.001))
-      )) +
-    f(delay, model = "rw1",
-      hyper = list("prec" = list(prior = "loggamma",
-                                 param = c(0.001, 0.001)))
-    )
+  model <- as.formula(paste0(
+    "Y ~ 1 + f(Time, model = \"", timeREmodel,"\",
+        hyper = list(\"prec\" = list(prior = \"loggamma\",
+                                   param = c(0.001, 0.001))
+        )) +
+      f(delay, model = \"rw1\",
+        hyper = list(\"prec\" = list(prior = \"loggamma\",
+                                   param = c(0.001, 0.001)))
+      )"))
 
   ## Running the Negative Binomial model in INLA
   output0 <- INLA::inla(model,
@@ -60,6 +68,11 @@ nowcasting_no_age <- function(dataset,
   )
 
   # }
+
+
+  # timeREmodel = "rw2",
+  # INLAoutput = F,
+  # INLAoutputOnly = F,
 
   ## Algorithm to get samples for the predictive distribution for the number of cases
 
