@@ -39,7 +39,7 @@
 #'
 #' @return a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total',
 #' 'data' with the time-series out of wdw .
-#' If 'age_col' is parsed, add a thrid element with by age estimation 'age' .
+#' If 'age_col' is parsed, add a third element with by age estimation 'age' .
 #' If 'trajectories' = TRUE, add a forth element with the returned trajectories from 'inla'.
 #' @export
 #'
