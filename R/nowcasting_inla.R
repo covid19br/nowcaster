@@ -103,11 +103,15 @@ nowcasting_inla <- function(dataset,
          Please set the K to anything greater than 0 to Forecasting")
   }
 
+  # Dealing with INLA output
+
+  INLAoutput.aux = INLAoutput
+
   ## Forcing INLA output TRUE when INLAoutput is FALSE
-  if(INLAoutputOnly == T & INLAoutput == F) INLAoutput = T
+  if(INLAoutputOnly == T & INLAoutput == F) INLAoutput.aux = T
 
   ## Forcing INLA output TRUE when either WAIC or DIC are TRUE
-  if(WAIC == T | DIC == T) INLAoutput = T
+  if(WAIC == T | DIC == T) INLAoutput.aux = T
 
 
   ## Warnings
@@ -344,7 +348,7 @@ nowcasting_inla <- function(dataset,
       sample.now <- nowcasting_no_age(dataset = data.inla,
                                       zero_inflated = T,
                                       timeREmodel = timeREmodel,
-                                      INLAoutput = INLAoutput,
+                                      INLAoutput = INLAoutput.aux,
                                       INLAoutputOnly = INLAoutputOnly,
                                       WAIC = WAIC, DIC = DIC
       )
@@ -353,7 +357,7 @@ nowcasting_inla <- function(dataset,
       sample.now <- nowcasting_no_age(dataset = data.inla,
                                       zero_inflated = F,
                                       timeREmodel = timeREmodel,
-                                      INLAoutput = INLAoutput,
+                                      INLAoutput = INLAoutput.aux,
                                       INLAoutputOnly = INLAoutputOnly,
                                       WAIC = WAIC, DIC = DIC)
     }
@@ -374,7 +378,7 @@ nowcasting_inla <- function(dataset,
       sample.now <- nowcasting_age(dataset = data.inla,
                                    zero_inflated = T,
                                    timeREmodel = timeREmodel,
-                                   INLAoutput = INLAoutput,
+                                   INLAoutput = INLAoutput.aux,
                                    INLAoutputOnly = INLAoutputOnly,
                                    WAIC = WAIC, DIC = DIC
       )
@@ -383,7 +387,7 @@ nowcasting_inla <- function(dataset,
       sample.now <- nowcasting_age(dataset = data.inla,
                                    zero_inflated = F,
                                    timeREmodel = timeREmodel,
-                                   INLAoutput = INLAoutput,
+                                   INLAoutput = INLAoutput.aux,
                                    INLAoutputOnly = INLAoutputOnly,
                                    WAIC = WAIC, DIC = DIC
       )
@@ -432,7 +436,7 @@ nowcasting_inla <- function(dataset,
 
   }
 
-  if(INLAoutput) now_summary$output <- sample.now$INLAoutput
+  if(INLAoutput.aux) now_summary$output <- sample.now$INLAoutput
   if(WAIC) now_summary$waic <- sample.now$INLAoutput$waic$waic
   if(DIC) now_summary$dic <- sample.now$INLAoutput$dic$dic
 
