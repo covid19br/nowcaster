@@ -39,12 +39,17 @@
 #' [Default] is a second-order random walk model.
 #' @param INLAoutput return the INLA output. [Default] is FALSE.
 #' @param INLAoutputOnly return the only the INLA output. [Default] is FALSE.
+#' @param WAIC return the WAIC. [Default] is FALSE.
+#' @param DIC return the DIC. [Default] is FALSE.
 #' @param ... list parameters to other functions
 #'
 #' @return a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total',
 #' 'data' with the time-series out of wdw .
 #' If 'age_col' is parsed, add a third element with by age estimation 'age' .
 #' If 'trajectories' = TRUE, add a forth element with the returned trajectories from 'inla'.
+#' If 'INLAoutput' = TRUE, the INLA output is returned as a list object named 'output'.
+#' If 'INLAoutputOnly' = TRUE, just the INLA output is returned in a list object named 'output'.
+#' If 'WAIC' = TRUE or 'DIC' = TRUE, then 'INLAoutput' is forced to be TRUE returning the INLA output and a list object named waic or dic are also returned.
 #' @export
 #'
 #' @examples
@@ -72,6 +77,7 @@ nowcasting_inla <- function(dataset,
                             timeREmodel = "rw2",
                             INLAoutput = F,
                             INLAoutputOnly = F,
+                            WAIC = F, DIC = F,
                             ...){
 
   dots<-list(...)
@@ -96,6 +102,13 @@ nowcasting_inla <- function(dataset,
     stop("K less than 0, we cannot produce backcasting! \n
          Please set the K to anything greater than 0 to Forecasting")
   }
+
+  ## Forcing INLA output TRUE when INLAoutput is FALSE
+  if(INLAoutputOnly == T & INLAoutput == F) INLAoutput = T
+
+  ## Forcing INLA output TRUE when either WAIC or DIC are TRUE
+  if(WAIC == T | DIC == T) INLAoutput = T
+
 
   ## Warnings
   if(missing(silent) | silent == FALSE){
@@ -332,18 +345,28 @@ nowcasting_inla <- function(dataset,
                                       zero_inflated = T,
                                       timeREmodel = timeREmodel,
                                       INLAoutput = INLAoutput,
-                                      INLAoutputOnly = INLAoutputOnly
+                                      INLAoutputOnly = INLAoutputOnly,
+                                      WAIC = WAIC, DIC = DIC
       )
     }else{
       ## Nowcasting estimate
       sample.now <- nowcasting_no_age(dataset = data.inla,
-                                      zero_inflated = F)
+                                      zero_inflated = F,
+                                      timeREmodel = timeREmodel,
+                                      INLAoutput = INLAoutput,
+                                      INLAoutputOnly = INLAoutputOnly,
+                                      WAIC = WAIC, DIC = DIC)
     }
 
     ## Summary on the posteriors of nowcasting
-    now_summary<-nowcasting.summary(trajetory = sample.now,
-                                    age = F)
-    l<-1
+    if(!INLAoutputOnly){
+      now_summary<-nowcasting.summary(trajetory = sample.now$sample,
+                                      age = F)
+      # l<-1
+    }else{
+      now_summary <- list()
+    }
+
   } else {
 
     if(zero_inflated){
@@ -352,7 +375,8 @@ nowcasting_inla <- function(dataset,
                                    zero_inflated = T,
                                    timeREmodel = timeREmodel,
                                    INLAoutput = INLAoutput,
-                                   INLAoutputOnly = INLAoutputOnly
+                                   INLAoutputOnly = INLAoutputOnly,
+                                   WAIC = WAIC, DIC = DIC
       )
     }else{
       ## Nowcasting estimate
@@ -360,45 +384,58 @@ nowcasting_inla <- function(dataset,
                                    zero_inflated = F,
                                    timeREmodel = timeREmodel,
                                    INLAoutput = INLAoutput,
-                                   INLAoutputOnly = INLAoutputOnly
+                                   INLAoutputOnly = INLAoutputOnly,
+                                   WAIC = WAIC, DIC = DIC
       )
     }
 
     ## Summary on the posteriors of nowcasting
-    now_summary<-nowcasting.summary(trajetory = sample.now,
+    if(!INLAoutputOnly){
+      now_summary<-nowcasting.summary(trajetory = sample.now$sample,
                                     age = T)
-    l<-0
+    } else {
+      now_summary <- list()
+    }
+    # l<-0
   }
 
   ## Objects to be returned
 
-  if(INLAoutputOnly){
-    names(now_summary) <- "output"
-  }else{
+  if(!INLAoutputOnly){
     if(data.by.week){
 
-      # if(missing(age_col)){
-      now_summary[[3-l]]<- data.inla
-      # }
+      # # if(missing(age_col)){
+      # now_summary[[3-l]]<- data.inla
+      # # }
+      #
+      # # now_summary[[3-l]]<-data_w |>
+      # #   dplyr::group_by(date_onset) |>
+      # #   dplyr::summarise(observed = dplyr::n(),
+      # #                    Delay = Delay)
+      #
+      # names(now_summary)[3-l]<-"data"
 
-      # now_summary[[3-l]]<-data_w |>
-      #   dplyr::group_by(date_onset) |>
-      #   dplyr::summarise(observed = dplyr::n(),
-      #                    Delay = Delay)
-
-      names(now_summary)[3-l]<-"data"
+      now_summary$data <- data.inla
 
       if(trajectories){
-        now_summary[[4-l]]<-sample.now
-        names(now_summary)[4-l]<-"trajectories"
+        # now_summary[[4-l]]<-sample.now
+        # names(now_summary)[4-l]<-"trajectories"
+        now_summary$trajectories <- sample.now
       }
     } else {
       if(trajectories){
-        now_summary[[3-l]]<-sample.now
-        names(now_summary)[3-l]<-"trajectories"
+        # now_summary[[3-l]]<-sample.now
+        # names(now_summary)[3-l]<-"trajectories"
+        now_summary$trajectories <- sample.now
       }
     }
+
   }
+
+  if(INLAoutput) now_summary$output <- sample.now$INLAoutput
+  if(WAIC) now_summary$waic <- sample.now$INLAoutput$waic$waic
+  if(DIC) now_summary$dic <- sample.now$INLAoutput$dic$dic
+
 
   ## Final object returned
   return(now_summary)

@@ -16,7 +16,7 @@ slope.estimate.quant(end.week, trajectories, window = 3)
 \link{Default} 3 weeks.}
 }
 \value{
-The slope of the estimate
+The numerical value of the slope of the estimate
 }
 \description{
 Fits a linear model to trajectories returned from 'nowcasting_inla()' within a given window \link{Default} is 3 weeks. If 'end.week' is missing uses the maximum date in 'trajectories'.

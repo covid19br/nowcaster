@@ -19,6 +19,11 @@ nowcasting_inla(
   K = 0,
   trajectories = F,
   zero_inflated = F,
+  timeREmodel = "rw2",
+  INLAoutput = F,
+  INLAoutputOnly = F,
+  WAIC = F,
+  DIC = F,
   ...
 )
 }
@@ -64,6 +69,17 @@ or options between, "SI-PNI", "10 years", "5 years".
 \item{zero_inflated}{\link{Experimental} In non-structured models, fit a model that deals with zero-inflated data.
 \link{Default} FALSE. If the \link{age_col} is not missing this flag is ignored.}
 
+\item{timeREmodel}{Latent model for time random effects.
+\link{Default} is a second-order random walk model.}
+
+\item{INLAoutput}{return the INLA output. \link{Default} is FALSE.}
+
+\item{INLAoutputOnly}{return the only the INLA output. \link{Default} is FALSE.}
+
+\item{WAIC}{return the WAIC. \link{Default} is FALSE.}
+
+\item{DIC}{return the DIC. \link{Default} is FALSE.}
+
 \item{...}{list parameters to other functions}
 
 \item{return.age}{\link{Deprecated} If the estimate by Age should be returned.
@@ -72,8 +88,11 @@ or options between, "SI-PNI", "10 years", "5 years".
 \value{
 a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total',
 'data' with the time-series out of wdw .
-If 'age_col' is parsed, add a thrid element with by age estimation 'age' .
+If 'age_col' is parsed, add a third element with by age estimation 'age' .
 If 'trajectories' = TRUE, add a forth element with the returned trajectories from 'inla'.
+If 'INLAoutput' = TRUE, the INLA output is returned as a list object named 'output'.
+If 'INLAoutputOnly' = TRUE, just the INLA output is returned in a list object named 'output'.
+If 'WAIC' = TRUE or 'DIC' = TRUE, then 'INLAoutput' is forced to be TRUE returning the INLA output and a list object named waic or dic are also returned.
 }
 \description{
 function to estimate amount of events already started by not yet notified.

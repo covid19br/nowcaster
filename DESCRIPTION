@@ -1,6 +1,6 @@
 Package: nowcaster
 Title: Nowcaster
-Version: 0.2.3
+Version: 0.3.3
 Authors@R: c(
     person("Rafael", "Lopes", , "rafael.lp.silva@unesp.br", role = c("aut", "cre"), 
     comment = c(ORCID = "0000-0002-9416-6145")),
@@ -18,9 +18,10 @@ Suggests:
     ggplot2,
     knitr,
     rmarkdown,
+    testthat (>= 3.0.0),
     vroom
 Depends: 
-    R (>= 2.10)
+    R (>= 4.1.0)
 LazyData: true
 Additional_repositories: 
     https://inla.r-inla-download.org/R/stable/
@@ -31,3 +32,4 @@ Imports:
     tidyr,
     tibble
 VignetteBuilder: knitr
+Config/testthat/edition: 3
