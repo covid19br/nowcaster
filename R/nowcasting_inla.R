@@ -127,15 +127,8 @@ nowcasting_inla <- function(dataset,
         message("Nowcasting only")
       }
     }
-    ## Missing age column warning
-    if(missing(bins_age)){
-      bins_age <- "SI-PNI"
-      warning("Using 'SI-PNI' age bins!")
-    }else{
-      bins_age<-bins_age
-      message("Using age bins inputed")
-    }
-    ## Missing trim.data warning
+
+        ## Missing trim.data warning
     if(missing(trim.data)){
       trim.data <- 0
       warning("Using default to trim dates, 'trim.data = 0'")
@@ -175,6 +168,14 @@ nowcasting_inla <- function(dataset,
     ## Missing age_col warning
     if(missing(age_col)){
       warning("'age_col' missing, nowcasting with unstructured model")
+      ## Missing bins_age column warning
+      if(missing(bins_age)){
+        bins_age <- "SI-PNI"
+        warning("Using 'SI-PNI' age bins!")
+      }else{
+        bins_age<-bins_age
+        message("Using age bins inputed")
+      }
     }else{
       message("'age_col' inputed, nowcasting with structured model")
     }
