@@ -46,7 +46,7 @@ nowcasting_bh_no_age <- nowcasting_inla(dataset = sragBH,
 head(nowcasting_bh_no_age$total)
 ```
 
-This calling will return for the first element the nowcasting estimate and its Confidence Interval (CI) for two different Credible interval, `LIb` and `LSb` are the max and min CI, respectively, with credibility of 50% and `LI` and `LS` are the max and min CI, respectively, with credibility of 95%.
+This calling will return for the first element the nowcasting estimate and its Credible Interval (CI) for two different credibility levels, `LIb` and `LSb` are the CI limits for 50% of credibility, and `LI` and `LS` are CI limits for a 95% credibility.
 
 On the second element it returns the data to be grouped and summarized to give the epidemic curve, we can take a look on this element. 
 
@@ -80,7 +80,7 @@ dados_by_week |>
 ```
 
 
-After this element is groped by and summarized by the onset of symptoms date, here `DT_SIN_PRI`, it is the epidemiological curve observed. To example how the estimate compares with the observed curve, we plot the estimate and the epidemiological curve all together.
+After this element is grouped by and summarized by the onset of symptoms date, here `DT_SIN_PRI`, it is the epidemiological curve observed. To example how the estimate compares with the observed curve, we plot the estimate and the epidemiological curve all together.
 
 ```{r no_age_plot}
 
@@ -90,7 +90,7 @@ nowcasting_bh_no_age$total |>
   geom_line(data = dados_by_week, 
             aes(y = observed, 
                 col = 'Observed'))+
-  geom_ribbon(aes(ymin = LI, ymax = LS, col = NA), 
+  geom_ribbon(aes(ymin = LI, ymax = LS), col = NA, 
               alpha = 0.2, 
               show.legend = F)+
   geom_line()+
