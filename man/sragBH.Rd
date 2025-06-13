@@ -9,7 +9,6 @@ A data frame with 65404 rows and 7 variables:
 \describe{
 \item{DT_SIN_PRI}{Date of onset symptoms.}
 \item{DT_DIGITA}{Date of recording.}
-\item{DT_SIN_PRI}{Date of onset symptoms.}
 \item{CLASSI_FIN}{Final classification of the case. (Not used for nowcasting)}
 \item{EVOLUCAO}{Case evolution. (Not used for nowcasting)}
 \item{CO_MUN_RES}{IBGE municipality code. Belo Horizonte is 310620.}

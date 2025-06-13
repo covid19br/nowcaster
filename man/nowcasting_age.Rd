@@ -17,6 +17,8 @@ nowcasting_age(
 \arguments{
 \item{dataset}{data pre formatted in to age classes and delays by week for each cases, delay triangle format}
 
+\item{zero_inflated}{\link{Experimental} It deals with zero-inflated data by using a zeroinflatednbinomial2 model.}
+
 \item{timeREmodel}{Latent model for time random effects.
 \link{Default} is a second-order random walk model.}
 

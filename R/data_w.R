@@ -13,11 +13,12 @@
 #' @param use.epiweek If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date.
 #' @param K How much weeks to forecast ahead?
 #' [Default] K is 0, no forecasting ahead
+#' @param silent [Deprecated] to be removed.
 #'
 #' @return Data in weeks format, with the maximum dates for the last week used
 #' @export
 #'
-#' @examples If the last data is at a Sunday, so the weel starts at Monday before.
+#' @examples If the last data is at a Sunday, so the week starts at Monday before.
 #' If ends at Thursday, so it starts on the Friday before
 data.w <- function(dataset,
                    trim.data,

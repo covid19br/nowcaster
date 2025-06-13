@@ -11,6 +11,7 @@
 #' @param use.epiweek If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date.
 #' @param K How much weeks to forecast ahead?
 #' [Default] K is 0, no forecasting ahead
+#' @param silent [Deprecated] to be removed.
 #'
 #' @return Data in weeks format, with the maximum dates for the last week used
 #' @export

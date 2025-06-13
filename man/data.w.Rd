@@ -33,6 +33,8 @@ data.w(
 
 \item{K}{How much weeks to forecast ahead?
 \link{Default} K is 0, no forecasting ahead}
+
+\item{silent}{\link{Deprecated} to be removed.}
 }
 \value{
 Data in weeks format, with the maximum dates for the last week used
@@ -43,6 +45,6 @@ has to use the maximum of data present on the last week parsed to the estimation
 Makes the account of maximum days per week to be used.
 }
 \examples{
-If the last data is at a Sunday, so the weel starts at Monday before.
+If the last data is at a Sunday, so the week starts at Monday before.
 If ends at Thursday, so it starts on the Friday before
 }

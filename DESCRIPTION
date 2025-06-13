@@ -1,8 +1,10 @@
 Package: nowcaster
 Title: Nowcaster
-Version: 0.3.3
+Version: 1.0.0
 Authors@R: c(
-    person("Rafael", "Lopes", , "rafael.lp.silva@unesp.br", role = c("aut", "cre"), 
+    person("Rafael", "Lopes", , "rafael.lopes@yale.edu", role = c("aut", "cre"), 
+    comment = c(ORCID = "0000-0002-9416-6145")),
+    person("Tatiana", "Portella", , "tatiana.portella@fiocruz.br", role = c("aut"), 
     comment = c(ORCID = "0000-0002-9416-6145")),
     person("Leonardo", "Bastos", , "leonardo.bastos@fiocruz.br", role = c("aut"), 
     comment = c(ORCID = "0000-0002-1406-0122")))

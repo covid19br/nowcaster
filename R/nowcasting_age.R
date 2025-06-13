@@ -6,6 +6,7 @@
 #' @param dataset data pre formatted in to age classes and delays by week for each cases, delay triangle format
 #' @param timeREmodel Latent model for time random effects.
 #' [Default] is a second-order random walk model.
+#' @param zero_inflated [Experimental] It deals with zero-inflated data by using a zeroinflatednbinomial2 model.
 #' @param INLAoutput return the INLA output. [Default] is FALSE.
 #' @param INLAoutputOnly return the only the INLA output. [Default] is FALSE.
 #' @param WAIC return the WAIC. [Default] is FALSE.
@@ -24,8 +25,8 @@ nowcasting_age <- function(dataset,
     family <- "zeroinflatednbinomial2"
     control.family <- list(
       hyper = list("theta1" = list(prior = "loggamma",
-                                   param = c(0.01, 0.01)),
-                   # INLA defaulf fro a
+                                   param = c(0.001, 0.001)),
+                   # INLA default fro a
                    "theta2" = list(prior = "gaussian",
                                    param = c(2, 1)))
     )
@@ -86,7 +87,9 @@ nowcasting_age <- function(dataset,
     vector.samples0 <- lapply(X = srag.samples0.list,
                               FUN = function(x, idx = index.missing){
                                 if(zero_inflated){
-                                  unif.log <- as.numeric(stats::runif(idx,0,1) < x$hyperpar[2])
+                                  # unif.log <- as.numeric(stats::runif(idx,0,1) < x$hyperpar[2])
+                                  # p = 1 - (exp(eta) / (1+exp(eta)))^a ; eta -> grande; p -> 0
+                                  unif.log <- as.numeric(stats::runif(idx,0,1) > 1-(exp(x$latent[idx]) / (1+exp(x$latent[idx])))^x$hyperpar[2])
                                 }else{
                                   unif.log = 1
                                 }

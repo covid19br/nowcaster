@@ -13,9 +13,9 @@
 #' 'LSb' upper limit, 50% CI
 #' 'LIb' lower limit, 50% CI
 #' @export
-nowcasting.summary <- function(trajetory, age = F){
+nowcasting.summary <- function(trajectory, age = F){
 
-  total.summy <- trajetory |>
+  total.summy <- trajectory |>
     dplyr::group_by(Time, dt_event, sample) |>
     dplyr::summarise(Y = sum(Y, na.rm = T)) |>
     dplyr::group_by(Time, dt_event) |>
@@ -26,7 +26,7 @@ nowcasting.summary <- function(trajetory, age = F){
                      LSb = stats::quantile(Y, probs = 0.75, na.rm = T),
                      .groups = "drop")
   if(age){
-    age.summy <- trajetory |>
+    age.summy <- trajectory |>
       dplyr::group_by(Time, dt_event, fx_etaria, fx_etaria.num) |>
       dplyr::summarise(Median = stats::median(Y, na.rm = T),
                        LI = stats::quantile(Y, probs = 0.025, na.rm = T),
