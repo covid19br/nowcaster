@@ -160,25 +160,6 @@ nowcasting_inla <- function(dataset,
       data.by.week<-data.by.week
       message("Returning 'data.by.week'")
     }
-    # ## Missing return.age warning
-    # if(missing(return.age)){
-    #   return.age <- TRUE
-    #   warning("Using default to returning estimate by age, return.age = TRUE")
-    # }
-    ## Missing age_col warning
-    if(missing(age_col)){
-      warning("'age_col' missing, nowcasting with unstructured model")
-      ## Missing bins_age column warning
-      if(missing(bins_age)){
-        bins_age <- "SI-PNI"
-        warning("Using 'SI-PNI' age bins!")
-      }else{
-        bins_age<-bins_age
-        message("Using age bins inputed")
-      }
-    }else{
-      message("'age_col' inputed, nowcasting with structured model")
-    }
 
     if(missing(trajectories) | trajectories == FALSE){
       warning("Not returning trajectories")
@@ -190,6 +171,29 @@ nowcasting_inla <- function(dataset,
         zero_inflated<-FALSE
         warning("'age_col' parsed, 'zero_inflated' ignored!")
       }
+    }
+
+
+    # ## Missing return.age warning
+    # if(missing(return.age)){
+    #   return.age <- TRUE
+    #   warning("Using default to returning estimate by age, return.age = TRUE")
+    # }
+    ## Missing age_col warning
+    if(missing(age_col)){
+      warning("'age_col' missing, nowcasting with unstructured model")
+      ## Missing bins_age column warning
+    }else{
+      message("'age_col' inputed, nowcasting with structured model")
+
+      if(missing(bins_age)){
+        bins_age <- "SI-PNI"
+        warning("Using 'SI-PNI' age bins!")
+      }else{
+        bins_age<-bins_age
+        message("Using age bins inputed")
+      }
+
     }
   }
   # else{
