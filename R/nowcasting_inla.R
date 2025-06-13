@@ -365,7 +365,7 @@ nowcasting_inla <- function(dataset,
 
     ## Summary on the posteriors of nowcasting
     if(!INLAoutputOnly){
-      now_summary<-nowcasting.summary(trajetory = sample.now$sample,
+      now_summary<-nowcasting.summary(trajectory = sample.now$sample,
                                       age = F)
       # l<-1
     }else{
@@ -396,7 +396,7 @@ nowcasting_inla <- function(dataset,
 
     ## Summary on the posteriors of nowcasting
     if(!INLAoutputOnly){
-      now_summary<-nowcasting.summary(trajetory = sample.now$sample,
+      now_summary<-nowcasting.summary(trajectory = sample.now$sample,
                                     age = T)
     } else {
       now_summary <- list()
