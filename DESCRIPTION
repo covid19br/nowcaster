@@ -20,8 +20,11 @@ Suggests:
     ggplot2,
     knitr,
     rmarkdown,
-    testthat (>= 3.0.0),
-    vroom
+    vroom,
+    parallel,
+    lubridate,
+    lme4, sn,
+    stringr
 Depends: 
     R (>= 4.1.0)
 LazyData: true
@@ -30,7 +33,6 @@ Additional_repositories:
 Imports: 
     dplyr,
     INLA (>= 22.5.3),
-    lubridate,
     tidyr,
     tibble
 VignetteBuilder: knitr

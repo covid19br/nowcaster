@@ -10,8 +10,8 @@
 #' @param date_report Column of dates of report of the event, normally date of digitation of the notification of cases
 #' @param use.epiweek If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date.
 #' @param K How much weeks to forecast ahead?
-#' [Default] K is 0, no forecasting ahead
-#' @param silent [Deprecated] to be removed.
+#' **Default** K is 0, no forecasting ahead
+#' @param silent DEPRECATED to be removed.
 #'
 #' @return Data in weeks format, with the maximum dates for the last week used
 #' @export
@@ -58,6 +58,10 @@ data.w_no_age<-function(dataset,
 
   ## Ignore data after the last Sunday of recording (Sunday as too)
   aux.trimming.date = ifelse( use.epiweek | DT_max_diadasemana == 6, DT_max_diadasemana + 1, 0)
+
+  # Workaround check
+  DT.sun.aux <- dt.aux <- Delay <- NULL
+
 
   ## Accounting for the maximum of days on the last week to be used
   data_w <- dataset |>

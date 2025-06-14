@@ -9,38 +9,26 @@
 #' @param dataset Dataset with at least 2 columns, date of onset, date of report.
 #' It can be a dataset with 3 columns, two dates columns as before said and a another one being an stratum column,
 #' in which data will stratified, usually being age.
-#' @param trim.data (in weeks) Date to be trimmed out from the data base, in days.
-#' [Default] 0 days.
-#' @param Dmax (in weeks) Window of dates the estimation will act, i.e., till how many past weeks the nowcasting will estimate.
-#' [Default] 15 weeks.
-#' @param wdw (in weeks) Until which maximum amount of weeks the Nowcasting will use to the estimation.
-#' [Default] 30 weeks.
-#' @param use.epiweek If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date.
-#' [Default] FALSE
-#' @param data.by.week If it has to be returned the whole time-series data.
-#' [Default] FALSE.
-#' @param return.age [Deprecated] If the estimate by Age should be returned.
-#' [Default] TRUE.
+#' @param trim.data (in weeks) Date to be trimmed out from the data base, in days. Default is 0 days.
+#' @param Dmax (in weeks) Window of dates the estimation will act, i.e., till how many past weeks the nowcasting will estimate. Default is 15 weeks.
+#' @param wdw (in weeks) Until which maximum amount of weeks the Nowcasting will use to the estimation. Default is 30 weeks.
+#' @param use.epiweek If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date. Default is FALSE
+#' @param data.by.week If it has to be returned the whole time-series data. Default is FALSE.
+#' @param return.age Deprecated. If the estimate by Age should be returned. Default is TRUE.
 #' @param bins_age Age bins to do the nowcasting, it receive a vector of age bins,
-#' or options between, "SI-PNI", "10 years", "5 years".
-#' [Default] "SI-PNI".
-#' @param silent [Deprecated] Should be the warnings turned off?
-#' [Default] is TRUE.
-#' @param K (in weeks) How much weeks to forecast ahead?
-#' [Default] K is 0, no forecasting ahead
+#' or options between, "SI-PNI", "10 years", "5 years". The default is "SI-PNI".
+#' @param silent Deprecated. Should be the warnings turned off? . The default is TRUE.
+#' @param K (in weeks) How much weeks to forecast ahead? . The default is K = 0, no forecasting ahead
 #' @param age_col Column for ages
 #' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases
 #' @param date_report Column of dates of report of the event, normally date of digitation of the notification of cases
-#' @param trajectories Returns the trajectories estimated from the inner 'INLA' model
-#' [Default] FALSE.
-#' @param zero_inflated [Experimental] In non-structured models, fit a model that deals with zero-inflated data.
-#' [Default] FALSE. If the [age_col] is not missing this flag is ignored.
-#' @param timeREmodel Latent model for time random effects.
-#' [Default] is a second-order random walk model.
-#' @param INLAoutput return the INLA output. [Default] is FALSE.
-#' @param INLAoutputOnly return the only the INLA output. [Default] is FALSE.
-#' @param WAIC return the WAIC. [Default] is FALSE.
-#' @param DIC return the DIC. [Default] is FALSE.
+#' @param trajectories Returns the trajectories estimated from the inner 'INLA' model . The default is FALSE.
+#' @param zero_inflated Experimental! In non-structured models, fit a model that deals with zero-inflated data. The default is FALSE. If the age_col is not missing this flag is ignored.
+#' @param timeREmodel Latent model for time random effects. . The default is a second-order random walk model.
+#' @param INLAoutput return the INLA output. Default is FALSE.
+#' @param INLAoutputOnly return the only the INLA output. Default is FALSE.
+#' @param WAIC return the WAIC. The default is FALSE.
+#' @param DIC return the DIC.The default is FALSE.
 #' @param ... list parameters to other functions
 #'
 #' @return a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total',
@@ -69,7 +57,7 @@ nowcasting_inla <- function(dataset,
                             date_onset,
                             date_report,
                             data.by.week = FALSE,
-                            # return.age = NULL,
+                            return.age = NULL,
                             silent = F,
                             K = 0,
                             trajectories = F,
@@ -221,13 +209,13 @@ nowcasting_inla <- function(dataset,
 
   ## Filtering data to the parameters setted above
   if(missing(age_col)){
-    data_w<-data.w_no_age(dataset = data.clean,
-                          trim.data = trim.data,
-                          date_onset = {{date_onset}},
-                          date_report = {{date_report}},
-                          use.epiweek = use.epiweek,
-                          K = K,
-                          silent = silent)
+    data_w <- data.w_no_age(dataset = data.clean,
+                            trim.data = trim.data,
+                            date_onset = {{date_onset}},
+                            date_report = {{date_report}},
+                            use.epiweek = use.epiweek,
+                            K = K,
+                            silent = silent)
   }else {
     data_w <- data.w(dataset = data.clean,
                      bins_age = bins_age,

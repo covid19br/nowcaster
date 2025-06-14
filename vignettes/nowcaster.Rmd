@@ -23,6 +23,8 @@ knitr::opts_chunk$set(
 When the package is loaded it provides a Lazy Data file, `sariBH`, it is a anonymized records of Severe Acute Respiratory Illness notified in the city of Belo Horizonte, since March 2020 to April 2022. To load it basically write:
 
 ```{r data-bh}
+library(INLA)
+library(parallel)
 library(nowcaster)
 # Loading Belo Horizonte SARI data set
 data(sragBH)

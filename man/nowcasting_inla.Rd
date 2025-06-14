@@ -15,6 +15,7 @@ nowcasting_inla(
   date_onset,
   date_report,
   data.by.week = FALSE,
+  return.age = NULL,
   silent = F,
   K = 0,
   trajectories = F,
@@ -33,20 +34,15 @@ It can be a dataset with 3 columns, two dates columns as before said and a anoth
 in which data will stratified, usually being age.}
 
 \item{bins_age}{Age bins to do the nowcasting, it receive a vector of age bins,
-or options between, "SI-PNI", "10 years", "5 years".
-\link{Default} "SI-PNI".}
+or options between, "SI-PNI", "10 years", "5 years". The default is "SI-PNI".}
 
-\item{trim.data}{(in weeks) Date to be trimmed out from the data base, in days.
-\link{Default} 0 days.}
+\item{trim.data}{(in weeks) Date to be trimmed out from the data base, in days. Default is 0 days.}
 
-\item{Dmax}{(in weeks) Window of dates the estimation will act, i.e., till how many past weeks the nowcasting will estimate.
-\link{Default} 15 weeks.}
+\item{Dmax}{(in weeks) Window of dates the estimation will act, i.e., till how many past weeks the nowcasting will estimate. Default is 15 weeks.}
 
-\item{wdw}{(in weeks) Until which maximum amount of weeks the Nowcasting will use to the estimation.
-\link{Default} 30 weeks.}
+\item{wdw}{(in weeks) Until which maximum amount of weeks the Nowcasting will use to the estimation. Default is 30 weeks.}
 
-\item{use.epiweek}{If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date.
-\link{Default} FALSE}
+\item{use.epiweek}{If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date. Default is FALSE}
 
 \item{age_col}{Column for ages}
 
@@ -54,36 +50,29 @@ or options between, "SI-PNI", "10 years", "5 years".
 
 \item{date_report}{Column of dates of report of the event, normally date of digitation of the notification of cases}
 
-\item{data.by.week}{If it has to be returned the whole time-series data.
-\link{Default} FALSE.}
+\item{data.by.week}{If it has to be returned the whole time-series data. Default is FALSE.}
 
-\item{silent}{\link{Deprecated} Should be the warnings turned off?
-\link{Default} is TRUE.}
+\item{return.age}{Deprecated. If the estimate by Age should be returned. Default is TRUE.}
 
-\item{K}{(in weeks) How much weeks to forecast ahead?
-\link{Default} K is 0, no forecasting ahead}
+\item{silent}{Deprecated. Should be the warnings turned off? . The default is TRUE.}
 
-\item{trajectories}{Returns the trajectories estimated from the inner 'INLA' model
-\link{Default} FALSE.}
+\item{K}{(in weeks) How much weeks to forecast ahead? . The default is K = 0, no forecasting ahead}
 
-\item{zero_inflated}{\link{Experimental} In non-structured models, fit a model that deals with zero-inflated data.
-\link{Default} FALSE. If the \link{age_col} is not missing this flag is ignored.}
+\item{trajectories}{Returns the trajectories estimated from the inner 'INLA' model . The default is FALSE.}
 
-\item{timeREmodel}{Latent model for time random effects.
-\link{Default} is a second-order random walk model.}
+\item{zero_inflated}{Experimental! In non-structured models, fit a model that deals with zero-inflated data. The default is FALSE. If the age_col is not missing this flag is ignored.}
 
-\item{INLAoutput}{return the INLA output. \link{Default} is FALSE.}
+\item{timeREmodel}{Latent model for time random effects. . The default is a second-order random walk model.}
 
-\item{INLAoutputOnly}{return the only the INLA output. \link{Default} is FALSE.}
+\item{INLAoutput}{return the INLA output. Default is FALSE.}
 
-\item{WAIC}{return the WAIC. \link{Default} is FALSE.}
+\item{INLAoutputOnly}{return the only the INLA output. Default is FALSE.}
 
-\item{DIC}{return the DIC. \link{Default} is FALSE.}
+\item{WAIC}{return the WAIC. The default is FALSE.}
+
+\item{DIC}{return the DIC.The default is FALSE.}
 
 \item{...}{list parameters to other functions}
-
-\item{return.age}{\link{Deprecated} If the estimate by Age should be returned.
-\link{Default} TRUE.}
 }
 \value{
 a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total',

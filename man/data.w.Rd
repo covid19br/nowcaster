@@ -32,9 +32,9 @@ data.w(
 \item{use.epiweek}{If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date.}
 
 \item{K}{How much weeks to forecast ahead?
-\link{Default} K is 0, no forecasting ahead}
+The default for K is 0, no forecasting ahead}
 
-\item{silent}{\link{Deprecated} to be removed.}
+\item{silent}{Deprecated. To be removed.}
 }
 \value{
 Data in weeks format, with the maximum dates for the last week used

@@ -12,8 +12,8 @@
 #' @param age_col Age column to be where to  cut the data into age classes
 #' @param use.epiweek If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date.
 #' @param K How much weeks to forecast ahead?
-#' [Default] K is 0, no forecasting ahead
-#' @param silent [Deprecated] to be removed.
+#' The default for K is 0, no forecasting ahead
+#' @param silent Deprecated. To be removed.
 #'
 #' @return Data in weeks format, with the maximum dates for the last week used
 #' @export
@@ -102,6 +102,9 @@ data.w <- function(dataset,
             call. = T)
   }
 
+  # Workaround check
+  DT.sun.aux <- dt.aux <- fx_etaria <- Delay <- NULL
+
   ## Accounting for the maximum of days on the last week to be used
   data_w <- dataset |>
     dplyr::rename(date_report = {{date_report}},
@@ -123,13 +126,13 @@ data.w <- function(dataset,
         ),
       date_onset = dt.aux - ifelse( date_onset < dt.aux, 7, 0),
       # Recording date
-      DT.sun.aux = as.integer(format(date_report, "%w")),
+      DT.sun.aux.r = as.integer(format(date_report, "%w")),
       ## Altering the date for the first day of the week
       dt.aux = date_report -
         # Last recording date (DT_max_diadasemana) is the last day of the new week format
         DT.sun.aux +
         ifelse( use.epiweek, 0, DT_max_diadasemana+1 -
-                  ifelse(DT_max_diadasemana+1 > DT.sun.aux,7, 0)
+                  ifelse(DT_max_diadasemana+1 > DT.sun.aux, 7, 0)
         ),
       date_report = dt.aux - ifelse( date_report < dt.aux, 7, 0),
       Delay = as.numeric(date_report - date_onset) / 7,

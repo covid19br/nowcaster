@@ -5,14 +5,12 @@
 #'
 #' @param dataset data pre formatted in to age classes and delays by week for each cases,
 #' delay triangle format
-#' @param zero_inflated zero-inflated model
-#' [Default] FALSE.
-#' @param timeREmodel Latent model for time random effects.
-#' [Default] is a second-order random walk model.
-#' @param INLAoutput return the INLA output. [Default] is FALSE.
-#' @param INLAoutputOnly return the only the INLA output. [Default] is FALSE.
-#' @param WAIC return the WAIC. [Default] is FALSE.
-#' @param DIC return the DIC. [Default] is FALSE.
+#' @param zero_inflated zero-inflated model. Default is FALSE.
+#' @param timeREmodel Latent model for time random effects. The default is a second-order random walk model.
+#' @param INLAoutput return the INLA output. Default is FALSE.
+#' @param INLAoutputOnly return the only the INLA output. Default is FALSE.
+#' @param WAIC return the WAIC. Default is FALSE.
+#' @param DIC return the DIC. Default is FALSE.
 
 #'
 #' @return Trajectories from the inner 'INLA' model

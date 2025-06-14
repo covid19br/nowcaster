@@ -4,7 +4,7 @@
 #' of the workhorse functions, [nowcasting_no_age] and [nowcasting_age]
 #'
 #' @param trajectory Trajectories to be summarized, trajectory should have sample, Time, dt_event and Y columns.
-#' @param age Is by age data? [Default] FALSE, If its TRUE it will have columns for age class, fx_etaria e fx_etaria.num
+#' @param age Is by age data? Default FALSE, If its TRUE it will have columns for age class, fx_etaria e fx_etaria.num
 #'
 #' @return A list with 2 elements summarized and grouped by,
 #' with the 'Median',
@@ -14,6 +14,8 @@
 #' 'LIb' lower limit, 50% CI
 #' @export
 nowcasting.summary <- function(trajectory, age = F){
+
+  Time <- dt_event <- Y <- fx_etaria <- fx_etaria.num <- NULL
 
   total.summy <- trajectory |>
     dplyr::group_by(Time, dt_event, sample) |>

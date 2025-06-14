@@ -7,19 +7,17 @@
 slope.estimate.quant(end.week, trajectories, window = 3)
 }
 \arguments{
-\item{end.week}{\link{in weeks} The end of the week wanted to the slope estimate
-\link{Default} max. date in 'trajectories'.}
+\item{end.week}{(in weeks) The end of the week wanted to the slope estimate. Default: max. date in 'trajectories'.}
 
 \item{trajectories}{Data.frame with the predicted or nowcasted estimate}
 
-\item{window}{\link{in weeks} Window of how much time will be used to calculate the slope estimate
-\link{Default} 3 weeks.}
+\item{window}{(in weeks) Window of how much time will be used to calculate the slope estimate. The default is 3 weeks.}
 }
 \value{
 The numerical value of the slope of the estimate
 }
 \description{
-Fits a linear model to trajectories returned from 'nowcasting_inla()' within a given window \link{Default} is 3 weeks. If 'end.week' is missing uses the maximum date in 'trajectories'.
+Fits a linear model to trajectories returned from 'nowcasting_inla()' within a given window. The default is 3 weeks. If 'end.week' is missing uses the maximum date in 'trajectories'.
 }
 \examples{
 # Loading Belo Horizonte SARI dataset
