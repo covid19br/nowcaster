@@ -9,38 +9,35 @@
 #' @param dataset Dataset with at least 2 columns, date of onset, date of report.
 #' It can be a dataset with 3 columns, two dates columns as before said and a another one being an stratum column,
 #' in which data will stratified, usually being age.
-#' @param trim.data (in weeks) Date to be trimmed out from the data base, in days.
-#' [Default] 0 days.
-#' @param Dmax (in weeks) Window of dates the estimation will act, i.e., till how many past weeks the nowcasting will estimate.
-#' [Default] 15 weeks.
-#' @param wdw (in weeks) Until which maximum amount of weeks the Nowcasting will use to the estimation.
-#' [Default] 30 weeks.
-#' @param use.epiweek If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date.
-#' [Default] FALSE
-#' @param data.by.week If it has to be returned the whole time-series data.
-#' [Default] FALSE.
-#' @param return.age [Deprecated] If the estimate by Age should be returned.
-#' [Default] TRUE.
+#' @param trim.data (in weeks) Date to be trimmed out from the data base, in days. Default is 0 days.
+#' @param Dmax (in weeks) Window of dates the estimation will act, i.e., till how many past weeks the nowcasting will estimate. Default is 15 weeks.
+#' @param wdw (in weeks) Until which maximum amount of weeks the Nowcasting will use to the estimation. Default is 30 weeks.
+#' @param use.epiweek If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date. Default is FALSE
+#' @param data.by.week If it has to be returned the whole time-series data. Default is FALSE.
+#' @param return.age Deprecated. If the estimate by Age should be returned. Default is TRUE.
 #' @param bins_age Age bins to do the nowcasting, it receive a vector of age bins,
-#' or options between, "SI-PNI", "10 years", "5 years".
-#' [Default] "SI-PNI".
-#' @param silent [Deprecated] Should be the warnings turned off?
-#' [Default] is TRUE.
-#' @param K (in weeks) How much weeks to forecast ahead?
-#' [Default] K is 0, no forecasting ahead
+#' or options between, "SI-PNI", "10 years", "5 years". The default is "SI-PNI".
+#' @param silent Deprecated. Should be the warnings turned off? . The default is TRUE.
+#' @param K (in weeks) How much weeks to forecast ahead? . The default is K = 0, no forecasting ahead
 #' @param age_col Column for ages
 #' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases
 #' @param date_report Column of dates of report of the event, normally date of digitation of the notification of cases
-#' @param trajectories Returns the trajectories estimated from the inner 'INLA' model
-#' [Default] FALSE.
-#' @param zero_inflated [Experimental] In non-structured models, fit a model that deals with zero-inflated data.
-#' [Default] FALSE. If the [age_col] is not missing this flag is ignored.
+#' @param trajectories Returns the trajectories estimated from the inner 'INLA' model . The default is FALSE.
+#' @param zero_inflated Experimental! In non-structured models, fit a model that deals with zero-inflated data. The default is FALSE. If the age_col is not missing this flag is ignored.
+#' @param timeREmodel Latent model for time random effects. . The default is a second-order random walk model.
+#' @param INLAoutput return the INLA output. Default is FALSE.
+#' @param INLAoutputOnly return the only the INLA output. Default is FALSE.
+#' @param WAIC return the WAIC. The default is FALSE.
+#' @param DIC return the DIC.The default is FALSE.
 #' @param ... list parameters to other functions
 #'
 #' @return a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total',
 #' 'data' with the time-series out of wdw .
-#' If 'age_col' is parsed, add a thrid element with by age estimation 'age' .
+#' If 'age_col' is parsed, add a third element with by age estimation 'age' .
 #' If 'trajectories' = TRUE, add a forth element with the returned trajectories from 'inla'.
+#' If 'INLAoutput' = TRUE, the INLA output is returned as a list object named 'output'.
+#' If 'INLAoutputOnly' = TRUE, just the INLA output is returned in a list object named 'output'.
+#' If 'WAIC' = TRUE or 'DIC' = TRUE, then 'INLAoutput' is forced to be TRUE returning the INLA output and a list object named waic or dic are also returned.
 #' @export
 #'
 #' @examples
@@ -60,11 +57,15 @@ nowcasting_inla <- function(dataset,
                             date_onset,
                             date_report,
                             data.by.week = FALSE,
-                            # return.age = NULL,
+                            return.age = NULL,
                             silent = F,
                             K = 0,
                             trajectories = F,
                             zero_inflated = F,
+                            timeREmodel = "rw2",
+                            INLAoutput = F,
+                            INLAoutputOnly = F,
+                            WAIC = F, DIC = F,
                             ...){
 
   dots<-list(...)
@@ -90,6 +91,17 @@ nowcasting_inla <- function(dataset,
          Please set the K to anything greater than 0 to Forecasting")
   }
 
+  # Dealing with INLA output
+
+  INLAoutput.aux = INLAoutput
+
+  ## Forcing INLA output TRUE when INLAoutput is FALSE
+  if(INLAoutputOnly == T & INLAoutput == F) INLAoutput.aux = T
+
+  ## Forcing INLA output TRUE when either WAIC or DIC are TRUE
+  if(WAIC == T | DIC == T) INLAoutput.aux = T
+
+
   ## Warnings
   if(missing(silent) | silent == FALSE){
 
@@ -103,15 +115,8 @@ nowcasting_inla <- function(dataset,
         message("Nowcasting only")
       }
     }
-    ## Missing age column warning
-    if(missing(bins_age)){
-      bins_age <- "SI-PNI"
-      warning("Using 'SI-PNI' age bins!")
-    }else{
-      bins_age<-bins_age
-      message("Using age bins inputed")
-    }
-    ## Missing trim.data warning
+
+        ## Missing trim.data warning
     if(missing(trim.data)){
       trim.data <- 0
       warning("Using default to trim dates, 'trim.data = 0'")
@@ -143,17 +148,6 @@ nowcasting_inla <- function(dataset,
       data.by.week<-data.by.week
       message("Returning 'data.by.week'")
     }
-    # ## Missing return.age warning
-    # if(missing(return.age)){
-    #   return.age <- TRUE
-    #   warning("Using default to returning estimate by age, return.age = TRUE")
-    # }
-    ## Missing age_col warning
-    if(missing(age_col)){
-      warning("'age_col' missing, nowcasting with unstructured model")
-    }else{
-      message("'age_col' inputed, nowcasting with structured model")
-    }
 
     if(missing(trajectories) | trajectories == FALSE){
       warning("Not returning trajectories")
@@ -165,6 +159,29 @@ nowcasting_inla <- function(dataset,
         zero_inflated<-FALSE
         warning("'age_col' parsed, 'zero_inflated' ignored!")
       }
+    }
+
+
+    # ## Missing return.age warning
+    # if(missing(return.age)){
+    #   return.age <- TRUE
+    #   warning("Using default to returning estimate by age, return.age = TRUE")
+    # }
+    ## Missing age_col warning
+    if(missing(age_col)){
+      warning("'age_col' missing, nowcasting with unstructured model")
+      ## Missing bins_age column warning
+    }else{
+      message("'age_col' inputed, nowcasting with structured model")
+
+      if(missing(bins_age)){
+        bins_age <- "SI-PNI"
+        warning("Using 'SI-PNI' age bins!")
+      }else{
+        bins_age<-bins_age
+        message("Using age bins inputed")
+      }
+
     }
   }
   # else{
@@ -192,13 +209,13 @@ nowcasting_inla <- function(dataset,
 
   ## Filtering data to the parameters setted above
   if(missing(age_col)){
-    data_w<-data.w_no_age(dataset = data.clean,
-                          trim.data = trim.data,
-                          date_onset = {{date_onset}},
-                          date_report = {{date_report}},
-                          use.epiweek = use.epiweek,
-                          K = K,
-                          silent = silent)
+    data_w <- data.w_no_age(dataset = data.clean,
+                            trim.data = trim.data,
+                            date_onset = {{date_onset}},
+                            date_report = {{date_report}},
+                            use.epiweek = use.epiweek,
+                            K = K,
+                            silent = silent)
   }else {
     data_w <- data.w(dataset = data.clean,
                      bins_age = bins_age,
@@ -322,60 +339,100 @@ nowcasting_inla <- function(dataset,
     if(zero_inflated){
       ## Nowcasting estimate
       sample.now <- nowcasting_no_age(dataset = data.inla,
-                                      zero_inflated = T)
+                                      zero_inflated = T,
+                                      timeREmodel = timeREmodel,
+                                      INLAoutput = INLAoutput.aux,
+                                      INLAoutputOnly = INLAoutputOnly,
+                                      WAIC = WAIC, DIC = DIC
+      )
     }else{
       ## Nowcasting estimate
       sample.now <- nowcasting_no_age(dataset = data.inla,
-                                      zero_inflated = F)
+                                      zero_inflated = F,
+                                      timeREmodel = timeREmodel,
+                                      INLAoutput = INLAoutput.aux,
+                                      INLAoutputOnly = INLAoutputOnly,
+                                      WAIC = WAIC, DIC = DIC)
     }
 
     ## Summary on the posteriors of nowcasting
-    now_summary<-nowcasting.summary(trajetory = sample.now,
-                                    age = F)
-    l<-1
+    if(!INLAoutputOnly){
+      now_summary<-nowcasting.summary(trajectory = sample.now$sample,
+                                      age = F)
+      # l<-1
+    }else{
+      now_summary <- list()
+    }
+
   } else {
 
     if(zero_inflated){
       ## Nowcasting estimate
       sample.now <- nowcasting_age(dataset = data.inla,
-                                   zero_inflated = T)
+                                   zero_inflated = T,
+                                   timeREmodel = timeREmodel,
+                                   INLAoutput = INLAoutput.aux,
+                                   INLAoutputOnly = INLAoutputOnly,
+                                   WAIC = WAIC, DIC = DIC
+      )
     }else{
       ## Nowcasting estimate
       sample.now <- nowcasting_age(dataset = data.inla,
-                                   zero_inflated = F)
+                                   zero_inflated = F,
+                                   timeREmodel = timeREmodel,
+                                   INLAoutput = INLAoutput.aux,
+                                   INLAoutputOnly = INLAoutputOnly,
+                                   WAIC = WAIC, DIC = DIC
+      )
     }
 
     ## Summary on the posteriors of nowcasting
-    now_summary<-nowcasting.summary(trajetory = sample.now,
+    if(!INLAoutputOnly){
+      now_summary<-nowcasting.summary(trajectory = sample.now$sample,
                                     age = T)
-    l<-0
+    } else {
+      now_summary <- list()
+    }
+    # l<-0
   }
 
   ## Objects to be returned
 
-  if(data.by.week){
+  if(!INLAoutputOnly){
+    if(data.by.week){
 
-    # if(missing(age_col)){
-      now_summary[[3-l]]<- data.inla
-    # }
+      # # if(missing(age_col)){
+      # now_summary[[3-l]]<- data.inla
+      # # }
+      #
+      # # now_summary[[3-l]]<-data_w |>
+      # #   dplyr::group_by(date_onset) |>
+      # #   dplyr::summarise(observed = dplyr::n(),
+      # #                    Delay = Delay)
+      #
+      # names(now_summary)[3-l]<-"data"
 
-    # now_summary[[3-l]]<-data_w |>
-    #   dplyr::group_by(date_onset) |>
-    #   dplyr::summarise(observed = dplyr::n(),
-    #                    Delay = Delay)
+      now_summary$data <- data.inla
 
-    names(now_summary)[3-l]<-"data"
-
-    if(trajectories){
-      now_summary[[4-l]]<-sample.now
-      names(now_summary)[4-l]<-"trajectories"
+      if(trajectories){
+        # now_summary[[4-l]]<-sample.now
+        # names(now_summary)[4-l]<-"trajectories"
+        now_summary$trajectories <- sample.now
+      }
+    } else {
+      if(trajectories){
+        # now_summary[[3-l]]<-sample.now
+        # names(now_summary)[3-l]<-"trajectories"
+        now_summary$trajectories <- sample.now
+      }
     }
-  } else {
-    if(trajectories){
-      now_summary[[3-l]]<-sample.now
-      names(now_summary)[3-l]<-"trajectories"
-    }
+
   }
+
+  if(INLAoutput.aux) now_summary$output <- sample.now$INLAoutput
+  if(WAIC) now_summary$waic <- sample.now$INLAoutput$waic$waic
+  if(DIC) now_summary$dic <- sample.now$INLAoutput$dic$dic
+
 
   ## Final object returned
   return(now_summary)
