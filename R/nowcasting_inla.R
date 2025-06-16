@@ -70,6 +70,9 @@ nowcasting_inla <- function(dataset,
 
   dots<-list(...)
 
+  # Workaround check
+  Y <- Time <- delay <- dt.aux <- fx_etaria <- Delay <- NULL
+
   ## Safe tests
   if(missing(dataset)){
     stop("Dataset is missing!")
@@ -345,8 +348,7 @@ nowcasting_inla <- function(dataset,
                                       timeREmodel = timeREmodel,
                                       INLAoutput = INLAoutput.aux,
                                       INLAoutputOnly = INLAoutputOnly,
-                                      WAIC = WAIC, DIC = DIC
-      )
+                                      WAIC = WAIC, DIC = DIC)
     }else{
       ## Nowcasting estimate
       sample.now <- nowcasting_no_age(dataset = data.inla,
@@ -376,8 +378,7 @@ nowcasting_inla <- function(dataset,
                                    timeREmodel = timeREmodel,
                                    INLAoutput = INLAoutput.aux,
                                    INLAoutputOnly = INLAoutputOnly,
-                                   WAIC = WAIC, DIC = DIC
-      )
+                                   WAIC = WAIC, DIC = DIC)
     }else{
       ## Negative binomial by age
       sample.now <- nowcasting_age(dataset = data.inla,
@@ -385,8 +386,7 @@ nowcasting_inla <- function(dataset,
                                    timeREmodel = timeREmodel,
                                    INLAoutput = INLAoutput.aux,
                                    INLAoutputOnly = INLAoutputOnly,
-                                   WAIC = WAIC, DIC = DIC
-      )
+                                   WAIC = WAIC, DIC = DIC)
     }
 
     ## Summary on the posteriors of nowcasting

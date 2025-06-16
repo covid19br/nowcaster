@@ -21,6 +21,9 @@
 #' slope.estimate.quant(trajectories = now$trajectories)
 slope.estimate.quant <- function(end.week, trajectories, window=3){
 
+  # Workaround check
+  Cases <- Date <- Time <- Y <- database_value <- dt_event <- fx_etaria <- NULL
+
   if(missing(trajectories)){
     stop("'trajectories' is missing!")
   }

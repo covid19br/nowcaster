@@ -19,6 +19,10 @@ nowcasting_age <- function(dataset,
                            INLAoutput = F,
                            INLAoutputOnly = F,
                            WAIC = F, DIC = F){
+
+  # Workaround check
+  fx_etaria <- NULL
+
   ## [Not in use] Check for zero-inflated
   if (zero_inflated ){
     family <- "zeroinflatednbinomial2"
@@ -101,6 +105,8 @@ nowcasting_age <- function(dataset,
     ## Step 3: Calculate N_{a,t} for each triangle sample {N_{t,a} : t=Tactual-Dmax+1,...Tactual}
 
     gg.age <- function(x, dados, idx){
+      # Workaround check
+      Y <- Time <- dt_event <- fx_etaria <- fx_etaria.num <- Delay <- NULL
       data.aux <- dados
       Tmin <- min(dados$Time[idx])
       data.aux$Y[idx] <- x

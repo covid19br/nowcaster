@@ -108,6 +108,9 @@ nowcasting_no_age <- function(dataset,
     ## Step 3: Calculate N_{a,t} for each triangle sample {N_{t,a} : t=Tactual-Dmax+1,...Tactual}
 
     gg.age <- function(x, dados.gg, idx){
+
+      Y <- Time <- dt_event <- NULL
+
       data.aux <- dados.gg
       Tmin <- min(dados.gg$Time[idx])
       data.aux$Y[idx] <- x
