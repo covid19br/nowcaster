@@ -20,7 +20,7 @@ nowcasting_age <- function(dataset,
                            INLAoutputOnly = F,
                            WAIC = F, DIC = F){
   ## [Not in use] Check for zero-inflated
-  if (zero_inflated){
+  if (zero_inflated ){
     family <- "zeroinflatednbinomial2"
     control.family <- list(
       hyper = list("theta1" = list(prior = "loggamma",

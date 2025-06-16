@@ -99,7 +99,7 @@ nowcasting_inla <- function(dataset,
   if(INLAoutputOnly == T & INLAoutput == F) INLAoutput.aux = T
 
   ## Forcing INLA output TRUE when either WAIC or DIC are TRUE
-  if(WAIC == T | DIC == T) INLAoutput.aux = T
+  if((WAIC == T | DIC == T) & INLAoutput.aux == F) INLAoutput.aux = T
 
 
   ## Warnings
@@ -155,6 +155,7 @@ nowcasting_inla <- function(dataset,
       trajectories = TRUE
       message("Trajectories returned")
 
+      # Nao entendi esse warning (Leo)
       if(!missing(age_col) & !missing(zero_inflated)){
         zero_inflated<-FALSE
         warning("'age_col' parsed, 'zero_inflated' ignored!")
@@ -335,6 +336,7 @@ nowcasting_inla <- function(dataset,
 
 
   if(missing(age_col)){
+    # Nowcasting no age
 
     if(zero_inflated){
       ## Nowcasting estimate
@@ -365,9 +367,10 @@ nowcasting_inla <- function(dataset,
     }
 
   } else {
+    # Nowcasting by age groups
 
     if(zero_inflated){
-      ## Nowcasting estimate
+      ## Zero inflated by age
       sample.now <- nowcasting_age(dataset = data.inla,
                                    zero_inflated = T,
                                    timeREmodel = timeREmodel,
@@ -376,7 +379,7 @@ nowcasting_inla <- function(dataset,
                                    WAIC = WAIC, DIC = DIC
       )
     }else{
-      ## Nowcasting estimate
+      ## Negative binomial by age
       sample.now <- nowcasting_age(dataset = data.inla,
                                    zero_inflated = F,
                                    timeREmodel = timeREmodel,
@@ -417,13 +420,13 @@ nowcasting_inla <- function(dataset,
       if(trajectories){
         # now_summary[[4-l]]<-sample.now
         # names(now_summary)[4-l]<-"trajectories"
-        now_summary$trajectories <- sample.now
+        now_summary$trajectories <- sample.now$sample
       }
     } else {
       if(trajectories){
         # now_summary[[3-l]]<-sample.now
         # names(now_summary)[3-l]<-"trajectories"
-        now_summary$trajectories <- sample.now
+        now_summary$trajectories <- sample.now$sample
       }
     }
 
