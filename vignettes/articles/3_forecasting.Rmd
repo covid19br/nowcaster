@@ -74,7 +74,7 @@ nowcasting_bh_no_age <- nowcasting_inla(dataset = srag_now,
                                         date_report = DT_DIGITA, 
                                         data.by.week = T, 
                                         K = 1)
-head(nowcasting_bh_no_age$data)
+tail(nowcasting_bh_no_age$total)
 ```
 
 To visualize the forecast we plot the observed curve and the nowcasting and forecasting estimate, change the colors for each part. We plot together the nowcasting and forecasting estimate, the curve observed one year later, to validate the estimate done.
@@ -82,14 +82,15 @@ To visualize the forecast we plot the observed curve and the nowcasting and fore
 ```{r after_one_year}
 
 ## Nowcasting estimate filtering
-nowcasting_estimate<-nowcasting_bh_no_age$total |> 
+nowcasting_estimate <- nowcasting_bh_no_age$total |> 
   filter(dt_event <= "2020-06-27")
+
 ## Forecasting estimate filtering
-forecasting_estimate<-nowcasting_bh_no_age$total |> 
+forecasting_estimate <- nowcasting_bh_no_age$total |> 
   filter(dt_event >= "2020-06-27")
 
 ## One year after observed
-data_one_year_after<-sragBH %>%
+data_one_year_after <- sragBH %>%
   filter(DT_SIN_PRI <= "2020-07-11") %>% 
   mutate(
     D_SIN_PRI_2 = DT_SIN_PRI - as.numeric(format(DT_SIN_PRI, "%w"))
@@ -138,10 +139,10 @@ As we try to forecasting longer ahead of the present date, the uncertainty has t
 nowcasting_bh_age <- nowcasting_inla(dataset = srag_now, 
                                      date_onset = DT_SIN_PRI, 
                                      date_report = DT_DIGITA, 
-                                     data.by.week = T,
+                                     data.by.week = T, trajectories = T,
                                      K = 1,
                                      age_col = Idade)
-head(nowcasting_bh_age$data)
+tail(nowcasting_bh_age$total)
 ```
 
 And we plot the nowcasting estimate and forecasting estimate again:

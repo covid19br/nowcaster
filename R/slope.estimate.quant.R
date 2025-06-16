@@ -1,13 +1,11 @@
 #' @title Slope.estimate.quant
 #'
 #' @description
-#' Fits a linear model to trajectories returned from 'nowcasting_inla()' within a given window [Default] is 3 weeks. If 'end.week' is missing uses the maximum date in 'trajectories'.
+#' Fits a linear model to trajectories returned from 'nowcasting_inla()' within a given window. The default is 3 weeks. If 'end.week' is missing uses the maximum date in 'trajectories'.
 #'
 #' @param trajectories Data.frame with the predicted or nowcasted estimate
-#' @param end.week [in weeks] The end of the week wanted to the slope estimate
-#' [Default] max. date in 'trajectories'.
-#' @param window [in weeks] Window of how much time will be used to calculate the slope estimate
-#' [Default] 3 weeks.
+#' @param end.week (in weeks) The end of the week wanted to the slope estimate. Default: max. date in 'trajectories'.
+#' @param window (in weeks) Window of how much time will be used to calculate the slope estimate. The default is 3 weeks.
 #'
 #' @return The numerical value of the slope of the estimate
 #' @export
@@ -22,6 +20,9 @@
 #'                 silent = T)
 #' slope.estimate.quant(trajectories = now$trajectories)
 slope.estimate.quant <- function(end.week, trajectories, window=3){
+
+  # Workaround check
+  Cases <- Date <- Time <- Y <- database_value <- dt_event <- fx_etaria <- NULL
 
   if(missing(trajectories)){
     stop("'trajectories' is missing!")
