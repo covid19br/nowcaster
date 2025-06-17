@@ -42,11 +42,15 @@
 #'
 #' @examples
 #' # Loading Belo Horizonte SARI dataset
+#'
 #' data(sragBH)
-#' nowcasting_inla(dataset = sragBH,
+#'
+#' output <- nowcasting_inla(dataset = sragBH,
 #'                 date_onset = DT_SIN_PRI,
 #'                 date_report = DT_DIGITA,
-#'                 silent = T)
+#'                 silent = TRUE)
+#'
+#' tail(output$total)
 nowcasting_inla <- function(dataset,
                             bins_age="SI-PNI",
                             trim.data=0,

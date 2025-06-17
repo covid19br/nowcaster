@@ -6,6 +6,8 @@ Authors@R: c(
     comment = c(ORCID = "0000-0002-9416-6145")),
     person("Tatiana", "Portella", , "tatiana.portella@fiocruz.br", role = c("aut"), 
     comment = c(ORCID = "0000-0002-9416-6145")),
+    person("Marcelo", "Gomes", , "marcelo.gomes@fiocruz.br", role = c("aut"), 
+    comment = c(ORCID = "0000-0003-4693-5402")),
     person("Leonardo", "Bastos", , "leonardo.bastos@fiocruz.br", role = c("aut"), 
     comment = c(ORCID = "0000-0002-1406-0122")))
 Description: Nowcaster is a package wrapping statistical models to estimate not yet reported data from a empirical delay distribution 

@@ -21,11 +21,14 @@ Fits a linear model to trajectories returned from 'nowcasting_inla()' within a g
 }
 \examples{
 # Loading Belo Horizonte SARI dataset
+
 data(sragBH)
+
 now <- nowcasting_inla(dataset = sragBH,
                 date_onset = DT_SIN_PRI,
                 date_report = DT_DIGITA,
                 trajectories = TRUE,
-                silent = T)
+                silent = TRUE)
+
 slope.estimate.quant(trajectories = now$trajectories)
 }

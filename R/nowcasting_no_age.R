@@ -65,13 +65,26 @@ nowcasting_no_age <- function(dataset,
                                    param = c(0.001, 0.001)))
       )"))
 
+  # Work around for the number of threads
+  chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
+
+  if (nzchar(chk) && chk == "TRUE") {
+    # use 2 cores in CRAN/Travis/AppVeyor
+    num_workers <- 2L
+  } else {
+    # use all cores in devtools::test()
+    num_workers <- parallel::detectCores()
+  }
+
+
   ## Running the Negative Binomial model in INLA
   output0 <- INLA::inla(model,
                         family = family,
                         data = dataset,
                         control.predictor = list(link = 1, compute = T),
                         control.compute = list( config = T, waic=WAIC, dic=DIC),
-                        control.family = control.family
+                        control.family = control.family,
+                        num.threads = num_workers
   )
 
   # }
@@ -85,7 +98,7 @@ nowcasting_no_age <- function(dataset,
     ## Algorithm to get samples for the predictive distribution for the number of cases
 
     ## Step 1: Sampling from the approximate posterior distribution using INLA
-    srag.samples0.list <- INLA::inla.posterior.sample(n = 1000, output0)
+    srag.samples0.list <- INLA::inla.posterior.sample(n = 1000, output0, num.threads = num_workers)
 
     ## Give a parameter to trajectories, TO-DO
 

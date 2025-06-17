@@ -44,7 +44,3 @@ Function to put the data into the format proper to the nowcasting estimation,
 has to use the maximum of data present on the last week parsed to the estimation.
 Makes the account of maximum days per week to be used.
 }
-\examples{
-If the last data is at a Sunday, so the week starts at Monday before.
-If ends at Thursday, so it starts on the Friday before
-}
