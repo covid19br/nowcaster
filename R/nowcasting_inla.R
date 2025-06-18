@@ -372,7 +372,7 @@ nowcasting_inla <- function(dataset,
       now_summary <- list()
     }
 
-  } else {
+  }else{
     # Nowcasting by age groups
 
     if(zero_inflated){
@@ -425,14 +425,13 @@ nowcasting_inla <- function(dataset,
         # now_summary[[4-l]]<-sample.now
         # names(now_summary)[4-l]<-"trajectories"
         now_summary$trajectories <- sample.now$sample
+      }else {
+        if(trajectories){
+          # now_summary[[3-l]]<-sample.now
+          # names(now_summary)[3-l]<-"trajectories"
+          now_summary$trajectories <- sample.now$sample
+        }
       }
-    } else {
-      if(trajectories){
-        # now_summary[[3-l]]<-sample.now
-        # names(now_summary)[3-l]<-"trajectories"
-        now_summary$trajectories <- sample.now$sample
-      }
-    }
 
   }
 

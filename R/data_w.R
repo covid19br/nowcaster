@@ -124,7 +124,7 @@ data.w <- function(dataset,
         ),
       date_onset = dt.aux - ifelse( date_onset < dt.aux, 7, 0),
       # Recording date
-      DT.sun.aux.r = as.integer(format(date_report, "%w")),
+      DT.sun.aux = as.integer(format(date_report, "%w")),
       ## Altering the date for the first day of the week
       dt.aux = date_report -
         # Last recording date (DT_max_diadasemana) is the last day of the new week format
