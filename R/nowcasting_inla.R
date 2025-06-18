@@ -432,6 +432,7 @@ nowcasting_inla <- function(dataset,
           now_summary$trajectories <- sample.now$sample
         }
       }
+    }
 
   }
 
