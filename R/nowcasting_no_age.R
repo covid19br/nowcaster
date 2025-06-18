@@ -57,11 +57,11 @@ nowcasting_no_age <- function(dataset,
   ## prec(rw2) ~ logGamma(10e-3, 10e-3), prec(rw1) ~ logGamma(10e-3, 10e-3)
   model <- stats::as.formula(paste0(
     "Y ~ 1 + f(Time, model = \"", timeREmodel,"\",
-        hyper = list(\"prec\" = list(prior = \"loggamma\",
+        hyper = list(prec = list(prior = \"loggamma\",
                                    param = c(0.001, 0.001))
         )) +
       f(delay, model = \"rw1\",
-        hyper = list(\"prec\" = list(prior = \"loggamma\",
+        hyper = list(prec = list(prior = \"loggamma\",
                                    param = c(0.001, 0.001)))
       )"))
 
