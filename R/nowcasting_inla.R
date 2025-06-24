@@ -420,17 +420,16 @@ nowcasting_inla <- function(dataset,
       # names(now_summary)[3-l]<-"data"
 
       now_summary$data <- data.inla
-
+    }
+    if(trajectories){
+      # now_summary[[4-l]]<-sample.now
+      # names(now_summary)[4-l]<-"trajectories"
+      now_summary$trajectories <- sample.now$sample
+    }else {
       if(trajectories){
-        # now_summary[[4-l]]<-sample.now
-        # names(now_summary)[4-l]<-"trajectories"
+        # now_summary[[3-l]]<-sample.now
+        # names(now_summary)[3-l]<-"trajectories"
         now_summary$trajectories <- sample.now$sample
-      }else {
-        if(trajectories){
-          # now_summary[[3-l]]<-sample.now
-          # names(now_summary)[3-l]<-"trajectories"
-          now_summary$trajectories <- sample.now$sample
-        }
       }
     }
 
