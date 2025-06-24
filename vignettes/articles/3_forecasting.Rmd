@@ -36,7 +36,8 @@ And after this we parse to the `nowcasting_inla` function the date of onset and 
 Before forecasting, we construct the case counts curve from the lazy data, by using the internal function `data.w_no_age`, we construct the curve by summarizing the case counts by each date of onset of first symptoms present at the database.
 
 ```{r delay triangle}
-library(tidyverse)
+library(dplyr)
+library(ggplot2)
 library(lubridate)
 library(nowcaster)
 
