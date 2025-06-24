@@ -63,7 +63,7 @@
 &amp; Leonardo Bastos</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/covid19br/nowcaster/blob/HEAD/vignettes/articles/2_nowcasting_importance.Rmd" class="external-link"><code>vignettes/articles/2_nowcasting_importance.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/covid19br/nowcaster/blob/main/vignettes/articles/2_nowcasting_importance.Rmd" class="external-link"><code>vignettes/articles/2_nowcasting_importance.Rmd</code></a></small>
       <div class="d-none name"><code>2_nowcasting_importance.Rmd</code></div>
     </div>
 
@@ -72,31 +72,33 @@
 <div class="section level2">
 <h2 id="tldr">TL;DR<a class="anchor" aria-label="anchor" href="#tldr"></a>
 </h2>
-<p>This is a short example showing how helpful it can be to use
+<p>This is a short example showing how helpful can be a to use
 nowcasting estimate to help the decision-making process</p>
 </div>
 <div class="section level2">
 <h2 id="nowcasting-as-a-tool-to-support-decision-making">Nowcasting as a tool to support decision making<a class="anchor" aria-label="anchor" href="#nowcasting-as-a-tool-to-support-decision-making"></a>
 </h2>
-<p>Nowcasting a rising curve or a curve at any other moment can give
+<p>Nowcasting a rising curve or a curve on any other moment can give
 quantitative support for decision making, during the public health
 crises, the most needed is a way to anticipate, at least, what it is
 happening at the moment. Nowcasting is the tool for this type of
-questioning and can give insights into the data to support the needed
+questioning and can gives insights on the data to support needed
 decisions.</p>
 <p>We start this section by cutting the original data at a moment of
 apparent decaying of the SARI hospitalization, for the city of Belo
-Horizonte, which had a prompt response to COVID-19
+Horizonte, which had a prompt starting response to the Covid-19
 pandemic. The pressure on the health system took more time than the rest
-of the country, and the data at the same time were showing a decay. We
-filter all cases entered until the 4th of July 2020 by the date of
-digitization, a date that the case shows up in the database.</p>
+of the country, and the data at same time were showing a decay. We
+filter all cases entered until 4th of July of 2020 by the date of
+digitization, a date that the cases shows up in the database.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org" class="external-link">lubridate</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://covid19br.github.io/nowcaster">nowcaster</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co">## To see Nowcasting as if we were on the verge of a rise in the curve</span></span>
+<span><span class="co">## To see Nowcasting as if we were on the verge of rise in the curve</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"sragBH"</span><span class="op">)</span></span>
 <span><span class="va">srag_now</span><span class="op">&lt;-</span><span class="va">sragBH</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">DT_DIGITA</span> <span class="op">&lt;=</span> <span class="st">"2020-07-04"</span><span class="op">)</span></span>
@@ -120,12 +122,12 @@ digitization, a date that the case shows up in the database.</p>
 <span>               date_labels <span class="op">=</span> <span class="st">'%V/%y'</span>, </span>
 <span>               name <span class="op">=</span> <span class="st">'Date in Weeks'</span><span class="op">)</span></span></code></pre></div>
 <p><img src="2_nowcasting_importance_files/figure-html/no_age_data-1.png" width="700"></p>
-<p>On this filtered data, we estimate the cases that started their
-date of onset of symptoms, but were not yet reported, so they are not in the
+<p>On this filtered data, we estimate the cases already that started its
+date of onset of symptoms but were not yet reported, so there not in the
 database. We just pass to the <code>nowcasting_inla</code> function, the
-data set filtered, flag for the columns where the
+data set filtered, flag for the columns where are the
 <code>date_onset</code> and <code>date_report</code>, we add the flag
-for the function, return back the epidemic curve by epiweek.</p>
+for the function return back the epidemic curve by epiweek.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nowcasting_bh_no_age</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/nowcasting_inla.html">nowcasting_inla</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">srag_now</span>, </span>
 <span>                                        date_onset <span class="op">=</span> <span class="va">DT_SIN_PRI</span>, </span>
@@ -141,18 +143,18 @@ for the function, return back the epidemic curve by epiweek.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 2019-12-28     3     5     1</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 2019-12-28     4     2     1</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2019-12-28     5     2     1</span></span></code></pre></div>
-<p>Before we see the result of the nowcasting estimate, we take a look at
+<p>Before we see the result of the nowcasting estimate we take a look on
 intermediate part of the process of nowcasting, the delay triangle,
 which sets the objects for nowcasting. The delay triangle is only a
-table where each unique amount of delay, (i.e., integer numbers of days
-for weeks) has passed betweenthe  date of onset and the date of report spread
+table where each unique amount of delay, (i.e. integer numbers of days
+or weeks) has passed between date of onset and date of report spread
 over each date of onset. The part that is closer to the present has less
-counts and has a lower amount of delay, this is trivial due to, as the
-the system takes time to process the cases, the newer cases are fewer
-than the older ones, which are already time to be processed.</p>
-<p>From the data in weekly format, we mount the counts of cases by the
-amount of delay. By tabulating the delay amount against the data of onset
-of the first symptoms, to see the pattern of the delay for the cases.</p>
+counts and has a lower amount of delay, this trivial due to, as the
+system takes time to process the cases, the most newer cases are lesser
+than the older ones, that already time to be processed.</p>
+<p>From the data in weekly format we mount the counts of cases by the
+amount of delay. By tabling the delay amount against the data of onset
+of first symptoms, to see the pattern of the delay for the cases.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
@@ -181,13 +183,13 @@ of the first symptoms, to see the pattern of the delay for the cases.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> 2020-06-13    44   355   252    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> 2020-06-20    61   363    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> 2020-06-27    84    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span></code></pre></div>
-<p>We just look at the number of cases with 30 weeks of delay or less,
-it is the default maximum delay considered in nowcasting estimation. It
+<p>We just look at the amount of cases with 30 weeks of delay or less,
+it is the default maximum delay considered at nowcasting estimation. It
 can be changed by the parameter <code>Dmax</code>.</p>
 <p>If this element is grouped by and summarized by the onset of symptoms
 date, here <code>DT_SIN_PRI</code>, it is the epidemiological curve
-observed. To exemplify it, we plot the estimate and the epidemiological
-curve altogether.</p>
+observed. To example it, we plot the estimate and the epidemiological
+curve all together.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
@@ -218,10 +220,10 @@ curve altogether.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">''</span>, </span>
 <span>       y <span class="op">=</span> <span class="st">'Nº Cases'</span><span class="op">)</span></span></code></pre></div>
 <p><img src="2_nowcasting_importance_files/figure-html/no_age_plot-1.png" width="700"></p>
-<p>And as expected, the nowcasting estimated a rising curve when it
-a decaying was observed. Adding to the plot, what has happened
+<p>And as expected, the nowcasting estimated a rising on curve when it
+were observed a decaying. Adding to the plot what actually has happened
 in that period, with the data inserted after the period for when the
-nowcasting estimated the rise in the curve for SARI
+nowcasting estimated the rising in the curve for SARI
 hospitalizations.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nowcasting_bh_no_age</span><span class="op">$</span><span class="va">total</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
@@ -252,22 +254,22 @@ hospitalizations.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">''</span>, </span>
 <span>       y <span class="op">=</span> <span class="st">'Nº Cases'</span><span class="op">)</span></span></code></pre></div>
 <p><img src="2_nowcasting_importance_files/figure-html/after_one_year-1.png" width="700"></p>
-<p>This ends the first simple example when estimating the already started
-events but not yet reported (i.e., nowcasting). The relevance of
-nowcasting for public health decisions is given by the understanding that
-what is present on the databases is only a picture of the real time
-situation. The above graph can help policymakers with what decisions they
-can take in the face of a rising curve of cases, hospitalizations, or
+<p>This end the first simple example when estimating the already started
+events but not yet reported (i.e. nowcasting). The relevance of
+nowcasting for public health decision is given by the understanding that
+what is present on the databases are only a picture of the real time
+situation. The above graph can help policy makers on what decisions they
+can take in face of a rising curve of cases, hospitalizations or
 deaths.</p>
 </div>
 <div class="section level2">
 <h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
 </h2>
-<p> In this vignette,s we make the case for using nowcasting as a helping
-tool for decision making, by accessing the estimate with data from a year
-after it was observed, we checked the goodness of the estimates produced,
-showing that the nowcasting had been produced at the time of observation of the
-data provides a good estimate of the true number of cases happening.</p>
+<p>On this vignettes we make the case for using nowcasting as a helping
+tool for decision making, by accessing the estimate with data a year
+after it was observed we check the goodness of the estimates produced,
+showing the nowcasting had produced at the time of observation of the
+data a good estimate of the true number of cases happening.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -280,7 +282,7 @@ data provides a good estimate of the true number of cases happening.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>
