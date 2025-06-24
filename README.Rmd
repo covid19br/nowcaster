@@ -14,7 +14,7 @@ library(badger)
 <!-- badges: start -->
 <!-- `r badger::badge_cran_checks(pkg = NULL)` -->
 <!-- `r badger::badge_dependencies(pkg = NULL)` -->
-`r badger::badge_devel(pkg = "nowcaster", color = "blue")`
+`r badger::badge_devel(color = "blue")`
 `r badger::badge_license(url = "https://github.com/covid19br/nowcaster/blob/main/LICENSE.md")`
 `r badger::badge_lifecycle(stage = "experimental")`
 [![R-CMD-check](https://github.com/covid19br/nowcaster/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/covid19br/nowcaster/actions/workflows/R-CMD-check.yaml)

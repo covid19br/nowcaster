@@ -34,4 +34,6 @@ home:
     - citation
     - authors
     - dev
+  strips:
+  - badges
 

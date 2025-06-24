@@ -7,7 +7,7 @@
 
 <!-- [![Dependencies](https://tinyverse.netlify.com/badge/nowcaster)](https://cran.r-project.org/package=nowcaster) -->
 
-[![](https://img.shields.io/badge/devel%20version-0.2.3-blue.svg)](https://github.com/nowcaster)
+[![](https://img.shields.io/badge/devel%20version-0.2.3-blue.svg)](https://github.com/covid19br/nowcaster)
 [![License: GPL (\>=
 3)](https://img.shields.io/badge/license-GPL%20(%3E=%203)-blue.svg)](https://github.com/covid19br/nowcaster/blob/main/LICENSE.md)
 [![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
