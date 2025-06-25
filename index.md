@@ -10,10 +10,11 @@ Nowcaster
 
 <!-- [![Dependencies](https://tinyverse.netlify.com/badge/nowcaster)](https://cran.r-project.org/package=nowcaster) -->
 
-[![](https://img.shields.io/badge/devel%20version-0.2.3-blue.svg)](https://github.com/nowcaster)
-[![License: GPL (\>=
+`badger::badge_devel(color = "blue", pkg = "nowcaster")` [![License: GPL
+(\>=
 3)](https://img.shields.io/badge/license-GPL%20(%3E=%203)-blue.svg)](https://github.com/covid19br/nowcaster/blob/main/LICENSE.md)
 [![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![R-CMD-check](https://github.com/covid19br/nowcaster/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/covid19br/nowcaster/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 `nowcaster` is an R package for “nowcasting” epidemiological time-series
