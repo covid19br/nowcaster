@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nowcaster</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -112,11 +112,12 @@ given the case count at that time and past values as well as given the
 delay distribution of that count.</p>
 <p>Hence, the model is given by the following:</p>
 <p><span class="math display">$$\begin{equation}
-Y_{t,d} \sim NegBinom(\lambda_{t,d}, \phi), \\
-\log(\lambda_{t,d}) = \alpha + \beta_t + \gamma_d, \\
+Y_{t,d} \sim NegBinom(\lambda_{t,d}, \phi) \\
+\log(\lambda_{t,d}) = \alpha + \beta_t + \gamma_d \\
 \beta_t := u_t - u_{(t-1)} - u_{(t-2)} \sim N(0,\tau_{\beta}); \gamma_d
 := u_d - u_{(d-1)} \sim N(0, \tau_{\gamma})\\
-t=1,2,\ldots,T, \\ d=1,2,\ldots,D,
+t=1,2,\ldots,T \\
+d=1,2,\ldots,D \\
 \end{equation}$$</span></p>
 <p>Where the intercept
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
@@ -157,11 +158,11 @@ cases observed.</p>
 <span><span class="co">#&gt;    Time dt_event   Median    LI    LS   LIb   LSb</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    17 2021-12-13    444   442  448    443   445</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    18 2021-12-20    632   627  641    629   634</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    19 2021-12-27    736   727  750.   733   740</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    20 2022-01-03    759   745  779    754   765</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    18 2021-12-20    632   626  640    629   634</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    19 2021-12-27    736   728  750.   732   740</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    20 2022-01-03    759   746  778    754   765</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    21 2022-01-10    879   862  905    872   887</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    22 2022-01-17    786   764  816.   778   795</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    22 2022-01-17    785   764  815    777   795</span></span></code></pre></div>
 <p>The above calling will return only the nowcasting estimate and its
 Confidence Interval (CI) for two different credibility levels,
 <code>LIb</code> and <code>LSb</code> are the max and min CI,
@@ -274,7 +275,9 @@ now:</p>
 \log(\lambda_{t,d,a}) =  \alpha_a + \beta_{t,a} + \gamma_{d,a}, \\
 \beta_{t,a} := u_t - u_{(t-1)} - u_{(t-2)} \sim N(0,\tau_{a, \beta});
 \gamma_{d,a} := u_d - u_{(d-1)} \sim N(0, \tau_{a, \gamma}) \\
-t=1,2,\ldots,T, \\ d=1,2,\ldots,D, \\ a=1,2,\ldots,A,
+t=1,2,\ldots,T, \\
+d=1,2,\ldots,D, \\
+a=1,2,\ldots,A, \\
 \end{equation}$$</span></p>
 <p>where each age class,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>,
@@ -427,7 +430,7 @@ the age class information to nowcasting produce narrower estimates</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Casted by <a href="https://github.com/rafalopespx" class="external-link">Rafael Lopes</a>, <a href="https://github.com/lsbastos/" class="external-link">Leonardo Bastos</a>.</p>
+  <p>Casted by <a href="https://github.com/rafalopespx" class="external-link">Rafael Lopes</a>, Tatiana Portella, Marcelo Gomes, <a href="https://github.com/lsbastos/" class="external-link">Leonardo Bastos</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

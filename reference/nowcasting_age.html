@@ -9,7 +9,7 @@ data has to be in the format of delay-triangle"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">nowcaster</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,7 +48,15 @@ data has to be in the format of delay-triangle</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">nowcasting_age</span><span class="op">(</span><span class="va">dataset</span>, zero_inflated <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">nowcasting_age</span><span class="op">(</span></span>
+<span>  <span class="va">dataset</span>,</span>
+<span>  zero_inflated <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  timeREmodel <span class="op">=</span> <span class="st">"rw2"</span>,</span>
+<span>  INLAoutput <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>  INLAoutputOnly <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>  WAIC <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>  DIC <span class="op">=</span> <span class="cn">F</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -57,6 +65,30 @@ data has to be in the format of delay-triangle</p>
 
 <dl><dt id="arg-dataset">dataset<a class="anchor" aria-label="anchor" href="#arg-dataset"></a></dt>
 <dd><p>data pre formatted in to age classes and delays by week for each cases, delay triangle format</p></dd>
+
+
+<dt id="arg-zero-inflated">zero_inflated<a class="anchor" aria-label="anchor" href="#arg-zero-inflated"></a></dt>
+<dd><p>Experimental! It deals with zero-inflated data by using a zeroinflatednbinomial2 model.</p></dd>
+
+
+<dt id="arg-timeremodel">timeREmodel<a class="anchor" aria-label="anchor" href="#arg-timeremodel"></a></dt>
+<dd><p>Latent model for time random effects. The default is a second-order random walk model.</p></dd>
+
+
+<dt id="arg-inlaoutput">INLAoutput<a class="anchor" aria-label="anchor" href="#arg-inlaoutput"></a></dt>
+<dd><p>return the INLA output. Default is FALSE.</p></dd>
+
+
+<dt id="arg-inlaoutputonly">INLAoutputOnly<a class="anchor" aria-label="anchor" href="#arg-inlaoutputonly"></a></dt>
+<dd><p>return the only the INLA output. Default is FALSE.</p></dd>
+
+
+<dt id="arg-waic">WAIC<a class="anchor" aria-label="anchor" href="#arg-waic"></a></dt>
+<dd><p>return the WAIC. Default is FALSE.</p></dd>
+
+
+<dt id="arg-dic">DIC<a class="anchor" aria-label="anchor" href="#arg-dic"></a></dt>
+<dd><p>return the DIC. Default is FALSE.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -69,7 +101,7 @@ data has to be in the format of delay-triangle</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Casted by <a href="https://github.com/rafalopespx" class="external-link">Rafael Lopes</a>, <a href="https://github.com/lsbastos/" class="external-link">Leonardo Bastos</a>.</p>
+  <p>Casted by <a href="https://github.com/rafalopespx" class="external-link">Rafael Lopes</a>, Tatiana Portella, Marcelo Gomes, <a href="https://github.com/lsbastos/" class="external-link">Leonardo Bastos</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

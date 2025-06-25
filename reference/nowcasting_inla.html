@@ -15,7 +15,7 @@ onset date and report date."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">nowcaster</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,10 +68,16 @@ onset date and report date.</p>
 <span>  <span class="va">date_onset</span>,</span>
 <span>  <span class="va">date_report</span>,</span>
 <span>  data.by.week <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  return.age <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  silent <span class="op">=</span> <span class="cn">F</span>,</span>
 <span>  K <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  trajectories <span class="op">=</span> <span class="cn">F</span>,</span>
 <span>  zero_inflated <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>  timeREmodel <span class="op">=</span> <span class="st">"rw2"</span>,</span>
+<span>  INLAoutput <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>  INLAoutputOnly <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>  WAIC <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>  DIC <span class="op">=</span> <span class="cn">F</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -88,28 +94,23 @@ in which data will stratified, usually being age.</p></dd>
 
 <dt id="arg-bins-age">bins_age<a class="anchor" aria-label="anchor" href="#arg-bins-age"></a></dt>
 <dd><p>Age bins to do the nowcasting, it receive a vector of age bins,
-or options between, "SI-PNI", "10 years", "5 years".
-Default "SI-PNI".</p></dd>
+or options between, "SI-PNI", "10 years", "5 years". The default is "SI-PNI".</p></dd>
 
 
 <dt id="arg-trim-data">trim.data<a class="anchor" aria-label="anchor" href="#arg-trim-data"></a></dt>
-<dd><p>(in weeks) Date to be trimmed out from the data base, in days.
-Default 0 days.</p></dd>
+<dd><p>(in weeks) Date to be trimmed out from the data base, in days. Default is 0 days.</p></dd>
 
 
 <dt id="arg-dmax">Dmax<a class="anchor" aria-label="anchor" href="#arg-dmax"></a></dt>
-<dd><p>(in weeks) Window of dates the estimation will act, i.e., till how many past weeks the nowcasting will estimate.
-Default 15 weeks.</p></dd>
+<dd><p>(in weeks) Window of dates the estimation will act, i.e., till how many past weeks the nowcasting will estimate. Default is 15 weeks.</p></dd>
 
 
 <dt id="arg-wdw">wdw<a class="anchor" aria-label="anchor" href="#arg-wdw"></a></dt>
-<dd><p>(in weeks) Until which maximum amount of weeks the Nowcasting will use to the estimation.
-Default 30 weeks.</p></dd>
+<dd><p>(in weeks) Until which maximum amount of weeks the Nowcasting will use to the estimation. Default is 30 weeks.</p></dd>
 
 
 <dt id="arg-use-epiweek">use.epiweek<a class="anchor" aria-label="anchor" href="#arg-use-epiweek"></a></dt>
-<dd><p>If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date.
-Default FALSE</p></dd>
+<dd><p>If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date. Default is FALSE</p></dd>
 
 
 <dt id="arg-age-col">age_col<a class="anchor" aria-label="anchor" href="#arg-age-col"></a></dt>
@@ -125,77 +126,87 @@ Default FALSE</p></dd>
 
 
 <dt id="arg-data-by-week">data.by.week<a class="anchor" aria-label="anchor" href="#arg-data-by-week"></a></dt>
-<dd><p>If it has to be returned the whole time-series data.
-Default FALSE.</p></dd>
+<dd><p>If it has to be returned the whole time-series data. Default is FALSE.</p></dd>
+
+
+<dt id="arg-return-age">return.age<a class="anchor" aria-label="anchor" href="#arg-return-age"></a></dt>
+<dd><p>Deprecated. If the estimate by Age should be returned. Default is TRUE.</p></dd>
 
 
 <dt id="arg-silent">silent<a class="anchor" aria-label="anchor" href="#arg-silent"></a></dt>
-<dd><p><a href="https://rdrr.io/r/base/Deprecated.html" class="external-link">Deprecated</a> Should be the warnings turned off?
-Default is TRUE.</p></dd>
+<dd><p>Deprecated. Should be the warnings turned off? . The default is TRUE.</p></dd>
 
 
 <dt id="arg-k">K<a class="anchor" aria-label="anchor" href="#arg-k"></a></dt>
-<dd><p>(in weeks) How much weeks to forecast ahead?
-Default K is 0, no forecasting ahead</p></dd>
+<dd><p>(in weeks) How much weeks to forecast ahead? . The default is K = 0, no forecasting ahead</p></dd>
 
 
 <dt id="arg-trajectories">trajectories<a class="anchor" aria-label="anchor" href="#arg-trajectories"></a></dt>
-<dd><p>Returns the trajectories estimated from the inner 'INLA' model
-Default FALSE.</p></dd>
+<dd><p>Returns the trajectories estimated from the inner 'INLA' model . The default is FALSE.</p></dd>
 
 
 <dt id="arg-zero-inflated">zero_inflated<a class="anchor" aria-label="anchor" href="#arg-zero-inflated"></a></dt>
-<dd><p>Experimental In non-structured models, fit a model that deals with zero-inflated data.
-Default FALSE. If the age_col is not missing this flag is ignored.</p></dd>
+<dd><p>Experimental! In non-structured models, fit a model that deals with zero-inflated data. The default is FALSE. If the age_col is not missing this flag is ignored.</p></dd>
+
+
+<dt id="arg-timeremodel">timeREmodel<a class="anchor" aria-label="anchor" href="#arg-timeremodel"></a></dt>
+<dd><p>Latent model for time random effects. . The default is a second-order random walk model.</p></dd>
+
+
+<dt id="arg-inlaoutput">INLAoutput<a class="anchor" aria-label="anchor" href="#arg-inlaoutput"></a></dt>
+<dd><p>return the INLA output. Default is FALSE.</p></dd>
+
+
+<dt id="arg-inlaoutputonly">INLAoutputOnly<a class="anchor" aria-label="anchor" href="#arg-inlaoutputonly"></a></dt>
+<dd><p>return the only the INLA output. Default is FALSE.</p></dd>
+
+
+<dt id="arg-waic">WAIC<a class="anchor" aria-label="anchor" href="#arg-waic"></a></dt>
+<dd><p>return the WAIC. The default is FALSE.</p></dd>
+
+
+<dt id="arg-dic">DIC<a class="anchor" aria-label="anchor" href="#arg-dic"></a></dt>
+<dd><p>return the DIC.The default is FALSE.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>list parameters to other functions</p></dd>
-
-
-<dt id="arg-return-age">return.age<a class="anchor" aria-label="anchor" href="#arg-return-age"></a></dt>
-<dd><p><a href="https://rdrr.io/r/base/Deprecated.html" class="external-link">Deprecated</a> If the estimate by Age should be returned.
-Default TRUE.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total',
 'data' with the time-series out of wdw .
-If 'age_col' is parsed, add a thrid element with by age estimation 'age' .
-If 'trajectories' = TRUE, add a forth element with the returned trajectories from 'inla'.</p>
+If 'age_col' is parsed, add a third element with by age estimation 'age' .
+If 'trajectories' = TRUE, add a forth element with the returned trajectories from 'inla'.
+If 'INLAoutput' = TRUE, the INLA output is returned as a list object named 'output'.
+If 'INLAoutputOnly' = TRUE, just the INLA output is returned in a list object named 'output'.
+If 'WAIC' = TRUE or 'DIC' = TRUE, then 'INLAoutput' is forced to be TRUE returning the INLA output and a list object named waic or dic are also returned.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Loading Belo Horizonte SARI dataset</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sragBH</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">nowcasting_inla</span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">sragBH</span>,</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">nowcasting_inla</span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">sragBH</span>,</span></span>
 <span class="r-in"><span>                date_onset <span class="op">=</span> <span class="va">DT_SIN_PRI</span>,</span></span>
 <span class="r-in"><span>                date_report <span class="op">=</span> <span class="va">DT_DIGITA</span>,</span></span>
-<span class="r-in"><span>                silent <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(date_onset)`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(date_onset, delay, Time)`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $total</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 15 × 7</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Time dt_event   Median    LI    LS   LIb   LSb</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>    17 2021-12-13   443   442   449   443   445 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>    18 2021-12-20   632   626   641   629   635 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>    19 2021-12-27   736   727   751   733   741 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>    20 2022-01-03   760   745   778.  754   765 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>    21 2022-01-10   879   862   904   872   887 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>    22 2022-01-17   786   763   815   777   795 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>    23 2022-01-24   590   564   624   580   600 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>    24 2022-01-31   511   483   550.  500   522 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>    25 2022-02-07   408   377   454.  397   422 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>    26 2022-02-14   404   365   454.  390   420 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span>    27 2022-02-21   337   294   399   320   359 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span>    28 2022-02-28   300.  246.  379.  279.  323 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span>    29 2022-03-07   311   245.  424   289   347 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span>    30 2022-03-14   292   197   448.  250   334.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span>    31 2022-03-21   248   129.  501.  201   319.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">output</span><span class="op">$</span><span class="va">total</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Time dt_event   Median    LI    LS   LIb   LSb</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>    26 2022-02-14   404   366   458   390   421 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>    27 2022-02-21   336   295   403.  321   355.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>    28 2022-02-28   301   243   374.  280   323 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>    29 2022-03-07   312   244   419.  287   339.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>    30 2022-03-14   283   196   458.  248.  332 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span>    31 2022-03-21   252.  129.  521.  203   312 </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -203,7 +214,7 @@ If 'trajectories' = TRUE, add a forth element with the returned trajectories fro
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Casted by <a href="https://github.com/rafalopespx" class="external-link">Rafael Lopes</a>, <a href="https://github.com/lsbastos/" class="external-link">Leonardo Bastos</a>.</p>
+  <p>Casted by <a href="https://github.com/rafalopespx" class="external-link">Rafael Lopes</a>, Tatiana Portella, Marcelo Gomes, <a href="https://github.com/lsbastos/" class="external-link">Leonardo Bastos</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
