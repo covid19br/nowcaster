@@ -1,5 +1,5 @@
 Package: nowcaster
-Title: Nowcaster
+Title: Delay correction (nowcasting) of epidemiological time-series
 Version: 1.0.0
 Authors@R: c(
     person("Rafael", "Lopes", , "rafael.lopes@yale.edu", role = c("aut", "cre"), 
@@ -10,15 +10,23 @@ Authors@R: c(
     comment = c(ORCID = "0000-0003-4693-5402")),
     person("Leonardo", "Bastos", , "leonardo.bastos@fiocruz.br", role = c("aut"), 
     comment = c(ORCID = "0000-0002-1406-0122")))
-Description: Nowcaster is a package wrapping statistical models to estimate not yet reported data from a empirical delay distribution 
-  between dates of onset of symptoms and date of digitation.
+Description: A set of statistical models to estimate not yet reported data from a empirical delay distribution 
+  between dates of onset of symptoms and reporting date. The basic model and its implementation is described in 
+  Bastos, Economou, et al. (2019) <doi:10.1002/sim.8303>.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 URL: https://covid19br.github.io/nowcaster, https://covid19br.github.io/nowcaster/
 BugReports: https://github.com/covid19br/nowcaster/issues
+Depends: 
+    R (>= 4.1.0)
+Imports: 
+    dplyr,
+    tidyr,
+    tibble
 Suggests: 
+    INLA (>= 22.5.3),
     ggplot2,
     knitr,
     rmarkdown,
@@ -27,15 +35,8 @@ Suggests:
     lubridate,
     lme4, sn,
     stringr
-Depends: 
-    R (>= 4.1.0)
 LazyData: true
 Additional_repositories: 
     https://inla.r-inla-download.org/R/stable/
-Imports: 
-    dplyr,
-    INLA (>= 22.5.3),
-    tidyr,
-    tibble
 VignetteBuilder: knitr
 Config/testthat/edition: 3
