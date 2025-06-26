@@ -25,18 +25,6 @@ model to the time steps of delay between onset date of the event,
 death) and the date of report (*i.e.*, date of notification of the case
 or death).
 
-## Installing
-
-After have a proper `INLA` installation to install `nowcaster` package
-simply run the code below in R:
-
-``` r
-devtools::install_github("https://github.com/covid19br/nowcaster")
-```
-
-If you have any problem installing, please refer to next section on the
-dependencies of the package.
-
 ## Dependencies
 
 `nowcaster` is based on the
@@ -65,6 +53,19 @@ install.packages("INLA",
 If you want more detail on other possible installations of `INLA`,
 please refer to the official
 [page](https://www.r-inla.org/download-install) of the package.
+
+
+## Installing
+
+After have a proper `INLA` installation to install `nowcaster` package
+simply run the code below in R:
+
+``` r
+devtools::install_github("https://github.com/covid19br/nowcaster")
+```
+
+If you have any problem installing, please refer to next section on the
+dependencies of the package.
 
 ## Similar Initiatives
 
