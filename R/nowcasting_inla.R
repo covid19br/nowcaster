@@ -20,15 +20,17 @@
 #' @param silent Deprecated. Should be the warnings turned off? . The default is TRUE.
 #' @param K (in weeks) How much weeks to forecast ahead? . The default is K = 0, no forecasting ahead
 #' @param age_col Column for ages
-#' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases
-#' @param date_report Column of dates of report of the event, normally date of digitation of the notification of cases
+#' @param date_onset Column of dates of onset of the events,  normally date of onset of first symptoms of cases. 
+#' @param date_report Column of dates of report of the event, normally date of digitation of the notification of cases. For diff_data = TRUE`,this should correspond to the database release date.
 #' @param trajectories Returns the trajectories estimated from the inner 'INLA' model . The default is FALSE.
 #' @param zero_inflated Experimental! In non-structured models, fit a model that deals with zero-inflated data. The default is FALSE. If the age_col is not missing this flag is ignored.
 #' @param timeREmodel Latent model for time random effects. . The default is a second-order random walk model.
 #' @param INLAoutput return the INLA output. Default is FALSE.
 #' @param INLAoutputOnly return the only the INLA output. Default is FALSE.
 #' @param WAIC return the WAIC. The default is FALSE.
-#' @param DIC return the DIC.The default is FALSE.
+#' @param DIC return the DIC.The default is FALSE
+#' @param diff_data Nowcasting based on database differences to estimate reporting delays.
+#' @param cases Number of reported cases. Required only if diff_data=TRUE
 #' @param ... list parameters to other functions
 #'
 #' @return a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total',
@@ -70,6 +72,8 @@ nowcasting_inla <- function(dataset,
                             INLAoutput = F,
                             INLAoutputOnly = F,
                             WAIC = F, DIC = F,
+                            diff_data=FALSE,
+                            cases,
                             ...){
 
   dots<-list(...)
@@ -96,6 +100,16 @@ nowcasting_inla <- function(dataset,
   if(K < 0 ){
     stop("K less than 0, we cannot produce backcasting! \n
          Please set the K to anything greater than 0 to Forecasting")
+  }
+  
+  ####diff_base warning
+  
+  if(diff_base==TRUE & missing(cases)){
+    stop("'cases' is missing! Please provide this parameter")
+  }
+  
+  if(diff_base==TRUE & trim.data>0{
+    stop("trimming is not allowed for nowcasting based on database difference")
   }
 
   # Dealing with INLA output
@@ -205,10 +219,15 @@ nowcasting_inla <- function(dataset,
 
   ## Objects for keep the nowcasting
   ## Filtering out cases without report date
-  if(missing(age_col)){
+  if(missing(age_col) & diff_base==FALSE){
     data.clean <- dataset |>
       dplyr::select({{date_report}}, {{date_onset}})  |>
       tidyr::drop_na({{date_report}})
+    if(diff_base==TRUE){
+      data.clean <- dataset |>
+        dplyr::select({{date_report}}, {{date_onset}}, {{cases}})  |>
+        tidyr::drop_na({{date_report}})  
+    }
   } else {
     data.clean <- dataset  |>
       dplyr::select({{date_report}}, {{date_onset}}, {{age_col}})  |>
@@ -216,7 +235,7 @@ nowcasting_inla <- function(dataset,
   }
 
   ## Filtering data to the parameters setted above
-  if(missing(age_col)){
+  if(missing(age_col & diff_base==FALSE)){
     data_w <- data.w_no_age(dataset = data.clean,
                             trim.data = trim.data,
                             date_onset = {{date_onset}},
@@ -224,6 +243,16 @@ nowcasting_inla <- function(dataset,
                             use.epiweek = use.epiweek,
                             K = K,
                             silent = silent)
+    if(diff_base==TRUE){
+     data_w<- data_diff(dataset= data.clean,
+                               trim.data=0,
+                               date_start={{date_onset}},
+                               date_release={{date_report}},
+                               cases={{cases}},
+                               use.epiweek = FALSE,
+                               K= K
+     ) 
+    }
   }else {
     data_w <- data.w(dataset = data.clean,
                      bins_age = bins_age,
@@ -243,7 +272,7 @@ nowcasting_inla <- function(dataset,
 
   ## Data to be entered in Nowcasting function
   ##
-  if(missing(age_col)){
+  if(missing(age_col) & diff_data==FALSE){
     data.inla <- data_w  |>
       ## Filter for dates
       dplyr::filter(date_onset >= Tmax - 7 * wdw,
@@ -253,6 +282,14 @@ nowcasting_inla <- function(dataset,
       ## Counting
       dplyr::tally(name = "Y")  |>
       dplyr::ungroup()
+    if(diff_data==TRUE){
+      data.inla <- data_w  |>
+        ## Filter for dates
+        dplyr::filter(date_onset >= Tmax - 7 * wdw,
+                      Delay <= Dmax) |>
+                dplyr::rename(Y=cases,
+                              delay=Delay)
+    }
   } else {
     data.inla <- data_w  |>
       ## Filter for dates
@@ -291,7 +328,7 @@ nowcasting_inla <- function(dataset,
     tibble::rowid_to_column(var = "Time")
 
   ## Joining auxiliary date tables
-  data.inla <- data.inla  |>
+  data.inla2 <- data.inla  |>
     dplyr::left_join(tbl.date.aux)
 
   ## Time maximum to be considered
