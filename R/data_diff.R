@@ -18,7 +18,8 @@ data_diff<-function(dataset,
       mutate(delay = row_number() - 1) |>  
       arrange(delay, .by_group = TRUE) |>
       mutate(
-        Y = cases - lag(cases, default = 0)
+        Y = cases - lag(cases, default = 0),
+        Y = pmax(Y, 0)
       ) |>
       ungroup()  
     
@@ -36,7 +37,8 @@ data_diff<-function(dataset,
       mutate(delay = row_number() - 1) |>  
       arrange(delay, .by_group = TRUE) |>
       mutate(
-        Y = cases - lag(cases, default = 0)
+        Y = cases - lag(cases, default = 0),
+        Y = pmax(Y, 0)
       ) |>
       ungroup()    
     
