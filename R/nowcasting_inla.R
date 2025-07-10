@@ -104,11 +104,11 @@ nowcasting_inla <- function(dataset,
   
   ####diff_base warning
   
-  if(diff_base==TRUE & missing(cases)){
+  if(diff_data==TRUE & missing(cases)){
     stop("'cases' is missing! Please provide this parameter")
   }
   
-  if(diff_base==TRUE & trim.data>0{
+  if(diff_data==TRUE & trim.data>0){
     stop("trimming is not allowed for nowcasting based on database difference")
   }
 
@@ -219,15 +219,14 @@ nowcasting_inla <- function(dataset,
 
   ## Objects for keep the nowcasting
   ## Filtering out cases without report date
-  if(missing(age_col) & diff_base==FALSE){
+  if(missing(age_col) & diff_data==FALSE){
     data.clean <- dataset |>
       dplyr::select({{date_report}}, {{date_onset}})  |>
       tidyr::drop_na({{date_report}})
-    if(diff_base==TRUE){
-      data.clean <- dataset |>
-        dplyr::select({{date_report}}, {{date_onset}}, {{cases}})  |>
-        tidyr::drop_na({{date_report}})  
-    }
+    } else if(diff_data==TRUE){
+    data.clean <- dataset |>
+      dplyr::select({{date_report}}, {{date_onset}}, {{cases}})  |>
+      tidyr::drop_na({{date_report}})  
   } else {
     data.clean <- dataset  |>
       dplyr::select({{date_report}}, {{date_onset}}, {{age_col}})  |>
@@ -235,7 +234,7 @@ nowcasting_inla <- function(dataset,
   }
 
   ## Filtering data to the parameters setted above
-  if(missing(age_col & diff_base==FALSE)){
+  if(missing(age_col) & diff_data==FALSE){
     data_w <- data.w_no_age(dataset = data.clean,
                             trim.data = trim.data,
                             date_onset = {{date_onset}},
@@ -243,16 +242,14 @@ nowcasting_inla <- function(dataset,
                             use.epiweek = use.epiweek,
                             K = K,
                             silent = silent)
-    if(diff_base==TRUE){
+    }else if(diff_data==TRUE){
      data_w<- data_diff(dataset= data.clean,
                                trim.data=0,
                                date_start={{date_onset}},
                                date_release={{date_report}},
                                cases={{cases}},
-                               use.epiweek = FALSE,
-                               K= K
+                               use.epiweek = FALSE
      ) 
-    }
   }else {
     data_w <- data.w(dataset = data.clean,
                      bins_age = bins_age,
@@ -282,14 +279,12 @@ nowcasting_inla <- function(dataset,
       ## Counting
       dplyr::tally(name = "Y")  |>
       dplyr::ungroup()
-    if(diff_data==TRUE){
+    
+    }else if(diff_data==TRUE){
       data.inla <- data_w  |>
         ## Filter for dates
         dplyr::filter(date_onset >= Tmax - 7 * wdw,
-                      Delay <= Dmax) |>
-                dplyr::rename(Y=cases,
-                              delay=Delay)
-    }
+                      delay <= Dmax) 
   } else {
     data.inla <- data_w  |>
       ## Filter for dates
@@ -328,7 +323,7 @@ nowcasting_inla <- function(dataset,
     tibble::rowid_to_column(var = "Time")
 
   ## Joining auxiliary date tables
-  data.inla2 <- data.inla  |>
+  data.inla <- data.inla  |>
     dplyr::left_join(tbl.date.aux)
 
   ## Time maximum to be considered

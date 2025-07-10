@@ -7,13 +7,13 @@ data_diff<-function(dataset,
   
   
   data_w <- dataset |> 
-    dplyr::rename(date_report = {{date_start}},
-                  date_onset = {{date_release}},
+    dplyr::rename(date_report = {{date_release}},
+                  date_onset = {{date_start}},
                   cases = {{cases}}) |>
     arrange(date_onset, date_report) |>
     group_by(date_onset) |>
-    mutate(Delay = row_number() - 1) |>  
-    arrange(Delay, .by_group = TRUE) |>
+    mutate(delay = row_number() - 1) |>  
+    arrange(delay, .by_group = TRUE) |>
     mutate(
       Y = cases - lag(cases, default = 0)
     ) |>
