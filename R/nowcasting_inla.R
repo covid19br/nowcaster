@@ -16,7 +16,7 @@
 #' @param data.by.week If it has to be returned the whole time-series data. Default is FALSE.
 #' @param return.age Deprecated. If the estimate by Age should be returned. Default is TRUE.
 #' @param bins_age Age bins to do the nowcasting, it receive a vector of age bins,
-#' or options between, "SI-PNI", "10 years", "5 years". The default is "SI-PNI".
+#' or options between, "SI-PNI", "10 years", "5 years" , "preset". The default is "SI-PNI".
 #' @param silent Deprecated. Should be the warnings turned off? . The default is TRUE.
 #' @param K (in weeks) How much weeks to forecast ahead? . The default is K = 0, no forecasting ahead
 #' @param age_col Column for ages
@@ -111,6 +111,11 @@ nowcasting_inla <- function(dataset,
   if(diff_data==TRUE & trim.data>0){
     stop("trimming is not allowed for nowcasting based on database difference")
   }
+  
+  if(diff_data==TRUE & !missing(age_col) & bins_age!="preset"){
+    stop("Nowcasting by database difference only supports 'preset' bins_age")
+  }
+  
 
   # Dealing with INLA output
 
@@ -195,16 +200,22 @@ nowcasting_inla <- function(dataset,
       ## Missing bins_age column warning
     }else{
       message("'age_col' inputed, nowcasting with structured model")
-
-      if(missing(bins_age)){
+      
+      if(diff_data==FALSE & missing(bins_age)){
         bins_age <- "SI-PNI"
         warning("Using 'SI-PNI' age bins!")
+        
+      } else if (diff_data==TRUE & missing(bins_age)){
+        bins_age <- "preset"
+        warning("Using 'preset' age bins!")
+        
       }else{
         bins_age<-bins_age
         message("Using age bins inputed")
       }
 
     }
+    
   }
   # else{
   #     bins_age<-bins_age;
@@ -223,10 +234,14 @@ nowcasting_inla <- function(dataset,
     data.clean <- dataset |>
       dplyr::select({{date_report}}, {{date_onset}})  |>
       tidyr::drop_na({{date_report}})
-    } else if(diff_data==TRUE){
+    } else if(diff_data==TRUE & missing(age_col)){
     data.clean <- dataset |>
       dplyr::select({{date_report}}, {{date_onset}}, {{cases}})  |>
       tidyr::drop_na({{date_report}})  
+  } else if (diff_data==TRUE & !missing(age_col)){
+    data.clean <- dataset |>
+      dplyr::select({{date_report}}, {{date_onset}}, {{cases}}, {{age_col}})  |>
+      tidyr::drop_na({{date_report}}) 
   } else {
     data.clean <- dataset  |>
       dplyr::select({{date_report}}, {{date_onset}}, {{age_col}})  |>
@@ -242,7 +257,7 @@ nowcasting_inla <- function(dataset,
                             use.epiweek = use.epiweek,
                             K = K,
                             silent = silent)
-    }else if(diff_data==TRUE){
+    }else if(diff_data==TRUE & missing(age_col)){
      data_w<- data_diff(dataset= data.clean,
                                trim.data=0,
                                date_start={{date_onset}},
@@ -250,7 +265,17 @@ nowcasting_inla <- function(dataset,
                                cases={{cases}},
                                use.epiweek = FALSE
      ) 
-  }else {
+    } else if(diff_data==TRUE & !missing(age_col)) {
+    
+      data_w<- data_diff(dataset= data.clean,
+                         trim.data=0,
+                         date_start={{date_onset}},
+                         date_release={{date_report}},
+                         cases={{cases}},
+                         age_col={{age_col}},
+                         use.epiweek = FALSE
+      )
+  } else {
     data_w <- data.w(dataset = data.clean,
                      bins_age = bins_age,
                      trim.data = trim.data,
@@ -280,7 +305,7 @@ nowcasting_inla <- function(dataset,
       dplyr::tally(name = "Y")  |>
       dplyr::ungroup()
     
-    }else if(diff_data==TRUE){
+    } else if(diff_data==TRUE){
       data.inla <- data_w  |>
         ## Filter for dates
         dplyr::filter(date_onset >= Tmax - 7 * wdw,
