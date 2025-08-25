@@ -42,10 +42,15 @@ nowcasting_age <- function(dataset,
   }
 
   index.missing <- which(is.na(dataset$Y))
-
+  
   dataset <- dataset |>
     dplyr::mutate(
-      fx_etaria.num = as.numeric(fx_etaria))
+      fx_etaria.num = as.integer(factor(fx_etaria)))
+  
+
+#  dataset <- dataset |>
+#    dplyr::mutate(
+#     fx_etaria.num = as.numeric(fx_etaria))
 
   ## Model equation: intercept + age + f(time random effect | age) + f(Delay random effect | age)
   ## Y(t,Age) ~ 1 + Age + rw2(t,Age) + rw1(delay, Age),
