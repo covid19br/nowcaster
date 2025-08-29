@@ -1,5 +1,5 @@
 Package: nowcaster
-Title: Delay correction (nowcasting) of epidemiological time-series
+Title: Delay Correction (Nowcasting) of Epidemiological Time-Series
 Version: 1.0.0
 Authors@R: c(
     person("Rafael", "Lopes", , "rafael.lopes@yale.edu", role = c("aut", "cre"), 
@@ -20,7 +20,7 @@ RoxygenNote: 7.3.2
 URL: https://covid19br.github.io/nowcaster/
 BugReports: https://github.com/covid19br/nowcaster/issues
 Depends: 
-    fmesher (>= 0.4.0), R (>= 4.1.0)
+    R (>= 4.1.0)
 Imports: 
     dplyr,
     tidyr,
@@ -37,6 +37,6 @@ Suggests:
     stringr
 LazyData: true
 Additional_repositories: 
-    https://inla.r-inla-download.org/R/stable/
+    https://inla.r-inla-download.org/R/testing/
 VignetteBuilder: knitr
 Config/testthat/edition: 3
