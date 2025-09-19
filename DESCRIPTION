@@ -37,6 +37,6 @@ Suggests:
     stringr
 LazyData: true
 Additional_repositories: 
-    https://inla.r-inla-download.org/R/testing/
+    https://inla.r-inla-download.org/R/stable/
 VignetteBuilder: knitr
 Config/testthat/edition: 3

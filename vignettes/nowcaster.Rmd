@@ -16,6 +16,10 @@ knitr::opts_chunk$set(
   message = F, 
   echo = T
 )
+```
+
+
+```{r echo=FALSE}
 ## Checking if INLA installed and which version
 if(requireNamespace("INLA", quietly = T)){
   if(packageVersion("INLA") >= "22.5.3"){knitr::opts_chunk$set(eval = T)}
