@@ -1,0 +1,15 @@
+citHeader("To cite nowcaster in publications use:")
+
+bibentry(
+  bibtype  = "Article",
+  title="A Modelling approach for correcting reporting delays in disease surveillance data",
+  author="Bastos, Leonardo S and Economou, Theodoros and Gomes, Marcelo FC and Villela, Daniel AM and Coelho, Flavio C and Cruz, Oswaldo G and Stoner, Oliver and Bailey, Trevor and Codeço, Claudia T",
+  journal="Statistics in medicine",
+  year="2019",
+  volume="38",
+  number="22",
+  pages="4363--4377",
+  publisher="Wiley Online Library",
+  doi      ="https://doi.org/10.1002/sim.8303"
+)
+

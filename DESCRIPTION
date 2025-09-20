@@ -26,17 +26,22 @@ Imports:
     tidyr,
     tibble
 Suggests: 
-    INLA (>= 22.5.3),
+    INLA (>= 23.01.31),
     ggplot2,
-    knitr,
     rmarkdown,
+    knitr,
     vroom,
     parallel,
     lubridate,
-    lme4, sn,
-    stringr
+    lme4,
+    sn,
+    sp,
+    stringr,
+    fmesher (>= 0.5.0),
+    testthat (>= 3.0.0)
 LazyData: true
+BuildVignettes: true
+VignetteBuilder: knitr
 Additional_repositories: 
     https://inla.r-inla-download.org/R/stable/
-VignetteBuilder: knitr
 Config/testthat/edition: 3

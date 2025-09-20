@@ -25,6 +25,11 @@ if(requireNamespace("INLA", quietly = T)){
   if(packageVersion("INLA") >= "22.5.3"){knitr::opts_chunk$set(eval = T)}
   else{knitr::opts_chunk$set(eval = F)}
 }
+if (requireNamespace("INLA", quietly = TRUE)) {
+  INLA::inla.setOption(fmesher.evolution = 2L)
+  INLA::inla.setOption(fmesher.evolution.warn = TRUE)
+  INLA::inla.setOption(fmesher.evolution.verbosity = "warn")
+}
 ```
 
 ## TL;DR

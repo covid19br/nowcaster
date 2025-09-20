@@ -3,14 +3,17 @@
 
 <!-- badges: start -->
 
-[![CRAN
-checks](https://badges.cranchecks.info/summary/nowcaster.svg)](https://cran.r-project.org/web/checks/check_results_nowcaster.html)
-[![Dependencies](https://tinyverse.netlify.com/badge/nowcaster)](https://cran.r-project.org/package=nowcaster)
+<!-- [![CRAN checks](https://badges.cranchecks.info/summary/nowcaster.svg)](https://cran.r-project.org/web/checks/check_results_nowcaster.html) -->
+
+<!-- [![Dependencies](https://tinyverse.netlify.com/badge/nowcaster)](https://cran.r-project.org/package=nowcaster) -->
+
 `badger::badge_devel(color = "blue", pkg = "nowcaster")` [![License: GPL
 (\>=
 3)](https://img.shields.io/badge/license-GPL%20(%3E=%203)-blue.svg)](https://github.com/covid19br/nowcaster/blob/main/LICENSE.md)
 [![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![R-CMD-check](https://github.com/covid19br/nowcaster/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/covid19br/nowcaster/actions/workflows/R-CMD-check.yaml)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/nowcaster)](https://CRAN.R-project.org/package=nowcaster)
 <!-- badges: end -->
 
 `nowcaster` is an R package for “nowcasting” epidemiological time-series
@@ -24,6 +27,18 @@ model to the time steps of delay between onset date of the event,
 (*i.e.*, date of first symptoms for cases or date of occurrence of
 death) and the date of report (*i.e.*, date of notification of the case
 or death).
+
+## Installing
+
+After have a proper `INLA` installation to install `nowcaster` package
+simply run the code below in R:
+
+``` r
+devtools::install_github("https://github.com/covid19br/nowcaster")
+```
+
+If you have any problem installing, please refer to next section on the
+dependencies of the package.
 
 ## Dependencies
 
@@ -53,19 +68,6 @@ install.packages("INLA",
 If you want more detail on other possible installations of `INLA`,
 please refer to the official
 [page](https://www.r-inla.org/download-install) of the package.
-
-
-## Installing
-
-After have a proper `INLA` installation to install `nowcaster` package
-simply run the code below in R:
-
-``` r
-devtools::install_github("https://github.com/covid19br/nowcaster")
-```
-
-If you have any problem installing, please refer to next section on the
-dependencies of the package.
 
 ## Similar Initiatives
 
