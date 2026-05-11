@@ -4,10 +4,11 @@
 #' data has to be in the format of delay-triangle
 #'
 #' @param dataset data pre formatted in to age classes and delays by week for each cases, delay triangle format
+#' @param method method used grouped gam, "by" where the smooth function will be s(.,  by= agegroup) or "fs" (factor smooth) where the smoth function uses s(., age_group, ,bs="fs")
 #'
 #' @return Trajectories from the inner 'INLA' model
 #' @export
-nowcasting_age_mgcv <- function(dataset){
+nowcasting_age_mgcv <- function(dataset, method = "fs"){
 
   # Workaround check
   fx_etaria <- NULL
@@ -40,10 +41,17 @@ nowcasting_age_mgcv <- function(dataset){
   ## Model equation: intercept + s(time random effect) + s(Delay random effect)
   ## Y(t) ~ 1 + s(t) + s(delay),
 
+
   ## Running the Negative Binomial model in mgcv
-  output0 <- mgcv::gam(Y ~ 1 + fx_etaria + s(Time, by = fx_etaria) +
-                         s(delay, by = fx_etaria),
-                       family = "nb", data = dataset )
+  if(method == "by")
+    output0 <- mgcv::gam(Y ~ 1 + fx_etaria + s(Time, by = fx_etaria) +
+                           s(delay, by = fx_etaria),
+                         family = "nb", data = dataset )
+
+  if(method == "fs")
+    output0 <- mgcv::gam(Y ~ 1 + s(Time, fx_etaria, bs = "fs") +
+                           s(delay, fx_etaria, bs = "fs"),
+                         family = "nb", data = dataset )
 
   output <- list()
 

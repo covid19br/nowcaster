@@ -17,6 +17,7 @@
 #' @param return.age Deprecated. If the estimate by Age should be returned. Default is TRUE.
 #' @param bins_age Age bins to do the nowcasting, it receive a vector of age bins,
 #' or options between, "SI-PNI", "10 years", "5 years". The default is "SI-PNI".
+#' @param method.group.gam Method for aggregated smooth function in gam. Default is "fs" factor smooth, another alternative is "by".
 #' @param K (in weeks) How much weeks to forecast ahead? . The default is K = 0, no forecasting ahead
 #' @param age_col Column for ages
 #' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases
@@ -49,6 +50,7 @@ nowcasting_mgcv <- function(dataset,
                             data.by.week = FALSE,
                             return.age = NULL,
                             silent = F,
+                            method.group.gam = "fs",
                             K = 0,
                             trajectories = F,
                             ...){
@@ -298,7 +300,8 @@ nowcasting_mgcv <- function(dataset,
     # Nowcasting by age groups
 
     ## Negative binomial by age
-    sample.now <- nowcasting_age_mgcv(dataset = data2model)
+    sample.now <- nowcasting_age_mgcv(dataset = data2model,
+                                      method = method.group.gam)
 
     now_summary<-nowcasting.summary(trajectory = sample.now$sample,
                                     age = T)
