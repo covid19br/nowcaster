@@ -4,10 +4,12 @@
 \alias{nowcasting_age_mgcv}
 \title{nowcasting_age_mgcv}
 \usage{
-nowcasting_age_mgcv(dataset)
+nowcasting_age_mgcv(dataset, method = "fs")
 }
 \arguments{
 \item{dataset}{data pre formatted in to age classes and delays by week for each cases, delay triangle format}
+
+\item{method}{method used grouped gam, "by" where the smooth function will be s(.,  by= agegroup) or "fs" (factor smooth) where the smoth function uses s(., age_group, ,bs="fs")}
 }
 \value{
 Trajectories from the inner 'INLA' model

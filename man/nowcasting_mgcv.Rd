@@ -17,6 +17,7 @@ nowcasting_mgcv(
   data.by.week = FALSE,
   return.age = NULL,
   silent = F,
+  method.group.gam = "fs",
   K = 0,
   trajectories = F,
   ...
@@ -47,6 +48,8 @@ or options between, "SI-PNI", "10 years", "5 years". The default is "SI-PNI".}
 \item{data.by.week}{If it has to be returned the whole time-series data. Default is FALSE.}
 
 \item{return.age}{Deprecated. If the estimate by Age should be returned. Default is TRUE.}
+
+\item{method.group.gam}{Method for aggregated smooth function in gam. Default is "fs" factor smooth, another alternative is "by".}
 
 \item{K}{(in weeks) How much weeks to forecast ahead? . The default is K = 0, no forecasting ahead}
 

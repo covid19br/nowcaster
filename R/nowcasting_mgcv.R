@@ -171,7 +171,7 @@ nowcasting_mgcv <- function(dataset,
   ## Filtering data to the parameters setted above
   if(missing(age_col)){
     data_w <- data.w_no_age(dataset = data.clean,
-                            # trim.data = trim.data,
+                            trim.data = trim.data,
                             date_onset = {{date_onset}},
                             date_report = {{date_report}},
                             use.epiweek = use.epiweek,
@@ -180,7 +180,7 @@ nowcasting_mgcv <- function(dataset,
   }else {
     data_w <- data.w(dataset = data.clean,
                      bins_age = bins_age,
-                     # trim.data = trim.data,
+                     trim.data = trim.data,
                      age_col = {{age_col}},
                      date_onset = {{date_onset}},
                      date_report = {{date_report}},
