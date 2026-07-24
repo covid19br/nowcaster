@@ -34,6 +34,7 @@ Imports:
     dplyr,
     INLA (>= 22.5.3),
     tidyr,
-    tibble
+    tibble,
+    mgcv
 VignetteBuilder: knitr
 Config/testthat/edition: 3
