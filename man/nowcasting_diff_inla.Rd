@@ -81,7 +81,7 @@ nowcasting_diff_inla, calculates reporting delays based on differences between d
 
 data(flu_mg)
 
-now_diff<- nowcasting_diff_inla(dataset= flu_MG,
+now_diff <- nowcasting_diff_inla(dataset= flu_MG,
 date_start = dt_start,
 date_release = dt_release,
 Dmax = 10,
@@ -89,7 +89,7 @@ wdw=10,
 cases = cases,
 silent=F
 )
-}
 
 tail(now_diff$total)
+}
 }

@@ -11,6 +11,7 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Loading Belo Horizonte SARI dataset
 #' data(sragBH)
 #' now <- nowcasting_inla(dataset = sragBH,
@@ -19,6 +20,8 @@
 #'                 trajectories = TRUE,
 #'                 silent = T)
 #' slope.estimate.quant(trajectories = now$trajectories)
+#' }
+
 slope.estimate.quant <- function(end.week, trajectories, window=3){
 
   # Workaround check

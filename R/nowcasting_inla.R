@@ -44,7 +44,7 @@
 #' \dontrun{
 #' # Loading Belo Horizonte SARI dataset
 #' data(sragBH)
-#' nowcasting_inla(dataset = sragBH,
+#' aaa <- nowcasting_inla(dataset = sragBH,
 #'                 date_onset = DT_SIN_PRI,
 #'                 date_report = DT_DIGITA,
 #'                 silent = T)

@@ -73,10 +73,12 @@ nowcasting_mgcv, fits a statistical distribution to the empirical distribution o
 onset date and report date.
 }
 \examples{
+\dontrun{
 # Loading Belo Horizonte SARI dataset
 data(sragBH)
-nowcasting_inla(dataset = sragBH,
+bbb <- nowcasting_mgcv(dataset = sragBH,
                 date_onset = DT_SIN_PRI,
                 date_report = DT_DIGITA,
                 silent = T)
+}
 }

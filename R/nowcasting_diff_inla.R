@@ -39,7 +39,7 @@
 #'
 #' data(flu_mg)
 #'
-#' now_diff<- nowcasting_diff_inla(dataset= flu_MG,
+#' now_diff <- nowcasting_diff_inla(dataset= flu_MG,
 #' date_start = dt_start,
 #' date_release = dt_release,
 #' Dmax = 10,
@@ -47,10 +47,9 @@
 #' cases = cases,
 #' silent=F
 #' )
-#' }
-
 #'
 #' tail(now_diff$total)
+#' }
 
 nowcasting_diff_inla <- function(dataset,
                             Dmax = 10,
@@ -194,10 +193,10 @@ data.inla <- dataset |>
   dplyr::filter(date_onset>=min(date_release)) |>
   dplyr:: arrange(date_onset, date_release) |>
   dplyr::group_by(date_onset) |>
-  dplyr:: mutate(delay = row_number() - 1) |>
+  dplyr:: mutate(delay = dplyr::row_number() - 1) |>
   dplyr::arrange(delay, .by_group = TRUE) |>
   dplyr::mutate(
-        Y = cases - lag(cases, default = 0),
+        Y = cases - dplyr::lag(cases, default = 0),
         Y = pmax(Y, 0)
       ) |>
   dplyr::ungroup() |>
@@ -219,10 +218,10 @@ data.inla <- dataset |>
   dplyr::filter(date_onset>=min(date_release)) |>
   dplyr::arrange(fx_etaria,date_onset, date_release) |>
   dplyr::group_by(fx_etaria, date_onset) |>
-  dplyr::mutate(delay = row_number() - 1) |>
+  dplyr::mutate(delay = dplyr::row_number() - 1) |>
   dplyr::arrange(delay, .by_group = TRUE) |>
   dplyr::mutate(
-    Y = cases - lag(cases, default = 0),
+    Y = cases - dplyr::lag(cases, default = 0),
     Y = pmax(Y, 0)
   ) |>
   dplyr::ungroup() |>
