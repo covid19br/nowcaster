@@ -1,6 +1,6 @@
 Package: nowcaster
 Title: Nowcaster
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(
     person("Rafael", "Lopes", , "rafael.lopes@yale.edu", role = c("aut", "cre"), 
     comment = c(ORCID = "0000-0002-9416-6145")),
@@ -14,7 +14,7 @@ License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-URL: https://covid19br.github.io/nowcaster, https://covid19br.github.io/nowcaster/
+URL: https://covid19br.github.io/nowcaster
 BugReports: https://github.com/covid19br/nowcaster/issues
 Suggests: 
     ggplot2,

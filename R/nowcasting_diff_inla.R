@@ -1,7 +1,7 @@
 #' @title nowcasting_diff_inla
 #'
-#' @description Function to estimate the number of events that have already occurred but have not yet been reported, 
-#' in situations where the notification date is unavailable. The function calculates delayed notifications by comparing 
+#' @description Function to estimate the number of events that have already occurred but have not yet been reported,
+#' in situations where the notification date is unavailable. The function calculates delayed notifications by comparing
 #' case counts for the same event date across successive database versions.
 #' nowcasting_diff_inla, calculates reporting delays based on differences between database versions and fits a statistical distribution to the empirical delay.
 #'
@@ -13,7 +13,7 @@
 #' @param silent Deprecated. Should be the warnings turned off? . The default is TRUE.
 #' @param K (in weeks) How much weeks to forecast ahead? . The default is K = 0, no forecasting ahead
 #' @param age_col Column for ages
-#' @param date_start Column containing the dates when the events ocurred. Data must must be agregated by week 
+#' @param date_start Column containing the dates when the events ocurred. Data must must be agregated by week
 #' @param date_release Column containing the dates when the databases were released. Data must must be agregated by week
 #' @param trajectories Returns the trajectories estimated from the inner 'INLA' model . The default is FALSE.
 #' @param zero_inflated Experimental! In non-structured models, fit a model that deals with zero-inflated data. The default is FALSE. If the age_col is not missing this flag is ignored.
@@ -23,7 +23,7 @@
 #' @param WAIC return the WAIC. The default is FALSE.
 #' @param DIC return the DIC.The default is FALSE
 #' @param diff_data Nowcasting based on database differences to estimate reporting delays.
-#' @param cases Number of reported cases. 
+#' @param cases Number of reported cases.
 #' @param ... list parameters to other functions
 #'
 #' @return a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total',
@@ -36,6 +36,7 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Loading Belo Horizonte SARI dataset
 #'
 #' data(flu_mg)
@@ -48,6 +49,7 @@
 #' cases = cases,
 #' silent=F
 #' )
+#' }
 
 #'
 #' tail(now_diff$total)
@@ -88,15 +90,15 @@ nowcasting_diff_inla <- function(dataset,
   }
 
 if(missing(cases)){
-stop("'cases' missing! Please give a column name for this parameters") 
+stop("'cases' missing! Please give a column name for this parameters")
 }
-  
+
   ####diff_base warning
-  
+
   if(missing(cases)){
     stop("'cases' is missing! Please provide this parameter")
   }
-  
+
   # Dealing with INLA output
 
   INLAoutput.aux = INLAoutput
@@ -107,7 +109,7 @@ stop("'cases' missing! Please give a column name for this parameters")
   ## Forcing INLA output TRUE when either WAIC or DIC are TRUE
   if((WAIC == T | DIC == T) & INLAoutput.aux == F) INLAoutput.aux = T
 
-  
+
   # checking n_base
   n_base<-length(unique(dplyr::pull(dataset, {{date_release}})))
 
@@ -124,7 +126,7 @@ stop("'cases' missing! Please give a column name for this parameters")
         message("Nowcasting only")
       }
     }
-    
+
     ## Missing Dmax warning
     if(missing(Dmax)){
       Dmax <- 10
@@ -136,7 +138,7 @@ stop("'cases' missing! Please give a column name for this parameters")
       Dmax<-Dmax
       message("Using Dmax inputed")
     }
-    
+
     ## Missing wdw warning
     if(missing(wdw)){
       wdw <- 10
@@ -148,8 +150,8 @@ stop("'cases' missing! Please give a column name for this parameters")
       wdw<-wdw
       message("Using wdw inputed")
     }
-  
-  
+
+
     if(missing(trajectories) | trajectories == FALSE){
       warning("Not returning trajectories")
     }else{
@@ -176,17 +178,17 @@ stop("'cases' missing! Please give a column name for this parameters")
     }else{
       message("'age_col' inputed, nowcasting with structured model")
     }
-    
+
   }
 
   ## Objects for keep the nowcasting
   ## Filtering out cases without report date
   if(missing(age_col)){
-    
+
 Tmax <- max(dataset |>
             dplyr::pull(var = {{date_start}}))
-    
-data.inla <- dataset |> 
+
+data.inla <- dataset |>
       dplyr::rename(date_release = {{date_release}},
                     date_onset = {{date_start}},
                     cases = {{cases}})|>
@@ -194,7 +196,7 @@ data.inla <- dataset |>
   dplyr::filter(date_onset>=min(date_release)) |>
   dplyr:: arrange(date_onset, date_release) |>
   dplyr::group_by(date_onset) |>
-  dplyr:: mutate(delay = row_number() - 1) |>  
+  dplyr:: mutate(delay = row_number() - 1) |>
   dplyr::arrange(delay, .by_group = TRUE) |>
   dplyr::mutate(
         Y = cases - lag(cases, default = 0),
@@ -203,14 +205,14 @@ data.inla <- dataset |>
   dplyr::ungroup() |>
   ## Filter for dates
   dplyr::filter(date_onset >= Tmax - 7 * wdw,
-                delay <= Dmax)   
-    
+                delay <= Dmax)
+
   }else{
-    
+
 Tmax <- max(dataset |>
                   dplyr::pull(var = {{date_start}}))
 
-data.inla <- dataset |> 
+data.inla <- dataset |>
       dplyr::rename(date_release = {{date_release}},
                     date_onset = {{date_start}},
                     cases = {{cases}},
@@ -219,7 +221,7 @@ data.inla <- dataset |>
   dplyr::filter(date_onset>=min(date_release)) |>
   dplyr::arrange(fx_etaria,date_onset, date_release) |>
   dplyr::group_by(fx_etaria, date_onset) |>
-  dplyr::mutate(delay = row_number() - 1) |>  
+  dplyr::mutate(delay = row_number() - 1) |>
   dplyr::arrange(delay, .by_group = TRUE) |>
   dplyr::mutate(
     Y = cases - lag(cases, default = 0),
@@ -228,7 +230,7 @@ data.inla <- dataset |>
   dplyr::ungroup() |>
   ## Filter for dates
   dplyr::filter(date_onset >= Tmax - 7 * wdw,
-                delay <= Dmax) 
+                delay <= Dmax)
 
   }
 
@@ -366,7 +368,7 @@ data.inla <- dataset |>
   ## Objects to be returned
 
   if(!INLAoutputOnly){
- 
+
       # # if(missing(age_col)){
       # now_summary[[3-l]]<- data.inla
       # # }
@@ -379,7 +381,7 @@ data.inla <- dataset |>
       # names(now_summary)[3-l]<-"data"
 
       now_summary$data <- data.inla
-    
+
     if(trajectories){
       # now_summary[[4-l]]<-sample.now
       # names(now_summary)[4-l]<-"trajectories"
@@ -396,8 +398,8 @@ data.inla <- dataset |>
 
   if(INLAoutput.aux) now_summary$output <- sample.now$INLAoutput
   if(WAIC) now_summary$waic <- sample.now$INLAoutput$waic$waic
-  if(DIC) now_summary$dic <- sample.now$INLAoutput$dic$dic 
-  
+  if(DIC) now_summary$dic <- sample.now$INLAoutput$dic$dic
+
   now_summary$data <- data.inla
 
   ## Final object returned
