@@ -23,6 +23,7 @@
 #' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases
 #' @param date_report Column of dates of report of the event, normally date of digitation of the notification of cases
 #' @param trajectories Returns the predictive trajectories. The default is FALSE.
+#' @param silent Deprecated. Should be the warnings turned off? . The default is FALSE
 #' @param ... list parameters to other functions
 #'
 #' @return a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total',

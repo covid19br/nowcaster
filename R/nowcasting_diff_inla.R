@@ -9,7 +9,6 @@
 #' a fourth column with age strata can be included. Data must must be agregated by week
 #' @param Dmax (in weeks) Window of dates the estimation will act, i.e., till how many past weeks the nowcasting will estimate. Default is 10 weeks.
 #' @param wdw (in weeks) Until which maximum amount of weeks the Nowcasting will use to the estimation. Default is 10 weeks.
-#' @param use.epiweek If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date. Default is FALSE
 #' @param silent Deprecated. Should be the warnings turned off? . The default is TRUE.
 #' @param K (in weeks) How much weeks to forecast ahead? . The default is K = 0, no forecasting ahead
 #' @param age_col Column for ages
@@ -22,7 +21,6 @@
 #' @param INLAoutputOnly return the only the INLA output. Default is FALSE.
 #' @param WAIC return the WAIC. The default is FALSE.
 #' @param DIC return the DIC.The default is FALSE
-#' @param diff_data Nowcasting based on database differences to estimate reporting delays.
 #' @param cases Number of reported cases.
 #' @param ... list parameters to other functions
 #'

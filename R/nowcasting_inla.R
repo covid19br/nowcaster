@@ -17,7 +17,7 @@
 #' @param return.age Deprecated. If the estimate by Age should be returned. Default is TRUE.
 #' @param bins_age Age bins to do the nowcasting, it receive a vector of age bins,
 #' or options between, "SI-PNI", "10 years", "5 years". The default is "SI-PNI".
-#' @param silent Deprecated. Should be the warnings turned off? . The default is TRUE.
+#' @param silent Deprecated. Should be the warnings turned off? . The default is FALSE
 #' @param K (in weeks) How much weeks to forecast ahead? . The default is K = 0, no forecasting ahead
 #' @param age_col Column for ages
 #' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases

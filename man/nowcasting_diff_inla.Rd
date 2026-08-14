@@ -59,10 +59,6 @@ a fourth column with age strata can be included. Data must must be agregated by 
 \item{DIC}{return the DIC.The default is FALSE}
 
 \item{...}{list parameters to other functions}
-
-\item{use.epiweek}{If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date. Default is FALSE}
-
-\item{diff_data}{Nowcasting based on database differences to estimate reporting delays.}
 }
 \value{
 a list of 2 elements, each element with a data.frame with nowcasting estimation, 'Total',
@@ -80,6 +76,7 @@ case counts for the same event date across successive database versions.
 nowcasting_diff_inla, calculates reporting delays based on differences between database versions and fits a statistical distribution to the empirical delay.
 }
 \examples{
+\dontrun{
 # Loading Belo Horizonte SARI dataset
 
 data(flu_mg)
@@ -92,6 +89,7 @@ wdw=10,
 cases = cases,
 silent=F
 )
+}
 
 tail(now_diff$total)
 }

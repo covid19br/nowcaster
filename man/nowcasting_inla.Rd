@@ -54,7 +54,7 @@ or options between, "SI-PNI", "10 years", "5 years". The default is "SI-PNI".}
 
 \item{return.age}{Deprecated. If the estimate by Age should be returned. Default is TRUE.}
 
-\item{silent}{Deprecated. Should be the warnings turned off? . The default is TRUE.}
+\item{silent}{Deprecated. Should be the warnings turned off? . The default is FALSE}
 
 \item{K}{(in weeks) How much weeks to forecast ahead? . The default is K = 0, no forecasting ahead}
 
@@ -91,10 +91,12 @@ nowcasting_inla, fits a statistical distribution to the empirical distribution o
 onset date and report date.
 }
 \examples{
+\dontrun{
 # Loading Belo Horizonte SARI dataset
 data(sragBH)
 nowcasting_inla(dataset = sragBH,
                 date_onset = DT_SIN_PRI,
                 date_report = DT_DIGITA,
                 silent = T)
+}
 }

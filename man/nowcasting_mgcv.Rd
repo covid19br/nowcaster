@@ -49,6 +49,8 @@ or options between, "SI-PNI", "10 years", "5 years". The default is "SI-PNI".}
 
 \item{return.age}{Deprecated. If the estimate by Age should be returned. Default is TRUE.}
 
+\item{silent}{Deprecated. Should be the warnings turned off? . The default is FALSE}
+
 \item{method.group.gam}{Method for aggregated smooth function in gam. Default is "fs" factor smooth, another alternative is "by".}
 
 \item{K}{(in weeks) How much weeks to forecast ahead? . The default is K = 0, no forecasting ahead}

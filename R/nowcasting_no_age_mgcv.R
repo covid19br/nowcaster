@@ -32,11 +32,11 @@ nowcasting_no_age_mgcv <- function(dataset){
 
   ## Step 1: Sampling from the approximate posterior distribution of the coefficients
 
-  betas.p <- mgcv::rmvn(n = 1000, coef(output0), output0$Vp)
+  betas.p <- mgcv::rmvn(n = 1000, stats::coef(output0), output0$Vp)
 
 
   # Step 2: Get the design matrix (for the predictive values)
-  Xp <- predict(output0, type = "lpmatrix", newdata = dataset[index.missing,])
+  Xp <- stats::predict(output0, type = "lpmatrix", newdata = dataset[index.missing,])
 
   # Step 3: Get the samples from the linear terms
   eta.samples <- Xp %*% t(betas.p)
@@ -50,7 +50,7 @@ nowcasting_no_age_mgcv <- function(dataset){
   # Step 5: Do the same as we did in INLA (sampling the missing triangle)
   vector.samples <- lapply(X = 1:1000,
                            FUN = function(x)
-                             rnbinom(n = n.missing, mu = exp(eta.samples[,x]), size = theta.nb))
+                             stats::rnbinom(n = n.missing, mu = exp(eta.samples[,x]), size = theta.nb))
 
 
   ## Step 6: Calculate N_{a,t} for each triangle sample {N_{t,a} : t=Tactual-Dmax+1,...Tactual}
