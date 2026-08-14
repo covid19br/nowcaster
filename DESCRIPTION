@@ -21,6 +21,7 @@ Suggests:
     knitr,
     rmarkdown,
     vroom,
+    INLA (>= 22.5.3),
     parallel,
     lubridate,
     lme4, sn,
@@ -32,7 +33,6 @@ Additional_repositories:
     https://inla.r-inla-download.org/R/stable/
 Imports: 
     dplyr,
-    INLA (>= 22.5.3),
     tidyr,
     tibble,
     mgcv
