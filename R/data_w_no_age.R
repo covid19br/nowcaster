@@ -14,10 +14,7 @@
 #' @param silent DEPRECATED to be removed.
 #'
 #' @return Data in weeks format, with the maximum dates for the last week used
-#' @export
-#'
-#' @examples If the last data is at a Sunday, so the week starts at Monday before.
-#' If ends at Thursday, so it starts on the Friday before
+
 data.w_no_age<-function(dataset,
                         trim.data,
                         date_onset,

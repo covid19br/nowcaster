@@ -16,10 +16,7 @@
 #' @param silent Deprecated. To be removed.
 #'
 #' @return Data in weeks format, with the maximum dates for the last week used
-#' @export
-#'
-#' @examples If the last data is at a Sunday, so the week starts at Monday before.
-#' If ends at Thursday, so it starts on the Friday before
+
 data.w <- function(dataset,
                    trim.data,
                    bins_age = c("SI-PNI", "10 years", "5 years", bins_age),
@@ -35,10 +32,7 @@ data.w <- function(dataset,
       trim.data <-  0
       warning("Using default, no trimming out of the data")
     } else {
-      warning("Using default, trimming out ",
-              trim.data ,
-              " days of data",
-              call. = T)
+      warning("Using default, trimming out ", trim.data ," days of data", call. = T)
     }
   }else{
     ## Trim.data
