@@ -1,20 +1,22 @@
 Package: nowcaster
-Title: Nowcaster
+Title: Nowcaster: A Package for Correction of Notification Delays
 Version: 1.0.1
 Authors@R: c(
     person("Rafael", "Lopes", , "rafael.lopes@yale.edu", role = c("aut"), 
     comment = c(ORCID = "0000-0002-9416-6145")),
     person("Tatiana", "Portella", , "tatiana.portella@fiocruz.br", role = c("aut"), 
-    comment = c(ORCID = "0000-0002-9416-6145")),
-    person("Leonardo", "Bastos", , "leonardo.bastos@fiocruz.br", role = c("aut", "cre"), 
+    comment = c(ORCID = "0000-0001-8364-1978")),
+    person("Leo", "Bastos", , "leonardo.bastos@fiocruz.br", role = c("aut", "cre"), 
     comment = c(ORCID = "0000-0002-1406-0122")))
-Description: Nowcaster is a package wrapping statistical models to estimate not yet reported data from a empirical delay distribution 
-  between dates of onset of symptoms and date of digitation.
+Description: Statistical models for correcting notification delays of epidemiological data. 
+  The package wraps statistical models to estimate not yet reported data using empirical 
+  delay distribution either from individual-level data or from the differences pf aggregated 
+  time series of cases.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-URL: https://covid19br.github.io/nowcaster
+URL: https://covid19br.github.io/nowcaster/
 BugReports: https://github.com/covid19br/nowcaster/issues
 Suggests: 
     ggplot2,
@@ -36,5 +38,4 @@ Imports:
     tidyr,
     tibble,
     mgcv
-VignetteBuilder: knitr
 Config/testthat/edition: 3
