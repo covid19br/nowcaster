@@ -1,6 +1,6 @@
 Package: nowcaster
 Title: Nowcaster: A Package for Correction of Notification Delays
-Version: 1.0.1
+Version: 1.0.0
 Authors@R: c(
     person("Rafael", "Lopes", , "rafael.lopes@yale.edu", role = c("aut"), 
     comment = c(ORCID = "0000-0002-9416-6145")),
@@ -10,7 +10,7 @@ Authors@R: c(
     comment = c(ORCID = "0000-0002-1406-0122")))
 Description: Statistical models for correcting notification delays of epidemiological data. 
   The package wraps statistical models to estimate not yet reported data using empirical 
-  delay distribution either from individual-level data or from the differences pf aggregated 
+  delay distribution either from individual-level data or from the differences of aggregated 
   time series of cases.
 License: GPL (>= 3)
 Encoding: UTF-8

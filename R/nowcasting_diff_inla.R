@@ -187,12 +187,12 @@ Tmax <- max(dataset |>
 
 data.inla <- dataset |>
       dplyr::rename(date_release = {{date_release}},
-                    date_onset = {{date_start}},
+                    date_start = {{date_start}},
                     cases = {{cases}})|>
-  dplyr::select( date_onset,date_release, cases) |>
-  dplyr::filter(date_onset>=min(date_release)) |>
-  dplyr:: arrange(date_onset, date_release) |>
-  dplyr::group_by(date_onset) |>
+  dplyr::select( date_start,date_release, cases) |>
+  dplyr::filter(date_start>=min(date_release)) |>
+  dplyr:: arrange(date_start, date_release) |>
+  dplyr::group_by(date_start) |>
   dplyr:: mutate(delay = dplyr::row_number() - 1) |>
   dplyr::arrange(delay, .by_group = TRUE) |>
   dplyr::mutate(
@@ -201,7 +201,7 @@ data.inla <- dataset |>
       ) |>
   dplyr::ungroup() |>
   ## Filter for dates
-  dplyr::filter(date_onset >= Tmax - 7 * wdw,
+  dplyr::filter(date_start >= Tmax - 7 * wdw,
                 delay <= Dmax)
 
   }else{
@@ -211,13 +211,13 @@ Tmax <- max(dataset |>
 
 data.inla <- dataset |>
       dplyr::rename(date_release = {{date_release}},
-                    date_onset = {{date_start}},
+                    date_start = {{date_start}},
                     cases = {{cases}},
                     fx_etaria={{age_col}}) |>
-  dplyr::select( date_onset,date_release, fx_etaria, cases) |>
-  dplyr::filter(date_onset>=min(date_release)) |>
-  dplyr::arrange(fx_etaria,date_onset, date_release) |>
-  dplyr::group_by(fx_etaria, date_onset) |>
+  dplyr::select( date_start,date_release, fx_etaria, cases) |>
+  dplyr::filter(date_start>=min(date_release)) |>
+  dplyr::arrange(fx_etaria,date_start, date_release) |>
+  dplyr::group_by(fx_etaria, date_start) |>
   dplyr::mutate(delay = dplyr::row_number() - 1) |>
   dplyr::arrange(delay, .by_group = TRUE) |>
   dplyr::mutate(
@@ -226,7 +226,7 @@ data.inla <- dataset |>
   ) |>
   dplyr::ungroup() |>
   ## Filter for dates
-  dplyr::filter(date_onset >= Tmax - 7 * wdw,
+  dplyr::filter(date_start >= Tmax - 7 * wdw,
                 delay <= Dmax)
 
   }
@@ -236,16 +236,16 @@ data.inla <- dataset |>
   ## Auxiliary date table
   if(K==0){
     dates <- range(data.inla |>
-                    dplyr::pull(var = date_onset))
+                    dplyr::pull(var = date_start))
   } else {
     ## This is done to explicitly say for the forecast part that its date of onset is the present date
-    date_k <- max(data.inla$date_onset) + 7*K
-    dates <- range(data.inla$date_onset, date_k)
+    date_k <- max(data.inla$date_start) + 7*K
+    dates <- range(data.inla$date_start, date_k)
   }
 
   ## To make an auxiliary date table with each date plus an amount of dates  to forecast
   tbl.date.aux <- tibble::tibble(
-    date_onset = seq(dates[1], dates[2], by = 7)
+    date_start = seq(dates[1], dates[2], by = 7)
   )  |>
     tibble::rowid_to_column(var = "Time")
 
@@ -282,7 +282,7 @@ data.inla <- dataset |>
         ## If Time + Delay is smaller than Tmax AND Y is NA, fill 0
       )  |>
       dplyr::arrange(Time, delay) |>
-      dplyr::rename(dt_event = date_onset) |>
+      dplyr::rename(dt_event = date_start) |>
       tidyr::drop_na(delay)
   }else {
     data.inla <- data.inla  |>
@@ -294,7 +294,7 @@ data.inla <- dataset |>
         ## If Time + Delay is smaller than Tmax AND Y is NA, fill 0
       )  |>
       dplyr::arrange(Time, delay, fx_etaria) |>
-      dplyr::rename(dt_event = date_onset) |>
+      dplyr::rename(dt_event = date_start) |>
       tidyr::drop_na(delay)
   }
   ## Precisamos transformar essa datas de volta no valor que é correspondente delas,
