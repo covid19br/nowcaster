@@ -1,5 +1,5 @@
 Package: nowcaster
-Title: Nowcaster: A Package for Correction of Notification Delays
+Title: Statistical Models for Notification Delay Correction of Epidemiological Data
 Version: 1.0.0
 Authors@R: c(
     person("Rafael", "Lopes", , "rafael.lopes@yale.edu", role = c("aut"), 
@@ -19,11 +19,11 @@ RoxygenNote: 7.3.2
 URL: https://covid19br.github.io/nowcaster/
 BugReports: https://github.com/covid19br/nowcaster/issues
 Suggests: 
+    INLA (>= 22.5.3),
     ggplot2,
     knitr,
     rmarkdown,
     vroom,
-    INLA (>= 22.5.3),
     parallel,
     lubridate,
     lme4, sn,
@@ -31,8 +31,7 @@ Suggests:
 Depends: 
     R (>= 4.1.0)
 LazyData: true
-Additional_repositories: 
-    https://inla.r-inla-download.org/R/stable/
+Additional_repositories: https://inla.r-inla-download.org/R/stable/
 Imports: 
     dplyr,
     tidyr,
