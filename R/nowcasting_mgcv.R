@@ -33,13 +33,13 @@
 #' @export
 #'
 #' @examples
-#'
+#'\donttest{
 #' # Loading Belo Horizonte SARI dataset
 #' data(sragBH)
 #' output <- nowcasting_mgcv(dataset = sragBH,
 #'                 date_onset = DT_SIN_PRI,
-#'                 date_report = DT_DIGITA,
-#'                 silent = T)
+#'                 date_report = DT_DIGITA)
+#'}
 #'
 nowcasting_mgcv <- function(dataset,
                             bins_age="SI-PNI",

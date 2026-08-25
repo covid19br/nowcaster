@@ -11,6 +11,7 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' # Loading Belo Horizonte SARI dataset
 #' data(sragBH)
 #' now <- nowcasting_mgcv(dataset = sragBH,

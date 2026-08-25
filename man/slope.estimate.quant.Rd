@@ -19,3 +19,15 @@ The numerical value of the slope of the estimate
 \description{
 Fits a linear model to trajectories returned from 'nowcasting_inla()' within a given window. The default is 3 weeks. If 'end.week' is missing uses the maximum date in 'trajectories'.
 }
+\examples{
+\donttest{
+# Loading Belo Horizonte SARI dataset
+data(sragBH)
+now <- nowcasting_mgcv(dataset = sragBH,
+                date_onset = DT_SIN_PRI,
+                date_report = DT_DIGITA,
+                trajectories = TRUE,
+                silent = TRUE)
+slope.estimate.quant(trajectories = now$trajectories)
+}
+}
