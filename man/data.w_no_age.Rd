@@ -11,7 +11,7 @@ data.w_no_age(
   date_report,
   use.epiweek = FALSE,
   K = 0,
-  silent = F
+  silent = FALSE
 )
 }
 \arguments{

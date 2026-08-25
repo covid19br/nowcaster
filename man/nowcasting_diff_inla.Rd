@@ -12,15 +12,15 @@ nowcasting_diff_inla(
   date_release,
   cases,
   age_col,
-  silent = F,
+  silent = FALSE,
   K = 0,
-  trajectories = F,
-  zero_inflated = F,
+  trajectories = FALSE,
+  zero_inflated = FALSE,
   timeREmodel = "rw2",
-  INLAoutput = F,
-  INLAoutputOnly = F,
-  WAIC = F,
-  DIC = F,
+  INLAoutput = FALSE,
+  INLAoutputOnly = FALSE,
+  WAIC = FALSE,
+  DIC = FALSE,
   ...
 )
 }
@@ -74,22 +74,4 @@ Function to estimate the number of events that have already occurred but have no
 in situations where the notification date is unavailable. The function calculates delayed notifications by comparing
 case counts for the same event date across successive database versions.
 nowcasting_diff_inla, calculates reporting delays based on differences between database versions and fits a statistical distribution to the empirical delay.
-}
-\examples{
-\dontrun{
-# Loading Belo Horizonte SARI dataset
-
-data(flu_mg)
-
-now_diff <- nowcasting_diff_inla(dataset= flu_MG,
-date_start = dt_start,
-date_release = dt_release,
-Dmax = 10,
-wdw=10,
-cases = cases,
-silent=F
-)
-
-tail(now_diff$total)
-}
 }

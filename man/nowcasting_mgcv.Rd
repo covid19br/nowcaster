@@ -16,10 +16,10 @@ nowcasting_mgcv(
   date_report,
   data.by.week = FALSE,
   return.age = NULL,
-  silent = F,
+  silent = FALSE,
   method.group.gam = "fs",
   K = 0,
-  trajectories = F,
+  trajectories = FALSE,
   ...
 )
 }
@@ -73,12 +73,12 @@ nowcasting_mgcv, fits a statistical distribution to the empirical distribution o
 onset date and report date.
 }
 \examples{
-\dontrun{
+
 # Loading Belo Horizonte SARI dataset
 data(sragBH)
-bbb <- nowcasting_mgcv(dataset = sragBH,
+output <- nowcasting_mgcv(dataset = sragBH,
                 date_onset = DT_SIN_PRI,
                 date_report = DT_DIGITA,
                 silent = T)
-}
+
 }

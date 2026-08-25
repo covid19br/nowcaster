@@ -13,7 +13,7 @@ data.w(
   age_col,
   use.epiweek = FALSE,
   K = 0,
-  silent = F
+  silent = FALSE
 )
 }
 \arguments{

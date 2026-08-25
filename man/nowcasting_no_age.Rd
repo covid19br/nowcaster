@@ -8,10 +8,10 @@ nowcasting_no_age(
   dataset,
   zero_inflated = FALSE,
   timeREmodel = "rw2",
-  INLAoutput = F,
-  INLAoutputOnly = F,
-  WAIC = F,
-  DIC = F
+  INLAoutput = FALSE,
+  INLAoutputOnly = FALSE,
+  WAIC = FALSE,
+  DIC = FALSE
 )
 }
 \arguments{
