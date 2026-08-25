@@ -8,10 +8,7 @@ Authors@R: c(
     comment = c(ORCID = "0000-0001-8364-1978")),
     person("Leo", "Bastos", , "leonardo.bastos@fiocruz.br", role = c("aut", "cre"), 
     comment = c(ORCID = "0000-0002-1406-0122")))
-Description: Statistical models for correcting notification delays of epidemiological data. 
-  The package wraps statistical models to estimate not yet reported data using empirical 
-  delay distribution either from individual-level data or from the differences of aggregated 
-  time series of cases.
+Description: Statistical models for correcting notification delays of epidemiological data. The package wraps statistical models to estimate not yet reported data using empirical delay distribution either from individual-level data or from the differences of aggregated time series of cases. For more details see Bastos et al. (2019) <doi:10.1002/sim.8303>.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
