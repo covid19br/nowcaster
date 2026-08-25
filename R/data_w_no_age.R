@@ -21,7 +21,7 @@ data.w_no_age<-function(dataset,
                         date_report,
                         use.epiweek = FALSE,
                         K=0,
-                        silent=F){
+                        silent=FALSE){
   if(!silent){
     ## Last digitation date considered
     if(missing(trim.data)){

@@ -16,9 +16,9 @@
 nowcasting_age <- function(dataset,
                            zero_inflated=FALSE,
                            timeREmodel = "rw2",
-                           INLAoutput = F,
-                           INLAoutputOnly = F,
-                           WAIC = F, DIC = F){
+                           INLAoutput = FALSE,
+                           INLAoutputOnly = FALSE,
+                           WAIC = FALSE, DIC = FALSE){
 
   # Workaround check
   fx_etaria <- NULL

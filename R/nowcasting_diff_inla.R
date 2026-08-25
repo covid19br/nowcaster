@@ -32,24 +32,6 @@
 #' If 'INLAoutputOnly' = TRUE, just the INLA output is returned in a list object named 'output'.
 #' If 'WAIC' = TRUE or 'DIC' = TRUE, then 'INLAoutput' is forced to be TRUE returning the INLA output and a list object named waic or dic are also returned.
 #' @export
-#'
-#' @examples
-#' \dontrun{
-#' # Loading Belo Horizonte SARI dataset
-#'
-#' data(flu_mg)
-#'
-#' now_diff <- nowcasting_diff_inla(dataset= flu_MG,
-#' date_start = dt_start,
-#' date_release = dt_release,
-#' Dmax = 10,
-#' wdw=10,
-#' cases = cases,
-#' silent=F
-#' )
-#'
-#' tail(now_diff$total)
-#' }
 
 nowcasting_diff_inla <- function(dataset,
                             Dmax = 10,
@@ -58,14 +40,14 @@ nowcasting_diff_inla <- function(dataset,
                             date_release,
                             cases,
                             age_col,
-                            silent = F,
+                            silent = FALSE,
                             K = 0,
-                            trajectories = F,
-                            zero_inflated = F,
+                            trajectories = FALSE,
+                            zero_inflated = FALSE,
                             timeREmodel = "rw2",
-                            INLAoutput = F,
-                            INLAoutputOnly = F,
-                            WAIC = F, DIC = F,
+                            INLAoutput = FALSE,
+                            INLAoutputOnly = FALSE,
+                            WAIC = FALSE, DIC = FALSE,
                             ...){
 
   dots<-list(...)
