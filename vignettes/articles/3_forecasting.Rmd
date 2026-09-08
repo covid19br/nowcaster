@@ -18,20 +18,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-
-```{r echo=FALSE}
-## Checking if INLA installed and which version
-if(requireNamespace("INLA", quietly = T)){
-  if(packageVersion("INLA") >= "22.5.3"){knitr::opts_chunk$set(eval = T)}
-  else{knitr::opts_chunk$set(eval = F)}
-}
-if (requireNamespace("INLA", quietly = TRUE)) {
-  INLA::inla.setOption(fmesher.evolution = 2L)
-  INLA::inla.setOption(fmesher.evolution.warn = TRUE)
-  INLA::inla.setOption(fmesher.evolution.verbosity = "warn")
-}
-```
-
 ## TL;DR
 
 After having learned how nowcasting works, we add unobserved dates to our delay triangle and forecasting, i.e. project the number of cases beyond the data already observed.
@@ -50,8 +36,7 @@ And after this we parse to the `nowcasting_inla` function the date of onset and 
 Before forecasting, we construct the case counts curve from the lazy data, by using the internal function `data.w_no_age`, we construct the curve by summarizing the case counts by each date of onset of first symptoms present at the database.
 
 ```{r delay triangle}
-library(dplyr)
-library(ggplot2)
+library(tidyverse)
 library(lubridate)
 library(nowcaster)
 
@@ -89,7 +74,7 @@ nowcasting_bh_no_age <- nowcasting_inla(dataset = srag_now,
                                         date_report = DT_DIGITA, 
                                         data.by.week = T, 
                                         K = 1)
-tail(nowcasting_bh_no_age$total)
+head(nowcasting_bh_no_age$data)
 ```
 
 To visualize the forecast we plot the observed curve and the nowcasting and forecasting estimate, change the colors for each part. We plot together the nowcasting and forecasting estimate, the curve observed one year later, to validate the estimate done.
@@ -97,15 +82,14 @@ To visualize the forecast we plot the observed curve and the nowcasting and fore
 ```{r after_one_year}
 
 ## Nowcasting estimate filtering
-nowcasting_estimate <- nowcasting_bh_no_age$total |> 
+nowcasting_estimate<-nowcasting_bh_no_age$total |> 
   filter(dt_event <= "2020-06-27")
-
 ## Forecasting estimate filtering
-forecasting_estimate <- nowcasting_bh_no_age$total |> 
+forecasting_estimate<-nowcasting_bh_no_age$total |> 
   filter(dt_event >= "2020-06-27")
 
 ## One year after observed
-data_one_year_after <- sragBH %>%
+data_one_year_after<-sragBH %>%
   filter(DT_SIN_PRI <= "2020-07-11") %>% 
   mutate(
     D_SIN_PRI_2 = DT_SIN_PRI - as.numeric(format(DT_SIN_PRI, "%w"))
@@ -154,10 +138,10 @@ As we try to forecasting longer ahead of the present date, the uncertainty has t
 nowcasting_bh_age <- nowcasting_inla(dataset = srag_now, 
                                      date_onset = DT_SIN_PRI, 
                                      date_report = DT_DIGITA, 
-                                     data.by.week = T, trajectories = T,
+                                     data.by.week = T,
                                      K = 1,
                                      age_col = Idade)
-tail(nowcasting_bh_age$total)
+head(nowcasting_bh_age$data)
 ```
 
 And we plot the nowcasting estimate and forecasting estimate again:

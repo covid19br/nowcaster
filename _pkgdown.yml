@@ -2,6 +2,10 @@ destination: docs
 authors:
   Rafael Lopes:
     href: https://github.com/rafalopespx
+  Tatiana Portella:
+    href: https://github.com/portellatp
+  Marcelo Gomes:
+    href: https://github.com/marfcg
   Leonardo Bastos:
     href: https://github.com/lsbastos/
   footer:
@@ -34,6 +38,4 @@ home:
     - citation
     - authors
     - dev
-  strips:
-  - badges
 

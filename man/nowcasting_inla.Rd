@@ -91,14 +91,12 @@ nowcasting_inla, fits a statistical distribution to the empirical distribution o
 onset date and report date.
 }
 \examples{
+\dontrun{
 # Loading Belo Horizonte SARI dataset
-
 data(sragBH)
-
 output <- nowcasting_inla(dataset = sragBH,
                 date_onset = DT_SIN_PRI,
                 date_report = DT_DIGITA,
-                silent = TRUE)
-
-tail(output$total)
+                silent = T)
+}
 }

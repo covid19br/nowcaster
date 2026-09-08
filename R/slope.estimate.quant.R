@@ -11,17 +11,17 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' # Loading Belo Horizonte SARI dataset
-#'
 #' data(sragBH)
-#'
 #' now <- nowcasting_inla(dataset = sragBH,
 #'                 date_onset = DT_SIN_PRI,
 #'                 date_report = DT_DIGITA,
 #'                 trajectories = TRUE,
 #'                 silent = TRUE)
-#'
 #' slope.estimate.quant(trajectories = now$trajectories)
+#' }
+
 slope.estimate.quant <- function(end.week, trajectories, window=3){
 
   # Workaround check

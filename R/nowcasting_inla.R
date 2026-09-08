@@ -41,16 +41,14 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Loading Belo Horizonte SARI dataset
-#'
 #' data(sragBH)
-#'
 #' output <- nowcasting_inla(dataset = sragBH,
 #'                 date_onset = DT_SIN_PRI,
 #'                 date_report = DT_DIGITA,
-#'                 silent = TRUE)
-#'
-#' tail(output$total)
+#'                 silent = T)
+#' }
 nowcasting_inla <- function(dataset,
                             bins_age="SI-PNI",
                             trim.data=0,

@@ -18,20 +18,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-
-```{r echo=FALSE}
-## Checking if INLA installed and which version
-if(requireNamespace("INLA", quietly = T)){
-  if(packageVersion("INLA") >= "22.5.3"){knitr::opts_chunk$set(eval = T)}
-  else{knitr::opts_chunk$set(eval = F)}
-}
-if (requireNamespace("INLA", quietly = TRUE)) {
-  INLA::inla.setOption(fmesher.evolution = 2L)
-  INLA::inla.setOption(fmesher.evolution.warn = TRUE)
-  INLA::inla.setOption(fmesher.evolution.verbosity = "warn")
-}
-```
-
 ## TL;DR
 
 This is a short example showing how helpful can be a to use nowcasting estimate to help the decision-making process
@@ -43,9 +29,7 @@ Nowcasting a rising curve or a curve on any other moment can give quantitative s
 We start this section by cutting the original data at a moment of apparent decaying of the SARI hospitalization, for the city of Belo Horizonte, which had a prompt starting response to the Covid-19 pandemic. The pressure on the health system took more time than the rest of the country, and the data at same time were showing a decay. We filter all cases entered until 4th of July of 2020 by the date of digitization, a date that the cases shows up in the database.
 
 ```{r no_age_data}
-library(dplyr)
-library(tidyr)
-library(ggplot2)
+library(tidyverse)
 library(lubridate)
 library(nowcaster)
 
