@@ -1,50 +1,40 @@
-# History files
-.Rhistory
+
+.DS_Store
+.httr-oauth
 .Rapp.history
-
-# Session Data files
+.Rdata
 .RData
-
-# User-specific files
-.Ruserdata
-
-# Example code in package build process
-*-Ex.R
-
-# Output files from R CMD build
-/*.tar.gz
-
-# Output files from R CMD check
-/*.Rcheck/
-
-# RStudio files
+.Renviron
+.Rhistory
+.Rproj.user
 .Rproj.user/
-
+.Ruserdata
+*_cache/
+*-Ex.R
+*.knit.md
+*.utf8.md
+*Outputs
+/*.Rcheck/
+/*.tar.gz
+/cache/
+/doc/
+/Meta/
+# Example code in package build process
+# History files
+# knitr and R markdown default cache directories
+# OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
+# Output files from R CMD build
+# Output files from R CMD check
 # produced vignettes
+# R Environment Variables
+# RStudio files
+# Session Data files
+# Specific dirs
+# Specific files
+# Temporary files created by R markdown
+# User-specific files
+docs
+inst/doc
+test.R
 vignettes/*.html
 vignettes/*.pdf
-
-# OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
-.httr-oauth
-
-# knitr and R markdown default cache directories
-*_cache/
-/cache/
-
-# Temporary files created by R markdown
-*.utf8.md
-*.knit.md
-
-# R Environment Variables
-.Renviron
-
-# Specific files
-test.R
-
-# Specific dirs
-*Outputs
-.Rproj.user
-.Rdata
-.DS_Store
-inst/doc
-docs
