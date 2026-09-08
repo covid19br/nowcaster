@@ -10,7 +10,7 @@ nowcasting_mgcv(
   trim.data = 0,
   Dmax = 15,
   wdw = 30,
-  use.epiweek = FALSE,
+  use.epiweek = TRUE,
   age_col,
   date_onset,
   date_report,
@@ -37,7 +37,7 @@ or options between, "SI-PNI", "10 years", "5 years". The default is "SI-PNI".}
 
 \item{wdw}{(in weeks) Until which maximum amount of weeks the Nowcasting will use to the estimation. Default is 30 weeks.}
 
-\item{use.epiweek}{If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date. Default is FALSE}
+\item{use.epiweek}{If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date. Default is TRUE}
 
 \item{age_col}{Column for ages}
 

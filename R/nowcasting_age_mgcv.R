@@ -4,7 +4,7 @@
 #' data has to be in the format of delay-triangle
 #'
 #' @param dataset data pre formatted in to age classes and delays by week for each cases, delay triangle format
-#' @param method method used grouped gam, "by" where the smooth function will be s(.,  by= agegroup) or "fs" (factor smooth) where the smoth function uses s(., age_group, ,bs="fs")
+#' @param method method used grouped gam, "by" where the smooth function will be s(.,  by= agegroup) or "fs" (factor smooth) where the smooth function uses s(., age_group, ,bs="fs")
 #'
 #' @return Trajectories from the inner 'INLA' model
 #' @export

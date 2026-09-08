@@ -12,7 +12,7 @@
 #' @param trim.data (in weeks) Date to be trimmed out from the data base, in days. Default is 0 days.
 #' @param Dmax (in weeks) Window of dates the estimation will act, i.e., till how many past weeks the nowcasting will estimate. Default is 15 weeks.
 #' @param wdw (in weeks) Until which maximum amount of weeks the Nowcasting will use to the estimation. Default is 30 weeks.
-#' @param use.epiweek If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date. Default is FALSE
+#' @param use.epiweek If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date. Default is TRUE
 #' @param data.by.week If it has to be returned the whole time-series data. Default is FALSE.
 #' @param return.age Deprecated. If the estimate by Age should be returned. Default is TRUE.
 #' @param bins_age Age bins to do the nowcasting, it receive a vector of age bins,
@@ -46,7 +46,7 @@ nowcasting_mgcv <- function(dataset,
                             trim.data = 0,
                             Dmax = 15,
                             wdw = 30,
-                            use.epiweek = FALSE,
+                            use.epiweek = TRUE,
                             age_col,
                             date_onset,
                             date_report,
