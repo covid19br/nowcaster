@@ -8,3 +8,5 @@
 ^\.github$
 ^README\.Rmd$
 ^README_files$
+^doc$
+^Meta$
