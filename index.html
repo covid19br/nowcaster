@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Nowcaster • nowcaster</title>
+<title>Delay Correction (Nowcasting) of Epidemiological Time-Series • nowcaster</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Nowcaster">
-<meta name="description" content="Nowcaster is a package wrapping statistical models to estimate not yet reported data from a empirical delay distribution between dates of onset of symptoms and date of digitation.">
-<meta property="og:description" content="Nowcaster is a package wrapping statistical models to estimate not yet reported data from a empirical delay distribution between dates of onset of symptoms and date of digitation.">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Delay Correction (Nowcasting) of Epidemiological Time-Series">
+<meta name="description" content="A set of statistical models to estimate not yet reported data from a empirical delay distribution between dates of onset of symptoms and reporting date. The basic model and its implementation is described in Bastos, Economou, et al. (2019) &lt;doi:10.1002/sim.8303&gt;.">
+<meta property="og:description" content="A set of statistical models to estimate not yet reported data from a empirical delay distribution between dates of onset of symptoms and reporting date. The basic model and its implementation is described in Bastos, Economou, et al. (2019) &lt;doi:10.1002/sim.8303&gt;.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -69,7 +69,7 @@
 </h2>
 <p>After have a proper <code>INLA</code> installation to install <code>nowcaster</code> package simply run the code below in R:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"https://github.com/covid19br/nowcaster"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"https://github.com/covid19br/nowcaster"</span><span class="op">)</span></span></code></pre></div>
 <p>If you have any problem installing, please refer to next section on the dependencies of the package.</p>
 </div>
 <div class="section level2">
@@ -123,20 +123,22 @@
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>
-<a href="https://github.com/rafalopespx" class="external-link">Rafael Lopes</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-9416-6145" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
-<li>Tatiana Portella <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-9416-6145" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
-<li>Marcelo Gomes <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-4693-5402" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<a href="https://github.com/rafalopespx" class="external-link">Rafael Lopes</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-9416-6145" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>
-<a href="https://github.com/lsbastos/" class="external-link">Leonardo Bastos</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-1406-0122" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<a href="https://github.com/portellatp" class="external-link">Tatiana Portella</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-8364-1978" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>
+<a href="https://github.com/marfcg" class="external-link">Marcelo Gomes</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-4693-5402" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>
+<a href="https://github.com/lsbastos/" class="external-link">Leonardo Bastos</a> <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-1406-0122" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
 
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
+<li><a href="https://github.com/nowcaster" class="external-link"><img src="https://img.shields.io/badge/devel%20version-1.0.0-blue.svg"></a></li>
 <li><a href="https://github.com/covid19br/nowcaster/blob/main/LICENSE.md" class="external-link"><img src="https://img.shields.io/badge/license-GPL%20(%3E=%203)-blue.svg" alt="License: GPL (&gt;= 3)"></a></li>
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg"></a></li>
-<li><a href="https://github.com/covid19br/nowcaster/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/covid19br/nowcaster/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 </ul>
 </div>
 
@@ -145,11 +147,11 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Casted by <a href="https://github.com/rafalopespx" class="external-link">Rafael Lopes</a>, Tatiana Portella, Marcelo Gomes, <a href="https://github.com/lsbastos/" class="external-link">Leonardo Bastos</a>.</p>
+  <p>Casted by <a href="https://github.com/rafalopespx" class="external-link">Rafael Lopes</a>, <a href="https://github.com/portellatp" class="external-link">Tatiana Portella</a>, <a href="https://github.com/marfcg" class="external-link">Marcelo Gomes</a>, <a href="https://github.com/lsbastos/" class="external-link">Leonardo Bastos</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>
