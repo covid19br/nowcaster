@@ -48,7 +48,7 @@ data.w <- function(dataset,
   ## Maximum date to be considered on the estimation
   DT_max <- max(dataset |>
                   dplyr::pull(var = {{date_report}}),
-                na.rm = T) - trim.data.w + K.w
+                na.rm = T) - trim.data.w #+ K.w
 
   ## Last day of the week for the digitation date calculation
   DT_max_diadasemana <- as.integer(format(DT_max, "%w"))
