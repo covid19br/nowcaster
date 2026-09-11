@@ -224,14 +224,20 @@ nowcasting_mgcv <- function(dataset,
 
 
   ## Auxiliary date table
-  if(K==0){
-    dates <- range(data2model |>
-                    dplyr::pull(var = date_onset - 7*trim.data))
-  } else {
-    ## This is done to explicitly say for the forecast part that its date of onset is the present date
-    date_k <- max(data2model$date_onset) + 7*K - 7*trim.data
-    dates <- range(data2model$date_onset, date_k)
-  }
+
+  dates <- range(data.inla |> dplyr::pull(var = date_onset - 7*trim.data))
+
+  # Adding forecast
+  dates[2] <- dates[2] + 7*K
+
+  # if(K==0){
+  #   dates <- range(data.inla |>
+  #                   dplyr::pull(var = date_onset - 7*trim.data))
+  # } else {
+  #   ## This is done to explicitly say for the forecast part that its date of onset is the present date
+  #   date_k <- max(data.inla$date_onset) + 7*K - 7*trim.data
+  #   dates <- range(data.inla$date_onset, date_k)
+  # }
 
   ## To make an auxiliary date table with each date plus an amount of dates  to forecast
   tbl.date.aux <- tibble::tibble(
