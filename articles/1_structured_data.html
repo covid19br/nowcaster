@@ -6,11 +6,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Nowcasting on Structured data • nowcaster</title>
-<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="../katex-auto.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Nowcasting on Structured data">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><link href="../deps/KaTex-0.16.10/katex.min.css" rel="stylesheet">
+<script src="../deps/KaTex-0.16.10/katex.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Nowcasting on Structured data">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -95,45 +96,26 @@ nowcasting.</p>
 <p>When we call the <code><a href="../reference/nowcasting_inla.html">nowcasting_inla()</a></code> function, it has by
 default the parameterization to take the data and estimate with a
 non-structured data form. The estimate fits a negative binomial
-distribution,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi>e</mi><mi>g</mi><mi>B</mi><mi>i</mi><mi>n</mi><mi>o</mi><mi>m</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>λ</mi><mrow><mi>t</mi><mo>,</mo><mi>d</mi></mrow></msub><mo>,</mo><mi>ϕ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">NegBinom(\lambda_{t,d}, \phi)</annotation></semantics></math>,
-to the cases count at time
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>
-with delay
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math>,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ϕ</mi><annotation encoding="application/x-tex">\phi</annotation></semantics></math>
-is the dispersion parameter. The rate
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>λ</mi><mrow><mi>t</mi><mo>,</mo><mi>d</mi></mrow></msub><annotation encoding="application/x-tex">\lambda_{t,d}</annotation></semantics></math>
-is then parametric in a log-linear format by a constant term added by
-structured delay random effects and structured time random effects. This
-is the whole premise of nowcasting, we model the case counts at time
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>
-given the case count at that time and past values as well as given the
-delay distribution of that count.</p>
+distribution, <span class="math inline">NegBinom(\lambda_{t,d},
+\phi)</span>, to the cases count at time <span class="math inline">t</span> with delay <span class="math inline">d</span>, <span class="math inline">\phi</span> is
+the dispersion parameter. The rate <span class="math inline">\lambda_{t,d}</span> is then parametric in a
+log-linear format by a constant term added by structured delay random
+effects and structured time random effects. This is the whole premise of
+nowcasting, we model the case counts at time <span class="math inline">t</span> given the case count at that time and past
+values as well as given the delay distribution of that count.</p>
 <p>Hence, the model is given by the following:</p>
-<p><span class="math display">$$
+<p><span class="math display">
 Y_{t,d} \sim NegBinom(\lambda_{t,d}, \phi), \\
 \log(\lambda_{t,d}) = \alpha + \beta_t + \gamma_d, \\
 \beta_t := u_t - u_{(t-1)} - u_{(t-2)} \sim N(0,\tau_{\beta}); \gamma_d
 := u_d - u_{(d-1)} \sim N(0, \tau_{\gamma})\\
 t=1,2,\ldots,T, \\ d=1,2,\ldots,D,
-$$</span></p>
-<p>Where the intercept
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
-follows a Gaussian distribution with a very large variance,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mi>t</mi></msub><annotation encoding="application/x-tex">\beta_t</annotation></semantics></math>
-follows a second order random walk with precision
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>τ</mi><mi>β</mi></msub><annotation encoding="application/x-tex">\tau_\beta</annotation></semantics></math>,
-while
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>γ</mi><mi>d</mi></msub><annotation encoding="application/x-tex">\gamma_d</annotation></semantics></math>
-a first-order random walk with precision
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>τ</mi><mi>γ</mi></msub><annotation encoding="application/x-tex">\tau_\gamma</annotation></semantics></math>.
-The model is then completed by INLA default prior distributions for
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ϕ</mi><annotation encoding="application/x-tex">\phi</annotation></semantics></math>,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>τ</mi><mi>β</mi></msub><annotation encoding="application/x-tex">\tau_\beta</annotation></semantics></math>,
-and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>τ</mi><mi>γ</mi></msub><annotation encoding="application/x-tex">\tau_\gamma</annotation></semantics></math>.
-See <a href="https://inla.r-inla-download.org/r-inla.org/doc/likelihood/likelihood-example.pdf" class="external-link"><code>nbinomial</code></a>,
+</span></p>
+<p>Where the intercept <span class="math inline">\alpha</span> follows a
+Gaussian distribution with a very large variance, <span class="math inline">\beta_t</span> follows a second order random walk
+with precision <span class="math inline">\tau_\beta</span>, while <span class="math inline">\gamma_d</span> a first-order random walk with
+precision <span class="math inline">\tau_\gamma</span>. The model is
+then completed by INLA default prior distributions for <span class="math inline">\phi</span>, <span class="math inline">\tau_\beta</span>, and <span class="math inline">\tau_\gamma</span>. See <a href="https://inla.r-inla-download.org/r-inla.org/doc/likelihood/likelihood-example.pdf" class="external-link"><code>nbinomial</code></a>,
 <a href="https://inla.r-inla-download.org/r-inla.org/doc/latent/rw1.pdf" class="external-link"><code>rw1</code></a>
 and <a href="https://inla.r-inla-download.org/r-inla.org/doc/latent/rw1.pdf" class="external-link"><code>rw2</code></a>
 INLA help pages.</p>
@@ -156,12 +138,12 @@ cases observed.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
 <span><span class="co">#&gt;    Time dt_event   Median    LI    LS   LIb   LSb</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    17 2021-12-13    443   442   447   443   445</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    18 2021-12-20    632   626   641   629   634</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    19 2021-12-27    736   727   749   732   740</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    20 2022-01-03    759   746   777   754   765</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    21 2022-01-10    879   861   904   872   887</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    22 2022-01-17    785   764   815   777   794</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    17 2021-12-13    443  442   448   443    445</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    18 2021-12-20    632  627   641   630    634</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    19 2021-12-27    736  728   749.  732    740</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    20 2022-01-03    759  746   780   754    766</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    21 2022-01-10    879  861.  905   872    887</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    22 2022-01-17    786  764   814   778.   795</span></span></code></pre></div>
 <p>The above calling will return only the nowcasting estimate and its
 Confidence Interval (CI) for two different credibility levels,
 <code>LIb</code> and <code>LSb</code> are the max and min CI,
@@ -261,50 +243,30 @@ of SARS-CoV-2, we expect to different ages having different delays
 distribution. We call this kind of looking into to the data as the
 structured data, as the data now have identifiers for time, delay and
 the age class of the cases. To the structured data we fit again a
-Negative binomial distribution to the cases count at time
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>
-with delay
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math>.
-Differently, from the non-structured case the model now gives random
-effects to the delay distribution and time distribution by each of the
-age-class chosen by the user to break the data. The model has the form
-now:</p>
-<p><span class="math display">$$\begin{equation}Y_{t,d,a}
-\sim  NegBinom(\lambda_{t,d,a}, \phi), \\
+Negative binomial distribution to the cases count at time <span class="math inline">t</span> with delay <span class="math inline">d</span>. Differently, from the non-structured case
+the model now gives random effects to the delay distribution and time
+distribution by each of the age-class chosen by the user to break the
+data. The model has the form now:</p>
+<p><span class="math display">
+Y_{t,d,a} \sim  NegBinom(\lambda_{t,d,a}, \phi), \\
 \log(\lambda_{t,d,a}) =  \alpha_a + \beta_{t,a} + \gamma_{d,a}, \\
 \beta_{t,a} := u_t - u_{(t-1)} - u_{(t-2)} \sim N(0,\tau_{a, \beta});
 \gamma_{d,a} := u_d - u_{(d-1)} \sim N(0, \tau_{a, \gamma}) \\
-t=1,2,\ldots,T, \\ d=1,2,\ldots,D, \\ a=1,2,\ldots,A,
-\end{equation}$$</span></p>
-<p>where each age class,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>,
-has an intercept
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mi>a</mi></msub><annotation encoding="application/x-tex">\alpha_a</annotation></semantics></math>
-following a Gaussian distribution with a very large variance, the
-time-age random effects,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mrow><mi>t</mi><mo>,</mo><mi>a</mi></mrow></msub><annotation encoding="application/x-tex">\beta_{t,a}</annotation></semantics></math>,
-follow a joint multivariate Gaussian distribution with a separable
-variance components an independent Gaussian term for the age classes
-with precision
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>τ</mi><mrow><mi>a</mi><mo>,</mo><mi>β</mi></mrow></msub><annotation encoding="application/x-tex">\tau_{a,\beta}</annotation></semantics></math>
-and a second order random walk term for the time with precision
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>τ</mi><mi>β</mi></msub><annotation encoding="application/x-tex">\tau_{\beta}</annotation></semantics></math>.
-Analogously, the delay-age random effects,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>γ</mi><mrow><mi>d</mi><mo>,</mo><mi>a</mi></mrow></msub><annotation encoding="application/x-tex">\gamma_{d,a}</annotation></semantics></math>,
-follow a joint multivariate Gaussian distribution with a separable
-variance components an independent Gaussian term for the age classes
-with precision
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>τ</mi><mrow><mi>a</mi><mo>,</mo><mi>γ</mi></mrow></msub><annotation encoding="application/x-tex">\tau_{a,\gamma}</annotation></semantics></math>
-and a first order random walk term for the time with precision
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>τ</mi><mi>γ</mi></msub><annotation encoding="application/x-tex">\tau_{\gamma}</annotation></semantics></math>.
-The model is then completed by INLA default prior distributions for
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ϕ</mi><annotation encoding="application/x-tex">\phi</annotation></semantics></math>,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>τ</mi><mrow><mi>a</mi><mo>,</mo><mi>β</mi></mrow></msub><annotation encoding="application/x-tex">\tau_{a,\beta}</annotation></semantics></math>,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>τ</mi><mrow><mi>a</mi><mo>,</mo><mi>γ</mi></mrow></msub><annotation encoding="application/x-tex">\tau_{a,\gamma}</annotation></semantics></math>,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>τ</mi><mrow><mi>a</mi><mo>,</mo><mi>β</mi></mrow></msub><annotation encoding="application/x-tex">\tau_{a,\beta}</annotation></semantics></math>
-and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>τ</mi><mi>γ</mi></msub><annotation encoding="application/x-tex">\tau_\gamma</annotation></semantics></math>.
-See <a href="https://inla.r-inla-download.org/r-inla.org/doc/likelihood/likelihood-example.pdf" class="external-link"><code>nbinomial</code></a>,
+t=1,2,\ldots,T, \\ d=1,2,\ldots,D, \\ a=1,2,\ldots,A
+</span></p>
+<p>where each age class, <span class="math inline">a</span>, has an
+intercept <span class="math inline">\alpha_a</span> following a Gaussian
+distribution with a very large variance, the time-age random effects,
+<span class="math inline">\beta_{t,a}</span>, follow a joint
+multivariate Gaussian distribution with a separable variance components
+an independent Gaussian term for the age classes with precision <span class="math inline">\tau_{a,\beta}</span> and a second order random walk
+term for the time with precision <span class="math inline">\tau_{\beta}</span>. Analogously, the delay-age
+random effects, <span class="math inline">\gamma_{d,a}</span>, follow a
+joint multivariate Gaussian distribution with a separable variance
+components an independent Gaussian term for the age classes with
+precision <span class="math inline">\tau_{a,\gamma}</span> and a first
+order random walk term for the time with precision <span class="math inline">\tau_{\gamma}</span>. The model is then completed by
+INLA default prior distributions for <span class="math inline">\phi</span>, <span class="math inline">\tau_{a,\beta}</span>, <span class="math inline">\tau_{a,\gamma}</span>, <span class="math inline">\tau_{a,\beta}</span> and <span class="math inline">\tau_\gamma</span>. See <a href="https://inla.r-inla-download.org/r-inla.org/doc/likelihood/likelihood-example.pdf" class="external-link"><code>nbinomial</code></a>,
 <a href="https://inla.r-inla-download.org/r-inla.org/doc/latent/rw1.pdf" class="external-link"><code>rw1</code></a>
 and <a href="https://inla.r-inla-download.org/r-inla.org/doc/latent/rw1.pdf" class="external-link"><code>rw2</code></a>
 INLA help pages.</p>
