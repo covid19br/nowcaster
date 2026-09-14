@@ -121,10 +121,12 @@ nowcasting_bh_no_age$total |>
 
 The first improvement we have done on the baseline model for nowcasting with a non-structured data is to have the same model for categorical class of the case counts, due to the epidemiological course of SARS-CoV-2, we expect to different ages having different delays distribution. We call this kind of looking into to the data as the structured data, as the data now have identifiers for time, delay and the age class of the cases. To the structured data we fit again a Negative binomial distribution to the cases count at time $t$ with delay $d$. Differently, from the non-structured case the model now gives random effects to the delay distribution and time distribution by each of the age-class chosen by the user to break the data. The model has the form now:
 
-$$\begin{equation}Y_{t,d,a} \sim  NegBinom(\lambda_{t,d,a}, \phi), \\
+$$
+Y_{t,d,a} \sim  NegBinom(\lambda_{t,d,a}, \phi), \\
 \log(\lambda_{t,d,a}) =  \alpha_a + \beta_{t,a} + \gamma_{d,a}, \\ 
 \beta_{t,a} := u_t - u_{(t-1)} - u_{(t-2)} \sim N(0,\tau_{a, \beta}); \gamma_{d,a} := u_d - u_{(d-1)} \sim N(0, \tau_{a, \gamma}) \\
-t=1,2,\ldots,T, \\ d=1,2,\ldots,D, \\ a=1,2,\ldots,A, \end{equation}$$
+t=1,2,\ldots,T, \\ d=1,2,\ldots,D, \\ a=1,2,\ldots,A
+$$
 
 where each age class, $a$, has an intercept $\alpha_a$ following a Gaussian distribution with a very large variance, the time-age random effects, $\beta_{t,a}$, follow a joint multivariate Gaussian distribution with a separable variance components an independent Gaussian term for the age classes with precision $\tau_{a,\beta}$ and a second order random walk term for the time with precision $\tau_{\beta}$. Analogously, the delay-age random effects, $\gamma_{d,a}$, follow a joint multivariate Gaussian distribution with a separable variance components an independent Gaussian term for the age classes with precision $\tau_{a,\gamma}$ and a first order random walk term for the time with precision $\tau_{\gamma}$. The model is then completed by INLA default prior distributions for $\phi$, $\tau_{a,\beta}$, $\tau_{a,\gamma}$, $\tau_{a,\beta}$ and $\tau_\gamma$. See [`nbinomial`](https://inla.r-inla-download.org/r-inla.org/doc/likelihood/likelihood-example.pdf), [`rw1`](https://inla.r-inla-download.org/r-inla.org/doc/latent/rw1.pdf) and [`rw2`](https://inla.r-inla-download.org/r-inla.org/doc/latent/rw1.pdf) INLA help pages.
 
