@@ -18,9 +18,9 @@
 nowcasting_no_age <- function(dataset,
                               zero_inflated=FALSE,
                               timeREmodel = "rw2",
-                              INLAoutput = F,
-                              INLAoutputOnly = F,
-                              WAIC = F, DIC = F
+                              INLAoutput = FALSE,
+                              INLAoutputOnly = FALSE,
+                              WAIC = FALSE, DIC = FALSE
                               ){
   ## Safe test
   if(missing(dataset)){
@@ -57,25 +57,13 @@ nowcasting_no_age <- function(dataset,
   ## prec(rw2) ~ logGamma(10e-3, 10e-3), prec(rw1) ~ logGamma(10e-3, 10e-3)
   model <- stats::as.formula(paste0(
     "Y ~ 1 + f(Time, model = \"", timeREmodel,"\",
-        hyper = list(prec = list(prior = \"loggamma\",
+        hyper = list(\"prec\" = list(prior = \"loggamma\",
                                    param = c(0.001, 0.001))
         )) +
       f(delay, model = \"rw1\",
-        hyper = list(prec = list(prior = \"loggamma\",
+        hyper = list(\"prec\" = list(prior = \"loggamma\",
                                    param = c(0.001, 0.001)))
       )"))
-
-  # Work around for the number of threads
-  chk <- Sys.getenv("_R_CHECK_LIMIT_CORES_", "")
-
-  if (nzchar(chk) && chk == "TRUE") {
-    # use 2 cores in CRAN/Travis/AppVeyor
-    num_workers <- 2L
-  } else {
-    # use all cores in devtools::test()
-    num_workers <- parallel::detectCores()
-  }
-
 
   ## Running the Negative Binomial model in INLA
   output0 <- INLA::inla(model,
@@ -83,8 +71,7 @@ nowcasting_no_age <- function(dataset,
                         data = dataset,
                         control.predictor = list(link = 1, compute = T),
                         control.compute = list( config = T, waic=WAIC, dic=DIC),
-                        control.family = control.family,
-                        num.threads = num_workers
+                        control.family = control.family
   )
 
   # }
@@ -98,7 +85,7 @@ nowcasting_no_age <- function(dataset,
     ## Algorithm to get samples for the predictive distribution for the number of cases
 
     ## Step 1: Sampling from the approximate posterior distribution using INLA
-    srag.samples0.list <- INLA::inla.posterior.sample(n = 1000, output0, num.threads = num_workers)
+    srag.samples0.list <- INLA::inla.posterior.sample(n = 1000, output0)
 
     ## Give a parameter to trajectories, TO-DO
 

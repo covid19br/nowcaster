@@ -12,12 +12,12 @@
 #' @param trim.data (in weeks) Date to be trimmed out from the data base, in days. Default is 0 days.
 #' @param Dmax (in weeks) Window of dates the estimation will act, i.e., till how many past weeks the nowcasting will estimate. Default is 15 weeks.
 #' @param wdw (in weeks) Until which maximum amount of weeks the Nowcasting will use to the estimation. Default is 30 weeks.
-#' @param use.epiweek If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date. Default is FALSE
+#' @param use.epiweek If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date. Default is TRUE
 #' @param data.by.week If it has to be returned the whole time-series data. Default is FALSE.
 #' @param return.age Deprecated. If the estimate by Age should be returned. Default is TRUE.
 #' @param bins_age Age bins to do the nowcasting, it receive a vector of age bins,
 #' or options between, "SI-PNI", "10 years", "5 years". The default is "SI-PNI".
-#' @param silent Deprecated. Should be the warnings turned off? . The default is TRUE.
+#' @param silent Deprecated. Should be the warnings turned off? . The default is FALSE
 #' @param K (in weeks) How much weeks to forecast ahead? . The default is K = 0, no forecasting ahead
 #' @param age_col Column for ages
 #' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases
@@ -49,25 +49,26 @@
 #'                 date_report = DT_DIGITA,
 #'                 silent = T)
 #' }
+
 nowcasting_inla <- function(dataset,
                             bins_age="SI-PNI",
                             trim.data=0,
                             Dmax = 15,
                             wdw = 30,
-                            use.epiweek = FALSE,
+                            use.epiweek = TRUE,
                             age_col,
                             date_onset,
                             date_report,
                             data.by.week = FALSE,
                             return.age = NULL,
-                            silent = F,
+                            silent = FALSE,
                             K = 0,
-                            trajectories = F,
-                            zero_inflated = F,
+                            trajectories = FALSE,
+                            zero_inflated = FALSE,
                             timeREmodel = "rw2",
-                            INLAoutput = F,
-                            INLAoutputOnly = F,
-                            WAIC = F, DIC = F,
+                            INLAoutput = FALSE,
+                            INLAoutputOnly = FALSE,
+                            WAIC = FALSE, DIC = FALSE,
                             ...){
 
   dots<-list(...)
@@ -273,14 +274,20 @@ nowcasting_inla <- function(dataset,
 
 
   ## Auxiliary date table
-  if(K==0){
-    dates <- range(data.inla |>
-                    dplyr::pull(var = date_onset - 7*trim.data))
-  } else {
-    ## This is done to explicitly say for the forecast part that its date of onset is the present date
-    date_k <- max(data.inla$date_onset) + 7*K - 7*trim.data
-    dates <- range(data.inla$date_onset, date_k)
-  }
+
+  dates <- range(data.inla |> dplyr::pull(var = date_onset - 7*trim.data))
+
+  # Adding forecast
+  dates[2] <- dates[2] + 7*K
+
+  # if(K==0){
+  #   dates <- range(data.inla |>
+  #                   dplyr::pull(var = date_onset - 7*trim.data))
+  # } else {
+  #   ## This is done to explicitly say for the forecast part that its date of onset is the present date
+  #   date_k <- max(data.inla$date_onset) + 7*K - 7*trim.data
+  #   dates <- range(data.inla$date_onset, date_k)
+  # }
 
   ## To make an auxiliary date table with each date plus an amount of dates  to forecast
   tbl.date.aux <- tibble::tibble(
@@ -370,7 +377,7 @@ nowcasting_inla <- function(dataset,
       now_summary <- list()
     }
 
-  }else{
+  } else {
     # Nowcasting by age groups
 
     if(zero_inflated){
@@ -418,12 +425,13 @@ nowcasting_inla <- function(dataset,
       # names(now_summary)[3-l]<-"data"
 
       now_summary$data <- data.inla
-    }
-    if(trajectories){
-      # now_summary[[4-l]]<-sample.now
-      # names(now_summary)[4-l]<-"trajectories"
-      now_summary$trajectories <- sample.now$sample
-    }else {
+
+      if(trajectories){
+        # now_summary[[4-l]]<-sample.now
+        # names(now_summary)[4-l]<-"trajectories"
+        now_summary$trajectories <- sample.now$sample
+      }
+    } else {
       if(trajectories){
         # now_summary[[3-l]]<-sample.now
         # names(now_summary)[3-l]<-"trajectories"

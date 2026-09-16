@@ -14,7 +14,7 @@
 #' \donttest{
 #' # Loading Belo Horizonte SARI dataset
 #' data(sragBH)
-#' now <- nowcasting_inla(dataset = sragBH,
+#' now <- nowcasting_mgcv(dataset = sragBH,
 #'                 date_onset = DT_SIN_PRI,
 #'                 date_report = DT_DIGITA,
 #'                 trajectories = TRUE,

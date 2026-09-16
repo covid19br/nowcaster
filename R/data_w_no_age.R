@@ -14,15 +14,14 @@
 #' @param silent DEPRECATED to be removed.
 #'
 #' @return Data in weeks format, with the maximum dates for the last week used
-#' @export
-#'
+
 data.w_no_age<-function(dataset,
                         trim.data,
                         date_onset,
                         date_report,
                         use.epiweek = FALSE,
                         K=0,
-                        silent=F){
+                        silent=FALSE){
   if(!silent){
     ## Last digitation date considered
     if(missing(trim.data)){
@@ -48,7 +47,7 @@ data.w_no_age<-function(dataset,
   ## Maximum date to be considered on the estimation (Last day)
   DT_max <- max(dataset |>
                   dplyr::pull(var = {{date_report}}),
-                na.rm = T) - trim.data.w + K.w
+                na.rm = T) - trim.data.w #+ K.w
 
 
   ## Day of the week of the last day

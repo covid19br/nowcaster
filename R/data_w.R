@@ -16,8 +16,7 @@
 #' @param silent Deprecated. To be removed.
 #'
 #' @return Data in weeks format, with the maximum dates for the last week used
-#' @export
-#'
+
 data.w <- function(dataset,
                    trim.data,
                    bins_age = c("SI-PNI", "10 years", "5 years", bins_age),
@@ -26,17 +25,14 @@ data.w <- function(dataset,
                    age_col,
                    use.epiweek = FALSE,
                    K = 0,
-                   silent = F){
+                   silent = FALSE){
   if(!silent){
     ## Last digitation date considered
     if(missing(trim.data)){
       trim.data <-  0
       warning("Using default, no trimming out of the data")
     } else {
-      warning("Using default, trimming out ",
-              trim.data ,
-              " days of data",
-              call. = T)
+      warning("Using default, trimming out ", trim.data ," days of data", call. = T)
     }
   }else{
     ## Trim.data
@@ -52,7 +48,7 @@ data.w <- function(dataset,
   ## Maximum date to be considered on the estimation
   DT_max <- max(dataset |>
                   dplyr::pull(var = {{date_report}}),
-                na.rm = T) - trim.data.w + K.w
+                na.rm = T) - trim.data.w #+ K.w
 
   ## Last day of the week for the digitation date calculation
   DT_max_diadasemana <- as.integer(format(DT_max, "%w"))
@@ -124,7 +120,7 @@ data.w <- function(dataset,
         ),
       date_onset = dt.aux - ifelse( date_onset < dt.aux, 7, 0),
       # Recording date
-      DT.sun.aux = as.integer(format(date_report, "%w")),
+      DT.sun.aux.r = as.integer(format(date_report, "%w")),
       ## Altering the date for the first day of the week
       dt.aux = date_report -
         # Last recording date (DT_max_diadasemana) is the last day of the new week format

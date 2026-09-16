@@ -13,7 +13,7 @@
 #' 'LSb' upper limit, 50% CI
 #' 'LIb' lower limit, 50% CI
 #' @export
-nowcasting.summary <- function(trajectory, age = F){
+nowcasting.summary <- function(trajectory, age = FALSE){
 
   Time <- dt_event <- Y <- fx_etaria <- fx_etaria.num <- NULL
 
