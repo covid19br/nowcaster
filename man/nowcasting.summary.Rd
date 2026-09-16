@@ -4,7 +4,7 @@
 \alias{nowcasting.summary}
 \title{nowcasting.summary}
 \usage{
-nowcasting.summary(trajectory, age = F)
+nowcasting.summary(trajectory, age = FALSE)
 }
 \arguments{
 \item{trajectory}{Trajectories to be summarized, trajectory should have sample, Time, dt_event and Y columns.}
