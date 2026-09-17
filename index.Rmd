@@ -21,8 +21,9 @@ knitr::opts_chunk$set(
 [![License: GPL (>= 3)](https://img.shields.io/badge/license-GPL (>= 3)-blue.svg)](https://cran.r-project.org/web/licenses/GPL (>= 3))
 <!-- badges: end -->
 
-`nowcaster`: Statistical Models for Notification Delay Correction of Epidemiological Data. The package wraps statistical models to estimate not yet reported data using empirical delay distribution either from individual-level data or from the differences of aggregated time series of cases.
-`nowcaster` it was built for and during epidemiological emergency use, it was constructed for the Brazilian Severe Acute Respiratory Illness (SARI)
+`nowcaster`: Statistical Models for Notification Delay Correction of Epidemiological Data. 
+
+The package wraps statistical models to estimate not yet reported data using empirical delay distribution either from individual-level data or from the differences of aggregated time series of cases. `nowcaster` it was built for and during epidemiological emergency use, it was constructed for the Brazilian Severe Acute Respiratory Illness (SARI)
 surveillance system (SIVEP-Gripe), at the time of Covid-19 pandemic. 
 
 Every single system of notification has an intrinsic delay between the `date of onset` of the event and the `date of report`. 
