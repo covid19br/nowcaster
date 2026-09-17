@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nowcaster</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -138,12 +138,12 @@ cases observed.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
 <span><span class="co">#&gt;    Time dt_event   Median    LI    LS   LIb   LSb</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    17 2021-12-13    443  442   448   443    445</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    18 2021-12-20    632  627   641   630    634</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    19 2021-12-27    736  728   749.  732    740</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    20 2022-01-03    759  746   780   754    766</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    21 2022-01-10    879  861.  905   872    887</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    22 2022-01-17    786  764   814   778.   795</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    17 2021-12-19    625  621    633   623   627</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    18 2021-12-26    695  687    706   691   698</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    19 2022-01-02    812  801.   830   808   817</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    20 2022-01-09    886  871.   909   880   893</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    21 2022-01-16    818  800    844   810   826</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    22 2022-01-23    631  608    661   622   639</span></span></code></pre></div>
 <p>The above calling will return only the nowcasting estimate and its
 Confidence Interval (CI) for two different credibility levels,
 <code>LIb</code> and <code>LSb</code> are the max and min CI,
@@ -164,12 +164,12 @@ week.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 4</span></span></span>
 <span><span class="co">#&gt;   dt_event   delay     Y  Time</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 2021-08-23     0     8     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 2021-08-23     1    70     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 2021-08-23     2    92     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 2021-08-23     3    68     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 2021-08-23     4    32     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2021-08-23     5    32     1</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 2021-08-29     0    13     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 2021-08-29     1    51     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 2021-08-29     2   127     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 2021-08-29     3    55     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 2021-08-29     4    26     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2021-08-29     5    15     1</span></span></code></pre></div>
 <p>This element is the counts of cases by each delay days. It is known
 as the delay triangle, if we table the delay amount against the date of
 onset of first symptoms, we can see the pattern of the delay for the
@@ -189,19 +189,19 @@ cases.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 13 × 12</span></span></span>
 <span><span class="co">#&gt;    dt_event     `0`   `1`   `2`   `3`   `4`   `5`   `6`   `7`   `8`   `9`  `10`</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 2021-12-27     5   102   129    80    68   103    92    38    34    26    16</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 2022-01-03    14    94   101   108    91   113    74    63    28    15    21</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 2022-01-10     0    98   151   102   140   116    89    68    32    26    19</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 2022-01-17     4   128   106   131    98    90    78    51    21    29    <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 2022-01-24     9    88   121    81    63    71    28    37    30    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 2022-01-31     6    76    90    80    77    38    33    39    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 2022-02-07    12    71    77    60    33    36    36    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 2022-02-14     5    77    60    48    69    45    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 2022-02-21    16    52    81    39    29    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 2022-02-28     7    57    52    39    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> 2022-03-07     5    57    75    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> 2022-03-14     6    57    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> 2022-03-21     3    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 2022-01-02    20   106   114   109    98   113    72    69    27    19    18</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 2022-01-09     7   105   152   104   135   109    83    66    27    30    18</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 2022-01-16    10   139   101   135   103    90    70    51    17    28    33</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 2022-01-23    15    98   121    77    69    79    29    37    28    28    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 2022-01-30    11    87    99    73    76    38    36    40    22    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 2022-02-06    16    76    77    62    37    30    35    35    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 2022-02-13     7    85    59    45    69    47    29    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 2022-02-20    20    52    72    44    27    46    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 2022-02-27    12    63    48    40    52    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 2022-03-06    12    56    72    56    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> 2022-03-13    15    56    64    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> 2022-03-20    11    60    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> 2022-03-27     1    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span></code></pre></div>
 <p>We just look at the amount of cases with than 10 weeks of delay or
 less and 84 days before the latest date. The default maximum is 30 weeks
 delay considered at nowcasting estimation.</p>
@@ -389,7 +389,7 @@ the age class information to nowcasting produce narrower estimates</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Casted by <a href="https://github.com/rafalopespx" class="external-link">Rafael Lopes</a>, <a href="https://github.com/portellatp" class="external-link">Tatiana Portella</a>, <a href="https://github.com/marfcg" class="external-link">Marcelo Gomes</a>, <a href="https://github.com/lsbastos/" class="external-link">Leonardo Bastos</a>.</p>
+  <p>Casted by <a href="https://github.com/rafalopespx/" class="external-link">Rafael Lopes</a>, <a href="https://github.com/portellatp/" class="external-link">Tatiana Portella</a>, <a href="https://github.com/marfcg/" class="external-link">Marcelo Gomes</a>, Leo Bastos.</p>
 </div>
 
 <div class="pkgdown-footer-right">

@@ -13,8 +13,11 @@
 <url><loc>https://covid19br.github.io/nowcaster/reference/index.html</loc></url>
 <url><loc>https://covid19br.github.io/nowcaster/reference/nowcasting.summary.html</loc></url>
 <url><loc>https://covid19br.github.io/nowcaster/reference/nowcasting_age.html</loc></url>
+<url><loc>https://covid19br.github.io/nowcaster/reference/nowcasting_age_mgcv.html</loc></url>
 <url><loc>https://covid19br.github.io/nowcaster/reference/nowcasting_inla.html</loc></url>
+<url><loc>https://covid19br.github.io/nowcaster/reference/nowcasting_mgcv.html</loc></url>
 <url><loc>https://covid19br.github.io/nowcaster/reference/nowcasting_no_age.html</loc></url>
+<url><loc>https://covid19br.github.io/nowcaster/reference/nowcasting_no_age_mgcv.html</loc></url>
 <url><loc>https://covid19br.github.io/nowcaster/reference/slope.estimate.quant.html</loc></url>
 <url><loc>https://covid19br.github.io/nowcaster/reference/sragBH.html</loc></url>
 </urlset>

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nowcaster</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,7 +74,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># Loading Belo Horizonte SARI dataset</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sragBH</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">now</span> <span class="op">&lt;-</span> <span class="fu"><a href="nowcasting_inla.html">nowcasting_inla</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">sragBH</span>,</span></span>
+<span class="r-in"><span><span class="va">now</span> <span class="op">&lt;-</span> <span class="fu"><a href="nowcasting_mgcv.html">nowcasting_mgcv</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">sragBH</span>,</span></span>
 <span class="r-in"><span>                date_onset <span class="op">=</span> <span class="va">DT_SIN_PRI</span>,</span></span>
 <span class="r-in"><span>                date_report <span class="op">=</span> <span class="va">DT_DIGITA</span>,</span></span>
 <span class="r-in"><span>                trajectories <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
@@ -92,7 +92,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Casted by <a href="https://github.com/rafalopespx" class="external-link">Rafael Lopes</a>, <a href="https://github.com/portellatp" class="external-link">Tatiana Portella</a>, <a href="https://github.com/marfcg" class="external-link">Marcelo Gomes</a>, <a href="https://github.com/lsbastos/" class="external-link">Leonardo Bastos</a>.</p>
+  <p>Casted by <a href="https://github.com/rafalopespx/" class="external-link">Rafael Lopes</a>, <a href="https://github.com/portellatp/" class="external-link">Tatiana Portella</a>, <a href="https://github.com/marfcg/" class="external-link">Marcelo Gomes</a>, Leo Bastos.</p>
 </div>
 
 <div class="pkgdown-footer-right">

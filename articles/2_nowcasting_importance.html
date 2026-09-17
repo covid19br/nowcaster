@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nowcaster</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,9 +88,9 @@ decisions.</p>
 <p>We start this section by cutting the original data at a moment of
 apparent decaying of the SARI hospitalization, for the city of Belo
 Horizonte, which had a prompt starting response to the Covid-19
-pandemic. The pressure on the health system took more time than the rest
-of the country, and the data at same time were showing a decay. We
-filter all cases entered until 4th of July of 2020 by the date of
+pandemic. The pressure on the health system there took more time than
+the rest of the country, and the data at same time were showing a decay.
+We filter all cases entered until 4th of July of 2020 by the date of
 digitization, a date that the cases shows up in the database.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
@@ -102,7 +102,8 @@ digitization, a date that the cases shows up in the database.</p>
 <span><span class="va">srag_now</span><span class="op">&lt;-</span><span class="va">sragBH</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">DT_DIGITA</span> <span class="op">&lt;=</span> <span class="st">"2020-07-04"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">data_by_week</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/data.w_no_age.html">data.w_no_age</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">srag_now</span>, </span>
+<span><span class="co"># We now call an internal function to construct a count of cases by age to each date of onset</span></span>
+<span><span class="va">data_by_week</span> <span class="op">&lt;-</span> <span class="fu">nowcaster</span><span class="fu">:::</span><span class="fu"><a href="../reference/data.w_no_age.html">data.w_no_age</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">srag_now</span>, </span>
 <span>                              date_onset <span class="op">=</span> <span class="va">DT_SIN_PRI</span>, </span>
 <span>                              date_report <span class="op">=</span> <span class="va">DT_DIGITA</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">date_onset</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -136,12 +137,12 @@ for the function return back the epidemic curve by epiweek.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 4</span></span></span>
 <span><span class="co">#&gt;   dt_event   delay     Y  Time</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 2019-12-28     0     1     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 2019-12-28     1     2     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 2019-12-28     2     4     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 2019-12-28     3     5     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 2019-12-28     4     2     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2019-12-28     5     2     1</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 2019-12-29     0     1     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 2019-12-29     1     2     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 2019-12-29     2     4     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 2019-12-29     3     5     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 2019-12-29     4     2     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2019-12-29     5     2     1</span></span></code></pre></div>
 <p>Before we see the result of the nowcasting estimate we take a look on
 intermediate part of the process of nowcasting, the delay triangle,
 which sets the objects for nowcasting. The delay triangle is only a
@@ -169,19 +170,19 @@ of first symptoms, to see the pattern of the delay for the cases.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 13 × 12</span></span></span>
 <span><span class="co">#&gt;    dt_event     `0`   `1`   `2`   `3`   `4`   `5`   `6`   `7`   `8`   `9`  `10`</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 2020-04-04    15   103    38    25    24     8    10     8     5     4     7</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 2020-04-11    24    79    63    30    23    21     7    12     3     4     0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 2020-04-18    17   111    80    22    15    10    16     3     5     5     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 2020-04-25    22   143    51    26    17    16     4    12     7     4    <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 2020-05-02    39   106    87    24     9     5     8     6     1    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 2020-05-09    37   154    68    32     8    12    10    10    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 2020-05-16    31   153    80    20    22    15    17    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 2020-05-23    41   154    70    67    24    15    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 2020-05-30    34   174   191    98    35    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 2020-06-06    22   240   232    62    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> 2020-06-13    44   355   252    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> 2020-06-20    61   363    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> 2020-06-27    84    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 2020-03-29    23    76    70    18    27    20    16    15    11     6     2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 2020-04-05    15   103    38    25    24     8    10     8     5     4     7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 2020-04-12    24    79    63    30    23    21     7    12     3     4     0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 2020-04-19    17   111    80    22    15    10    16     3     5     5    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 2020-04-26    22   143    51    26    17    16     4    12     7    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 2020-05-03    39   106    87    24     9     5     8     6    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 2020-05-10    37   154    68    32     8    12    10    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 2020-05-17    31   153    80    20    22    15    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 2020-05-24    41   154    70    67    24    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 2020-05-31    34   174   191    98    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> 2020-06-07    22   240   232    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> 2020-06-14    44   355    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> 2020-06-21    61    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span></span></code></pre></div>
 <p>We just look at the amount of cases with 30 weeks of delay or less,
 it is the default maximum delay considered at nowcasting estimation. It
 can be changed by the parameter <code>Dmax</code>.</p>
@@ -277,7 +278,7 @@ data a good estimate of the true number of cases happening.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Casted by <a href="https://github.com/rafalopespx" class="external-link">Rafael Lopes</a>, <a href="https://github.com/portellatp" class="external-link">Tatiana Portella</a>, <a href="https://github.com/marfcg" class="external-link">Marcelo Gomes</a>, <a href="https://github.com/lsbastos/" class="external-link">Leonardo Bastos</a>.</p>
+  <p>Casted by <a href="https://github.com/rafalopespx/" class="external-link">Rafael Lopes</a>, <a href="https://github.com/portellatp/" class="external-link">Tatiana Portella</a>, <a href="https://github.com/marfcg/" class="external-link">Marcelo Gomes</a>, Leo Bastos.</p>
 </div>
 
 <div class="pkgdown-footer-right">

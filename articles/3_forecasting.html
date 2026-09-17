@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nowcaster</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -125,7 +125,7 @@ of first symptoms present at the database.</p>
 <span><span class="va">srag_now</span> <span class="op">&lt;-</span> <span class="va">sragBH</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">DT_DIGITA</span> <span class="op">&lt;=</span> <span class="st">"2020-07-04"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">data_by_week</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/data.w_no_age.html">data.w_no_age</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">srag_now</span>, </span>
+<span><span class="va">data_by_week</span> <span class="op">&lt;-</span> <span class="fu">nowcaster</span><span class="fu">:::</span><span class="fu"><a href="../reference/data.w_no_age.html">data.w_no_age</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">srag_now</span>, </span>
 <span>                             date_onset <span class="op">=</span> <span class="va">DT_SIN_PRI</span>, </span>
 <span>                             date_report <span class="op">=</span> <span class="va">DT_DIGITA</span>, </span>
 <span>                             K <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -157,12 +157,12 @@ and proceed as in normal nowcasting calling, the code is:</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 4</span></span></span>
 <span><span class="co">#&gt;   dt_event   delay     Y  Time</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 2019-12-28     0     1     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 2019-12-28     1     2     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 2019-12-28     2     4     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 2019-12-28     3     5     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 2019-12-28     4     2     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2019-12-28     5     2     1</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 2019-12-29     0     1     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 2019-12-29     1     2     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 2019-12-29     2     4     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 2019-12-29     3     5     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 2019-12-29     4     2     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2019-12-29     5     2     1</span></span></code></pre></div>
 <p>To visualize the forecast we plot the observed curve and the
 nowcasting and forecasting estimate, change the colors for each part. We
 plot together the nowcasting and forecasting estimate, the curve
@@ -171,10 +171,10 @@ observed one year later, to validate the estimate done.</p>
 <code class="sourceCode R"><span></span>
 <span><span class="co">## Nowcasting estimate filtering</span></span>
 <span><span class="va">nowcasting_estimate</span><span class="op">&lt;-</span><span class="va">nowcasting_bh_no_age</span><span class="op">$</span><span class="va">total</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">dt_event</span> <span class="op">&lt;=</span> <span class="st">"2020-06-27"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">dt_event</span> <span class="op">&lt;=</span> <span class="st">"2020-06-21"</span><span class="op">)</span></span>
 <span><span class="co">## Forecasting estimate filtering</span></span>
 <span><span class="va">forecasting_estimate</span><span class="op">&lt;-</span><span class="va">nowcasting_bh_no_age</span><span class="op">$</span><span class="va">total</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">dt_event</span> <span class="op">&gt;=</span> <span class="st">"2020-06-27"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">dt_event</span> <span class="op">&gt;=</span> <span class="st">"2020-06-21"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## One year after observed</span></span>
 <span><span class="va">data_one_year_after</span><span class="op">&lt;-</span><span class="va">sragBH</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -243,22 +243,22 @@ confidence interval.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
 <span><span class="co">#&gt;   dt_event   delay fx_etaria     Y  Time</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 2019-12-28     0 1             0     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 2019-12-28     0 2             0     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 2019-12-28     0 3             0     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 2019-12-28     0 4             0     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 2019-12-28     0 5             0     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2019-12-28     0 6             0     1</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 2019-12-29     0 1             0     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 2019-12-29     0 2             0     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 2019-12-29     0 3             0     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 2019-12-29     0 4             0     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 2019-12-29     0 5             0     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2019-12-29     0 6             0     1</span></span></code></pre></div>
 <p>And we plot the nowcasting estimate and forecasting estimate
 again:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co">## Nowcasting estimate filtering</span></span>
 <span><span class="va">nowcasting_estimate</span><span class="op">&lt;-</span><span class="va">nowcasting_bh_age</span><span class="op">$</span><span class="va">total</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">dt_event</span> <span class="op">&lt;=</span> <span class="st">"2020-06-27"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">dt_event</span> <span class="op">&lt;=</span> <span class="st">"2020-06-21"</span><span class="op">)</span></span>
 <span><span class="co">## Forecasting estimate filtering</span></span>
 <span><span class="va">forecasting_estimate</span><span class="op">&lt;-</span><span class="va">nowcasting_bh_age</span><span class="op">$</span><span class="va">total</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">dt_event</span> <span class="op">&gt;=</span> <span class="st">"2020-06-27"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">dt_event</span> <span class="op">&gt;=</span> <span class="st">"2020-06-21"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Plotting</span></span>
 <span><span class="va">nowcasting_estimate</span> <span class="op">|&gt;</span> </span>
@@ -312,7 +312,7 @@ triangle.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Casted by <a href="https://github.com/rafalopespx" class="external-link">Rafael Lopes</a>, <a href="https://github.com/portellatp" class="external-link">Tatiana Portella</a>, <a href="https://github.com/marfcg" class="external-link">Marcelo Gomes</a>, <a href="https://github.com/lsbastos/" class="external-link">Leonardo Bastos</a>.</p>
+  <p>Casted by <a href="https://github.com/rafalopespx/" class="external-link">Rafael Lopes</a>, <a href="https://github.com/portellatp/" class="external-link">Tatiana Portella</a>, <a href="https://github.com/marfcg/" class="external-link">Marcelo Gomes</a>, Leo Bastos.</p>
 </div>
 
 <div class="pkgdown-footer-right">
