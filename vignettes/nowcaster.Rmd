@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-## First example on LazyData
+## First example on 
 
 When the package is loaded it provides a Lazy Data file, `sariBH`, it is a anonymized records of Severe Acute Respiratory Illness notified in the city of Belo Horizonte, since March 2020 to April 2022. To load it basically write:
 

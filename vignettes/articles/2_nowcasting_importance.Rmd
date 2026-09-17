@@ -26,7 +26,7 @@ This is a short example showing how helpful can be a to use nowcasting estimate 
 
 Nowcasting a rising curve or a curve on any other moment can give quantitative support for decision making, during the public health crises, the most needed is a way to anticipate, at least, what it is happening at the moment. Nowcasting is the tool for this type of questioning and can gives insights on the data to support needed decisions.
 
-We start this section by cutting the original data at a moment of apparent decaying of the SARI hospitalization, for the city of Belo Horizonte, which had a prompt starting response to the Covid-19 pandemic. The pressure on the health system took more time than the rest of the country, and the data at same time were showing a decay. We filter all cases entered until 4th of July of 2020 by the date of digitization, a date that the cases shows up in the database.
+We start this section by cutting the original data at a moment of apparent decaying of the SARI hospitalization, for the city of Belo Horizonte, which had a prompt starting response to the Covid-19 pandemic. The pressure on the health system there took more time than the rest of the country, and the data at same time were showing a decay. We filter all cases entered until 4th of July of 2020 by the date of digitization, a date that the cases shows up in the database.
 
 ```{r no_age_data}
 library(tidyverse)
@@ -38,7 +38,8 @@ data("sragBH")
 srag_now<-sragBH |> 
   filter(DT_DIGITA <= "2020-07-04")
 
-data_by_week <- data.w_no_age(dataset = srag_now, 
+# We now call an internal function to construct a count of cases by age to each date of onset
+data_by_week <- nowcaster:::data.w_no_age(dataset = srag_now, 
                               date_onset = DT_SIN_PRI, 
                               date_report = DT_DIGITA) |> 
   group_by(date_onset) |> 

@@ -45,7 +45,7 @@ data("sragBH")
 srag_now <- sragBH |> 
   filter(DT_DIGITA <= "2020-07-04")
 
-data_by_week <- data.w_no_age(dataset = srag_now, 
+data_by_week <- nowcaster:::data.w_no_age(dataset = srag_now, 
                              date_onset = DT_SIN_PRI, 
                              date_report = DT_DIGITA, 
                              K = 0) |> 
@@ -83,10 +83,10 @@ To visualize the forecast we plot the observed curve and the nowcasting and fore
 
 ## Nowcasting estimate filtering
 nowcasting_estimate<-nowcasting_bh_no_age$total |> 
-  filter(dt_event <= "2020-06-27")
+  filter(dt_event <= "2020-06-21")
 ## Forecasting estimate filtering
 forecasting_estimate<-nowcasting_bh_no_age$total |> 
-  filter(dt_event >= "2020-06-27")
+  filter(dt_event >= "2020-06-21")
 
 ## One year after observed
 data_one_year_after<-sragBH %>%
@@ -150,10 +150,10 @@ And we plot the nowcasting estimate and forecasting estimate again:
 
 ## Nowcasting estimate filtering
 nowcasting_estimate<-nowcasting_bh_age$total |> 
-  filter(dt_event <= "2020-06-27")
+  filter(dt_event <= "2020-06-21")
 ## Forecasting estimate filtering
 forecasting_estimate<-nowcasting_bh_age$total |> 
-  filter(dt_event >= "2020-06-27")
+  filter(dt_event >= "2020-06-21")
 
 ## Plotting
 nowcasting_estimate |> 

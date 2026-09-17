@@ -49,7 +49,7 @@ jobs:
       - name: Render README
         run: rmarkdown::render("README.Rmd")
         shell: Rscript {0}
-        
+
       - name: Render index
         run: rmarkdown::render("index.Rmd")
         shell: Rscript {0}
