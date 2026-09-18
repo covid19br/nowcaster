@@ -68,7 +68,7 @@ onset date and report date.</p>
 <span>  <span class="va">date_onset</span>,</span>
 <span>  <span class="va">date_report</span>,</span>
 <span>  data.by.week <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  return.age <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  return.age <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  silent <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  K <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  trajectories <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -158,7 +158,7 @@ or options between, "SI-PNI", "10 years", "5 years". The default is "SI-PNI".</p
 
 
 <dt id="arg-inlaoutputonly">INLAoutputOnly<a class="anchor" aria-label="anchor" href="#arg-inlaoutputonly"></a></dt>
-<dd><p>return only the INLA output. Default is FALSE.</p></dd>
+<dd><p>return the only the INLA output. Default is FALSE.</p></dd>
 
 
 <dt id="arg-waic">WAIC<a class="anchor" aria-label="anchor" href="#arg-waic"></a></dt>
@@ -191,7 +191,8 @@ If 'WAIC' = TRUE or 'DIC' = TRUE, then 'INLAoutput' is forced to be TRUE returni
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sragBH</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">nowcasting_inla</span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">sragBH</span>,</span></span>
 <span class="r-in"><span>                date_onset <span class="op">=</span> <span class="va">DT_SIN_PRI</span>,</span></span>
-<span class="r-in"><span>                date_report <span class="op">=</span> <span class="va">DT_DIGITA</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                date_report <span class="op">=</span> <span class="va">DT_DIGITA</span>,</span></span>
+<span class="r-in"><span>                silent <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
@@ -200,7 +201,7 @@ If 'WAIC' = TRUE or 'DIC' = TRUE, then 'INLAoutput' is forced to be TRUE returni
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Casted by <a href="https://github.com/rafalopespx/" class="external-link">Rafael Lopes</a>, <a href="https://github.com/portellatp/" class="external-link">Tatiana Portella</a>, <a href="https://github.com/marfcg/" class="external-link">Marcelo Gomes</a>, Leo Bastos.</p>
+  <p>Casted by <a href="https://github.com/rafalopespx/" class="external-link">Rafael Lopes</a>, <a href="https://github.com/portellatp/" class="external-link">Tatiana Portella</a>, <a href="https://experts.exeter.ac.uk/19235-theo-economou" class="external-link">Theo Economou</a>, <a href="https://github.com/marfcg/" class="external-link">Marcelo Gomes</a>, <a href="https://github.com/lsbastos/" class="external-link">Leo Bastos</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
