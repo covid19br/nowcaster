@@ -178,7 +178,7 @@ observed one year later, to validate the estimate done.</p>
 <span></span>
 <span><span class="co">## One year after observed</span></span>
 <span><span class="va">data_one_year_after</span><span class="op">&lt;-</span><span class="va">sragBH</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">DT_SIN_PRI</span> <span class="op">&lt;=</span> <span class="st">"2020-07-11"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">DT_SIN_PRI</span> <span class="op">&lt;=</span> <span class="st">"2020-07-04"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    D_SIN_PRI_2 <span class="op">=</span> <span class="va">DT_SIN_PRI</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">DT_SIN_PRI</span>, <span class="st">"%w"</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
@@ -237,7 +237,7 @@ confidence interval.</p>
 <span>                                     date_onset <span class="op">=</span> <span class="va">DT_SIN_PRI</span>, </span>
 <span>                                     date_report <span class="op">=</span> <span class="va">DT_DIGITA</span>, </span>
 <span>                                     data.by.week <span class="op">=</span> <span class="cn">T</span>,</span>
-<span>                                     K <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>                                     K <span class="op">=</span> <span class="fl">1</span>, </span>
 <span>                                     age_col <span class="op">=</span> <span class="va">Idade</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nowcasting_bh_age</span><span class="op">$</span><span class="va">data</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>

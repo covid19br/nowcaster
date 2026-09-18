@@ -164,6 +164,12 @@ If 'trajectories' = TRUE, add a forth element with the returned trajectories fro
 <span class="r-in"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">nowcasting_mgcv</span><span class="op">(</span>dataset <span class="op">=</span> <span class="va">sragBH</span>,</span></span>
 <span class="r-in"><span>                date_onset <span class="op">=</span> <span class="va">DT_SIN_PRI</span>,</span></span>
 <span class="r-in"><span>                date_report <span class="op">=</span> <span class="va">DT_DIGITA</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Nowcasting only</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Using default to maximum delay, 'Dmax = 15'</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Using default to window of action, 'wdw = 30'</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Using default to returning option for the data, 'data.by.week = FALSE'</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Not returning trajectories</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'age_col' missing, nowcasting with unstructured model</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Using default, trimming out 0 days of data</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(date_onset)`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(date_onset, delay, Time)`</span>
