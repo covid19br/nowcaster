@@ -13,3 +13,13 @@ bibentry(
   doi      ="https://doi.org/10.1002/sim.8303"
 )
 
+bibentry(
+  bibtype = "misc",
+  title="nowcaster: Statistical Models for Notification Delay Correction of Epidemiological Data",
+  author="Lopes,  Rafael and Portella,  Tatiana and Economou, Theo and Gomes, Marcelo FC and Bastos,  Leo",
+  journal="CRAN: Contributed Packages",
+  year="2026",
+  month="Sept",
+  publisher="The R Foundation",
+  doi="10.32614/cran.package.nowcaster"
+)
