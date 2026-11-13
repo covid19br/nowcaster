@@ -2,7 +2,7 @@ Package: nowcaster
 Title: Statistical Models for Notification Delay Correction of Epidemiological Data
 Version: 1.0.1
 Authors@R: c(
-    person("Rafael", "Lopes", , "rafael.lopes@yale.edu", role = c("aut"), 
+    person("Rafael", "Lopes", , "rafael.lopes@ulb.be", role = c("aut"), 
     comment = c(ORCID = "0000-0002-9416-6145")),
     person("Tatiana", "Portella", , "tatiana.portella@fiocruz.br", role = c("aut"), 
     comment = c(ORCID = "0000-0001-8364-1978")),
