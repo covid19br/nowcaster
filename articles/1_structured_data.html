@@ -6,12 +6,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Nowcasting on Structured data • nowcaster</title>
-<script src="../katex-auto.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<!-- katex math --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><script src="../katex-auto.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><link href="../deps/KaTex-0.16.10/katex.min.css" rel="stylesheet">
-<script src="../deps/KaTex-0.16.10/katex.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Nowcasting on Structured data">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Nowcasting on Structured data">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -40,6 +40,7 @@
     <li><a class="dropdown-item" href="../articles/3_forecasting.html">Beyond Nowcasting, Forecasting</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -104,13 +105,12 @@ effects and structured time random effects. This is the whole premise of
 nowcasting, we model the case counts at time <span class="math inline">t</span> given the case count at that time and past
 values as well as given the delay distribution of that count.</p>
 <p>Hence, the model is given by the following:</p>
-<p><span class="math display">
-Y_{t,d} \sim NegBinom(\lambda_{t,d}, \phi), \\
+<p><span class="math display">Y_{t,d} \sim NegBinom(\lambda_{t,d},
+\phi), \\
 \log(\lambda_{t,d}) = \alpha + \beta_t + \gamma_d, \\
 \beta_t := u_t - u_{(t-1)} - u_{(t-2)} \sim N(0,\tau_{\beta}); \gamma_d
 := u_d - u_{(d-1)} \sim N(0, \tau_{\gamma})\\
-t=1,2,\ldots,T, \\ d=1,2,\ldots,D,
-</span></p>
+t=1,2,\ldots,T, \\ d=1,2,\ldots,D,</span></p>
 <p>Where the intercept <span class="math inline">\alpha</span> follows a
 Gaussian distribution with a very large variance, <span class="math inline">\beta_t</span> follows a second order random walk
 with precision <span class="math inline">\tau_\beta</span>, while <span class="math inline">\gamma_d</span> a first-order random walk with
@@ -138,12 +138,12 @@ cases observed.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
 <span><span class="co">#&gt;    Time dt_event   Median    LI    LS   LIb   LSb</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    17 2021-12-19    625   621  632    623   627</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    18 2021-12-26    695   687  708    692   699</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    19 2022-01-02    812   800  829    807   817</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    20 2022-01-09    886   871  909    880   893</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    21 2022-01-16    817   800  842.   811   825</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    22 2022-01-23    631   608  661    622   639</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    17 2021-12-19    625  621   633    623   627</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    18 2021-12-26    695  688   708    692   699</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    19 2022-01-02    811  800   829    807   817</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    20 2022-01-09    887  870   909.   881   894</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    21 2022-01-16    819  800   846    811   827</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    22 2022-01-23    631  608.  659    623   640</span></span></code></pre></div>
 <p>The above calling will return only the nowcasting estimate and its
 Confidence Interval (CI) for two different credibility levels,
 <code>LIb</code> and <code>LSb</code> are the max and min CI,
@@ -231,7 +231,7 @@ curve all together.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'grey50'</span>, <span class="st">'black'</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">''</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html" class="external-link">scale_x_date</a></span><span class="op">(</span>date_breaks <span class="op">=</span> <span class="st">'2 weeks'</span>, date_labels <span class="op">=</span> <span class="st">'%V/%y'</span>, name <span class="op">=</span> <span class="st">'Date in Weeks'</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">''</span>, y <span class="op">=</span> <span class="st">'Nº Cases'</span><span class="op">)</span></span></code></pre></div>
-<p><img src="1_structured_data_files/figure-html/no_age_plot-1.png" width="700"></p>
+<p><img src="1_structured_data_files/figure-html/no_age_plot-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="structured-data-age">Structured data, Age<a class="anchor" aria-label="anchor" href="#structured-data-age"></a>
@@ -247,13 +247,12 @@ Negative binomial distribution to the cases count at time <span class="math inli
 the model now gives random effects to the delay distribution and time
 distribution by each of the age-class chosen by the user to break the
 data. The model has the form now:</p>
-<p><span class="math display">
-Y_{t,d,a} \sim  NegBinom(\lambda_{t,d,a}, \phi), \\
+<p><span class="math display">Y_{t,d,a} \sim  NegBinom(\lambda_{t,d,a},
+\phi), \\
 \log(\lambda_{t,d,a}) =  \alpha_a + \beta_{t,a} + \gamma_{d,a}, \\
 \beta_{t,a} := u_t - u_{(t-1)} - u_{(t-2)} \sim N(0,\tau_{a, \beta});
 \gamma_{d,a} := u_d - u_{(d-1)} \sim N(0, \tau_{a, \gamma}) \\
-t=1,2,\ldots,T, \\ d=1,2,\ldots,D, \\ a=1,2,\ldots,A
-</span></p>
+t=1,2,\ldots,T, \\ d=1,2,\ldots,D, \\ a=1,2,\ldots,A</span></p>
 <p>where each age class, <span class="math inline">a</span>, has an
 intercept <span class="math inline">\alpha_a</span> following a Gaussian
 distribution with a very large variance, the time-age random effects,
@@ -320,7 +319,7 @@ respectively.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'grey50'</span>, <span class="st">'black'</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">''</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html" class="external-link">scale_x_date</a></span><span class="op">(</span>date_breaks <span class="op">=</span> <span class="st">'2 weeks'</span>, date_labels <span class="op">=</span> <span class="st">'%V/%y'</span>, name <span class="op">=</span> <span class="st">'Date in Weeks'</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">''</span>, y <span class="op">=</span> <span class="st">'Nº Cases'</span><span class="op">)</span></span></code></pre></div>
-<p><img src="1_structured_data_files/figure-html/plot-1.png" width="700"></p>
+<p><img src="1_structured_data_files/figure-html/plot-1.png" class="r-plt" alt="" width="700"></p>
 <p>For sake of completeness we plot both estimates together to check how
 different they are.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -366,7 +365,7 @@ different they are.</p>
 <span>               name <span class="op">=</span> <span class="st">'Date in Weeks'</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">''</span>, </span>
 <span>       y <span class="op">=</span> <span class="st">'Nº Cases'</span><span class="op">)</span></span></code></pre></div>
-<p><img src="1_structured_data_files/figure-html/comparison-1.png" width="700"></p>
+<p><img src="1_structured_data_files/figure-html/comparison-1.png" class="r-plt" alt="" width="700"></p>
 <p>The nowcasting when using the age information is narrower and shows a
 less decreasing tendency at the end of the time series. This is due to
 as each age classes have a nowcasting model acting on it, it can capture
@@ -393,7 +392,7 @@ the age class information to nowcasting produce narrower estimates</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

@@ -1,0 +1,31 @@
+# nowcasting.summary
+
+Function to summarize the output from the posteriors generated from any
+of the of the workhorse functions,
+[nowcasting_no_age](https://covid19br.github.io/nowcaster/reference/nowcasting_no_age.md)
+and
+[nowcasting_age](https://covid19br.github.io/nowcaster/reference/nowcasting_age.md)
+
+## Usage
+
+``` r
+nowcasting.summary(trajectory, age = FALSE)
+```
+
+## Arguments
+
+- trajectory:
+
+  Trajectories to be summarized, trajectory should have sample, Time,
+  dt_event and Y columns.
+
+- age:
+
+  Is by age data? Default FALSE, If its TRUE it will have columns for
+  age class, fx_etaria e fx_etaria.num
+
+## Value
+
+A list with 2 elements summarized and grouped by, with the 'Median',
+'LS' upper limit, 95% CI 'LI' lower limit, 95% CI 'LSb' upper limit, 50%
+CI 'LIb' lower limit, 50% CI
