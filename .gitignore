@@ -38,3 +38,4 @@ inst/doc
 test.R
 vignettes/*.html
 vignettes/*.pdf
+cran-comments.md
