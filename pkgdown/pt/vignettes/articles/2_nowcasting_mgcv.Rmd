@@ -1,7 +1,7 @@
 ---
 title: "Nowcasting com mgcv"
 output: rmarkdown::html_vignette
-author: "Rafael Lopes & Leonardo Bastos"
+# author: "Rafael Lopes & Leonardo Bastos"
 vignette: >
   %\VignetteIndexEntry{Nowcasting com mgcv}
   %\VignetteEngine{knitr::rmarkdown}
@@ -10,7 +10,7 @@ vignette: >
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
+  collapse = FALSE,
   comment = "#>",
   warning = FALSE,
   message = FALSE,
@@ -20,6 +20,10 @@ knitr::opts_chunk$set(
 )
 set.seed(2024)
 ```
+
+## Resumo
+
+Este é um artigo mais longo que explica o funcionamento e as escolhas por trás do modelo de nowcasting com GAM, suas vantagens e limitações.
 
 ## Por que `nowcasting_mgcv()`
 
@@ -196,5 +200,5 @@ slope.estimate.quant(trajectories = now_traj$trajectories, window = 3)
 ## Veja também
 
 * [Primeiros passos](https://covid19br.github.io/nowcaster/pt/articles/nowcaster.html), a mesma análise com a `nowcasting_inla()`.
-* [Nowcasting com dados estruturados](https://covid19br.github.io/nowcaster/pt/articles/1_structured_data.html), com os detalhes do modelo estruturado por idade.
+* [Nowcasting com INLA](https://covid19br.github.io/nowcaster/pt/articles/1_nowcasting_inla.html), com os detalhes do modelo estruturado por idade.
 * [nowcasting_inla() ou nowcasting_mgcv()](https://covid19br.github.io/nowcaster/pt/articles/5_inla_vs_mgcv.html), os mesmos exemplos com as duas funções lado a lado.

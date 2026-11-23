@@ -48,3 +48,51 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+// Show / hide code: articles get a button above each code block, plus one
+// below the title for all the blocks of the page. Code is shown by default;
+// the output of each chunk is a separate block and stays visible.
+document.addEventListener("DOMContentLoaded", function () {
+  if (!/\/articles\/[^\/]+\.html$/.test(window.location.pathname) ||
+      /\/articles\/index\.html$/.test(window.location.pathname)) return;
+  var main = document.querySelector("main") || document.body;
+  var blocks = Array.prototype.slice.call(main.querySelectorAll("div.sourceCode"));
+  if (blocks.length === 0) return;
+
+  var pt = (document.documentElement.lang || "").indexOf("pt") === 0;
+  var txt = pt ?
+    { hide: "Ocultar código", show: "Mostrar código",
+      hideAll: "Ocultar todo o código", showAll: "Mostrar todo o código" } :
+    { hide: "Hide code", show: "Show code",
+      hideAll: "Hide all code", showAll: "Show all code" };
+
+  function setFolded(block, folded) {
+    block.classList.toggle("code-folded", folded);
+    block.codeFoldButton.textContent = folded ? txt.show : txt.hide;
+    block.codeFoldButton.setAttribute("aria-expanded", String(!folded));
+  }
+
+  blocks.forEach(function (block) {
+    var button = document.createElement("button");
+    button.type = "button";
+    button.className = "btn btn-sm btn-outline-secondary code-fold-button";
+    button.addEventListener("click", function () {
+      setFolded(block, !block.classList.contains("code-folded"));
+    });
+    block.codeFoldButton = button;
+    block.parentNode.insertBefore(button, block);
+    setFolded(block, false);
+  });
+
+  var all = document.createElement("button");
+  all.type = "button";
+  all.className = "btn btn-sm btn-outline-secondary code-fold-all";
+  all.textContent = txt.hideAll;
+  all.addEventListener("click", function () {
+    var fold = all.textContent === txt.hideAll;
+    blocks.forEach(function (block) { setFolded(block, fold); });
+    all.textContent = fold ? txt.showAll : txt.hideAll;
+  });
+  var header = main.querySelector(".page-header") || main.querySelector("h1");
+  if (header) header.parentNode.insertBefore(all, header.nextSibling);
+});

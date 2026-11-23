@@ -74,7 +74,7 @@ articles:
 - title: Artigos
   navbar: Artigos
   contents:
-  - articles/1_structured_data
+  - articles/1_nowcasting_inla
   - articles/2_nowcasting_mgcv
   - articles/3_nowcasting_importance
   - articles/4_forecasting

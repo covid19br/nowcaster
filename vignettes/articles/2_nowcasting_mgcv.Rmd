@@ -10,7 +10,7 @@ vignette: >
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
+  collapse = FALSE,
   comment = "#>",
   warning = FALSE,
   message = FALSE,
@@ -239,7 +239,7 @@ slope.estimate.quant(trajectories = now_traj$trajectories, window = 3)
 
 * [Get Started](https://covid19br.github.io/nowcaster/articles/nowcaster.html), the
   same analysis with `nowcasting_inla()`.
-* [Nowcasting on structured data](https://covid19br.github.io/nowcaster/articles/1_structured_data.html),
+* [Nowcasting with INLA](https://covid19br.github.io/nowcaster/articles/1_nowcasting_inla.html),
   for the details of the age-structured model.
 * [nowcasting_inla() or nowcasting_mgcv()](https://covid19br.github.io/nowcaster/articles/5_inla_vs_mgcv.html),
   the same examples run with both functions side by side.

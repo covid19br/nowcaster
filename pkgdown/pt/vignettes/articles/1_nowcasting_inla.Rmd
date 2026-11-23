@@ -1,16 +1,16 @@
 ---
-title: "Nowcasting com dados estruturados"
+title: "Nowcasting com INLA"
 output: rmarkdown::html_vignette
-author: "Rafael Lopes & Leonardo Bastos"
+# author: "Rafael Lopes & Leonardo Bastos"
 vignette: >
-  %\VignetteIndexEntry{Nowcasting com dados estruturados}
+  %\VignetteIndexEntry{Nowcasting com INLA}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 ```{r echo=FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
+  collapse = FALSE,
   comment = "#>",
   warning = F,
   message = F,
@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 ## Resumo
 
-Este é um artigo mais longo que explica o funcionamento e as escolhas por trás do modelo de nowcasting, suas vantagens e limitações.
+Este é um artigo mais longo que explica o funcionamento e as escolhas por trás do modelo de nowcasting com INLA, suas vantagens e limitações.
 
 ## Como antes...
 

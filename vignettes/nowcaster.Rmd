@@ -10,7 +10,7 @@ vignette: >
 
 ```{r echo=FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
+  collapse = FALSE,
   comment = "#>", 
   warning = F, 
   message = F, 
@@ -38,7 +38,9 @@ It is a data.frame with 7 variables and 65,404 observations. We will make use of
 
 The call of the function is straightforward, it simply needs a data set as input, here the `LazyData` loaded in the namespace of the package. The function has 3 mandatory parameters, `dataset` for the parsing of the data set to be nowcasted, `date_onset` for parsing the column name which is the date of onset of symptoms and `date_report` which parses the column name for the date of report of the cases. Here this columns are "DT_SIN_PRI" and "DT_DIGITA", respectively. 
 
-### {.tabset}
+### Nowcasting estimate {.tabset}
+
+Use the tabs to see the same analysis with `nowcasting_inla()` (INLA) or with `nowcasting_mgcv()` (mgcv). Choosing a tab switches all the tabs on the page.
 
 #### INLA
 
@@ -53,18 +55,18 @@ head(nowcasting_bh_no_age$total)
 #### mgcv
 
 ```{r no_age-mgcv}
-nowcasting_bh_no_age <- nowcasting_mgcv(dataset = sragBH, 
+nowcasting_bh_no_age_mgcv <- nowcasting_mgcv(dataset = sragBH, 
                                         date_onset = "DT_SIN_PRI", 
                                         date_report = "DT_DIGITA", 
                                         data.by.week = T)
-head(nowcasting_bh_no_age$total)
+head(nowcasting_bh_no_age_mgcv$total)
 ```
 
-This calling will return for the first element the nowcasting estimate and its Confidence Interval (CI) for two different Credible interval, `LIb` and `LSb` are the max and min CI, respectively, with credibility of 50% and `LI` and `LS` are the max and min CI, respectively, with credibility of 95%.
+### The observed epidemic curve {.tabset}
 
-On the second element it returns the data to be grouped and summarized to give the epidemic curve, we can take a look on this element. 
+This calling will return for the first element, `total`, the nowcasting estimate (`Median`) and its intervals at two levels: `LIb` and `LSb` are the lower and upper limits of the 50% interval, and `LI` and `LS` are the lower and upper limits of the 95% interval. For `nowcasting_inla()` these are posterior credible intervals.
 
-### {.tabset}
+On the second element, `data`, it returns the data to be grouped and summarized to give the epidemic curve, we can take a look on this element.
 
 #### INLA
 
@@ -103,16 +105,16 @@ dados_by_week |>
 library(ggplot2)
 library(dplyr)
 
-dados_by_week <- nowcasting_bh_no_age$data |> 
+dados_by_week_mgcv <- nowcasting_bh_no_age_mgcv$data |> 
   dplyr::group_by(dt_event) |> 
   dplyr::reframe(
     observed = sum(Y, na.rm = T)
   ) |>
   dplyr::filter(dt_event >= max(dt_event)-270)
 
-dados_by_week |> 
+dados_by_week_mgcv |> 
   ggplot()+
-  geom_line(data = dados_by_week, 
+  geom_line(data = dados_by_week_mgcv, 
             aes(dt_event, 
                 y = observed, 
                 col = 'Observed'))+
@@ -129,9 +131,9 @@ dados_by_week |>
 ```
 
 
-After this element is groped by and summarized by the onset of symptoms date, here `DT_SIN_PRI`, it is the epidemiological curve observed. To example how the estimate compares with the observed curve, we plot the estimate and the epidemiological curve all together.
+### Nowcasting and the observed curve {.tabset}
 
-### {.tabset}
+After this element is grouped and summarized by the onset of symptoms date, here `DT_SIN_PRI`, it is the epidemiological curve observed. To illustrate how the estimate compares with the observed curve, we plot the estimate and the epidemiological curve all together.
 
 #### INLA
 
@@ -143,7 +145,7 @@ nowcasting_bh_no_age$total |>
   geom_line(data = dados_by_week, 
             aes(y = observed, 
                 col = 'Observed'))+
-  geom_ribbon(aes(ymin = LI, ymax = LS, col = NA), 
+  geom_ribbon(aes(ymin = LI, ymax = LS), colour = NA, 
               alpha = 0.2, 
               show.legend = F)+
   geom_line()+
@@ -159,17 +161,17 @@ nowcasting_bh_no_age$total |>
        y = 'Nº Cases')
 ```
 
-#### mcgv
+#### mgcv
 
 ```{r no_age_plot-mgcv}
 
-nowcasting_bh_no_age$total |> 
+nowcasting_bh_no_age_mgcv$total |> 
   ggplot(aes(x = dt_event, y = Median, 
              col = 'Nowcasting')) +
-  geom_line(data = dados_by_week, 
+  geom_line(data = dados_by_week_mgcv, 
             aes(y = observed, 
                 col = 'Observed'))+
-  geom_ribbon(aes(ymin = LI, ymax = LS, col = NA), 
+  geom_ribbon(aes(ymin = LI, ymax = LS), colour = NA, 
               alpha = 0.2, 
               show.legend = F)+
   geom_line()+
@@ -185,5 +187,7 @@ nowcasting_bh_no_age$total |>
        y = 'Nº Cases')
 ```
 
-This is an example were the estimate was done without considering any type of structure in data, which is the first assumption for the nowcasting.
-For further details on each of the nowcasting models behind each function; see the articles [Nowcasting with INNLA](https://covid19br.github.io/nowcaster/articles/1_nowcasting_inla.html) and [Nowcasting with mgcv](https://covid19br.github.io/nowcaster/articles/2_nowcasting_mgcv.html).
+## Next steps
+
+This is an example where the estimate was done without considering any type of structure in data, which is the first assumption for the nowcasting.
+For further details on each of the nowcasting models behind each function, see the articles [Nowcasting with INLA](https://covid19br.github.io/nowcaster/articles/1_nowcasting_inla.html) and [Nowcasting with mgcv](https://covid19br.github.io/nowcaster/articles/2_nowcasting_mgcv.html).
