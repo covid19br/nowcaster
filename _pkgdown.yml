@@ -1,4 +1,15 @@
+url: https://covid19br.github.io/nowcaster/
 destination: docs
+
+template:
+  bootstrap: 5
+  bootswatch: cerulean
+  math-rendering: katex
+  light-switch: true
+
+development:
+  mode: auto
+
 authors:
   Rafael Lopes:
     href: https://github.com/rafalopespx/
@@ -10,35 +21,58 @@ authors:
     href: https://github.com/marfcg/
   Leo Bastos:
     href: https://github.com/lsbastos/
-  footer:
-    text: Casted by
-url: https://covid19br.github.io/nowcaster/
-template:
-  bootstrap: 5
-  bootswatch: cerulean
-  math-rendering: katex
+
 navbar:
   structure:
-    left:
-    - intro
-    - reference
-    - articles
-    - tutorials
-    - news
-    right:
-    - search
-    - github
-footer:
-  structure:
-    left: developed_by
-    right: built_with
+    left: [intro, reference, articles, news]
+    right: [search, lang, github, lightswitch]
+  components:
+    lang:
+      text: Português
+      icon: fa-language
+      href: https://covid19br.github.io/nowcaster/pt/
+      aria-label: Ver o site em português
+
 home:
   sidebar:
-    structure:
-    - links
-    - license
-    - community
-    - citation
-    - authors
-    - dev
+    structure: [links, license, community, citation, authors, dev]
 
+reference:
+- title: Nowcasting
+  desc: >
+    Workhorse functions. Both fit a negative binomial model to the delay
+    triangle; `nowcasting_inla()` uses 'INLA' and `nowcasting_mgcv()` uses 'mgcv'.
+  contents:
+  - nowcasting_inla
+  - nowcasting_mgcv
+- title: Model fitting
+  desc: Lower-level functions called by the workhorse functions.
+  contents:
+  - nowcasting_no_age_inla
+  - nowcasting_age_inla
+  - nowcasting_no_age_mgcv
+  - nowcasting_age_mgcv
+- title: Post-processing
+  contents:
+  - nowcasting.summary
+  - slope.estimate.quant
+- title: Data
+  contents:
+  - sragBH
+
+articles:
+- title: Get started
+  navbar: ~
+  contents:
+  - nowcaster
+- title: Articles
+  navbar: Articles
+  contents:
+  - articles/1_structured_data
+  - articles/2_nowcasting_mgcv
+  - articles/3_nowcasting_importance
+  - articles/4_forecasting
+  - articles/5_inla_vs_mgcv
+
+news:
+  cran_dates: true

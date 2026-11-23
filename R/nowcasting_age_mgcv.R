@@ -1,12 +1,13 @@
-#' @title nowcasting_age_mgcv
+#' @title Fit the structured (age) nowcasting GAM
 #'
-#' @description Run INLA model on structured data by age-class
-#' data has to be in the format of delay-triangle
+#' @description Fits a negative binomial GAM with 'mgcv' on data structured by age class and
+#' samples the predictive trajectories for the unreported cases. Data has to be in the delay-triangle format.
+#' Usually called internally by [nowcasting_mgcv()].
 #'
 #' @param dataset data pre formatted in to age classes and delays by week for each cases, delay triangle format
-#' @param method method used grouped gam, "by" where the smooth function will be s(.,  by= agegroup) or "fs" (factor smooth) where the smooth function uses s(., age_group, ,bs="fs")
+#' @param method Type of smooth by age class: "fs" (factor smooth, `s(., age_class, bs = "fs")`, default) or "by" (`s(., by = age_class)`).
 #'
-#' @return Trajectories from the inner 'INLA' model
+#' @return A list with element 'sample', the predictive trajectories by age class.
 #' @export
 nowcasting_age_mgcv <- function(dataset, method = "fs"){
 

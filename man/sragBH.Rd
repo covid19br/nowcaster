@@ -14,7 +14,6 @@ A data frame with 65404 rows and 7 variables:
 \item{CO_MUN_RES}{IBGE municipality code. Belo Horizonte is 310620.}
 \item{Idade}{Age in years.}
 \item{fx_etaria}{Age brackets.}
-...
 }
 }
 \source{

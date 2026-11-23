@@ -1,5 +1,5 @@
-Nowcaster
-================
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 <a href='https://github.com/covid19br/nowcaster'><img src='man/figures/nowcaster.png' align="right" width="140" /></a>
 <a href='https://github.com/covid19br/nowcaster'><img src='man/figures/nowcaster_rev.png' align="right" width="140" /></a>
@@ -12,71 +12,94 @@ status](https://www.r-pkg.org/badges/version/nowcaster)](https://CRAN.R-project.
 checks](https://badges.cranchecks.info/summary/nowcaster.svg)](https://cran.r-project.org/web/checks/check_results_nowcaster.html)
 [![CRAN
 downloads](https://cranlogs.r-pkg.org/badges/nowcaster)](https://CRAN.R-project.org/package=nowcaster)
-[![Lifecyle:
-Stable](https://img.shields.io/badge/lifecycle-stable-steelblue.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![R-CMD-check](https://github.com/covid19br/nowcaster/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/covid19br/nowcaster/actions/workflows/R-CMD-check.yaml)
+[![Lifecycle:
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![License: GPL (\>=
-3)](https://img.shields.io/badge/license-GPL%20(%3E=%203)-blue.svg)](https://cran.r-project.org/web/licenses/GPL%20(%3E=%203))
+3)](https://img.shields.io/badge/license-GPL%20%28%3E%3D%203%29-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 <!-- badges: end -->
 
-`nowcaster`: Statistical Models for Notification Delay Correction of
-Epidemiological Data. The package wraps statistical models to estimate
-not yet reported data using empirical delay distribution either from
-individual-level data or from the differences of aggregated time series
-of cases. `nowcaster` it was built for and during epidemiological
-emergency use, it was constructed for the Brazilian Severe Acute
-Respiratory Illness (SARI) surveillance system (SIVEP-Gripe), at the
-time of Covid-19 pandemic.
+`nowcaster` provides statistical models for correcting notification
+delays in epidemiological data. It estimates the number of events, such
+as cases or deaths, that have already happened but have not been
+reported yet, using the empirical delay distribution between the date of
+onset and the date of report.
 
-Every single system of notification has an intrinsic delay between the
-`date of onset` of the event and the `date of report`. `nowcaster` can
-estimate how many counts of any epidemiological data of interest
-(*i.e.*, daily cases and deaths counts) by fitting a negative binomial
-model to the time steps of delay between onset date of the event,
-(*i.e.*, date of first symptoms for cases or date of occurrence of
-death) and the date of report (*i.e.*, date of notification of the case
-or death).
+Every notification system has a delay between the date of onset of an
+event and its date of report. `nowcaster` fits a negative binomial model
+to the delay triangle, with smooth effects for the time of onset and for
+the reporting delay, following [Bastos et
+al. (2019)](https://doi.org/10.1002/sim.8303). The package was built
+during the Covid-19 pandemic for the Brazilian Severe Acute Respiratory
+Illness (SARI) surveillance system, SIVEP-Gripe, and works with any line
+list that has a date of onset and a date of report.
 
-# Installing
+## Installation
 
-You can install direct from CRAN:
+Install the released version from CRAN:
 
 ``` r
 install.packages("nowcaster")
 ```
 
-Or you can install the developing version directly from GitHub:
+Or the development version from GitHub:
 
 ``` r
-devtools::install_github("https://github.com/covid19br/nowcaster")
+# install.packages("remotes")
+remotes::install_github("covid19br/nowcaster")
 ```
 
-If you have any problem installing, please refer to next section on the
-dependencies of the package.
+### Dependencies
 
-# Dependencies
+`nowcaster` has two workhorse functions:
 
-`nowcaster` is based on the
-[`R-INLA`](https://www.r-inla.org/download-install) and
-[`mgcv`](https://cran.r-project.org/web/packages/mgcv/index.html).
-Please make sure you have stable version of those packages to be able to
-fully work with `nowcaster`
-
-Installing `INLA`:
+- `nowcasting_inla()` fits the model in a fully Bayesian way with
+  [`INLA`](https://www.r-inla.org/download-install), which is not on
+  CRAN and has to be installed separately:
 
 ``` r
-install.packages("INLA", repos=c(getOption("repos"), INLA="https://inla.r-inla-download.org/R/stable"), dep=TRUE)
+install.packages("INLA",
+                 repos = c(getOption("repos"),
+                           INLA = "https://inla.r-inla-download.org/R/stable"),
+                 dep = TRUE)
 ```
 
-Installing `mgcv`:
+- `nowcasting_mgcv()` fits the model as a GAM with
+  [`mgcv`](https://CRAN.R-project.org/package=mgcv), installed together
+  with `nowcaster`.
+
+## Example
 
 ``` r
-install.packages("mgcv")
+library(nowcaster)
+
+# SARI cases from Belo Horizonte, Brazil, shipped with the package
+data(sragBH)
+
+nowcast <- nowcasting_inla(dataset = sragBH,
+                           date_onset = DT_SIN_PRI,
+                           date_report = DT_DIGITA)
+
+# Median and 50% / 95% intervals of the number of cases per week of onset
+head(nowcast$total)
 ```
 
-# Similar Initiatives
+See [Get
+Started](https://covid19br.github.io/nowcaster/articles/nowcaster.html)
+for a full walk-through, [Nowcasting with
+mgcv](https://covid19br.github.io/nowcaster/articles/2_nowcasting_mgcv.html)
+for the `mgcv` version and the
+[articles](https://covid19br.github.io/nowcaster/articles/) on
+age-structured nowcasting and forecasting.
 
-There are other alternative packages, that can produce nowcasting
-estimation, here it is some options:
+## Citation
 
-- [Epinowcast](https://package.epinowcast.org/)
-- [Surveillance](https://surveillance.r-forge.r-project.org/pkgdown/index.html)
+Run `citation("nowcaster")` to cite the package and the method it
+implements.
+
+## Similar initiatives
+
+Other R packages for nowcasting:
+
+- [epinowcast](https://package.epinowcast.org/)
+- [surveillance](https://surveillance.r-forge.r-project.org/pkgdown/index.html)

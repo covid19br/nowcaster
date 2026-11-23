@@ -1,21 +1,20 @@
-#' @title nowcasting_no_age
+#' @title Fit the non-structured nowcasting model with 'INLA'
 #'
-#' @description Run INLA model on non-structured data,
-#' data has to be in the format of delay-triangle
+#' @description Fits the Bayesian negative binomial model with 'INLA' on non-structured data and
+#' samples the posterior predictive trajectories. Data has to be in the delay-triangle format.
+#' Usually called internally by [nowcasting_inla()].
 #'
-#' @param dataset data pre formatted in to age classes and delays by week for each cases,
-#' delay triangle format
+#' @param dataset data pre-formatted into delays by week for each case, delay-triangle format
 #' @param zero_inflated zero-inflated model. Default is FALSE.
 #' @param timeREmodel Latent model for time random effects. The default is a second-order random walk model.
 #' @param INLAoutput return the INLA output. Default is FALSE.
-#' @param INLAoutputOnly return the only the INLA output. Default is FALSE.
+#' @param INLAoutputOnly return only the INLA output. Default is FALSE.
 #' @param WAIC return the WAIC. Default is FALSE.
 #' @param DIC return the DIC. Default is FALSE.
-
 #'
-#' @return Trajectories from the inner 'INLA' model
+#' @return A list with element 'sample', the posterior predictive trajectories, and optionally the 'INLA' output.
 #' @export
-nowcasting_no_age <- function(dataset,
+nowcasting_no_age_inla <- function(dataset,
                               zero_inflated=FALSE,
                               timeREmodel = "rw2",
                               INLAoutput = FALSE,
@@ -24,8 +23,10 @@ nowcasting_no_age <- function(dataset,
                               ){
   ## Safe test
   if(missing(dataset)){
-    stop("'dataset' is missing in 'nowcasting_no_age()'.")
+    stop("'dataset' is missing in 'nowcasting_no_age_inla()'.")
   }
+
+  check_inla()
 
   ## Check for the zero-inflated
   if (zero_inflated){

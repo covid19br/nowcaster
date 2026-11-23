@@ -1,7 +1,7 @@
 ---
 title: "Nowcasting for decision making"
 output: rmarkdown::html_vignette
-author: "Rafael Lopes & Leonardo Bastos"
+# author: "Rafael Lopes & Leonardo Bastos"
 vignette: >
   %\VignetteIndexEntry{Nowcasting for decision making}
   %\VignetteEngine{knitr::rmarkdown}
@@ -50,7 +50,7 @@ data_by_week |>
              y = n))+
   geom_line()+
   theme_bw()+
-  labs(x = 'Date of onset of symptons', 
+  labs(x = 'Date of onset of symptoms', 
        y = 'Nº Cases')+
   scale_color_manual(values = c('grey50', 'black'), 
                      name = '')+
@@ -87,9 +87,9 @@ data_triangle |>
   tidyr::spread(key = delay, value = Y)
 ```
 
-We just look at the amount of cases with 30 weeks of delay or less, it is the default maximum delay considered at nowcasting estimation. It can be changed by the parameter `Dmax`.
+We just look at the amount of cases with 10 weeks of delay or less. By default, the maximum delay considered in the nowcasting estimation is 15 weeks, and it can be changed by the parameter `Dmax`.
 
-If this element is grouped by and summarized by the onset of symptoms date, here `DT_SIN_PRI`, it is the epidemiological curve observed. To example it, we plot the estimate and the epidemiological curve all together.
+If this element is grouped by and summarized by the onset of symptoms date, here `DT_SIN_PRI`, it is the epidemiological curve observed. To illustrate it, we plot the estimate and the epidemiological curve all together.
 
 ```{r no_age_plot}
 library(ggplot2)

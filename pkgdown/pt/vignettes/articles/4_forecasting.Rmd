@@ -1,9 +1,9 @@
 ---
-title: "Beyond Nowcasting, Forecasting"
+title: "Além do nowcasting: previsão"
 output: rmarkdown::html_vignette
 author: "Rafael Lopes & Leonardo Bastos"
 vignette: >
-  %\VignetteIndexEntry{Beyond Nowcasting, Forecasting}
+  %\VignetteIndexEntry{Além do nowcasting: previsão}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -18,22 +18,22 @@ knitr::opts_chunk$set(
 )
 ```
 
-## TL;DR
+## Resumo
 
-After having learned how nowcasting works, we add unobserved dates to our delay triangle and forecasting, i.e. project the number of cases beyond the data already observed.
+Depois de entender como o nowcasting funciona, acrescentamos datas não observadas ao triângulo de atraso e fazemos previsões (*forecasting*), isto é, projetamos o número de casos além dos dados já observados.
 
-## Forecasting
+## Previsão
 
-Nowcasting is the estimation of the events that are already started but not yet reported. In epidemiology, the events as like cases of an infectious disease that has onset its first symptoms but are not yet captured from the notification system. Forecasting is simply the estimation of the events that are not yet started its onset of first symptoms, i.e. cases that are in a probable incubation period. From the data structure that any databases has is basically the cases that has a date of onset greater than present date. In the language of delay triangle, forecasting will be only to estimate the part that is completely unobserved.
+Nowcasting é a estimativa dos eventos que já começaram mas ainda não foram notificados. Em epidemiologia, esses eventos são, por exemplo, casos de uma doença infecciosa que já iniciaram os primeiros sintomas mas ainda não foram captados pelo sistema de notificação. Previsão é simplesmente a estimativa dos eventos que ainda não iniciaram sintomas, isto é, casos provavelmente no período de incubação. Na estrutura de qualquer base de dados, são os casos com data de início dos sintomas posterior à data presente. Na linguagem do triângulo de atraso, prever é estimar a parte completamente não observada.
 
-## Parameter K > 0
+## Parâmetro K > 0
 
-The `nowcasting_inla` function has a functional parameter that flags to the model parsed to `inla` to construct the delay triangle with dates greater than the present date. This is done by the setting the `K` parameter to a value greater than 0, like $K = 1,2,3,\dots$. We proceed as in any other example of nowcasting. We will forecasting as was done for nowcasting in the article [Nowcasting for decision making](https://covid19br.github.io/nowcaster/articles/2_nowcasting_importance.html).
+A função `nowcasting_inla` tem um parâmetro que faz o modelo passado ao `inla` construir o triângulo de atraso com datas posteriores à data presente. Isso é feito definindo o parâmetro `K` com um valor maior que 0, como $K = 1,2,3,\dots$. O resto segue como em qualquer outro exemplo de nowcasting. Faremos a previsão como foi feito o nowcasting no artigo [Nowcasting para a tomada de decisão](https://covid19br.github.io/nowcaster/pt/articles/3_nowcasting_importance.html).
 
-First, we cut the lazy data loaded with the namespace of the package to a date of interest, more details on why we cut on this date see the article [Nowcasting for decision making](https://covid19br.github.io/nowcaster/articles/2_nowcasting_importance.html). 
-And after this we parse to the `nowcasting_inla` function the date of onset and date of report columns, a flag for returning a data.frame with the cases counts by week and setting the `K` parameter to a desired forecasting horizon, here we forecast one week ahead of the present date.
+Primeiro, cortamos os dados do pacote em uma data de interesse; para entender por que cortamos nessa data, veja o artigo [Nowcasting para a tomada de decisão](https://covid19br.github.io/nowcaster/pt/articles/3_nowcasting_importance.html).
+Em seguida, passamos à função `nowcasting_inla` as colunas de data de início dos sintomas e de notificação, pedimos o data.frame com as contagens de casos por semana e definimos o parâmetro `K` com o horizonte de previsão desejado; aqui prevemos uma semana à frente da data presente.
 
-Before forecasting, we construct the case counts curve from the lazy data, by using the internal function `data.w_no_age`, we construct the curve by summarizing the case counts by each date of onset of first symptoms present at the database.
+Antes da previsão, construímos a curva de contagens de casos a partir dos dados usando a função interna `data.w_no_age`, somando as contagens de casos para cada data de início dos primeiros sintomas presente na base.
 
 ```{r delay triangle}
 library(tidyverse)
@@ -57,16 +57,16 @@ data_by_week |>
              y = n))+
   geom_line()+
   theme_bw()+
-  labs(x = 'Date of onset of symptons', 
-       y = 'Nº Cases')+
+  labs(x = 'Date of onset of symptoms', 
+       y = 'Nº de casos')+
   scale_color_manual(values = c('grey50', 'black'), 
                      name = '')+
   scale_x_date(date_breaks = '2 weeks', 
                date_labels = '%V/%y', 
-               name = 'Date in Weeks')
+               name = 'Semana')
 ```
 
-Now, to forecast one week ahead we just flag the `K = 1`, and proceed as in normal nowcasting calling, the code is:
+Agora, para prever uma semana à frente basta usar `K = 1` e seguir como numa chamada normal de nowcasting:
 
 ```{r now_no_age_data}
 nowcasting_bh_no_age <- nowcasting_inla(dataset = srag_now, 
@@ -77,7 +77,7 @@ nowcasting_bh_no_age <- nowcasting_inla(dataset = srag_now,
 head(nowcasting_bh_no_age$data)
 ```
 
-To visualize the forecast we plot the observed curve and the nowcasting and forecasting estimate, change the colors for each part. We plot together the nowcasting and forecasting estimate, the curve observed one year later, to validate the estimate done.
+Para visualizar a previsão, plotamos a curva observada e as estimativas do nowcasting e da previsão, com cores diferentes para cada parte. Plotamos também a curva observada um ano depois, para validar a estimativa.
 
 ```{r after_one_year}
 
@@ -125,14 +125,14 @@ nowcasting_estimate |>
                      name = '')+
   scale_x_date(date_breaks = '2 weeks', 
                date_labels = '%V/%y', 
-               name = 'Date in Weeks')+
+               name = 'Semana')+
   labs(x = '', 
-       y = 'Nº Cases')
+       y = 'Nº de casos')
 ```
 
-## Uncertainty grows
+## A incerteza cresce
 
-As we try to forecasting longer ahead of the present date, the uncertainty has to grow. This is saw by the opening of the confidence intervals on the  last graph. Although it is wide the realized curve still falls inside it, indicating that is assertive on the tendency of the curve at least. This can be taken to support decision making when planning ahead of the present date. To any other forecasting horizon further than 1 week ahead, the confidence interval will be wider than this, to help a little we can try a forecasting with an imposed structured on the data. Now, we forecasting parsing the columns for age to the nowcasting function, this can reduce the opening of the confidence interval.
+Quanto mais à frente da data presente tentamos prever, mais a incerteza cresce. Isso se vê na abertura dos intervalos no último gráfico. Embora largo, o intervalo ainda contém a curva realizada, indicando que acerta ao menos a tendência da curva. Isso pode apoiar decisões de planejamento para além da data presente. Para horizontes de previsão maiores que 1 semana, o intervalo será ainda mais largo; para ajudar um pouco, podemos fazer a previsão impondo uma estrutura aos dados. Agora fazemos a previsão passando a coluna de idade para a função de nowcasting, o que pode reduzir a abertura do intervalo.
 
 ```{r forecasting}
 nowcasting_bh_age <- nowcasting_inla(dataset = srag_now, 
@@ -144,7 +144,7 @@ nowcasting_bh_age <- nowcasting_inla(dataset = srag_now,
 head(nowcasting_bh_age$data)
 ```
 
-And we plot the nowcasting estimate and forecasting estimate again:
+E plotamos novamente as estimativas do nowcasting e da previsão:
 
 ```{r after_one_year_forecasting}
 
@@ -182,11 +182,11 @@ nowcasting_estimate |>
                      name = '')+
   scale_x_date(date_breaks = '2 weeks', 
                date_labels = '%V/%y', 
-               name = 'Date in Weeks')+
+               name = 'Semana')+
   labs(x = '', 
-       y = 'Nº Cases')
+       y = 'Nº de casos')
 ```
 
-## Conclusion
+## Conclusão
 
-On this vignette we explored the forecasting estimates that the model can produces. We have add the `K` parameter different than 0 meaning we want an estimate that goes beyond the partial unobserved data. We further compared forecasting produced considering age class as another predictor, as explored on the [Nowcasting on Structured data](https://covid19br.github.io/nowcaster/articles/1_structured_data.html), we fit a model to each of the age classes present on the data but now we make use of `K` equals to 1, meaning to add a line of complete unobserved dates to the delay triangle.
+Neste artigo exploramos as previsões que o modelo pode produzir. Usamos o parâmetro `K` diferente de 0, ou seja, pedimos uma estimativa que vai além dos dados parcialmente não observados. Comparamos ainda a previsão que considera a classe etária como outro preditor, como explorado em [Nowcasting com dados estruturados](https://covid19br.github.io/nowcaster/pt/articles/1_structured_data.html): ajustamos o modelo a cada classe etária presente nos dados, agora com `K` igual a 1, o que acrescenta uma linha de datas completamente não observadas ao triângulo de atraso.

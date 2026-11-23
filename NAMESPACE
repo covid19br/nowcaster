@@ -2,9 +2,11 @@
 
 export(nowcasting.summary)
 export(nowcasting_age)
+export(nowcasting_age_inla)
 export(nowcasting_age_mgcv)
 export(nowcasting_inla)
 export(nowcasting_mgcv)
 export(nowcasting_no_age)
+export(nowcasting_no_age_inla)
 export(nowcasting_no_age_mgcv)
 export(slope.estimate.quant)

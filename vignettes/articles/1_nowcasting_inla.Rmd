@@ -1,7 +1,7 @@
 ---
-title: "Nowcasting on Structured data"
+title: "Nowcasting with INLA"
 output: rmarkdown::html_vignette
-author: "Rafael Lopes & Leonardo Bastos"
+# author: "Rafael Lopes & Leonardo Bastos"
 vignette: >
   %\VignetteIndexEntry{Nowcasting on Structured data}
   %\VignetteEngine{knitr::rmarkdown}
@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 ## TL;DR
 
-This is a longer article explaining the workings and the choices behind the nowcasting model and its advantages and limitations.
+This is a longer article explaining the workings and the choices behind the INLA nowcasting model and its advantages and limitations.
 
 ## As Before...
 
@@ -59,7 +59,7 @@ nowcasting_bh_no_age <- nowcasting_inla(dataset = sragBH,
 head(nowcasting_bh_no_age$total)
 ```
 
-The above calling will return only the nowcasting estimate and its Confidence Interval (CI) for two different credibility levels, `LIb` and `LSb` are the max and min CI, respectively, with credibility of 50% and `LI` and `LS` are the max and min CI, respectively, with credibility of 95%.
+The above calling will return only the nowcasting estimate and its credible intervals (CI) for two different credibility levels, `LIb` and `LSb` are the max and min CI, respectively, with credibility of 50% and `LI` and `LS` are the max and min CI, respectively, with credibility of 95%.
 
 The `nowcasting_inla` has the option to return the curve on which the window of action of the model was set, if the `data.by.week` parameter is flagged as `TRUE` it returns on the second element of the output list, the summarized data by week. 
 
@@ -88,9 +88,9 @@ data_triangle |>
 
 ```
 
-We just look at the amount of cases with than 10 weeks of delay or less and 84 days before the latest date. The default maximum is 30 weeks delay considered at nowcasting estimation.  
+We just look at the amount of cases with 10 weeks of delay or less and 84 days before the latest date. By default, the maximum delay considered in the nowcasting estimation is 15 weeks (parameter `Dmax`).  
 
-If this element is groped and summarized by the onset of symptoms date, here `DT_SIN_PRI`, it is the epidemiological curve observed. To example it, we plot the estimate and the epidemiological curve all together.
+If this element is grouped and summarized by the onset of symptoms date, here `DT_SIN_PRI`, it is the epidemiological curve observed. To illustrate it, we plot the estimate and the epidemiological curve all together.
 
 ```{r no_age_plot}
 library(ggplot2)
@@ -130,7 +130,7 @@ $$
 
 where each age class, $a$, has an intercept $\alpha_a$ following a Gaussian distribution with a very large variance, the time-age random effects, $\beta_{t,a}$, follow a joint multivariate Gaussian distribution with a separable variance components an independent Gaussian term for the age classes with precision $\tau_{a,\beta}$ and a second order random walk term for the time with precision $\tau_{\beta}$. Analogously, the delay-age random effects, $\gamma_{d,a}$, follow a joint multivariate Gaussian distribution with a separable variance components an independent Gaussian term for the age classes with precision $\tau_{a,\gamma}$ and a first order random walk term for the time with precision $\tau_{\gamma}$. The model is then completed by INLA default prior distributions for $\phi$, $\tau_{a,\beta}$, $\tau_{a,\gamma}$, $\tau_{a,\beta}$ and $\tau_\gamma$. See [`nbinomial`](https://inla.r-inla-download.org/r-inla.org/doc/likelihood/likelihood-example.pdf), [`rw1`](https://inla.r-inla-download.org/r-inla.org/doc/latent/rw1.pdf) and [`rw2`](https://inla.r-inla-download.org/r-inla.org/doc/latent/rw1.pdf) INLA help pages.
 
-This new model corrects the delay taking into account the effects of age classes and the interactions of each age class between time and also delay. Now the model needs a flag indicating which is the column on the data set which will be used to break the data into age classes and another parameter flagging on how the age classes will be split. This is given by the parameters `age_col` and `bins_age`. We also pass two additional parameters, `data.by.week` to return the epidemiological curve out of window of action of nowcasting estimate and `return.age` to inform we desire a nowcasting result in two ways, the total aggregation estimate and the age-stratified estimate. The calling of the function has the following form:
+This new model corrects the delay taking into account the effects of age classes and the interactions of each age class between time and also delay. Now the model needs a flag indicating which is the column on the data set which will be used to break the data into age classes and another parameter flagging on how the age classes will be split. This is given by the parameters `age_col` and `bins_age`. We also pass `data.by.week = TRUE` to return the delay-triangle data. When `age_col` is given, the result comes in two ways: the total aggregated estimate (`total`) and the age-stratified estimate (`age`). The calling of the function has the following form:
 
 ```{r nowcasting}
 nowcasting_bh_age <- nowcasting_inla(dataset = sragBH, 

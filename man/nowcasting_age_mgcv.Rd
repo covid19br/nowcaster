@@ -2,19 +2,20 @@
 % Please edit documentation in R/nowcasting_age_mgcv.R
 \name{nowcasting_age_mgcv}
 \alias{nowcasting_age_mgcv}
-\title{nowcasting_age_mgcv}
+\title{Fit the structured (age) nowcasting GAM}
 \usage{
 nowcasting_age_mgcv(dataset, method = "fs")
 }
 \arguments{
 \item{dataset}{data pre formatted in to age classes and delays by week for each cases, delay triangle format}
 
-\item{method}{method used grouped gam, "by" where the smooth function will be s(.,  by= agegroup) or "fs" (factor smooth) where the smooth function uses s(., age_group, ,bs="fs")}
+\item{method}{Type of smooth by age class: "fs" (factor smooth, \code{s(., age_class, bs = "fs")}, default) or "by" (\code{s(., by = age_class)}).}
 }
 \value{
-Trajectories from the inner 'INLA' model
+A list with element 'sample', the predictive trajectories by age class.
 }
 \description{
-Run INLA model on structured data by age-class
-data has to be in the format of delay-triangle
+Fits a negative binomial GAM with 'mgcv' on data structured by age class and
+samples the predictive trajectories for the unreported cases. Data has to be in the delay-triangle format.
+Usually called internally by \code{\link[=nowcasting_mgcv]{nowcasting_mgcv()}}.
 }

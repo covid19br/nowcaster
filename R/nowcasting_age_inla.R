@@ -1,19 +1,20 @@
-#' @title nowcasting_age
+#' @title Fit the structured (age) nowcasting model with 'INLA'
 #'
-#' @description Run INLA model on structured data by age-class
-#' data has to be in the format of delay-triangle
+#' @description Fits the Bayesian negative binomial model with 'INLA' on data structured by age class and
+#' samples the posterior predictive trajectories. Data has to be in the delay-triangle format.
+#' Usually called internally by [nowcasting_inla()].
 #'
 #' @param dataset data pre formatted in to age classes and delays by week for each cases, delay triangle format
 #' @param timeREmodel Latent model for time random effects. The default is a second-order random walk model.
 #' @param zero_inflated Experimental! It deals with zero-inflated data by using a zeroinflatednbinomial2 model.
 #' @param INLAoutput return the INLA output. Default is FALSE.
-#' @param INLAoutputOnly return the only the INLA output. Default is FALSE.
+#' @param INLAoutputOnly return only the INLA output. Default is FALSE.
 #' @param WAIC return the WAIC. Default is FALSE.
 #' @param DIC return the DIC. Default is FALSE.
 #'
-#' @return Trajectories from the inner 'INLA' model
+#' @return A list with element 'sample', the posterior predictive trajectories by age class, and optionally the 'INLA' output.
 #' @export
-nowcasting_age <- function(dataset,
+nowcasting_age_inla <- function(dataset,
                            zero_inflated=FALSE,
                            timeREmodel = "rw2",
                            INLAoutput = FALSE,
@@ -22,6 +23,8 @@ nowcasting_age <- function(dataset,
 
   # Workaround check
   fx_etaria <- NULL
+
+  check_inla()
 
   ## [Not in use] Check for zero-inflated
   if (zero_inflated ){

@@ -1,5 +1,7 @@
 ^nowcaster\.Rproj$
 ^\.Rproj\.user$
+^\.Rhistory$
+^.*\.DS_Store$
 ^LICENSE\.md$
 ^data-raw$
 ^_pkgdown\.yml$
@@ -8,5 +10,8 @@
 ^\.github$
 ^README\.Rmd$
 ^README_files$
+^cran-comments\.md$
+^CRAN-SUBMISSION$
+^vignettes/articles$
 ^doc$
 ^Meta$

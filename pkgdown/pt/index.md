@@ -1,0 +1,89 @@
+# nowcaster <a href="https://covid19br.github.io/nowcaster/pt/"><img src="man/figures/nowcaster.png" align="right" height="139" alt="site do nowcaster" /></a>
+
+<!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/nowcaster)](https://CRAN.R-project.org/package=nowcaster)
+[![CRAN checks](https://badges.cranchecks.info/summary/nowcaster.svg)](https://cran.r-project.org/web/checks/check_results_nowcaster.html)
+[![CRAN downloads](https://cranlogs.r-pkg.org/badges/nowcaster)](https://CRAN.R-project.org/package=nowcaster)
+[![R-CMD-check](https://github.com/covid19br/nowcaster/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/covid19br/nowcaster/actions/workflows/R-CMD-check.yaml)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![License: GPL (>= 3)](https://img.shields.io/badge/license-GPL%20%28%3E%3D%203%29-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+<!-- badges: end -->
+
+O `nowcaster` oferece modelos estatísticos para corrigir atrasos de notificação
+em dados epidemiológicos. Ele estima o número de eventos, como casos ou óbitos,
+que já aconteceram mas ainda não foram notificados, usando a distribuição empírica
+do atraso entre a data de início dos sintomas e a data de notificação.
+
+Todo sistema de notificação tem um atraso entre a data de início de um evento e a
+data em que ele é notificado. O `nowcaster` ajusta um modelo binomial negativo ao
+triângulo de atraso, com efeitos suaves para o tempo de início dos sintomas e para o
+atraso de notificação, seguindo [Bastos et al. (2019)](https://doi.org/10.1002/sim.8303).
+O pacote foi construído durante a pandemia de Covid-19 para o sistema brasileiro de
+vigilância da Síndrome Respiratória Aguda Grave (SRAG), o SIVEP-Gripe, e funciona com
+qualquer base de dados individuais que tenha data de início dos sintomas e data de
+notificação.
+
+## Instalação
+
+Instale a versão publicada no CRAN:
+
+``` r
+install.packages("nowcaster")
+```
+
+Ou a versão em desenvolvimento a partir do GitHub:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("covid19br/nowcaster")
+```
+
+### Dependências
+
+O `nowcaster` tem duas funções principais:
+
+- `nowcasting_inla()` ajusta o modelo de forma totalmente Bayesiana com o
+  [`INLA`](https://www.r-inla.org/download-install), que não está no CRAN e precisa
+  ser instalado à parte:
+
+``` r
+install.packages("INLA",
+                 repos = c(getOption("repos"),
+                           INLA = "https://inla.r-inla-download.org/R/stable"),
+                 dep = TRUE)
+```
+
+- `nowcasting_mgcv()` ajusta o modelo como um GAM com o
+  [`mgcv`](https://CRAN.R-project.org/package=mgcv), instalado junto com o `nowcaster`.
+
+## Exemplo
+
+``` r
+library(nowcaster)
+
+# Casos de SRAG de Belo Horizonte, incluídos no pacote
+data(sragBH)
+
+nowcast <- nowcasting_inla(dataset = sragBH,
+                           date_onset = DT_SIN_PRI,
+                           date_report = DT_DIGITA)
+
+# Mediana e intervalos de 50% / 95% do número de casos por semana de início dos sintomas
+head(nowcast$total)
+```
+
+Veja [Primeiros passos](https://covid19br.github.io/nowcaster/pt/articles/nowcaster.html)
+para o exemplo completo, [Nowcasting com mgcv](https://covid19br.github.io/nowcaster/pt/articles/2_nowcasting_mgcv.html)
+para a versão com `mgcv` e os [artigos](https://covid19br.github.io/nowcaster/pt/articles/)
+sobre nowcasting estruturado por idade e previsão.
+
+## Citação
+
+Use `citation("nowcaster")` para citar o pacote e o método que ele implementa.
+
+## Iniciativas semelhantes
+
+Outros pacotes R para nowcasting:
+
+- [epinowcast](https://package.epinowcast.org/)
+- [surveillance](https://surveillance.r-forge.r-project.org/pkgdown/index.html)

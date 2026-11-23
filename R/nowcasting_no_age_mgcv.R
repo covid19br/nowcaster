@@ -1,13 +1,12 @@
-#' @title nowcasting_no_age_mgcv
+#' @title Fit the non-structured nowcasting GAM
 #'
-#' @description Run INLA model on non-structured data,
-#' data has to be in the format of delay-triangle
+#' @description Fits a negative binomial GAM with 'mgcv' on non-structured data and
+#' samples the predictive trajectories for the unreported cases. Data has to be in the delay-triangle format.
+#' Usually called internally by [nowcasting_mgcv()].
 #'
-#' @param dataset data pre formatted in to age classes and delays by week for each cases,
-#' delay triangle format
-
+#' @param dataset data pre-formatted into delays by week for each case, delay-triangle format
 #'
-#' @return Trajectories from the Negative Binomial GAM
+#' @return A list with element 'sample', the predictive trajectories from the negative binomial GAM.
 #' @export
 nowcasting_no_age_mgcv <- function(dataset){
   ## Safe test
