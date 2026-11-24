@@ -27,61 +27,14 @@ nowcasting_no_age_mgcv <- function(dataset){
   output <- list()
 
 
-  ## Algorithm to get samples for the predictive distribution for the number of cases
+  ## Predictive distribution of the missing cells: sample the coefficients
+  ## from their approximate posterior, then the counts from the negative
+  ## binomial with the estimated dispersion
+  draws <- sample_missing_gam(output0, newdata = dataset[index.missing, ])
 
-  ## Step 1: Sampling from the approximate posterior distribution of the coefficients
-
-  betas.p <- mgcv::rmvn(n = 1000, stats::coef(output0), output0$Vp)
-
-
-  # Step 2: Get the design matrix (for the predictive values)
-  Xp <- stats::predict(output0, type = "lpmatrix", newdata = dataset[index.missing,])
-
-  # Step 3: Get the samples from the linear terms
-  eta.samples <- Xp %*% t(betas.p)
-
-
-  n.missing = nrow(eta.samples)
-
-  # Step 4: Sampling the missing triangle (fixing the negative binomial hyperparameter)
-  theta.nb <- output0$family$getTheta(T) # NegBin hyper parameter
-
-  # Step 5: Do the same as we did in INLA (sampling the missing triangle)
-  vector.samples <- lapply(X = 1:1000,
-                           FUN = function(x)
-                             stats::rnbinom(n = n.missing, mu = exp(eta.samples[,x]), size = theta.nb))
-
-
-  ## Step 6: Calculate N_{a,t} for each triangle sample {N_{t,a} : t=Tactual-Dmax+1,...Tactual}
-
-  gg.age <- function(x, dados.gg, idx){
-
-    Y <- Time <- dt_event <- NULL
-
-    data.aux <- dados.gg
-    Tmin <- min(dados.gg$Time[idx])
-    data.aux$Y[idx] <- x
-    data.aggregated <- data.aux |>
-      ## Selecionando apenas os dias faltantes a partir
-      ## do domingo da respectiva ultima epiweek
-      ## com dados faltantes
-      dplyr::filter(Time >= Tmin  ) |>
-      dplyr::group_by(Time, dt_event) |>
-      dplyr::summarise(
-        Y = sum(Y), .groups = "keep"
-      )
-    data.aggregated
-  }
-
-  ## Step 7: Applying the age aggregation on each posterior
-  tibble.samples <- lapply( X = vector.samples,
-                              FUN = gg.age,
-                              dados = dataset,
-                              idx = index.missing)
-
-  srag.pred <- dplyr::bind_rows(tibble.samples, .id = "sample")
-
-  output$sample <- srag.pred
+  ## Trajectories: observed plus sampled counts, by week of onset
+  output$sample <- aggregate_trajectories(dataset, idx = index.missing,
+                                          draws = draws)
 
 return(output)
 

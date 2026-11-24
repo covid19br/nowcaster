@@ -1,5 +1,11 @@
 # nowcaster (development version)
 
+* `nowcasting_mgcv()` and `nowcasting_inla()` are much faster at building the
+  predictive trajectories: the 1,000 sampled delay triangles are now aggregated
+  at once, as a matrix, instead of one at a time. On the `sragBH` example,
+  `nowcasting_mgcv()` went from about 13 seconds to under 1 second. Results are
+  identical for the same random seed. For the age-structured model the run time
+  is now dominated by the model fit itself.
 * Model-fitting functions are now named after the workhorse function that
   uses them: `nowcasting_no_age()` is now `nowcasting_no_age_inla()` and
   `nowcasting_age()` is now `nowcasting_age_inla()`, matching
