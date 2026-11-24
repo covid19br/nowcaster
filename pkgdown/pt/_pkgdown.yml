@@ -1,0 +1,84 @@
+# Configuration of the Portuguese site, built into docs/pt by pkgdown/build-pt.R.
+# Keep in sync with the English _pkgdown.yml at the package root.
+url: https://covid19br.github.io/nowcaster/pt/
+lang: pt
+
+template:
+  bootstrap: 5
+  bootswatch: cerulean
+  math-rendering: katex
+  light-switch: true
+
+development:
+  mode: auto
+
+authors:
+  Rafael Lopes:
+    href: https://github.com/rafalopespx/
+  Tatiana Portella:
+    href: https://github.com/portellatp/
+  Theo Economou:
+    href: https://experts.exeter.ac.uk/19235-theo-economou
+  Marcelo Gomes:
+    href: https://github.com/marfcg/
+  Leo Bastos:
+    href: https://github.com/lsbastos/
+
+navbar:
+  structure:
+    left: [intro, reference, articles, news]
+    right: [search, lang, github, lightswitch]
+  components:
+    lang:
+      text: English
+      icon: fa-language
+      href: https://covid19br.github.io/nowcaster/
+      aria-label: View the site in English
+
+home:
+  title: "nowcaster: modelos estatísticos para correção do atraso de notificação de dados epidemiológicos"
+  description: >
+    Modelos estatísticos para estimar casos já ocorridos mas ainda não notificados.
+  sidebar:
+    structure: [links, license, community, citation, authors, dev]
+
+reference:
+- title: Nowcasting
+  desc: >
+    Funções principais. As duas ajustam um modelo binomial negativo ao triângulo
+    de atraso; `nowcasting_inla()` usa o 'INLA' e `nowcasting_mgcv()` usa o 'mgcv'.
+    A documentação das funções está em inglês.
+  contents:
+  - nowcasting_inla
+  - nowcasting_mgcv
+- title: Ajuste dos modelos
+  desc: Funções de nível mais baixo, chamadas pelas funções principais.
+  contents:
+  - nowcasting_no_age_inla
+  - nowcasting_age_inla
+  - nowcasting_no_age_mgcv
+  - nowcasting_age_mgcv
+- title: Pós-processamento
+  contents:
+  - nowcasting.summary
+  - slope.estimate.quant
+- title: Dados
+  contents:
+  - sragBH
+
+articles:
+- title: Primeiros passos
+  navbar: ~
+  contents:
+  - nowcaster
+- title: Artigos
+  navbar: Artigos
+  contents:
+  - articles/1_nowcasting_inla
+  - articles/2_nowcasting_mgcv
+  - articles/3_nowcasting_importance
+  - articles/4_forecasting
+  - articles/5_inla_vs_mgcv
+
+news:
+  cran_dates: true

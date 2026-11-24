@@ -2,7 +2,7 @@
 % Please edit documentation in R/slope.estimate.quant.R
 \name{slope.estimate.quant}
 \alias{slope.estimate.quant}
-\title{Slope.estimate.quant}
+\title{Estimate the slope of the nowcasted curve}
 \usage{
 slope.estimate.quant(end.week, trajectories, window = 3)
 }
@@ -14,20 +14,24 @@ slope.estimate.quant(end.week, trajectories, window = 3)
 \item{window}{(in weeks) Window of how much time will be used to calculate the slope estimate. The default is 3 weeks.}
 }
 \value{
-The numerical value of the slope of the estimate
+A trend category based on the distribution of the slopes of the trajectories:
+\code{1} increasing (5\% quantile > 0), \code{0.5} probably increasing (25\% quantile >= 0),
+\code{0} stable or uncertain, \code{-0.5} probably decreasing (75\% quantile <= 0) and
+\code{-1} decreasing (95\% quantile < 0).
 }
 \description{
-Fits a linear model to trajectories returned from 'nowcasting_inla()' within a given window. The default is 3 weeks. If 'end.week' is missing uses the maximum date in 'trajectories'.
+Fits a linear model to each trajectory returned by \code{\link[=nowcasting_inla]{nowcasting_inla()}} or \code{\link[=nowcasting_mgcv]{nowcasting_mgcv()}} (with \code{trajectories = TRUE}) within a given window. Requires the 'lme4' package. The default is 3 weeks. If 'end.week' is missing uses the maximum date in 'trajectories'.
 }
 \examples{
 \donttest{
-# Loading Belo Horizonte SARI dataset
-data(sragBH)
-now <- nowcasting_mgcv(dataset = sragBH,
-                date_onset = DT_SIN_PRI,
-                date_report = DT_DIGITA,
-                trajectories = TRUE,
-                silent = TRUE)
-slope.estimate.quant(trajectories = now$trajectories)
+if (requireNamespace("lme4", quietly = TRUE)) {
+  # Loading Belo Horizonte SARI dataset
+  data(sragBH)
+  now <- nowcasting_mgcv(dataset = sragBH,
+                         date_onset = DT_SIN_PRI,
+                         date_report = DT_DIGITA,
+                         trajectories = TRUE)
+  slope.estimate.quant(trajectories = now$trajectories)
+}
 }
 }

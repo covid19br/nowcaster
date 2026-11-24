@@ -13,7 +13,6 @@
 #'   \item{CO_MUN_RES}{IBGE municipality code. Belo Horizonte is 310620.}
 #'   \item{Idade}{Age in years.}
 #'   \item{fx_etaria}{Age brackets.}
-#'   ...
 #' }
 #' @source \url{https://opendatasus.saude.gov.br/}
 "sragBH"

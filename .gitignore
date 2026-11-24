@@ -1,41 +1,37 @@
-
-.DS_Store
-.httr-oauth
-.Rapp.history
-.Rdata
-.RData
-.Renviron
-.Rhistory
-.Rproj.user
+# R / RStudio
 .Rproj.user/
+.Rhistory
+.RData
+.Rdata
 .Ruserdata
-*_cache/
-*-Ex.R
-*.knit.md
-*.utf8.md
-*Outputs
+.Rapp.history
+.Renviron
+.httr-oauth
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build and check output
 /*.Rcheck/
 /*.tar.gz
-/cache/
+*-Ex.R
 /doc/
 /Meta/
-# Example code in package build process
-# History files
-# knitr and R markdown default cache directories
-# OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
-# Output files from R CMD build
-# Output files from R CMD check
-# produced vignettes
-# R Environment Variables
-# RStudio files
-# Session Data files
-# Specific dirs
-# Specific files
-# Temporary files created by R markdown
-# User-specific files
-docs
 inst/doc
-test.R
+
+# knitr / R Markdown intermediates
+*_cache/
+*.knit.md
+*.utf8.md
+README_files/
 vignettes/*.html
 vignettes/*.pdf
+vignettes/*.R
+
+# pkgdown site (deployed to the gh-pages branch by GitHub Actions)
+docs/
+
+# Local scratch
+test.R
 cran-comments.md

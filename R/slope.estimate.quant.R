@@ -1,25 +1,29 @@
-#' @title Slope.estimate.quant
+#' @title Estimate the slope of the nowcasted curve
 #'
 #' @description
-#' Fits a linear model to trajectories returned from 'nowcasting_inla()' within a given window. The default is 3 weeks. If 'end.week' is missing uses the maximum date in 'trajectories'.
+#' Fits a linear model to each trajectory returned by [nowcasting_inla()] or [nowcasting_mgcv()] (with `trajectories = TRUE`) within a given window. Requires the 'lme4' package. The default is 3 weeks. If 'end.week' is missing uses the maximum date in 'trajectories'.
 #'
 #' @param trajectories Data.frame with the predicted or nowcasted estimate
 #' @param end.week (in weeks) The end of the week wanted to the slope estimate. Default: max. date in 'trajectories'.
 #' @param window (in weeks) Window of how much time will be used to calculate the slope estimate. The default is 3 weeks.
 #'
-#' @return The numerical value of the slope of the estimate
+#' @return A trend category based on the distribution of the slopes of the trajectories:
+#' `1` increasing (5% quantile > 0), `0.5` probably increasing (25% quantile >= 0),
+#' `0` stable or uncertain, `-0.5` probably decreasing (75% quantile <= 0) and
+#' `-1` decreasing (95% quantile < 0).
 #' @export
 #'
 #' @examples
 #' \donttest{
-#' # Loading Belo Horizonte SARI dataset
-#' data(sragBH)
-#' now <- nowcasting_mgcv(dataset = sragBH,
-#'                 date_onset = DT_SIN_PRI,
-#'                 date_report = DT_DIGITA,
-#'                 trajectories = TRUE,
-#'                 silent = TRUE)
-#' slope.estimate.quant(trajectories = now$trajectories)
+#' if (requireNamespace("lme4", quietly = TRUE)) {
+#'   # Loading Belo Horizonte SARI dataset
+#'   data(sragBH)
+#'   now <- nowcasting_mgcv(dataset = sragBH,
+#'                          date_onset = DT_SIN_PRI,
+#'                          date_report = DT_DIGITA,
+#'                          trajectories = TRUE)
+#'   slope.estimate.quant(trajectories = now$trajectories)
+#' }
 #' }
 
 slope.estimate.quant <- function(end.week, trajectories, window=3){

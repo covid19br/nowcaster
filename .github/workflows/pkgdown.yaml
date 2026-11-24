@@ -50,13 +50,15 @@ jobs:
         run: rmarkdown::render("README.Rmd")
         shell: Rscript {0}
 
-      - name: Render index
-        run: rmarkdown::render("index.Rmd")
-        shell: Rscript {0}
-
       - name: Build site
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
         shell: Rscript {0}
+
+      - name: Build Portuguese site
+        run: Rscript pkgdown/build-pt.R
+        env:
+          LANG: en_US.UTF-8
+          LC_ALL: en_US.UTF-8
 
       - name: Deploy to GitHub pages 🚀
         if: github.event_name != 'pull_request'

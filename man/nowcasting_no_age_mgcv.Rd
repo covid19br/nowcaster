@@ -2,18 +2,18 @@
 % Please edit documentation in R/nowcasting_no_age_mgcv.R
 \name{nowcasting_no_age_mgcv}
 \alias{nowcasting_no_age_mgcv}
-\title{nowcasting_no_age_mgcv}
+\title{Fit the non-structured nowcasting GAM}
 \usage{
 nowcasting_no_age_mgcv(dataset)
 }
 \arguments{
-\item{dataset}{data pre formatted in to age classes and delays by week for each cases,
-delay triangle format}
+\item{dataset}{data pre-formatted into delays by week for each case, delay-triangle format}
 }
 \value{
-Trajectories from the Negative Binomial GAM
+A list with element 'sample', the predictive trajectories from the negative binomial GAM.
 }
 \description{
-Run INLA model on non-structured data,
-data has to be in the format of delay-triangle
+Fits a negative binomial GAM with 'mgcv' on non-structured data and
+samples the predictive trajectories for the unreported cases. Data has to be in the delay-triangle format.
+Usually called internally by \code{\link[=nowcasting_mgcv]{nowcasting_mgcv()}}.
 }

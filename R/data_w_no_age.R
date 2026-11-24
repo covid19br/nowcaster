@@ -14,6 +14,7 @@
 #' @param silent DEPRECATED to be removed.
 #'
 #' @return Data in weeks format, with the maximum dates for the last week used
+#' @keywords internal
 
 data.w_no_age<-function(dataset,
                         trim.data,

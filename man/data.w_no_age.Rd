@@ -38,3 +38,4 @@ Function to put the data into the format proper to the nowcasting estimation,
 has to use the maximum of data present on the last week parsed to the estimation.
 Makes the account of maximum days per week to be used. With no age structure.
 }
+\keyword{internal}

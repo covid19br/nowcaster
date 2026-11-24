@@ -1,0 +1,218 @@
+---
+title: "nowcasting_inla() ou nowcasting_mgcv()"
+output: rmarkdown::html_vignette
+author: "Rafael Lopes & Leonardo Bastos"
+vignette: >
+  %\VignetteIndexEntry{nowcasting_inla() ou nowcasting_mgcv()}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = FALSE,
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE,
+  echo = TRUE,
+  fig.width = 7,
+  fig.height = 4.5
+)
+set.seed(2024)
+```
+
+## Duas funções, um modelo
+
+O `nowcaster` tem duas funções principais que ajustam o mesmo modelo: um modelo binomial negativo para o triângulo de atraso, com um efeito suave para a semana de início dos sintomas e outro para o atraso de notificação.
+
+* `nowcasting_inla()` ajusta o modelo de forma totalmente Bayesiana com o
+  [`INLA`](https://www.r-inla.org/download-install), com prioris de passeio aleatório para os efeitos de tempo e de atraso.
+* `nowcasting_mgcv()` ajusta o modelo como um modelo aditivo generalizado com o
+  [`mgcv`](https://CRAN.R-project.org/package=mgcv), com splines penalizadas para os efeitos de tempo e de atraso.
+
+As duas recebem os mesmos argumentos principais e retornam a mesma saída, então trocar uma pela outra é só uma questão de mudar o nome da função. Neste artigo cada exemplo aparece para as duas funções: **use as abas acima de cada bloco de código para alternar entre elas**. Escolher uma aba troca todos os exemplos da página.
+
+| | `nowcasting_inla()` | `nowcasting_mgcv()` |
+|---|---|---|
+| Motor de ajuste | `INLA` (fora do CRAN) | `mgcv` (no CRAN, instalado com o `nowcaster`) |
+| Efeitos de tempo e atraso | passeios aleatórios (`rw2`, `rw1`) | splines *thin plate* penalizadas |
+| Incerteza | amostras a posteriori do campo latente e dos hiperparâmetros | amostras dos coeficientes, dispersão fixada na estimativa |
+| Opções extras | `zero_inflated`, `timeREmodel`, `INLAoutput`, `WAIC`, `DIC` | `method.group.gam` |
+
+## Dados
+
+```{r data}
+library(nowcaster)
+library(dplyr)
+library(ggplot2)
+
+data(sragBH)
+
+# Função auxiliar para plotar a estimativa com a curva observada na época
+plot_nowcast <- function(estimate, observed) {
+  ggplot(estimate, aes(x = dt_event)) +
+    geom_ribbon(aes(ymin = LI, ymax = LS), fill = "grey70", alpha = 0.5) +
+    geom_line(aes(y = Median, colour = "Nowcasting")) +
+    geom_line(data = observed, aes(y = observed, colour = "Observed")) +
+    scale_colour_manual(values = c(Nowcasting = "black", Observed = "grey50"),
+                        name = "") +
+    scale_x_date(date_breaks = "2 weeks", date_labels = "%V/%y") +
+    labs(x = "Semana de início dos sintomas", y = "Número de casos") +
+    theme_bw() +
+    theme(legend.position = "bottom", axis.text.x = element_text(angle = 90))
+}
+```
+
+## Nowcasting
+
+### Ajuste {.tabset}
+
+#### INLA
+
+```{r no-age-inla}
+now_inla <- nowcasting_inla(dataset = sragBH,
+                            date_onset = DT_SIN_PRI,
+                            date_report = DT_DIGITA,
+                            data.by.week = TRUE)
+head(now_inla$total)
+```
+
+#### mgcv
+
+```{r no-age-mgcv}
+now_mgcv <- nowcasting_mgcv(dataset = sragBH,
+                            date_onset = DT_SIN_PRI,
+                            date_report = DT_DIGITA,
+                            data.by.week = TRUE)
+head(now_mgcv$total)
+```
+
+### Gráfico {.tabset}
+
+O triângulo de atraso no elemento `data` é o mesmo para as duas funções; somando sobre os atrasos obtemos a curva observada na data do último registro.
+
+#### INLA
+
+```{r no-age-plot-inla}
+observed <- now_inla$data |>
+  group_by(dt_event) |>
+  summarise(observed = sum(Y, na.rm = TRUE))
+
+plot_nowcast(now_inla$total, observed)
+```
+
+#### mgcv
+
+```{r no-age-plot-mgcv}
+observed <- now_mgcv$data |>
+  group_by(dt_event) |>
+  summarise(observed = sum(Y, na.rm = TRUE))
+
+plot_nowcast(now_mgcv$total, observed)
+```
+
+## Nowcasting por idade
+
+Com `age_col`, as duas funções ajustam o modelo estruturado, com efeitos de tempo e de atraso para cada classe etária. A `nowcasting_inla()` usa um efeito independente por classe etária nos passeios aleatórios; a `nowcasting_mgcv()` usa uma suavização por fator (`method.group.gam = "fs"`, o padrão) ou uma suavização por classe etária (`method.group.gam = "by"`).
+
+### Ajuste {.tabset}
+
+#### INLA
+
+```{r age-inla}
+now_age_inla <- nowcasting_inla(dataset = sragBH,
+                                date_onset = DT_SIN_PRI,
+                                date_report = DT_DIGITA,
+                                age_col = Idade,
+                                bins_age = "10 years")
+head(now_age_inla$age)
+```
+
+#### mgcv
+
+```{r age-mgcv}
+now_age_mgcv <- nowcasting_mgcv(dataset = sragBH,
+                                date_onset = DT_SIN_PRI,
+                                date_report = DT_DIGITA,
+                                age_col = Idade,
+                                bins_age = "10 years")
+head(now_age_mgcv$age)
+```
+
+## Previsão
+
+Com `K > 0` as duas funções também preveem as semanas seguintes à última semana de início dos sintomas. Aqui cortamos os dados em 4 de julho de 2020 e prevemos uma semana à frente.
+
+```{r cut}
+srag_2020 <- sragBH |>
+  filter(DT_DIGITA <= as.Date("2020-07-04"))
+```
+
+### Ajuste {.tabset}
+
+#### INLA
+
+```{r forecast-inla}
+fc_inla <- nowcasting_inla(dataset = srag_2020,
+                           date_onset = DT_SIN_PRI,
+                           date_report = DT_DIGITA,
+                           K = 1)
+tail(fc_inla$total, 3)
+```
+
+#### mgcv
+
+```{r forecast-mgcv}
+fc_mgcv <- nowcasting_mgcv(dataset = srag_2020,
+                           date_onset = DT_SIN_PRI,
+                           date_report = DT_DIGITA,
+                           K = 1)
+tail(fc_mgcv$total, 3)
+```
+
+## Comparando as estimativas
+
+Colocar as duas estimativas no mesmo gráfico, junto com a curva observada depois, mostra o quanto elas se aproximam.
+
+```{r compare}
+eventually_observed <- sragBH |>
+  mutate(dt_event = DT_SIN_PRI - as.numeric(format(DT_SIN_PRI, "%w"))) |>
+  count(dt_event, name = "observed")
+
+both <- bind_rows(
+  fc_inla$total |> mutate(model = "nowcasting_inla()"),
+  fc_mgcv$total |> mutate(model = "nowcasting_mgcv()")
+)
+
+ggplot(both, aes(x = dt_event)) +
+  geom_ribbon(aes(ymin = LI, ymax = LS, fill = model), alpha = 0.25) +
+  geom_line(aes(y = Median, colour = model)) +
+  geom_line(data = eventually_observed |>
+              filter(dt_event >= min(both$dt_event),
+                     dt_event <= max(both$dt_event)),
+            aes(y = observed), colour = "red", linetype = "dashed") +
+  scale_colour_manual(values = c("steelblue4", "darkorange3"), name = "") +
+  scale_fill_manual(values = c("steelblue2", "darkorange1"), name = "") +
+  scale_x_date(date_breaks = "2 weeks", date_labels = "%V/%y") +
+  labs(x = "Semana de início dos sintomas", y = "Número de casos",
+       caption = "Linha vermelha tracejada: casos observados depois") +
+  theme_bw() +
+  theme(legend.position = "bottom", axis.text.x = element_text(angle = 90))
+```
+
+A largura dos intervalos de 95% nas semanas mais recentes:
+
+```{r widths}
+both |>
+  group_by(model) |>
+  slice_tail(n = 4) |>
+  mutate(width_95 = LS - LI) |>
+  select(model, dt_event, Median, LI, LS, width_95)
+```
+
+## Qual usar
+
+* `nowcasting_mgcv()` precisa apenas de pacotes do CRAN. É uma boa escolha padrão quando o `INLA` não está disponível ou para uso de rotina.
+* `nowcasting_inla()` é a versão totalmente Bayesiana do modelo. Ela propaga a incerteza de todos os parâmetros, inclusive a dispersão, e oferece as opções do modelo original (inflação de zeros, outros modelos latentes para o tempo, comparação de modelos com WAIC e DIC).
+
+As duas funções compartilham a preparação dos dados e o resumo das trajetórias, então as diferenças entre suas estimativas vêm apenas do ajuste do modelo.

@@ -17,18 +17,19 @@ License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-URL: https://covid19br.github.io/nowcaster/
+URL: https://covid19br.github.io/nowcaster/,
+    https://github.com/covid19br/nowcaster
 BugReports: https://github.com/covid19br/nowcaster/issues
-Suggests: 
+Suggests:
     INLA (>= 22.5.3),
     ggplot2,
     knitr,
-    rmarkdown,
-    vroom,
-    parallel,
+    lme4,
     lubridate,
-    lme4, sn,
-    stringr
+    rmarkdown,
+    sn,
+    stringr,
+    testthat (>= 3.0.0)
 Depends: 
     R (>= 4.1.0)
 LazyData: true
@@ -39,3 +40,4 @@ Imports:
     tibble,
     mgcv
 Config/testthat/edition: 3
+Config/Needs/website: tidyverse, lubridate, ggplot2, sn
