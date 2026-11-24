@@ -1,0 +1,154 @@
+# nowcaster [![site do nowcaster](reference/figures/nowcaster.png)](https://covid19br.github.io/nowcaster/pt/)
+
+O `nowcaster` oferece modelos estatísticos para corrigir atrasos de
+notificação em dados epidemiológicos. Ele estima o número de eventos,
+como casos ou óbitos, que já aconteceram mas ainda não foram
+notificados, usando a distribuição empírica do atraso entre a data de
+início dos sintomas e a data de notificação.
+
+Todo sistema de notificação tem um atraso entre a data de início de um
+evento e a data em que ele é notificado. O `nowcaster` ajusta um modelo
+binomial negativo ao triângulo de atraso, com efeitos suaves para o
+tempo de início dos sintomas e para o atraso de notificação, seguindo
+[Bastos et al. (2019)](https://doi.org/10.1002/sim.8303). O pacote foi
+construído durante a pandemia de Covid-19 para o sistema brasileiro de
+vigilância da Síndrome Respiratória Aguda Grave (SRAG), o SIVEP-Gripe, e
+funciona com qualquer base de dados individuais que tenha data de início
+dos sintomas e data de notificação.
+
+## Instalação
+
+Instale a versão publicada no CRAN:
+
+``` r
+
+install.packages("nowcaster")
+```
+
+Ou a versão em desenvolvimento a partir do GitHub:
+
+``` r
+
+# install.packages("remotes")
+remotes::install_github("covid19br/nowcaster")
+```
+
+### Dependências
+
+O `nowcaster` tem duas funções principais:
+
+- [`nowcasting_inla()`](https://covid19br.github.io/nowcaster/pt/reference/nowcasting_inla.md)
+  ajusta o modelo de forma totalmente Bayesiana com o
+  [`INLA`](https://www.r-inla.org/download-install), que não está no
+  CRAN e precisa ser instalado à parte:
+
+``` r
+
+install.packages("INLA",
+                 repos = c(getOption("repos"),
+                           INLA = "https://inla.r-inla-download.org/R/stable"),
+                 dep = TRUE)
+```
+
+- [`nowcasting_mgcv()`](https://covid19br.github.io/nowcaster/pt/reference/nowcasting_mgcv.md)
+  ajusta o modelo como um GAM com o
+  [`mgcv`](https://CRAN.R-project.org/package=mgcv), instalado junto com
+  o `nowcaster`.
+
+## Exemplo
+
+``` r
+
+library(nowcaster)
+
+# Casos de SRAG de Belo Horizonte, incluídos no pacote
+data(sragBH)
+
+nowcast <- nowcasting_inla(dataset = sragBH,
+                           date_onset = DT_SIN_PRI,
+                           date_report = DT_DIGITA)
+
+# Mediana e intervalos de 50% / 95% do número de casos por semana de início dos sintomas
+head(nowcast$total)
+```
+
+Veja [Primeiros
+passos](https://covid19br.github.io/nowcaster/pt/articles/nowcaster.html)
+para o exemplo completo, [Nowcasting com
+mgcv](https://covid19br.github.io/nowcaster/pt/articles/2_nowcasting_mgcv.html)
+para a versão com `mgcv` e os
+[artigos](https://covid19br.github.io/nowcaster/pt/articles/) sobre
+nowcasting estruturado por idade e previsão.
+
+## Citação
+
+Use `citation("nowcaster")` para citar o pacote e o método que ele
+implementa.
+
+## Iniciativas semelhantes
+
+Outros pacotes R para nowcasting:
+
+- [epinowcast](https://package.epinowcast.org/)
+- [surveillance](https://surveillance.r-forge.r-project.org/pkgdown/index.html)
+
+# Índice de pacotes
+
+## Nowcasting
+
+Funções principais. As duas ajustam um modelo binomial negativo ao
+triângulo de atraso;
+[`nowcasting_inla()`](https://covid19br.github.io/nowcaster/pt/reference/nowcasting_inla.md)
+usa o ‘INLA’ e
+[`nowcasting_mgcv()`](https://covid19br.github.io/nowcaster/pt/reference/nowcasting_mgcv.md)
+usa o ‘mgcv’. A documentação das funções está em inglês.
+
+- [`nowcasting_inla()`](https://covid19br.github.io/nowcaster/pt/reference/nowcasting_inla.md)
+  : Nowcasting with a Bayesian negative binomial model fitted by 'INLA'
+- [`nowcasting_mgcv()`](https://covid19br.github.io/nowcaster/pt/reference/nowcasting_mgcv.md)
+  : Nowcasting with a negative binomial GAM fitted by 'mgcv'
+
+## Ajuste dos modelos
+
+Funções de nível mais baixo, chamadas pelas funções principais.
+
+- [`nowcasting_no_age_inla()`](https://covid19br.github.io/nowcaster/pt/reference/nowcasting_no_age_inla.md)
+  : Fit the non-structured nowcasting model with 'INLA'
+- [`nowcasting_age_inla()`](https://covid19br.github.io/nowcaster/pt/reference/nowcasting_age_inla.md)
+  : Fit the structured (age) nowcasting model with 'INLA'
+- [`nowcasting_no_age_mgcv()`](https://covid19br.github.io/nowcaster/pt/reference/nowcasting_no_age_mgcv.md)
+  : Fit the non-structured nowcasting GAM
+- [`nowcasting_age_mgcv()`](https://covid19br.github.io/nowcaster/pt/reference/nowcasting_age_mgcv.md)
+  : Fit the structured (age) nowcasting GAM
+
+## Pós-processamento
+
+- [`nowcasting.summary()`](https://covid19br.github.io/nowcaster/pt/reference/nowcasting.summary.md)
+  : Summarise nowcasting trajectories
+- [`slope.estimate.quant()`](https://covid19br.github.io/nowcaster/pt/reference/slope.estimate.quant.md)
+  : Estimate the slope of the nowcasted curve
+
+## Dados
+
+- [`sragBH`](https://covid19br.github.io/nowcaster/pt/reference/sragBH.md)
+  : SARI data from Belo Horizonte
+
+# Artigos
+
+### Primeiros passos
+
+- [Primeiros
+  passos](https://covid19br.github.io/nowcaster/pt/articles/nowcaster.md):
+
+### Artigos
+
+- [Nowcasting com
+  INLA](https://covid19br.github.io/nowcaster/pt/articles/1_nowcasting_inla.md):
+- [Nowcasting com
+  mgcv](https://covid19br.github.io/nowcaster/pt/articles/2_nowcasting_mgcv.md):
+- [Nowcasting para a tomada de
+  decisão](https://covid19br.github.io/nowcaster/pt/articles/3_nowcasting_importance.md):
+- [Além do nowcasting:
+  previsão](https://covid19br.github.io/nowcaster/pt/articles/4_forecasting.md):
+- [nowcasting_inla() ou
+  nowcasting_mgcv()](https://covid19br.github.io/nowcaster/pt/articles/5_inla_vs_mgcv.md):

@@ -1,7 +1,9 @@
-# nowcasting_no_age_mgcv
+# Fit the non-structured nowcasting GAM
 
-Run INLA model on non-structured data, data has to be in the format of
-delay-triangle
+Fits a negative binomial GAM with 'mgcv' on non-structured data and
+samples the predictive trajectories for the unreported cases. Data has
+to be in the delay-triangle format. Usually called internally by
+[`nowcasting_mgcv()`](https://covid19br.github.io/nowcaster/reference/nowcasting_mgcv.md).
 
 ## Usage
 
@@ -13,9 +15,10 @@ nowcasting_no_age_mgcv(dataset)
 
 - dataset:
 
-  data pre formatted in to age classes and delays by week for each
-  cases, delay triangle format
+  data pre-formatted into delays by week for each case, delay-triangle
+  format
 
 ## Value
 
-Trajectories from the Negative Binomial GAM
+A list with element 'sample', the predictive trajectories from the
+negative binomial GAM.

@@ -20,37 +20,37 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/covid19br/nowcaster/blob/HEAD/inst/CITATION)
+[`inst/CITATION`](https://github.com/covid19br/nowcaster/blob/main/inst/CITATION)
 
-Bastos, S L, Economou, Theodoros, Gomes, FC M, Villela, AM D, Coelho, C
-F, Cruz, G O, Stoner, Oliver, Bailey, Trevor, Codeço, T C (2019). “A
-Modelling approach for correcting reporting delays in disease
-surveillance data.” *Statistics in medicine*, **38**(22), 4363–4377.
+Bastos L, Economou T, Gomes M, Villela D, Coelho F, Cruz O, Stoner O,
+Bailey T, Codeço C (2019). “A Modelling approach for correcting
+reporting delays in disease surveillance data.” *Statistics in
+Medicine*, **38**(22), 4363–4377.
 [doi:10.1002/sim.8303](https://doi.org/10.1002/sim.8303).
 
-@Article{,\
-  title = {A Modelling approach for correcting reporting delays in disease surveillance data},\
-  author = {{Bastos} and Leonardo S and {Economou} and {Theodoros} and {Gomes} and Marcelo FC and {Villela} and Daniel AM and {Coelho} and Flavio C and {Cruz} and Oswaldo G and {Stoner} and {Oliver} and {Bailey} and {Trevor} and {Codeço} and Claudia T},\
-  journal = {Statistics in medicine},\
-  year = {2019},\
-  volume = {38},\
-  number = {22},\
-  pages = {4363--4377},\
-  publisher = {Wiley Online Library},\
-  doi = {https://doi.org/10.1002/sim.8303},\
-}
+    @Article{,
+      title = {A Modelling approach for correcting reporting delays in disease surveillance data},
+      author = {Leonardo S. Bastos and Theodoros Economou and Marcelo F. C. Gomes and Daniel A. M. Villela and Flavio C. Coelho and Oswaldo G. Cruz and Oliver Stoner and Trevor Bailey and Claudia T. Codeço},
+      journal = {Statistics in Medicine},
+      year = {2019},
+      volume = {38},
+      number = {22},
+      pages = {4363--4377},
+      publisher = {Wiley Online Library},
+      doi = {10.1002/sim.8303},
+    }
 
-Lopes, Rafael, Portella, Tatiana, Economou, Theo, Gomes, FC M, Bastos,
-Leo (2026). “nowcaster: Statistical Models for Notification Delay
-Correction of Epidemiological Data.”
-[doi:10.32614/cran.package.nowcaster](https://doi.org/10.32614/cran.package.nowcaster).
+Lopes R, Portella T, Economou T, Gomes M, Bastos L (2026). *nowcaster:
+Statistical Models for Notification Delay Correction of Epidemiological
+Data*.
+[doi:10.32614/CRAN.package.nowcaster](https://doi.org/10.32614/CRAN.package.nowcaster).
+R package version 1.0.1, <https://CRAN.R-project.org/package=nowcaster>.
 
-@Misc{,\
-  title = {nowcaster: Statistical Models for Notification Delay Correction of Epidemiological Data},\
-  author = {{Lopes} and {Rafael} and {Portella} and {Tatiana} and {Economou} and {Theo} and {Gomes} and Marcelo FC and {Bastos} and {Leo}},\
-  journal = {CRAN: Contributed Packages},\
-  year = {2026},\
-  month = {Sept},\
-  publisher = {The R Foundation},\
-  doi = {10.32614/cran.package.nowcaster},\
-}
+    @Manual{,
+      title = {nowcaster: Statistical Models for Notification Delay Correction of Epidemiological Data},
+      author = {Rafael Lopes and Tatiana Portella and Theo Economou and Marcelo Gomes and Leo Bastos},
+      year = {2026},
+      note = {R package version 1.0.1},
+      url = {https://CRAN.R-project.org/package=nowcaster},
+      doi = {10.32614/CRAN.package.nowcaster},
+    }

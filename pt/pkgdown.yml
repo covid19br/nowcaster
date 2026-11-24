@@ -1,0 +1,14 @@
+pandoc: 3.8.3
+pkgdown: 2.2.1
+pkgdown_sha: ~
+articles:
+  articles/1_nowcasting_inla: 1_nowcasting_inla.html
+  articles/2_nowcasting_mgcv: 2_nowcasting_mgcv.html
+  articles/3_nowcasting_importance: 3_nowcasting_importance.html
+  articles/4_forecasting: 4_forecasting.html
+  articles/5_inla_vs_mgcv: 5_inla_vs_mgcv.html
+  nowcaster: nowcaster.html
+last_built: 2026-11-24T13:59Z
+urls:
+  reference: https://covid19br.github.io/nowcaster/pt/reference
+  article: https://covid19br.github.io/nowcaster/pt/articles
