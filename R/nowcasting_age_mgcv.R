@@ -6,10 +6,12 @@
 #'
 #' @param dataset data pre formatted in to age classes and delays by week for each cases, delay triangle format
 #' @param method Type of smooth by age class: "fs" (factor smooth, `s(., age_class, bs = "fs")`, default) or "by" (`s(., by = age_class)`).
+#' @inheritParams nowcasting_mgcv
 #'
 #' @return A list with element 'sample', the predictive trajectories by age class.
 #' @export
-nowcasting_age_mgcv <- function(dataset, method = "fs"){
+nowcasting_age_mgcv <- function(dataset, method = "fs",
+                                fit = c("gam", "bam", "bam_discrete")){
 
   # Workaround check
   fx_etaria <- NULL
@@ -45,14 +47,14 @@ nowcasting_age_mgcv <- function(dataset, method = "fs"){
 
   ## Running the Negative Binomial model in mgcv
   if(method == "by")
-    output0 <- mgcv::gam(Y ~ 1 + fx_etaria + s(Time, by = fx_etaria) +
-                           s(delay, by = fx_etaria),
-                         family = "nb", data = dataset )
+    output0 <- fit_nb_gam(Y ~ 1 + fx_etaria + s(Time, by = fx_etaria) +
+                            s(delay, by = fx_etaria),
+                          data = dataset, fit = fit)
 
   if(method == "fs")
-    output0 <- mgcv::gam(Y ~ 1 + s(Time, fx_etaria, bs = "fs") +
-                           s(delay, fx_etaria, bs = "fs"),
-                         family = "nb", data = dataset )
+    output0 <- fit_nb_gam(Y ~ 1 + s(Time, fx_etaria, bs = "fs") +
+                            s(delay, fx_etaria, bs = "fs"),
+                          data = dataset, fit = fit)
 
   output <- list()
 

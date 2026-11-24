@@ -17,6 +17,16 @@
 #' @param bins_age Age bins to do the nowcasting, it receive a vector of age bins,
 #' or options between, "SI-PNI", "10 years", "5 years". The default is "SI-PNI".
 #' @param method.group.gam Type of smooth used by age class in the structured model: "fs" (factor smooth, default) or "by" (one smooth per age class).
+#' @param fit How the negative binomial GAM is fitted:
+#'   * `"gam"` (default): [mgcv::gam()], the original fit.
+#'   * `"bam"`: [mgcv::bam()] with `method = "fREML"`, a faster fit for large
+#'     data. On the age-structured model it was about 7 times faster than
+#'     `"gam"` on the example data, with nowcasts within about 1%.
+#'   * `"bam_discrete"`: [mgcv::bam()] with `discrete = TRUE`, which
+#'     discretises the covariates. It was over 40 times faster than `"gam"` on
+#'     the age-structured model. With `method.group.gam = "by"` the nowcasts
+#'     matched `"gam"` closely; with `"fs"` the estimates for the most recent
+#'     weeks were up to about 8% lower on the example data.
 #' @param K (in weeks) How many weeks to forecast ahead. The default is K = 0, no forecasting ahead.
 #' @param age_col Column with the age (in years) of each case. If given, the structured (age-stratified) model is fitted.
 #' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases.
@@ -57,7 +67,10 @@ nowcasting_mgcv <- function(dataset,
                             method.group.gam = "fs",
                             K = 0,
                             trajectories = FALSE,
+                            fit = c("gam", "bam", "bam_discrete"),
                             ...){
+
+  fit <- match.arg(fit)
 
   dots<-list(...)
 
@@ -302,7 +315,7 @@ nowcasting_mgcv <- function(dataset,
     # Nowcasting no age
 
       ## Nowcasting estimate
-      sample.now <- nowcasting_no_age_mgcv(dataset = data2model)
+      sample.now <- nowcasting_no_age_mgcv(dataset = data2model, fit = fit)
 
       now_summary<-nowcasting.summary(trajectory = sample.now$sample,
                                       age = F)
@@ -311,7 +324,8 @@ nowcasting_mgcv <- function(dataset,
 
     ## Negative binomial by age
     sample.now <- nowcasting_age_mgcv(dataset = data2model,
-                                      method = method.group.gam)
+                                      method = method.group.gam,
+                                      fit = fit)
 
     now_summary<-nowcasting.summary(trajectory = sample.now$sample,
                                     age = T)

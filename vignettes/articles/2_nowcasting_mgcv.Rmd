@@ -166,6 +166,45 @@ now_age$age |>
   theme_bw()
 ```
 
+## Faster fits with `bam()`
+
+The structured model has many more smooth terms, and `mgcv::gam()` can take
+close to a minute on these data. The argument `fit` chooses how the model is
+fitted:
+
+* `"gam"` (default): `mgcv::gam()`, as above.
+* `"bam"`: `mgcv::bam()`, designed for large data sets. It was about 7 times
+  faster here, with nowcasts within about 1% of `"gam"`.
+* `"bam_discrete"`: `mgcv::bam(discrete = TRUE)`, which also discretises the
+  covariates. It was over 40 times faster, but with the factor smooth
+  (`method.group.gam = "fs"`) the estimates for the most recent weeks were up to
+  about 8% lower than with `"gam"`, still inside its 95% intervals.
+
+```{r fit-options}
+now_age_bam <- nowcasting_mgcv(dataset = sragBH,
+                               date_onset = DT_SIN_PRI,
+                               date_report = DT_DIGITA,
+                               age_col = Idade,
+                               bins_age = "10 years",
+                               fit = "bam")
+
+now_age_bam_discrete <- nowcasting_mgcv(dataset = sragBH,
+                                        date_onset = DT_SIN_PRI,
+                                        date_report = DT_DIGITA,
+                                        age_col = Idade,
+                                        bins_age = "10 years",
+                                        fit = "bam_discrete")
+
+tibble(dt_event = now_age$total$dt_event,
+       gam = now_age$total$Median,
+       bam = now_age_bam$total$Median,
+       bam_discrete = now_age_bam_discrete$total$Median) |>
+  tail(4)
+```
+
+The three fits agree on the earlier weeks and differ most in the last ones,
+where the nowcast relies most on the model.
+
 ## Forecasting
 
 Setting `K` to a positive number adds `K` weeks beyond the last onset week to the

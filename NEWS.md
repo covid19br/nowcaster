@@ -1,5 +1,12 @@
 # nowcaster (development version)
 
+* `nowcasting_mgcv()` gains an argument `fit` to choose how the GAM is fitted:
+  `"gam"` (default, `mgcv::gam()` as before), `"bam"` (`mgcv::bam()`, about 7
+  times faster on the age-structured example with nowcasts within about 1%) or
+  `"bam_discrete"` (`mgcv::bam(discrete = TRUE)`, over 40 times faster; with
+  `method.group.gam = "fs"` the most recent weeks can differ more). The same
+  argument is available in `nowcasting_no_age_mgcv()` and
+  `nowcasting_age_mgcv()`.
 * `nowcasting_mgcv()` and `nowcasting_inla()` are much faster at building the
   predictive trajectories: the 1,000 sampled delay triangles are now aggregated
   at once, as a matrix, instead of one at a time. On the `sragBH` example,

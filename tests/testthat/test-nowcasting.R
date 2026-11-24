@@ -37,3 +37,32 @@ test_that("old INLA function names are deprecated aliases", {
   expect_warning(try(nowcasting_no_age(), silent = TRUE), "deprecated")
   expect_warning(try(nowcasting_age(), silent = TRUE), "deprecated")
 })
+
+test_that("nowcasting_mgcv() fits with gam, bam and bam_discrete", {
+  fits <- lapply(c(gam = "gam", bam = "bam", bam_discrete = "bam_discrete"),
+                 function(f) {
+                   set.seed(1)
+                   suppressWarnings(
+                     nowcasting_mgcv(dataset = srag_small,
+                                     date_onset = DT_SIN_PRI,
+                                     date_report = DT_DIGITA,
+                                     wdw = 20, fit = f)
+                   )
+                 })
+  for (f in names(fits)) {
+    expect_true(all(c("dt_event", "Median", "LI", "LS", "LIb", "LSb") %in%
+                      names(fits[[f]]$total)), info = f)
+    expect_identical(fits[[f]]$total$dt_event, fits$gam$total$dt_event)
+  }
+  # bam estimates stay within the 95% interval of the gam fit
+  for (f in c("bam", "bam_discrete")) {
+    expect_true(all(fits[[f]]$total$Median >= fits$gam$total$LI &
+                      fits[[f]]$total$Median <= fits$gam$total$LS), info = f)
+  }
+  expect_error(
+    suppressWarnings(nowcasting_mgcv(dataset = srag_small,
+                                     date_onset = DT_SIN_PRI,
+                                     date_report = DT_DIGITA, fit = "glm")),
+    "should be one of"
+  )
+})

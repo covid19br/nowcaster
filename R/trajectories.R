@@ -76,6 +76,26 @@ aggregate_trajectories <- function(dataset, idx, draws, age = FALSE) {
   out
 }
 
+#' Fit the negative binomial GAM with mgcv::gam() or mgcv::bam()
+#'
+#' @param formula Model formula.
+#' @param data Delay triangle.
+#' @param fit `"gam"`, `"bam"` or `"bam_discrete"`, see [nowcasting_mgcv()].
+#'
+#' @return The fitted model.
+#' @keywords internal
+#' @noRd
+fit_nb_gam <- function(formula, data, fit = c("gam", "bam", "bam_discrete")) {
+  fit <- match.arg(fit)
+  switch(fit,
+    gam = mgcv::gam(formula, family = "nb", data = data),
+    bam = mgcv::bam(formula, family = mgcv::nb(), data = data,
+                    method = "fREML"),
+    bam_discrete = mgcv::bam(formula, family = mgcv::nb(), data = data,
+                             method = "fREML", discrete = TRUE)
+  )
+}
+
 #' Sample the missing cells from a negative binomial GAM
 #'
 #' @param fit A `mgcv::gam()` fit with family `"nb"`.

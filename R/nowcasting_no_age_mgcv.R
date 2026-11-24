@@ -5,10 +5,11 @@
 #' Usually called internally by [nowcasting_mgcv()].
 #'
 #' @param dataset data pre-formatted into delays by week for each case, delay-triangle format
+#' @inheritParams nowcasting_mgcv
 #'
 #' @return A list with element 'sample', the predictive trajectories from the negative binomial GAM.
 #' @export
-nowcasting_no_age_mgcv <- function(dataset){
+nowcasting_no_age_mgcv <- function(dataset, fit = c("gam", "bam", "bam_discrete")){
   ## Safe test
   if(missing(dataset)){
     stop("'dataset' is missing in 'nowcasting_no_age()'.")
@@ -21,8 +22,8 @@ nowcasting_no_age_mgcv <- function(dataset){
   ## Y(t) ~ 1 + s(t) + s(delay),
 
   ## Running the Negative Binomial model in mgcv
-  output0 <- mgcv::gam(Y ~ 1 + s(Time) + s(delay),
-                       family = "nb", data = dataset )
+  output0 <- fit_nb_gam(Y ~ 1 + s(Time) + s(delay),
+                        data = dataset, fit = fit)
 
   output <- list()
 

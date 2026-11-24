@@ -138,6 +138,45 @@ now_age$age |>
   theme_bw()
 ```
 
+## Ajustes mais rápidos com `bam()`
+
+O modelo estruturado tem muito mais termos suaves, e a `mgcv::gam()` pode levar
+quase um minuto com estes dados. O argumento `fit` escolhe como o modelo é
+ajustado:
+
+* `"gam"` (padrão): `mgcv::gam()`, como acima.
+* `"bam"`: `mgcv::bam()`, feita para grandes conjuntos de dados. Foi cerca de 7
+  vezes mais rápida aqui, com nowcasts a cerca de 1% dos de `"gam"`.
+* `"bam_discrete"`: `mgcv::bam(discrete = TRUE)`, que também discretiza as
+  covariáveis. Foi mais de 40 vezes mais rápida, mas com a suavização por fator
+  (`method.group.gam = "fs"`) as estimativas das semanas mais recentes ficaram
+  até cerca de 8% abaixo das de `"gam"`, ainda dentro dos seus intervalos de 95%.
+
+```{r fit-options}
+now_age_bam <- nowcasting_mgcv(dataset = sragBH,
+                               date_onset = DT_SIN_PRI,
+                               date_report = DT_DIGITA,
+                               age_col = Idade,
+                               bins_age = "10 years",
+                               fit = "bam")
+
+now_age_bam_discrete <- nowcasting_mgcv(dataset = sragBH,
+                                        date_onset = DT_SIN_PRI,
+                                        date_report = DT_DIGITA,
+                                        age_col = Idade,
+                                        bins_age = "10 years",
+                                        fit = "bam_discrete")
+
+tibble(dt_event = now_age$total$dt_event,
+       gam = now_age$total$Median,
+       bam = now_age_bam$total$Median,
+       bam_discrete = now_age_bam_discrete$total$Median) |>
+  tail(4)
+```
+
+Os três ajustes concordam nas semanas anteriores e diferem mais nas últimas,
+onde o nowcasting depende mais do modelo.
+
 ## Previsão
 
 Definir `K` como um número positivo acrescenta `K` semanas além da última semana de início dos sintomas ao triângulo de atraso, e o modelo passa a prever também casos que ainda não começaram. Aqui cortamos os dados em 4 de julho de 2020, como se estivéssemos fazendo o nowcasting nessa data, e prevemos duas semanas à frente:
