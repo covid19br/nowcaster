@@ -10,11 +10,11 @@ bibentry(
   number="22",
   pages="4363--4377",
   publisher="Wiley Online Library",
-  doi      ="https://doi.org/10.1002/sim.8303"
+  doi      ="10.1002/sim.8303"
 )
 
 bibentry(
-  bibtype = "misc",
+  note = "R package version 1.0.1",
   title="nowcaster: Statistical Models for Notification Delay Correction of Epidemiological Data",
   author="Lopes,  Rafael and Portella,  Tatiana and Economou, Theo and Gomes, Marcelo FC and Bastos,  Leo",
   journal="CRAN: Contributed Packages",
