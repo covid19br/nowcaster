@@ -3,7 +3,7 @@ title: "Nowcasting with INLA"
 output: rmarkdown::html_vignette
 # author: "Rafael Lopes & Leonardo Bastos"
 vignette: >
-  %\VignetteIndexEntry{Nowcasting on Structured data}
+  %\VignetteIndexEntry{Nowcasting with INLA}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
