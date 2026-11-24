@@ -7,7 +7,7 @@
 data.w(
   dataset,
   trim.data,
-  bins_age = c("SI-PNI", "10 years", "5 years", bins_age),
+  bins_age = "SI-PNI",
   date_onset,
   date_report,
   age_col,
@@ -19,9 +19,9 @@ data.w(
 \arguments{
 \item{dataset}{dataset to be formatted as data by week}
 
-\item{trim.data}{How much to trim of the data?}
+\item{trim.data}{Number of most recent weeks to trim out of the data. Default is 0.}
 
-\item{bins_age}{Bins of age to cu the data, parsing from nowcasting_inla}
+\item{bins_age}{Age classes: "SI-PNI", "10 years", "5 years" or a numeric vector of breaks (classes closed on the left). Default is "SI-PNI".}
 
 \item{date_onset}{Column of dates of onset of the events, normally date of onset of first symptoms of cases}
 
@@ -34,7 +34,7 @@ data.w(
 \item{K}{How much weeks to forecast ahead?
 The default for K is 0, no forecasting ahead}
 
-\item{silent}{Deprecated. To be removed.}
+\item{silent}{If TRUE, no messages about trimming and age classes. Deprecated, to be removed.}
 }
 \value{
 Data in weeks format, with the maximum dates for the last week used

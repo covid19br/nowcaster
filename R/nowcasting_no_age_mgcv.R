@@ -22,8 +22,18 @@ nowcasting_no_age_mgcv <- function(dataset, fit = c("gam", "bam", "bam_discrete"
   ## Y(t) ~ 1 + s(t) + s(delay),
 
   ## Running the Negative Binomial model in mgcv
-  output0 <- fit_nb_gam(Y ~ 1 + s(Time) + s(delay),
-                        data = dataset, fit = fit)
+  ## Basis dimensions: mgcv's default of 10, or fewer when the observed part
+  ## of the delay triangle has fewer distinct weeks or delays
+  observed <- dataset[!is.na(dataset$Y), ]
+  k.time <- gam_basis_dim(observed$Time,
+                          "weeks of onset (increase 'wdw')")
+  k.delay <- gam_basis_dim(observed$delay,
+                           "delays (increase 'Dmax')")
+
+  output0 <- fit_nb_gam(
+    stats::as.formula(sprintf("Y ~ 1 + s(Time, k = %d) + s(delay, k = %d)",
+                              k.time, k.delay)),
+    data = dataset, fit = fit)
 
   output <- list()
 

@@ -1,5 +1,25 @@
 # nowcaster (development version)
 
+## Bug fixes
+
+* `trim.data` now works in `nowcasting_mgcv()` and `nowcasting_inla()`: any
+  value above 0 used to stop with "Can't extract columns past the end". It was
+  also silently reset to 0 when `silent = TRUE`.
+* `nowcasting_mgcv()` now works with `Dmax` below 9 (it used to fail inside
+  `mgcv`): the smooths use 10 basis functions as before, or fewer when the data
+  have fewer distinct weeks or delays. Too short windows give an informative
+  error.
+* Age classes now have readable labels, e.g. "0-9", ..., "90+" for
+  `bins_age = "10 years"`, instead of 1, 2, ... (`fx_etaria`). The class
+  number is still in `fx_etaria.num`. Estimates are unchanged.
+* `stringr` is no longer needed: numeric `bins_age` used to require it
+  although it was only a suggested package.
+* The warning "Using default, trimming out 0 days of data" is gone. A message
+  now reports trimming only when data is trimmed, in weeks. Age classes are
+  reported in one message instead of a warning.
+
+## Improvements
+
 * `nowcasting_mgcv()` gains an argument `fit` to choose how the GAM is fitted:
   `"gam"` (default, `mgcv::gam()` as before), `"bam"` (`mgcv::bam()`, about 7
   times faster on the age-structured example with nowcasts within about 1%) or

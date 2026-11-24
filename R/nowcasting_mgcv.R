@@ -239,7 +239,9 @@ nowcasting_mgcv <- function(dataset,
 
   ## Auxiliary date table
 
-  dates <- range(data2model |> dplyr::pull(var = date_onset - 7*trim.data))
+  ## Range of onset weeks in the model data. The data were already trimmed by
+  ## 'trim.data' weeks in data.w() / data.w_no_age().
+  dates <- range(data2model$date_onset)
 
   # Adding forecast
   dates[2] <- dates[2] + 7*K

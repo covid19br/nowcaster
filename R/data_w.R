@@ -5,40 +5,31 @@
 #' Makes the account of maximum days per week to be used.
 #'
 #' @param dataset dataset to be formatted as data by week
-#' @param trim.data How much to trim of the data?
-#' @param bins_age Bins of age to cu the data, parsing from nowcasting_inla
+#' @param trim.data Number of most recent weeks to trim out of the data. Default is 0.
+#' @param bins_age Age classes: "SI-PNI", "10 years", "5 years" or a numeric vector of breaks (classes closed on the left). Default is "SI-PNI".
 #' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases
 #' @param date_report Column of dates of report of the event, normally date of digitation of the notification of cases
 #' @param age_col Age column to be where to  cut the data into age classes
 #' @param use.epiweek If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date.
 #' @param K How much weeks to forecast ahead?
 #' The default for K is 0, no forecasting ahead
-#' @param silent Deprecated. To be removed.
+#' @param silent If TRUE, no messages about trimming and age classes. Deprecated, to be removed.
 #'
 #' @return Data in weeks format, with the maximum dates for the last week used
 #' @keywords internal
 
 data.w <- function(dataset,
                    trim.data,
-                   bins_age = c("SI-PNI", "10 years", "5 years", bins_age),
+                   bins_age = "SI-PNI",
                    date_onset,
                    date_report,
                    age_col,
                    use.epiweek = FALSE,
                    K = 0,
                    silent = FALSE){
-  if(!silent){
-    ## Last digitation date considered
-    if(missing(trim.data)){
-      trim.data <-  0
-      warning("Using default, no trimming out of the data")
-    } else {
-      warning("Using default, trimming out ", trim.data ," days of data", call. = T)
-    }
-  }else{
-    ## Trim.data
-    trim.data <-  0
-  }
+  ## Number of most recent weeks to trim out of the data
+  if (missing(trim.data)) trim.data <- 0
+  trim.data <- check_trim_data(trim.data, silent = silent)
 
   ## Transforming trim.data into weeks
   trim.data.w <- 7*trim.data
@@ -61,40 +52,19 @@ data.w <- function(dataset,
   aux.trimming.date = ifelse( use.epiweek | DT_max_diadasemana == 6, DT_max_diadasemana + 1, 0)
 
 
-  # ## Test for age bins
-  if(!is.numeric(bins_age)){
-    if(missing(bins_age) | is.null(bins_age)){
-      bins_age<-"SI-PNI"
-      warning("Using SI-PNI age bins")
-    } else if(bins_age == "SI-PNI"){
-      bins_age<-c(0,5,12,18,30,seq(40,90,by=10),130)
-      labels_age<-1:(length(bins_age)-1)
-      warning("Bins age as in SI-PNI: ",
-              stringr::str_c(bins_age[bins_age < 90], " "), "90+",
-              call. = T)
-    } else if(bins_age == "10 years"){
-      bins_age<-c(seq(0,90, by = 10),130)
-      labels_age<-1:(length(bins_age)-1)
-      warning("Bins age in 10 years: ",
-              stringr::str_c(bins_age[bins_age < 90], " "), "90+",
-              call. = T)
-    } else if(bins_age == "5 years"){
-      bins_age<-c(seq(0,90, by = 5),130)
-      labels_age<-1:(length(bins_age)-1)
-      warning("Bins age in 5 years: ",
-              stringr::str_c(bins_age[bins_age < 90], " "), "90+",
-              call. = T)
-    }
-    else {
+  ## Age classes
+  if (is.null(bins_age)) bins_age <- "SI-PNI"
+  if (!is.numeric(bins_age)) {
+    bins_age <- switch(bins_age[1],
+      "SI-PNI" = c(0, 5, 12, 18, 30, seq(40, 90, by = 10), 130),
+      "10 years" = c(seq(0, 90, by = 10), 130),
+      "5 years" = c(seq(0, 90, by = 5), 130),
       stop("Age bins are not options of 'SI-PNI', '10 years', '5 years' or numeric vector!")
-    }
-  } else {
-    bins_age<-bins_age
-    labels_age<-1:(length(bins_age)-1)
-    warning("Using bins ages given: ",
-            stringr::str_c(bins_age[bins_age < bins_age[length(bins_age) - 1]], " "),
-            bins_age[length(bins_age) - 1], "+",
-            call. = T)
+    )
+  }
+  labels_age <- age_class_labels(bins_age)
+  if (!silent) {
+    message("Age classes: ", paste(labels_age, collapse = ", "))
   }
 
   # Workaround check
