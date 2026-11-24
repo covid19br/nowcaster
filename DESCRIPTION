@@ -27,6 +27,7 @@ Suggests:
     lme4,
     lubridate,
     rmarkdown,
+    sn,
     stringr,
     testthat (>= 3.0.0)
 Depends: 
@@ -39,4 +40,4 @@ Imports:
     tibble,
     mgcv
 Config/testthat/edition: 3
-Config/Needs/website: tidyverse, lubridate, ggplot2
+Config/Needs/website: tidyverse, lubridate, ggplot2, sn
