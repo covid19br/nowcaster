@@ -3,8 +3,12 @@ citHeader("To cite nowcaster in publications use:")
 bibentry(
   bibtype  = "Article",
   title="A Modelling approach for correcting reporting delays in disease surveillance data",
-  author="Bastos, Leonardo S and Economou, Theodoros and Gomes, Marcelo FC and Villela, Daniel AM and Coelho, Flavio C and Cruz, Oswaldo G and Stoner, Oliver and Bailey, Trevor and Codeço, Claudia T",
-  journal="Statistics in medicine",
+  author   = c(person("Leonardo S.", "Bastos"), person("Theodoros", "Economou"),
+               person("Marcelo F. C.", "Gomes"), person("Daniel A. M.", "Villela"),
+               person("Flavio C.", "Coelho"), person("Oswaldo G.", "Cruz"),
+               person("Oliver", "Stoner"), person("Trevor", "Bailey"),
+               person("Claudia T.", "Codeço")),
+  journal="Statistics in Medicine",
   year="2019",
   volume="38",
   number="22",
@@ -14,12 +18,13 @@ bibentry(
 )
 
 bibentry(
-  note = "R package version 1.0.1",
-  title="nowcaster: Statistical Models for Notification Delay Correction of Epidemiological Data",
-  author="Lopes,  Rafael and Portella,  Tatiana and Economou, Theo and Gomes, Marcelo FC and Bastos,  Leo",
-  journal="CRAN: Contributed Packages",
-  year="2026",
-  month="Sept",
-  publisher="The R Foundation",
-  doi="10.32614/cran.package.nowcaster"
+  bibtype = "Manual",
+  title   = "nowcaster: Statistical Models for Notification Delay Correction of Epidemiological Data",
+  author  = c(person("Rafael", "Lopes"), person("Tatiana", "Portella"),
+              person("Theo", "Economou"), person("Marcelo", "Gomes"),
+              person("Leo", "Bastos")),
+  year    = "2026",
+  note    = "R package version 1.0.1",
+  url     = "https://CRAN.R-project.org/package=nowcaster",
+  doi     = "10.32614/CRAN.package.nowcaster"
 )
