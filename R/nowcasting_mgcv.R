@@ -32,7 +32,7 @@
 #' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases.
 #' @param date_report Column of dates of report of the events, normally the date the notification was recorded in the system.
 #' @param trajectories Returns the predictive trajectories. The default is FALSE.
-#' @param silent Deprecated. Should the warnings be turned off? The default is FALSE.
+#' @param silent If `TRUE`, the function prints no messages. By default (`FALSE`) it reports the age classes used and how many weeks were trimmed, when it trims data.
 #' @param ... list parameters to other functions
 #'
 #' @return A list. Element 'total' is a data.frame with the nowcasting estimate: predictive 'Median',
@@ -92,6 +92,9 @@ nowcasting_mgcv <- function(dataset,
          Please set the K to anything greater than 0 to Forecasting")
   }
   method.group.gam <- match.arg(method.group.gam, c("fs", "by"))
+  if (!isTRUE(silent) && !isFALSE(silent)) {
+    stop("'silent' must be TRUE or FALSE.")
+  }
 
   ## Objects for keep the nowcasting
   ## Filtering out cases without report date

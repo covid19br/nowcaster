@@ -28,7 +28,8 @@
   neither function prints "Joining with `by = ...`". `slope.estimate.quant()`
   no longer warns when `end.week` is left at its default. The remaining
   messages report choices made for the user: the age classes used, and how
-  many weeks were trimmed.
+  many weeks were trimmed. Set `silent = TRUE` to turn them off; `silent` is
+  no longer deprecated.
 * `nowcasting_mgcv()` checks its inputs again (missing data set or columns,
   `K < 0`, unknown `method.group.gam`), with the same messages as
   `nowcasting_inla()`.

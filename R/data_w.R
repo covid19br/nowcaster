@@ -13,7 +13,7 @@
 #' @param use.epiweek If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date.
 #' @param K How much weeks to forecast ahead?
 #' The default for K is 0, no forecasting ahead
-#' @param silent If TRUE, no messages about trimming and age classes. Deprecated, to be removed.
+#' @param silent If TRUE, no messages about trimming and age classes.
 #'
 #' @return Data in weeks format, with the maximum dates for the last week used
 #' @keywords internal

@@ -16,7 +16,7 @@
 #' @param return.age Deprecated. If the estimate by Age should be returned. Default is TRUE.
 #' @param bins_age Age bins to do the nowcasting, it receive a vector of age bins,
 #' or options between, "SI-PNI", "10 years", "5 years". The default is "SI-PNI".
-#' @param silent Deprecated. Should the warnings be turned off? The default is FALSE.
+#' @param silent If `TRUE`, the function prints no messages. By default (`FALSE`) it reports the age classes used and how many weeks were trimmed, when it trims data.
 #' @param K (in weeks) How many weeks to forecast ahead. The default is K = 0, no forecasting ahead.
 #' @param age_col Column with the age (in years) of each case. If given, the structured (age-stratified) model is fitted.
 #' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases.
@@ -98,6 +98,9 @@ nowcasting_inla <- function(dataset,
   if(K < 0 ){
     stop("K less than 0, we cannot produce backcasting! \n
          Please set the K to anything greater than 0 to Forecasting")
+  }
+  if (!isTRUE(silent) && !isFALSE(silent)) {
+    stop("'silent' must be TRUE or FALSE.")
   }
 
   # Dealing with INLA output

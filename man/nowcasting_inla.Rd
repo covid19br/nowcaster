@@ -53,7 +53,7 @@ or options between, "SI-PNI", "10 years", "5 years". The default is "SI-PNI".}
 
 \item{return.age}{Deprecated. If the estimate by Age should be returned. Default is TRUE.}
 
-\item{silent}{Deprecated. Should the warnings be turned off? The default is FALSE.}
+\item{silent}{If \code{TRUE}, the function prints no messages. By default (\code{FALSE}) it reports the age classes used and how many weeks were trimmed, when it trims data.}
 
 \item{K}{(in weeks) How many weeks to forecast ahead. The default is K = 0, no forecasting ahead.}
 

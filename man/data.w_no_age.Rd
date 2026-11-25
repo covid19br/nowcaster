@@ -28,7 +28,7 @@ data.w_no_age(
 \item{K}{How much weeks to forecast ahead?
 \strong{Default} K is 0, no forecasting ahead}
 
-\item{silent}{If TRUE, no message about trimming. Deprecated, to be removed.}
+\item{silent}{If TRUE, no message about trimming.}
 }
 \value{
 Data in weeks format, with the maximum dates for the last week used

@@ -49,7 +49,7 @@ or options between, "SI-PNI", "10 years", "5 years". The default is "SI-PNI".}
 
 \item{return.age}{Deprecated. If the estimate by Age should be returned. Default is TRUE.}
 
-\item{silent}{Deprecated. Should the warnings be turned off? The default is FALSE.}
+\item{silent}{If \code{TRUE}, the function prints no messages. By default (\code{FALSE}) it reports the age classes used and how many weeks were trimmed, when it trims data.}
 
 \item{method.group.gam}{Type of smooth used by age class in the structured model: "fs" (factor smooth, default) or "by" (one smooth per age class).}
 

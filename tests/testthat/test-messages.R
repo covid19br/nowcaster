@@ -43,3 +43,26 @@ test_that("nowcasting_mgcv() checks its inputs", {
                                method.group.gam = "xx"),
                "should be one of")
 })
+
+test_that("silent = TRUE turns off the age-class and trimming messages", {
+  run <- function(silent) {
+    set.seed(1)
+    nowcasting_mgcv(dataset = srag_small, date_onset = DT_SIN_PRI,
+                    date_report = DT_DIGITA, wdw = 20, age_col = Idade,
+                    bins_age = c(0, 20, 60, 130), trim.data = 1,
+                    fit = "bam_discrete", silent = silent)
+  }
+  expect_message(expect_message(run(FALSE), "Trimming out"), "Age classes")
+  expect_silent(quiet <- run(TRUE))
+  # silent only changes what is printed, not the result
+  expect_equal(quiet, suppressMessages(run(FALSE)))
+})
+
+test_that("silent must be TRUE or FALSE", {
+  expect_error(nowcasting_mgcv(dataset = srag_small, date_onset = DT_SIN_PRI,
+                               date_report = DT_DIGITA, silent = "yes"),
+               "'silent' must be TRUE or FALSE")
+  expect_error(nowcasting_inla(dataset = srag_small, date_onset = DT_SIN_PRI,
+                               date_report = DT_DIGITA, silent = NA),
+               "'silent' must be TRUE or FALSE")
+})
