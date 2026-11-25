@@ -105,10 +105,10 @@ nowcasting_inla <- function(dataset,
   INLAoutput.aux = INLAoutput
 
   ## Forcing INLA output TRUE when INLAoutput is FALSE
-  if(INLAoutputOnly == T & INLAoutput == F) INLAoutput.aux = T
+  if(INLAoutputOnly == TRUE & INLAoutput == FALSE) INLAoutput.aux = TRUE
 
   ## Forcing INLA output TRUE when either WAIC or DIC are TRUE
-  if((WAIC == T | DIC == T) & INLAoutput.aux == F) INLAoutput.aux = T
+  if((WAIC == TRUE | DIC == TRUE) & INLAoutput.aux == FALSE) INLAoutput.aux = TRUE
 
 
   ## Objects for keep the nowcasting
@@ -248,7 +248,7 @@ nowcasting_inla <- function(dataset,
     if(zero_inflated){
       ## Nowcasting estimate
       sample.now <- nowcasting_no_age_inla(dataset = data.inla,
-                                      zero_inflated = T,
+                                      zero_inflated = TRUE,
                                       timeREmodel = timeREmodel,
                                       INLAoutput = INLAoutput.aux,
                                       INLAoutputOnly = INLAoutputOnly,
@@ -256,7 +256,7 @@ nowcasting_inla <- function(dataset,
     }else{
       ## Nowcasting estimate
       sample.now <- nowcasting_no_age_inla(dataset = data.inla,
-                                      zero_inflated = F,
+                                      zero_inflated = FALSE,
                                       timeREmodel = timeREmodel,
                                       INLAoutput = INLAoutput.aux,
                                       INLAoutputOnly = INLAoutputOnly,
@@ -266,7 +266,7 @@ nowcasting_inla <- function(dataset,
     ## Summary on the posteriors of nowcasting
     if(!INLAoutputOnly){
       now_summary<-nowcasting.summary(trajectory = sample.now$sample,
-                                      age = F)
+                                      age = FALSE)
     }else{
       now_summary <- list()
     }
@@ -277,7 +277,7 @@ nowcasting_inla <- function(dataset,
     if(zero_inflated){
       ## Zero inflated by age
       sample.now <- nowcasting_age_inla(dataset = data.inla,
-                                   zero_inflated = T,
+                                   zero_inflated = TRUE,
                                    timeREmodel = timeREmodel,
                                    INLAoutput = INLAoutput.aux,
                                    INLAoutputOnly = INLAoutputOnly,
@@ -285,7 +285,7 @@ nowcasting_inla <- function(dataset,
     }else{
       ## Negative binomial by age
       sample.now <- nowcasting_age_inla(dataset = data.inla,
-                                   zero_inflated = F,
+                                   zero_inflated = FALSE,
                                    timeREmodel = timeREmodel,
                                    INLAoutput = INLAoutput.aux,
                                    INLAoutputOnly = INLAoutputOnly,
@@ -295,7 +295,7 @@ nowcasting_inla <- function(dataset,
     ## Summary on the posteriors of nowcasting
     if(!INLAoutputOnly){
       now_summary<-nowcasting.summary(trajectory = sample.now$sample,
-                                    age = T)
+                                    age = TRUE)
     } else {
       now_summary <- list()
     }

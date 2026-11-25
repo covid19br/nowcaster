@@ -12,9 +12,9 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = FALSE,
   comment = "#>",
-  warning = F,
-  message = F,
-  echo = T
+  warning = FALSE,
+  message = FALSE,
+  echo = TRUE
 )
 ```
 
@@ -67,7 +67,7 @@ A `nowcasting_inla` pode também retornar a curva sobre a qual a janela de açã
 nowcasting_bh_no_age <- nowcasting_inla(dataset = sragBH, 
                                         date_onset = DT_SIN_PRI, 
                                         date_report = DT_DIGITA, 
-                                        data.by.week = T)
+                                        data.by.week = TRUE)
 head(nowcasting_bh_no_age$data)
 ```
 
@@ -98,7 +98,7 @@ library(ggplot2)
 data_by_week <- nowcasting_bh_no_age$data |> 
   dplyr::group_by(dt_event) |> 
   dplyr::reframe(
-    observed = sum(Y, na.rm = T)
+    observed = sum(Y, na.rm = TRUE)
   ) |>
   dplyr::filter(dt_event >= max(dt_event)-270)
 
@@ -107,7 +107,7 @@ nowcasting_bh_no_age$total |>
   ggplot(aes(x = dt_event, y = Median, col = 'Nowcasting')) +
   geom_line(data = data_by_week, 
             aes(x = dt_event, y = observed, col = 'Observed'))+
-  geom_ribbon(aes(ymin = LI, ymax = LS, col = NA), alpha = 0.2, show.legend = F)+
+  geom_ribbon(aes(ymin = LI, ymax = LS, col = NA), alpha = 0.2, show.legend = FALSE)+
   geom_line()+
   theme_bw()+
   theme(legend.position = "bottom", axis.text.x = element_text(angle = 90)) +
@@ -135,7 +135,7 @@ Este novo modelo corrige o atraso levando em conta os efeitos das classes etári
 ```{r nowcasting}
 nowcasting_bh_age <- nowcasting_inla(dataset = sragBH, 
                                      bins_age = "10 years",
-                                     data.by.week = T, 
+                                     data.by.week = TRUE, 
                                      date_onset = DT_SIN_PRI, 
                                      date_report = DT_DIGITA,
                                      age_col = Idade)
@@ -149,7 +149,7 @@ library(ggplot2)
 dados_by_week <- nowcasting_bh_age$data |> 
   dplyr::group_by(dt_event) |> 
   dplyr::reframe(
-    observed = sum(Y, na.rm = T)
+    observed = sum(Y, na.rm = TRUE)
   ) |>
   dplyr::filter(dt_event >= max(dt_event)-270)
 
@@ -163,7 +163,7 @@ nowcasting_bh_age$total |>
                 col = "Observed"))+
   geom_ribbon(aes(x = dt_event, y = Median,
                   ymin = LI, ymax = LS), 
-              alpha = 0.2, show.legend = F)+
+              alpha = 0.2, show.legend = FALSE)+
   theme_bw()+
   theme(legend.position = "bottom", axis.text.x = element_text(angle = 90))+
   scale_color_manual(values = c('grey50', 'black'), name = '')+
@@ -189,7 +189,7 @@ ggplot()+
               aes(x = dt_event, y = Median,
                   ymin = LI, ymax = LS,
                   fill = "Nowcasting - Non-structured"), 
-              alpha = 0.5, show.legend = F)+
+              alpha = 0.5, show.legend = FALSE)+
   geom_line(data = nowcasting_bh_age$total |> 
               filter(dt_event >= (max(dt_event)-270)),
             aes(x = dt_event, y = Median, 
@@ -199,7 +199,7 @@ ggplot()+
               aes(x = dt_event, y = Median,
                   ymin = LI, ymax = LS,
                   fill = "Nowcasting - Structured"), 
-              alpha = 0.5, show.legend = F)+
+              alpha = 0.5, show.legend = FALSE)+
   theme_bw()+
   theme(legend.position = "bottom", 
         axis.text.x = element_text(angle = 90))+

@@ -98,10 +98,10 @@ slope.estimate.quant <- function(end.week, trajectories, window=3){
     slope <- stats::coefficients(tmp) |>
       dplyr::select(Date) |>
       ## Quantiles calculations
-      dplyr::summarise(LI = stats::quantile(Date, probs=.05, na.rm=T),
-                       Q1 = stats::quantile(Date, probs=.25, na.rm=T),
-                       Q3 = stats::quantile(Date, probs=.75, na.rm=T),
-                       LS = stats::quantile(Date, probs=.95, na.rm=T)) |>
+      dplyr::summarise(LI = stats::quantile(Date, probs=.05, na.rm=TRUE),
+                       Q1 = stats::quantile(Date, probs=.25, na.rm=TRUE),
+                       Q3 = stats::quantile(Date, probs=.75, na.rm=TRUE),
+                       LS = stats::quantile(Date, probs=.95, na.rm=TRUE)) |>
       dplyr::ungroup() |>
       dplyr::transmute(slope = dplyr::case_when(
         LI > 0 ~ 1,

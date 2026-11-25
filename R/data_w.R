@@ -40,7 +40,7 @@ data.w <- function(dataset,
   ## Maximum date to be considered on the estimation
   DT_max <- max(dataset |>
                   dplyr::pull(var = {{date_report}}),
-                na.rm = T) - trim.data.w #+ K.w
+                na.rm = TRUE) - trim.data.w #+ K.w
 
   ## Last day of the week for the digitation date calculation
   DT_max_diadasemana <- as.integer(format(DT_max, "%w"))
@@ -104,7 +104,7 @@ data.w <- function(dataset,
       fx_etaria = cut(age_col,
                       breaks = bins_age,
                       labels = labels_age,
-                      right = F)
+                      right = FALSE)
     ) |>
     dplyr::select(-dt.aux, -DT.sun.aux) |>
     tidyr::drop_na(fx_etaria) |>

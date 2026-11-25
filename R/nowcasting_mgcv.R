@@ -231,7 +231,7 @@ nowcasting_mgcv <- function(dataset,
       sample.now <- nowcasting_no_age_mgcv(dataset = data2model, fit = fit)
 
       now_summary<-nowcasting.summary(trajectory = sample.now$sample,
-                                      age = F)
+                                      age = FALSE)
   } else {
     # Nowcasting by age groups
 
@@ -241,7 +241,7 @@ nowcasting_mgcv <- function(dataset,
                                       fit = fit)
 
     now_summary<-nowcasting.summary(trajectory = sample.now$sample,
-                                    age = T)
+                                    age = TRUE)
   }
 
   ## Objects to be returned

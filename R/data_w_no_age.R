@@ -36,7 +36,7 @@ data.w_no_age<-function(dataset,
   ## Maximum date to be considered on the estimation (Last day)
   DT_max <- max(dataset |>
                   dplyr::pull(var = {{date_report}}),
-                na.rm = T) - trim.data.w #+ K.w
+                na.rm = TRUE) - trim.data.w #+ K.w
 
 
   ## Day of the week of the last day

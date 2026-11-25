@@ -70,8 +70,8 @@ nowcasting_no_age_inla <- function(dataset,
   output0 <- INLA::inla(model,
                         family = family,
                         data = dataset,
-                        control.predictor = list(link = 1, compute = T),
-                        control.compute = list( config = T, waic=WAIC, dic=DIC),
+                        control.predictor = list(link = 1, compute = TRUE),
+                        control.compute = list( config = TRUE, waic=WAIC, dic=DIC),
                         control.family = control.family
   )
 
