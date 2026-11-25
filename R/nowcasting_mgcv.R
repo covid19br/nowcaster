@@ -77,101 +77,21 @@ nowcasting_mgcv <- function(dataset,
   # Workaround check
   Y <- Time <- delay <- dt.aux <- fx_etaria <- Delay <- NULL
 
-  # ## Safe tests
-  # if(missing(dataset)){
-  #   stop("Dataset is missing!")
-  # }
-  # if(ncol(dataset) < 2){
-  #   if(!missing(age_col) & ncol(dataset) < 3){
-  #     stop("Missing 'age_col'! \n
-  #          Dataset does not have 3 columns!")
-  #   }else{
-  #     stop("Dataset does not have 2 columns!")
-  #   }
-  #
-  # }
-  # if(missing(date_onset) | missing(date_report)){
-  #   stop("'date_onset' or 'date_report' missing! Please give a column name for each of this parameters")
-  # }
-  # if(K < 0 ){
-  #   stop("K less than 0, we cannot produce backcasting! \n
-  #        Please set the K to anything greater than 0 to Forecasting")
-  # }
-  #
-  #
-  # ## Warnings
-  # if(missing(silent) | silent == FALSE){
-  #
-  #   ## K parameter and trim.data warnings
-  #   if (K > 0 & trim.data != 0){
-  #     warning(paste0("Using K = ", K, " and trim.data = ", trim.data, ", is that right?"))
-  #   }else{
-  #     if(K > 0){
-  #       message(paste0("Forecasting with K ", K, " ahead"))
-  #     }else{
-  #       message("Nowcasting only")
-  #     }
-  #   }
-  #
-    #     ## Missing trim.data warning
-    # if(missing(trim.data)){
-    #   trim.data <- 0
-    #   # warning("Using default to trim dates, 'trim.data = 0'")
-    # }else{
-    #   trim.data<-trim.data
-    #   # message("Using trim.data inputed")
-    # }
-  #   ## Missing Dmax warning
-  #   if(missing(Dmax)){
-  #     Dmax <- 15
-  #     warning("Using default to maximum delay, 'Dmax = 15'")
-  #   }else{
-  #     Dmax<-Dmax
-  #     message("Using Dmax inputed")
-  #   }
-  #   ## Missing wdw warning
-  #   if(missing(wdw)){
-  #     wdw <- 30
-  #     warning("Using default to window of action, 'wdw = 30'")
-  #   }else{
-  #     wdw<-wdw
-  #     message("Using wdw inputed")
-  #   }
-  #   ## Missing data.by.week warning
-  #   if(missing(data.by.week)){
-  #     data.by.week <- FALSE
-  #     warning("Using default to returning option for the data, 'data.by.week = FALSE'")
-  #   }else{
-  #     data.by.week<-data.by.week
-  #     message("Returning 'data.by.week'")
-  #   }
-  #
-  #   if(missing(trajectories) | trajectories == FALSE){
-  #     warning("Not returning trajectories")
-  #   }else{
-  #     trajectories = TRUE
-  #     message("Trajectories returned")
-  #   }
-  #
-  #
-  #   ## Missing age_col warning
-  #   if(missing(age_col)){
-  #     warning("'age_col' missing, nowcasting with unstructured model")
-  #     ## Missing bins_age column warning
-  #   }else{
-  #     message("'age_col' inputed, nowcasting with structured model")
-  #
-  #     if(missing(bins_age)){
-  #       bins_age <- "SI-PNI"
-  #       warning("Using 'SI-PNI' age bins!")
-  #     }else{
-  #       bins_age<-bins_age
-  #       message("Using age bins inputed")
-  #     }
-  #
-  #   }
-  # }
-  #
+  ## Input checks
+  if(missing(dataset)){
+    stop("Dataset is missing!")
+  }
+  if(ncol(dataset) < 2){
+    stop("Dataset does not have 2 columns!")
+  }
+  if(missing(date_onset) | missing(date_report)){
+    stop("'date_onset' or 'date_report' missing! Please give a column name for each of this parameters")
+  }
+  if(K < 0 ){
+    stop("K less than 0, we cannot produce backcasting! \n
+         Please set the K to anything greater than 0 to Forecasting")
+  }
+  method.group.gam <- match.arg(method.group.gam, c("fs", "by"))
 
   ## Objects for keep the nowcasting
   ## Filtering out cases without report date
@@ -236,7 +156,6 @@ nowcasting_mgcv <- function(dataset,
   }
 
 
-
   ## Auxiliary date table
 
   ## Range of onset weeks in the model data. The data were already trimmed by
@@ -246,14 +165,6 @@ nowcasting_mgcv <- function(dataset,
   # Adding forecast
   dates[2] <- dates[2] + 7*K
 
-  # if(K==0){
-  #   dates <- range(data.inla |>
-  #                   dplyr::pull(var = date_onset - 7*trim.data))
-  # } else {
-  #   ## This is done to explicitly say for the forecast part that its date of onset is the present date
-  #   date_k <- max(data.inla$date_onset) + 7*K - 7*trim.data
-  #   dates <- range(data.inla$date_onset, date_k)
-  # }
 
   ## To make an auxiliary date table with each date plus an amount of dates  to forecast
   tbl.date.aux <- tibble::tibble(
@@ -263,7 +174,7 @@ nowcasting_mgcv <- function(dataset,
 
   ## Joining auxiliary date tables
   data2model <- data2model  |>
-    dplyr::left_join(tbl.date.aux)
+    dplyr::left_join(tbl.date.aux, by = "date_onset")
 
   ## Time maximum to be considered
   Tmax.id <- max(data2model$Time)
@@ -286,7 +197,7 @@ nowcasting_mgcv <- function(dataset,
   ## Joining the auxiliary date table by Stratum
   if(missing(age_col)){
     data2model <- data2model  |>
-      dplyr::full_join(tbl.NA) |>  #View()
+      dplyr::full_join(tbl.NA, by = c("date_onset", "delay", "Time")) |>
       dplyr::mutate(
         Y = ifelse(Time + delay > Tmax.id, as.numeric(NA), Y),
         ## If Time + Delay is greater than Tmax, fill with NA
@@ -298,7 +209,7 @@ nowcasting_mgcv <- function(dataset,
       tidyr::drop_na(delay)
   }else {
     data2model <- data2model  |>
-      dplyr::full_join(tbl.NA)  |>   #View()
+      dplyr::full_join(tbl.NA, by = c("date_onset", "delay", "fx_etaria", "Time")) |>
       dplyr::mutate(
         Y = ifelse(Time + delay > Tmax.id, as.numeric(NA), Y),
         ## If Time + Delay is greater than Tmax, fill with NA
@@ -331,7 +242,6 @@ nowcasting_mgcv <- function(dataset,
 
     now_summary<-nowcasting.summary(trajectory = sample.now$sample,
                                     age = T)
-    # l<-0
   }
 
   ## Objects to be returned

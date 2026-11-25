@@ -34,11 +34,14 @@ slope.estimate.quant <- function(end.week, trajectories, window=3){
   if(missing(trajectories)){
     stop("'trajectories' is missing!")
   }
+  if (!requireNamespace("lme4", quietly = TRUE)) {
+    stop("Package 'lme4' is needed for this function. Install it with install.packages(\"lme4\").",
+         call. = FALSE)
+  }
 
   ## If 'end.week' is missing uses the max. date from trajectories
   if(missing(end.week)){
     end.week<-max(trajectories$dt_event)
-    warning("Using max. date in 'trajectories' as 'end.week'")
   }
 
   ## Handling trajectories object

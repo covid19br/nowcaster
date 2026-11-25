@@ -87,12 +87,24 @@ aggregate_trajectories <- function(dataset, idx, draws, age = FALSE) {
 #' @noRd
 fit_nb_gam <- function(formula, data, fit = c("gam", "bam", "bam_discrete")) {
   fit <- match.arg(fit)
-  switch(fit,
-    gam = mgcv::gam(formula, family = "nb", data = data),
-    bam = mgcv::bam(formula, family = mgcv::nb(), data = data,
-                    method = "fREML"),
-    bam_discrete = mgcv::bam(formula, family = mgcv::nb(), data = data,
-                             method = "fREML", discrete = TRUE)
+  ## The age-structured model with factor smooths, s(Time, fx_etaria, bs = "fs")
+  ## + s(delay, fx_etaria, bs = "fs"), makes mgcv warn about "repeated 1-d
+  ## smooths of same variable": both smooths share the age factor, which is the
+  ## intended model. Only that warning is muffled.
+  withCallingHandlers(
+    switch(fit,
+      gam = mgcv::gam(formula, family = "nb", data = data),
+      bam = mgcv::bam(formula, family = mgcv::nb(), data = data,
+                      method = "fREML"),
+      bam_discrete = mgcv::bam(formula, family = mgcv::nb(), data = data,
+                               method = "fREML", discrete = TRUE)
+    ),
+    warning = function(w) {
+      if (grepl("repeated 1-d smooths of same variable", conditionMessage(w),
+                fixed = TRUE)) {
+        invokeRestart("muffleWarning")
+      }
+    }
   )
 }
 

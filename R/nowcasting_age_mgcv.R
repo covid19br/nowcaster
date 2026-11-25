@@ -16,23 +16,6 @@ nowcasting_age_mgcv <- function(dataset, method = "fs",
   # Workaround check
   fx_etaria <- NULL
 
-  # ## [Not in use] Check for zero-inflated
-  # if (zero_inflated ){
-  #   family <- "zeroinflatednbinomial2"
-  #   control.family <- list(
-  #     hyper = list("theta1" = list(prior = "loggamma",
-  #                                  param = c(0.001, 0.001)),
-  #                  # INLA default fro a
-  #                  "theta2" = list(prior = "gaussian",
-  #                                  param = c(2, 1)))
-  #   )
-  # } else {
-  #   family <- 'nbinomial'
-  #   control.family <- list(
-  #     hyper = list("theta" = list(prior = "loggamma",
-  #                                 param = c(0.001, 0.001)))
-  #   )
-  # }
 
   index.missing <- which(is.na(dataset$Y))
 

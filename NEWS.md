@@ -12,6 +12,9 @@
 * Age classes now have readable labels, e.g. "0-9", ..., "90+" for
   `bins_age = "10 years"`, instead of 1, 2, ... (`fx_etaria`). The class
   number is still in `fx_etaria.num`. Estimates are unchanged.
+* `nowcasting_inla()` with `age_col`, `zero_inflated = TRUE` and
+  `trajectories = TRUE` silently fitted the model without zero inflation. The
+  zero-inflated model is now used whenever `zero_inflated = TRUE`.
 * `stringr` is no longer needed: numeric `bins_age` used to require it
   although it was only a suggested package.
 * The warning "Using default, trimming out 0 days of data" is gone. A message
@@ -20,6 +23,16 @@
 
 ## Improvements
 
+* Quieter output. `nowcasting_inla()` no longer prints a warning or message
+  for every argument left at its default (six warnings on a default call), and
+  neither function prints "Joining with `by = ...`". `slope.estimate.quant()`
+  no longer warns when `end.week` is left at its default. The remaining
+  messages report choices made for the user: the age classes used, and how
+  many weeks were trimmed.
+* `nowcasting_mgcv()` checks its inputs again (missing data set or columns,
+  `K < 0`, unknown `method.group.gam`), with the same messages as
+  `nowcasting_inla()`.
+* `slope.estimate.quant()` gives an informative error when 'lme4' is missing.
 * `nowcasting_mgcv()` gains an argument `fit` to choose how the GAM is fitted:
   `"gam"` (default, `mgcv::gam()` as before), `"bam"` (`mgcv::bam()`, about 7
   times faster on the age-structured example with nowcasts within about 1%) or

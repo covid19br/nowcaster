@@ -20,7 +20,7 @@ nowcasting.summary <- function(trajectory, age = FALSE){
 
   total.summy <- trajectory |>
     dplyr::group_by(Time, dt_event, sample) |>
-    dplyr::summarise(Y = sum(Y, na.rm = T)) |>
+    dplyr::summarise(Y = sum(Y, na.rm = T), .groups = "drop") |>
     dplyr::group_by(Time, dt_event) |>
     dplyr::summarise(Median = stats::median(Y, na.rm = T),
                      LI = stats::quantile(Y, probs = 0.025, na.rm = T),
