@@ -17,7 +17,7 @@ data.w_no_age(
 \arguments{
 \item{dataset}{dataset to be formatted as data by week}
 
-\item{trim.data}{How much to trim of the data?}
+\item{trim.data}{Number of most recent weeks to trim out of the data. Default is 0.}
 
 \item{date_onset}{Column of dates of onset of the events, normally date of onset of first symptoms of cases}
 
@@ -28,7 +28,7 @@ data.w_no_age(
 \item{K}{How much weeks to forecast ahead?
 \strong{Default} K is 0, no forecasting ahead}
 
-\item{silent}{DEPRECATED to be removed.}
+\item{silent}{If TRUE, no message about trimming.}
 }
 \value{
 Data in weeks format, with the maximum dates for the last week used

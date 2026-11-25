@@ -16,7 +16,7 @@
 #' @param return.age Deprecated. If the estimate by Age should be returned. Default is TRUE.
 #' @param bins_age Age bins to do the nowcasting, it receive a vector of age bins,
 #' or options between, "SI-PNI", "10 years", "5 years". The default is "SI-PNI".
-#' @param silent Deprecated. Should the warnings be turned off? The default is FALSE.
+#' @param silent If `TRUE`, the function prints no messages. By default (`FALSE`) it reports the age classes used and how many weeks were trimmed, when it trims data.
 #' @param K (in weeks) How many weeks to forecast ahead. The default is K = 0, no forecasting ahead.
 #' @param age_col Column with the age (in years) of each case. If given, the structured (age-stratified) model is fitted.
 #' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases.
@@ -99,110 +99,19 @@ nowcasting_inla <- function(dataset,
     stop("K less than 0, we cannot produce backcasting! \n
          Please set the K to anything greater than 0 to Forecasting")
   }
+  if (!isTRUE(silent) && !isFALSE(silent)) {
+    stop("'silent' must be TRUE or FALSE.")
+  }
 
   # Dealing with INLA output
 
   INLAoutput.aux = INLAoutput
 
   ## Forcing INLA output TRUE when INLAoutput is FALSE
-  if(INLAoutputOnly == T & INLAoutput == F) INLAoutput.aux = T
+  if(INLAoutputOnly == TRUE & INLAoutput == FALSE) INLAoutput.aux = TRUE
 
   ## Forcing INLA output TRUE when either WAIC or DIC are TRUE
-  if((WAIC == T | DIC == T) & INLAoutput.aux == F) INLAoutput.aux = T
-
-
-  ## Warnings
-  if(missing(silent) | silent == FALSE){
-
-    ## K parameter and trim.data warnings
-    if (K > 0 & trim.data != 0){
-      warning(paste0("Using K = ", K, " and trim.data = ", trim.data, ", is that right?"))
-    }else{
-      if(K > 0){
-        message(paste0("Forecasting with K ", K, " ahead"))
-      }else{
-        message("Nowcasting only")
-      }
-    }
-
-        ## Missing trim.data warning
-    if(missing(trim.data)){
-      trim.data <- 0
-      warning("Using default to trim dates, 'trim.data = 0'")
-    }else{
-      trim.data<-trim.data
-      message("Using trim.data inputed")
-    }
-    ## Missing Dmax warning
-    if(missing(Dmax)){
-      Dmax <- 15
-      warning("Using default to maximum delay, 'Dmax = 15'")
-    }else{
-      Dmax<-Dmax
-      message("Using Dmax inputed")
-    }
-    ## Missing wdw warning
-    if(missing(wdw)){
-      wdw <- 30
-      warning("Using default to window of action, 'wdw = 30'")
-    }else{
-      wdw<-wdw
-      message("Using wdw inputed")
-    }
-    ## Missing data.by.week warning
-    if(missing(data.by.week)){
-      data.by.week <- FALSE
-      warning("Using default to returning option for the data, 'data.by.week = FALSE'")
-    }else{
-      data.by.week<-data.by.week
-      message("Returning 'data.by.week'")
-    }
-
-    if(missing(trajectories) | trajectories == FALSE){
-      warning("Not returning trajectories")
-    }else{
-      trajectories = TRUE
-      message("Trajectories returned")
-
-      # Nao entendi esse warning (Leo)
-      if(!missing(age_col) & !missing(zero_inflated)){
-        zero_inflated<-FALSE
-        warning("'age_col' parsed, 'zero_inflated' ignored!")
-      }
-    }
-
-
-    # ## Missing return.age warning
-    # if(missing(return.age)){
-    #   return.age <- TRUE
-    #   warning("Using default to returning estimate by age, return.age = TRUE")
-    # }
-    ## Missing age_col warning
-    if(missing(age_col)){
-      warning("'age_col' missing, nowcasting with unstructured model")
-      ## Missing bins_age column warning
-    }else{
-      message("'age_col' inputed, nowcasting with structured model")
-
-      if(missing(bins_age)){
-        bins_age <- "SI-PNI"
-        warning("Using 'SI-PNI' age bins!")
-      }else{
-        bins_age<-bins_age
-        message("Using age bins inputed")
-      }
-
-    }
-  }
-  # else{
-  #     bins_age<-bins_age;
-  #     trim.data<-trim.data;
-  #     Dmax<-Dmax;
-  #     wdw<-wdw;
-  #     data.by.week<-data.by.week;
-  #     zero_inflated<-zero_inflated
-  #   }
-
+  if((WAIC == TRUE | DIC == TRUE) & INLAoutput.aux == FALSE) INLAoutput.aux = TRUE
 
 
   ## Objects for keep the nowcasting
@@ -268,29 +177,15 @@ nowcasting_inla <- function(dataset,
   }
 
 
-
-  # ## Maximum recording date
-  # max.date_report = data.clean %>%
-  #   dplyr::pull(var = {{date_report}}) %>%
-  #   max(na.rm = T)
-
-
-
   ## Auxiliary date table
 
-  dates <- range(data.inla |> dplyr::pull(var = date_onset - 7*trim.data))
+  ## Range of onset weeks in the model data. The data were already trimmed by
+  ## 'trim.data' weeks in data.w() / data.w_no_age().
+  dates <- range(data.inla$date_onset)
 
   # Adding forecast
   dates[2] <- dates[2] + 7*K
 
-  # if(K==0){
-  #   dates <- range(data.inla |>
-  #                   dplyr::pull(var = date_onset - 7*trim.data))
-  # } else {
-  #   ## This is done to explicitly say for the forecast part that its date of onset is the present date
-  #   date_k <- max(data.inla$date_onset) + 7*K - 7*trim.data
-  #   dates <- range(data.inla$date_onset, date_k)
-  # }
 
   ## To make an auxiliary date table with each date plus an amount of dates  to forecast
   tbl.date.aux <- tibble::tibble(
@@ -300,7 +195,7 @@ nowcasting_inla <- function(dataset,
 
   ## Joining auxiliary date tables
   data.inla <- data.inla  |>
-    dplyr::left_join(tbl.date.aux)
+    dplyr::left_join(tbl.date.aux, by = "date_onset")
 
   ## Time maximum to be considered
   Tmax.id <- max(data.inla$Time)
@@ -323,7 +218,7 @@ nowcasting_inla <- function(dataset,
   ## Joining the auxiliary date table by Stratum
   if(missing(age_col)){
     data.inla <- data.inla  |>
-      dplyr::full_join(tbl.NA) |>  #View()
+      dplyr::full_join(tbl.NA, by = c("date_onset", "delay", "Time")) |>
       dplyr::mutate(
         Y = ifelse(Time + delay > Tmax.id, as.numeric(NA), Y),
         ## If Time + Delay is greater than Tmax, fill with NA
@@ -335,7 +230,7 @@ nowcasting_inla <- function(dataset,
       tidyr::drop_na(delay)
   }else {
     data.inla <- data.inla  |>
-      dplyr::full_join(tbl.NA)  |>   #View()
+      dplyr::full_join(tbl.NA, by = c("date_onset", "delay", "fx_etaria", "Time")) |>
       dplyr::mutate(
         Y = ifelse(Time + delay > Tmax.id, as.numeric(NA), Y),
         ## If Time + Delay is greater than Tmax, fill with NA
@@ -356,7 +251,7 @@ nowcasting_inla <- function(dataset,
     if(zero_inflated){
       ## Nowcasting estimate
       sample.now <- nowcasting_no_age_inla(dataset = data.inla,
-                                      zero_inflated = T,
+                                      zero_inflated = TRUE,
                                       timeREmodel = timeREmodel,
                                       INLAoutput = INLAoutput.aux,
                                       INLAoutputOnly = INLAoutputOnly,
@@ -364,7 +259,7 @@ nowcasting_inla <- function(dataset,
     }else{
       ## Nowcasting estimate
       sample.now <- nowcasting_no_age_inla(dataset = data.inla,
-                                      zero_inflated = F,
+                                      zero_inflated = FALSE,
                                       timeREmodel = timeREmodel,
                                       INLAoutput = INLAoutput.aux,
                                       INLAoutputOnly = INLAoutputOnly,
@@ -374,8 +269,7 @@ nowcasting_inla <- function(dataset,
     ## Summary on the posteriors of nowcasting
     if(!INLAoutputOnly){
       now_summary<-nowcasting.summary(trajectory = sample.now$sample,
-                                      age = F)
-      # l<-1
+                                      age = FALSE)
     }else{
       now_summary <- list()
     }
@@ -386,7 +280,7 @@ nowcasting_inla <- function(dataset,
     if(zero_inflated){
       ## Zero inflated by age
       sample.now <- nowcasting_age_inla(dataset = data.inla,
-                                   zero_inflated = T,
+                                   zero_inflated = TRUE,
                                    timeREmodel = timeREmodel,
                                    INLAoutput = INLAoutput.aux,
                                    INLAoutputOnly = INLAoutputOnly,
@@ -394,7 +288,7 @@ nowcasting_inla <- function(dataset,
     }else{
       ## Negative binomial by age
       sample.now <- nowcasting_age_inla(dataset = data.inla,
-                                   zero_inflated = F,
+                                   zero_inflated = FALSE,
                                    timeREmodel = timeREmodel,
                                    INLAoutput = INLAoutput.aux,
                                    INLAoutputOnly = INLAoutputOnly,
@@ -404,40 +298,23 @@ nowcasting_inla <- function(dataset,
     ## Summary on the posteriors of nowcasting
     if(!INLAoutputOnly){
       now_summary<-nowcasting.summary(trajectory = sample.now$sample,
-                                    age = T)
+                                    age = TRUE)
     } else {
       now_summary <- list()
     }
-    # l<-0
   }
 
   ## Objects to be returned
 
   if(!INLAoutputOnly){
     if(data.by.week){
-
-      # # if(missing(age_col)){
-      # now_summary[[3-l]]<- data.inla
-      # # }
-      #
-      # # now_summary[[3-l]]<-data_w |>
-      # #   dplyr::group_by(date_onset) |>
-      # #   dplyr::summarise(observed = dplyr::n(),
-      # #                    Delay = Delay)
-      #
-      # names(now_summary)[3-l]<-"data"
-
       now_summary$data <- data.inla
 
       if(trajectories){
-        # now_summary[[4-l]]<-sample.now
-        # names(now_summary)[4-l]<-"trajectories"
         now_summary$trajectories <- sample.now$sample
       }
     } else {
       if(trajectories){
-        # now_summary[[3-l]]<-sample.now
-        # names(now_summary)[3-l]<-"trajectories"
         now_summary$trajectories <- sample.now$sample
       }
     }

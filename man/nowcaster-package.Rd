@@ -6,7 +6,7 @@
 \alias{nowcaster-package}
 \title{nowcaster: Statistical Models for Notification Delay Correction of Epidemiological Data}
 \description{
-Statistical models for correcting notification delays of epidemiological data. The package wraps statistical models to estimate not yet reported data using empirical delay distribution either from individual-level data or from the differences of aggregated time series of cases. For more details see Bastos et al. (2019) \doi{10.1002/sim.8303}.
+Statistical models for correcting notification delays of epidemiological data. The package wraps statistical models to estimate not yet reported data using empirical delay distribution either from individual-level data or from the differences of aggregated time series of cases. The models can be fitted in a Bayesian framework with 'INLA' \url{https://www.r-inla.org}, available from the repository listed in 'Additional_repositories', or as generalised additive models with 'mgcv'. For more details see Bastos et al. (2019) \doi{10.1002/sim.8303}.
 }
 \seealso{
 Useful links:

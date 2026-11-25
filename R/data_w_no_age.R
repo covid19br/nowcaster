@@ -5,13 +5,13 @@
 #' Makes the account of maximum days per week to be used. With no age structure.
 #'
 #' @param dataset dataset to be formatted as data by week
-#' @param trim.data How much to trim of the data?
+#' @param trim.data Number of most recent weeks to trim out of the data. Default is 0.
 #' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases
 #' @param date_report Column of dates of report of the event, normally date of digitation of the notification of cases
 #' @param use.epiweek If TRUE, it uses the CDC epiweek definition where the week starts on Sunday, if FALSE it the week ends at the weekday of the last record date.
 #' @param K How much weeks to forecast ahead?
 #' **Default** K is 0, no forecasting ahead
-#' @param silent DEPRECATED to be removed.
+#' @param silent If TRUE, no message about trimming.
 #'
 #' @return Data in weeks format, with the maximum dates for the last week used
 #' @keywords internal
@@ -23,21 +23,9 @@ data.w_no_age<-function(dataset,
                         use.epiweek = FALSE,
                         K=0,
                         silent=FALSE){
-  if(!silent){
-    ## Last digitation date considered
-    if(missing(trim.data)){
-      trim.data <-  0
-      warning("Using default, no trimming out of the data")
-    } else {
-      warning("Using default, trimming out ",
-              trim.data ,
-              " days of data",
-              call. = T)
-    }
-  }else{
-    ## Trim.data
-    trim.data <-  0
-  }
+  ## Number of most recent weeks to trim out of the data
+  if (missing(trim.data)) trim.data <- 0
+  trim.data <- check_trim_data(trim.data, silent = silent)
 
   ## Transforming trim.data into days
   trim.data.w <- 7*trim.data
@@ -48,7 +36,7 @@ data.w_no_age<-function(dataset,
   ## Maximum date to be considered on the estimation (Last day)
   DT_max <- max(dataset |>
                   dplyr::pull(var = {{date_report}}),
-                na.rm = T) - trim.data.w #+ K.w
+                na.rm = TRUE) - trim.data.w #+ K.w
 
 
   ## Day of the week of the last day

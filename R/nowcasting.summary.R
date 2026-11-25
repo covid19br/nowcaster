@@ -20,22 +20,22 @@ nowcasting.summary <- function(trajectory, age = FALSE){
 
   total.summy <- trajectory |>
     dplyr::group_by(Time, dt_event, sample) |>
-    dplyr::summarise(Y = sum(Y, na.rm = T)) |>
+    dplyr::summarise(Y = sum(Y, na.rm = TRUE), .groups = "drop") |>
     dplyr::group_by(Time, dt_event) |>
-    dplyr::summarise(Median = stats::median(Y, na.rm = T),
-                     LI = stats::quantile(Y, probs = 0.025, na.rm = T),
-                     LS = stats::quantile(Y, probs = 0.975, na.rm = T),
-                     LIb = stats::quantile(Y, probs = 0.25, na.rm = T),
-                     LSb = stats::quantile(Y, probs = 0.75, na.rm = T),
+    dplyr::summarise(Median = stats::median(Y, na.rm = TRUE),
+                     LI = stats::quantile(Y, probs = 0.025, na.rm = TRUE),
+                     LS = stats::quantile(Y, probs = 0.975, na.rm = TRUE),
+                     LIb = stats::quantile(Y, probs = 0.25, na.rm = TRUE),
+                     LSb = stats::quantile(Y, probs = 0.75, na.rm = TRUE),
                      .groups = "drop")
   if(age){
     age.summy <- trajectory |>
       dplyr::group_by(Time, dt_event, fx_etaria, fx_etaria.num) |>
-      dplyr::summarise(Median = stats::median(Y, na.rm = T),
-                       LI = stats::quantile(Y, probs = 0.025, na.rm = T),
-                       LS = stats::quantile(Y, probs = 0.975, na.rm = T),
-                       LIb = stats::quantile(Y, probs = 0.25, na.rm = T),
-                       LSb = stats::quantile(Y, probs = 0.75, na.rm = T),
+      dplyr::summarise(Median = stats::median(Y, na.rm = TRUE),
+                       LI = stats::quantile(Y, probs = 0.025, na.rm = TRUE),
+                       LS = stats::quantile(Y, probs = 0.975, na.rm = TRUE),
+                       LIb = stats::quantile(Y, probs = 0.25, na.rm = TRUE),
+                       LSb = stats::quantile(Y, probs = 0.75, na.rm = TRUE),
                        .groups = "drop")
 
     output <- list()

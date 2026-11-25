@@ -4,10 +4,23 @@
 \alias{nowcasting_no_age_mgcv}
 \title{Fit the non-structured nowcasting GAM}
 \usage{
-nowcasting_no_age_mgcv(dataset)
+nowcasting_no_age_mgcv(dataset, fit = c("gam", "bam", "bam_discrete"))
 }
 \arguments{
 \item{dataset}{data pre-formatted into delays by week for each case, delay-triangle format}
+
+\item{fit}{How the negative binomial GAM is fitted:
+\itemize{
+\item \code{"gam"} (default): \code{\link[mgcv:gam]{mgcv::gam()}}, the original fit.
+\item \code{"bam"}: \code{\link[mgcv:bam]{mgcv::bam()}} with \code{method = "fREML"}, a faster fit for large
+data. On the age-structured model it was about 7 times faster than
+\code{"gam"} on the example data, with nowcasts within about 1\%.
+\item \code{"bam_discrete"}: \code{\link[mgcv:bam]{mgcv::bam()}} with \code{discrete = TRUE}, which
+discretises the covariates. It was over 40 times faster than \code{"gam"} on
+the age-structured model. With \code{method.group.gam = "by"} the nowcasts
+matched \code{"gam"} closely; with \code{"fs"} the estimates for the most recent
+weeks were up to about 8\% lower on the example data.
+}}
 }
 \value{
 A list with element 'sample', the predictive trajectories from the negative binomial GAM.

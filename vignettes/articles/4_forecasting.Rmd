@@ -12,9 +12,9 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = FALSE,
   comment = "#>",
-  warning = F,
-  message = F,
-  echo = T
+  warning = FALSE,
+  message = FALSE,
+  echo = TRUE
 )
 ```
 
@@ -78,7 +78,7 @@ Now, to forecast one week ahead we just flag the `K = 1`, and proceed as in norm
 nowcasting_bh_no_age <- nowcasting_inla(dataset = srag_now, 
                                         date_onset = DT_SIN_PRI, 
                                         date_report = DT_DIGITA, 
-                                        data.by.week = T, 
+                                        data.by.week = TRUE, 
                                         K = 1)
 head(nowcasting_bh_no_age$data)
 ```
@@ -89,7 +89,7 @@ head(nowcasting_bh_no_age$data)
 nowcasting_bh_no_age_mgcv <- nowcasting_mgcv(dataset = srag_now, 
                                         date_onset = DT_SIN_PRI, 
                                         date_report = DT_DIGITA, 
-                                        data.by.week = T, 
+                                        data.by.week = TRUE, 
                                         K = 1)
 head(nowcasting_bh_no_age_mgcv$data)
 ```
@@ -125,13 +125,13 @@ nowcasting_estimate |>
   geom_line()+
   geom_ribbon(aes(ymin = LI, ymax = LS, col = "Nowcasting", fill = "Nowcasting"), 
               alpha = 0.2, 
-              show.legend = F)+
+              show.legend = FALSE)+
   geom_line(data = forecasting_estimate, 
             aes(x = dt_event, y = Median, col = "Forecasting"))+
   geom_ribbon(data = forecasting_estimate, 
               aes(ymin = LI, ymax = LS, col = "Forecasting", fill = "Forecasting"), 
               alpha = 0.2,
-              show.legend = F)+
+              show.legend = FALSE)+
   geom_line(data = data_by_week, 
             aes(date_onset, y = n, col = 'Observed'))+
   geom_line(data = data_one_year_after, 
@@ -178,13 +178,13 @@ nowcasting_estimate |>
   geom_line()+
   geom_ribbon(aes(ymin = LI, ymax = LS, col = "Nowcasting", fill = "Nowcasting"), 
               alpha = 0.2, 
-              show.legend = F)+
+              show.legend = FALSE)+
   geom_line(data = forecasting_estimate, 
             aes(x = dt_event, y = Median, col = "Forecasting"))+
   geom_ribbon(data = forecasting_estimate, 
               aes(ymin = LI, ymax = LS, col = "Forecasting", fill = "Forecasting"), 
               alpha = 0.2,
-              show.legend = F)+
+              show.legend = FALSE)+
   geom_line(data = data_by_week, 
             aes(date_onset, y = n, col = 'Observed'))+
   geom_line(data = data_one_year_after, 
@@ -216,7 +216,7 @@ As we try to forecasting longer ahead of the present date, the uncertainty has t
 nowcasting_bh_age <- nowcasting_inla(dataset = srag_now, 
                                      date_onset = DT_SIN_PRI, 
                                      date_report = DT_DIGITA, 
-                                     data.by.week = T,
+                                     data.by.week = TRUE,
                                      K = 1,
                                      age_col = Idade)
 head(nowcasting_bh_age$data)
@@ -228,7 +228,7 @@ head(nowcasting_bh_age$data)
 nowcasting_bh_age_mgcv <- nowcasting_mgcv(dataset = srag_now, 
                                      date_onset = DT_SIN_PRI, 
                                      date_report = DT_DIGITA, 
-                                     data.by.week = T,
+                                     data.by.week = TRUE,
                                      K = 1,
                                      age_col = Idade)
 head(nowcasting_bh_age_mgcv$data)
@@ -255,13 +255,13 @@ nowcasting_estimate |>
   geom_line()+
   geom_ribbon(aes(ymin = LI, ymax = LS, col = "Nowcasting", fill = "Nowcasting"), 
               alpha = 0.2, 
-              show.legend = F)+
+              show.legend = FALSE)+
   geom_line(data = forecasting_estimate, 
             aes(x = dt_event, y = Median, col = "Forecasting"))+
   geom_ribbon(data = forecasting_estimate, 
               aes(ymin = LI, ymax = LS, col = "Forecasting", fill = "Forecasting"), 
               alpha = 0.2,
-              show.legend = F)+
+              show.legend = FALSE)+
   geom_line(data = data_by_week, 
             aes(date_onset, y = n, col = 'Observed'))+
   geom_line(data = data_one_year_after, 
@@ -298,13 +298,13 @@ nowcasting_estimate |>
   geom_line()+
   geom_ribbon(aes(ymin = LI, ymax = LS, col = "Nowcasting", fill = "Nowcasting"), 
               alpha = 0.2, 
-              show.legend = F)+
+              show.legend = FALSE)+
   geom_line(data = forecasting_estimate, 
             aes(x = dt_event, y = Median, col = "Forecasting"))+
   geom_ribbon(data = forecasting_estimate, 
               aes(ymin = LI, ymax = LS, col = "Forecasting", fill = "Forecasting"), 
               alpha = 0.2,
-              show.legend = F)+
+              show.legend = FALSE)+
   geom_line(data = data_by_week, 
             aes(date_onset, y = n, col = 'Observed'))+
   geom_line(data = data_one_year_after, 

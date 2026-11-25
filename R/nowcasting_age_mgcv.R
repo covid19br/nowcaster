@@ -6,31 +6,16 @@
 #'
 #' @param dataset data pre formatted in to age classes and delays by week for each cases, delay triangle format
 #' @param method Type of smooth by age class: "fs" (factor smooth, `s(., age_class, bs = "fs")`, default) or "by" (`s(., by = age_class)`).
+#' @inheritParams nowcasting_mgcv
 #'
 #' @return A list with element 'sample', the predictive trajectories by age class.
 #' @export
-nowcasting_age_mgcv <- function(dataset, method = "fs"){
+nowcasting_age_mgcv <- function(dataset, method = "fs",
+                                fit = c("gam", "bam", "bam_discrete")){
 
   # Workaround check
   fx_etaria <- NULL
 
-  # ## [Not in use] Check for zero-inflated
-  # if (zero_inflated ){
-  #   family <- "zeroinflatednbinomial2"
-  #   control.family <- list(
-  #     hyper = list("theta1" = list(prior = "loggamma",
-  #                                  param = c(0.001, 0.001)),
-  #                  # INLA default fro a
-  #                  "theta2" = list(prior = "gaussian",
-  #                                  param = c(2, 1)))
-  #   )
-  # } else {
-  #   family <- 'nbinomial'
-  #   control.family <- list(
-  #     hyper = list("theta" = list(prior = "loggamma",
-  #                                 param = c(0.001, 0.001)))
-  #   )
-  # }
 
   index.missing <- which(is.na(dataset$Y))
 
@@ -44,72 +29,39 @@ nowcasting_age_mgcv <- function(dataset, method = "fs"){
 
 
   ## Running the Negative Binomial model in mgcv
+  ## Basis dimensions: mgcv's default of 10, or fewer when the observed part
+  ## of the delay triangle has fewer distinct weeks or delays
+  observed <- dataset[!is.na(dataset$Y), ]
+  k.time <- gam_basis_dim(observed$Time,
+                          "weeks of onset (increase 'wdw')")
+  k.delay <- gam_basis_dim(observed$delay,
+                           "delays (increase 'Dmax')")
+
   if(method == "by")
-    output0 <- mgcv::gam(Y ~ 1 + fx_etaria + s(Time, by = fx_etaria) +
-                           s(delay, by = fx_etaria),
-                         family = "nb", data = dataset )
+    output0 <- fit_nb_gam(
+      stats::as.formula(sprintf(
+        "Y ~ 1 + fx_etaria + s(Time, by = fx_etaria, k = %d) + s(delay, by = fx_etaria, k = %d)",
+        k.time, k.delay)),
+      data = dataset, fit = fit)
 
   if(method == "fs")
-    output0 <- mgcv::gam(Y ~ 1 + s(Time, fx_etaria, bs = "fs") +
-                           s(delay, fx_etaria, bs = "fs"),
-                         family = "nb", data = dataset )
+    output0 <- fit_nb_gam(
+      stats::as.formula(sprintf(
+        "Y ~ 1 + s(Time, fx_etaria, bs = \"fs\", k = %d) + s(delay, fx_etaria, bs = \"fs\", k = %d)",
+        k.time, k.delay)),
+      data = dataset, fit = fit)
 
   output <- list()
 
 
-  ## Algorithm to get samples for the predictive distribution for the number of cases
+  ## Predictive distribution of the missing cells: sample the coefficients
+  ## from their approximate posterior, then the counts from the negative
+  ## binomial with the estimated dispersion
+  draws <- sample_missing_gam(output0, newdata = dataset[index.missing, ])
 
-  ## Step 1: Sampling from the approximate posterior distribution of the coefficients
-
-  betas.p <- mgcv::rmvn(n = 1000, stats::coef(output0), output0$Vp)
-
-
-  # Step 2: Get the design matrix (for the predictive values)
-  Xp <- stats::predict(output0, type = "lpmatrix", newdata = dataset[index.missing,])
-
-  # Step 3: Get the samples from the linear terms
-  eta.samples <- Xp %*% t(betas.p)
-
-
-  n.missing = nrow(eta.samples)
-
-  # Step 4: Sampling the missing triangle (fixing the negative binomial hyperparameter)
-  theta.nb <- output0$family$getTheta(T) # NegBin hyper parameter
-
-  # Step 5: Do the same as we did in INLA (sampling the missing triangle)
-  vector.samples <- lapply(X = 1:1000,
-                           FUN = function(x)
-                             stats::rnbinom(n = n.missing, mu = exp(eta.samples[,x]), size = theta.nb))
-
-  ## Step 6: Calculate N_{a,t} for each triangle sample {N_{t,a} : t=Tactual-Dmax+1,...Tactual}
-
-  gg.age <- function(x, dados, idx){
-    # Workaround check
-    Y <- Time <- dt_event <- fx_etaria <- fx_etaria.num <- Delay <- NULL
-    data.aux <- dados
-    Tmin <- min(dados$Time[idx])
-    data.aux$Y[idx] <- x
-    data.aggregated <- data.aux |>
-      ## Selecionando apenas os dias faltantes a partir
-      ## do domingo da respectiva ultima epiweek
-      ## com dados faltantes
-      dplyr::filter(Time >= Tmin  ) |>
-      dplyr::group_by(Time, dt_event, fx_etaria, fx_etaria.num) |>
-      dplyr::summarise(
-        Y = sum(Y), .groups = "keep"
-      )
-    data.aggregated
-  }
-
-  ## Step 4: Applying the age aggregation on each posterior
-  tibble.samples.0 <- lapply( X = vector.samples,
-                              FUN = gg.age,
-                              dados = dataset,
-                              idx = index.missing)
-
-  srag.pred.0 <- dplyr::bind_rows(tibble.samples.0, .id = "sample")
-
-  output$sample <- srag.pred.0
+  ## Trajectories: observed plus sampled counts, by week of onset and age class
+  output$sample <- aggregate_trajectories(dataset, idx = index.missing,
+                                          draws = draws, age = TRUE)
 
 
   return(output)

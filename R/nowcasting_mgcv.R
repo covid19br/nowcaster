@@ -17,12 +17,22 @@
 #' @param bins_age Age bins to do the nowcasting, it receive a vector of age bins,
 #' or options between, "SI-PNI", "10 years", "5 years". The default is "SI-PNI".
 #' @param method.group.gam Type of smooth used by age class in the structured model: "fs" (factor smooth, default) or "by" (one smooth per age class).
+#' @param fit How the negative binomial GAM is fitted:
+#'   * `"gam"` (default): [mgcv::gam()], the original fit.
+#'   * `"bam"`: [mgcv::bam()] with `method = "fREML"`, a faster fit for large
+#'     data. On the age-structured model it was about 7 times faster than
+#'     `"gam"` on the example data, with nowcasts within about 1%.
+#'   * `"bam_discrete"`: [mgcv::bam()] with `discrete = TRUE`, which
+#'     discretises the covariates. It was over 40 times faster than `"gam"` on
+#'     the age-structured model. With `method.group.gam = "by"` the nowcasts
+#'     matched `"gam"` closely; with `"fs"` the estimates for the most recent
+#'     weeks were up to about 8% lower on the example data.
 #' @param K (in weeks) How many weeks to forecast ahead. The default is K = 0, no forecasting ahead.
 #' @param age_col Column with the age (in years) of each case. If given, the structured (age-stratified) model is fitted.
 #' @param date_onset Column of dates of onset of the events, normally date of onset of first symptoms of cases.
 #' @param date_report Column of dates of report of the events, normally the date the notification was recorded in the system.
 #' @param trajectories Returns the predictive trajectories. The default is FALSE.
-#' @param silent Deprecated. Should the warnings be turned off? The default is FALSE.
+#' @param silent If `TRUE`, the function prints no messages. By default (`FALSE`) it reports the age classes used and how many weeks were trimmed, when it trims data.
 #' @param ... list parameters to other functions
 #'
 #' @return A list. Element 'total' is a data.frame with the nowcasting estimate: predictive 'Median',
@@ -57,108 +67,34 @@ nowcasting_mgcv <- function(dataset,
                             method.group.gam = "fs",
                             K = 0,
                             trajectories = FALSE,
+                            fit = c("gam", "bam", "bam_discrete"),
                             ...){
+
+  fit <- match.arg(fit)
 
   dots<-list(...)
 
   # Workaround check
   Y <- Time <- delay <- dt.aux <- fx_etaria <- Delay <- NULL
 
-  # ## Safe tests
-  # if(missing(dataset)){
-  #   stop("Dataset is missing!")
-  # }
-  # if(ncol(dataset) < 2){
-  #   if(!missing(age_col) & ncol(dataset) < 3){
-  #     stop("Missing 'age_col'! \n
-  #          Dataset does not have 3 columns!")
-  #   }else{
-  #     stop("Dataset does not have 2 columns!")
-  #   }
-  #
-  # }
-  # if(missing(date_onset) | missing(date_report)){
-  #   stop("'date_onset' or 'date_report' missing! Please give a column name for each of this parameters")
-  # }
-  # if(K < 0 ){
-  #   stop("K less than 0, we cannot produce backcasting! \n
-  #        Please set the K to anything greater than 0 to Forecasting")
-  # }
-  #
-  #
-  # ## Warnings
-  # if(missing(silent) | silent == FALSE){
-  #
-  #   ## K parameter and trim.data warnings
-  #   if (K > 0 & trim.data != 0){
-  #     warning(paste0("Using K = ", K, " and trim.data = ", trim.data, ", is that right?"))
-  #   }else{
-  #     if(K > 0){
-  #       message(paste0("Forecasting with K ", K, " ahead"))
-  #     }else{
-  #       message("Nowcasting only")
-  #     }
-  #   }
-  #
-    #     ## Missing trim.data warning
-    # if(missing(trim.data)){
-    #   trim.data <- 0
-    #   # warning("Using default to trim dates, 'trim.data = 0'")
-    # }else{
-    #   trim.data<-trim.data
-    #   # message("Using trim.data inputed")
-    # }
-  #   ## Missing Dmax warning
-  #   if(missing(Dmax)){
-  #     Dmax <- 15
-  #     warning("Using default to maximum delay, 'Dmax = 15'")
-  #   }else{
-  #     Dmax<-Dmax
-  #     message("Using Dmax inputed")
-  #   }
-  #   ## Missing wdw warning
-  #   if(missing(wdw)){
-  #     wdw <- 30
-  #     warning("Using default to window of action, 'wdw = 30'")
-  #   }else{
-  #     wdw<-wdw
-  #     message("Using wdw inputed")
-  #   }
-  #   ## Missing data.by.week warning
-  #   if(missing(data.by.week)){
-  #     data.by.week <- FALSE
-  #     warning("Using default to returning option for the data, 'data.by.week = FALSE'")
-  #   }else{
-  #     data.by.week<-data.by.week
-  #     message("Returning 'data.by.week'")
-  #   }
-  #
-  #   if(missing(trajectories) | trajectories == FALSE){
-  #     warning("Not returning trajectories")
-  #   }else{
-  #     trajectories = TRUE
-  #     message("Trajectories returned")
-  #   }
-  #
-  #
-  #   ## Missing age_col warning
-  #   if(missing(age_col)){
-  #     warning("'age_col' missing, nowcasting with unstructured model")
-  #     ## Missing bins_age column warning
-  #   }else{
-  #     message("'age_col' inputed, nowcasting with structured model")
-  #
-  #     if(missing(bins_age)){
-  #       bins_age <- "SI-PNI"
-  #       warning("Using 'SI-PNI' age bins!")
-  #     }else{
-  #       bins_age<-bins_age
-  #       message("Using age bins inputed")
-  #     }
-  #
-  #   }
-  # }
-  #
+  ## Input checks
+  if(missing(dataset)){
+    stop("Dataset is missing!")
+  }
+  if(ncol(dataset) < 2){
+    stop("Dataset does not have 2 columns!")
+  }
+  if(missing(date_onset) | missing(date_report)){
+    stop("'date_onset' or 'date_report' missing! Please give a column name for each of this parameters")
+  }
+  if(K < 0 ){
+    stop("K less than 0, we cannot produce backcasting! \n
+         Please set the K to anything greater than 0 to Forecasting")
+  }
+  method.group.gam <- match.arg(method.group.gam, c("fs", "by"))
+  if (!isTRUE(silent) && !isFALSE(silent)) {
+    stop("'silent' must be TRUE or FALSE.")
+  }
 
   ## Objects for keep the nowcasting
   ## Filtering out cases without report date
@@ -223,22 +159,15 @@ nowcasting_mgcv <- function(dataset,
   }
 
 
-
   ## Auxiliary date table
 
-  dates <- range(data2model |> dplyr::pull(var = date_onset - 7*trim.data))
+  ## Range of onset weeks in the model data. The data were already trimmed by
+  ## 'trim.data' weeks in data.w() / data.w_no_age().
+  dates <- range(data2model$date_onset)
 
   # Adding forecast
   dates[2] <- dates[2] + 7*K
 
-  # if(K==0){
-  #   dates <- range(data.inla |>
-  #                   dplyr::pull(var = date_onset - 7*trim.data))
-  # } else {
-  #   ## This is done to explicitly say for the forecast part that its date of onset is the present date
-  #   date_k <- max(data.inla$date_onset) + 7*K - 7*trim.data
-  #   dates <- range(data.inla$date_onset, date_k)
-  # }
 
   ## To make an auxiliary date table with each date plus an amount of dates  to forecast
   tbl.date.aux <- tibble::tibble(
@@ -248,7 +177,7 @@ nowcasting_mgcv <- function(dataset,
 
   ## Joining auxiliary date tables
   data2model <- data2model  |>
-    dplyr::left_join(tbl.date.aux)
+    dplyr::left_join(tbl.date.aux, by = "date_onset")
 
   ## Time maximum to be considered
   Tmax.id <- max(data2model$Time)
@@ -271,7 +200,7 @@ nowcasting_mgcv <- function(dataset,
   ## Joining the auxiliary date table by Stratum
   if(missing(age_col)){
     data2model <- data2model  |>
-      dplyr::full_join(tbl.NA) |>  #View()
+      dplyr::full_join(tbl.NA, by = c("date_onset", "delay", "Time")) |>
       dplyr::mutate(
         Y = ifelse(Time + delay > Tmax.id, as.numeric(NA), Y),
         ## If Time + Delay is greater than Tmax, fill with NA
@@ -283,7 +212,7 @@ nowcasting_mgcv <- function(dataset,
       tidyr::drop_na(delay)
   }else {
     data2model <- data2model  |>
-      dplyr::full_join(tbl.NA)  |>   #View()
+      dplyr::full_join(tbl.NA, by = c("date_onset", "delay", "fx_etaria", "Time")) |>
       dplyr::mutate(
         Y = ifelse(Time + delay > Tmax.id, as.numeric(NA), Y),
         ## If Time + Delay is greater than Tmax, fill with NA
@@ -302,20 +231,20 @@ nowcasting_mgcv <- function(dataset,
     # Nowcasting no age
 
       ## Nowcasting estimate
-      sample.now <- nowcasting_no_age_mgcv(dataset = data2model)
+      sample.now <- nowcasting_no_age_mgcv(dataset = data2model, fit = fit)
 
       now_summary<-nowcasting.summary(trajectory = sample.now$sample,
-                                      age = F)
+                                      age = FALSE)
   } else {
     # Nowcasting by age groups
 
     ## Negative binomial by age
     sample.now <- nowcasting_age_mgcv(dataset = data2model,
-                                      method = method.group.gam)
+                                      method = method.group.gam,
+                                      fit = fit)
 
     now_summary<-nowcasting.summary(trajectory = sample.now$sample,
-                                    age = T)
-    # l<-0
+                                    age = TRUE)
   }
 
   ## Objects to be returned
