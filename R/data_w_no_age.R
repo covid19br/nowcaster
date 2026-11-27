@@ -55,7 +55,7 @@ data.w_no_age<-function(dataset,
   DT_max_diadasemana <- as.integer(format(DT_max, "%w"))
 
   ## Ignore data after the last Sunday of recording (Sunday as too)
-  aux.trimming.date = ifelse( use.epiweek | DT_max_diadasemana == 6, DT_max_diadasemana + 1, 0)
+  aux.trimming.date = ifelse( use.epiweek & DT_max_diadasemana != 6, DT_max_diadasemana + 1, 0)
 
   # Workaround check
   DT.sun.aux <- dt.aux <- Delay <- NULL
