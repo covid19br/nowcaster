@@ -58,7 +58,7 @@ data.w <- function(dataset,
   # and the epiweek is on course. Otherwise some data must be ignored
 
   ## Ignore data after the last Sunday of recording (Sunday as too)
-  aux.trimming.date = ifelse( use.epiweek | DT_max_diadasemana == 6, DT_max_diadasemana + 1, 0)
+  aux.trimming.date = ifelse( use.epiweek & DT_max_diadasemana != 6, DT_max_diadasemana + 1, 0)
 
 
   # ## Test for age bins
